@@ -3,6 +3,7 @@ using SIMS_Booking.Repository;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -23,7 +24,8 @@ namespace SIMS_Booking.View
     /// </summary>
     public partial class SignInForm : Window
     {
-        private readonly UserRepository _repository;
+
+        private readonly UserRepository _userRepository;
 
         private string _username;
         public string Username
@@ -50,12 +52,12 @@ namespace SIMS_Booking.View
         {
             InitializeComponent();
             DataContext = this;
-            _repository = new UserRepository();
+            _userRepository = new UserRepository();
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
         {
-            User user = _repository.GetByUsername(Username);
+            User user = _userRepository.GetByUsername(Username);
             if (user != null)
             {
                 if (user.Password == txtPassword.Password)
