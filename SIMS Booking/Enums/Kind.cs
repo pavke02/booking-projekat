@@ -12,4 +12,9 @@ namespace SIMS_Booking.Enums
         House,
         Cottage
     }
+    public enum DriverLanguages
+    {
+        Serbian,
+        English
+    }
 }
