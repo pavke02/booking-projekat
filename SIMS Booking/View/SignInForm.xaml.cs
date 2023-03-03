@@ -1,31 +1,18 @@
-﻿using SIMS_Booking.Model;
+﻿using SIMS_Booking.Enums;
+using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace SIMS_Booking.View
 {
-    /// <summary>
-    /// Interaction logic for SignInForm.xaml
-    /// </summary>
     public partial class SignInForm : Window
     {
 
         private readonly UserRepository _userRepository;
+        private readonly AccomodationRepository _accomodationRepository;
 
         private string _username;
         public string Username
@@ -53,6 +40,7 @@ namespace SIMS_Booking.View
             InitializeComponent();
             DataContext = this;
             _userRepository = new UserRepository();
+            _accomodationRepository = new AccomodationRepository();
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
@@ -61,7 +49,17 @@ namespace SIMS_Booking.View
             if (user != null)
             {
                 if (user.Password == txtPassword.Password)
-                {
+                {                    
+                    switch(user.Role)
+                    {
+                        case Roles.Owner:
+                            OwnerView ownerView = new OwnerView(_accomodationRepository);
+                            ownerView.Show();
+                            break;
+                        default:
+                            MessageBox.Show("Guest1");
+                            break;
+                    }
                     Close();
                 }
                 else
@@ -73,7 +71,6 @@ namespace SIMS_Booking.View
             {
                 MessageBox.Show("Wrong username!");
             }
-
         }
     }
 }

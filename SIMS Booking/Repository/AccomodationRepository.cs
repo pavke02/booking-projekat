@@ -1,10 +1,6 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Serializer;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SIMS_Booking.Repository
 {
@@ -13,15 +9,23 @@ namespace SIMS_Booking.Repository
         private const string FilePath = "../../../Resources/Data/accommodations.csv";
 
         private readonly Serializer<Accommodation> _serializer;
-
-        public List<Accommodation> Accommodations { get; set; }
+        private List<Accommodation> _accommodations;        
 
         public AccomodationRepository()
         {
-            _serializer = new Serializer<Accommodation>();
-            Accommodations = _serializer.FromCSV(FilePath);
+            _serializer = new Serializer<Accommodation>();            
+            _accommodations = new List<Accommodation>();
         }
 
+        public List<Accommodation> Load()
+        {
+            return _serializer.FromCSV(FilePath);
+        }
 
+        public void Save(Accommodation accomodation)
+        {
+            _accommodations.Add(accomodation);
+            _serializer.ToCSV(FilePath, _accommodations);
+        }
     }
 }

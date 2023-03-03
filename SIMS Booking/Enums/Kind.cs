@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SIMS_Booking.Enums
 {
-    public enum AccommodationType
+    public enum Kind
     {
         Apartment,
         House,
