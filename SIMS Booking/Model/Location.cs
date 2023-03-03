@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace SIMS_Booking.Model
 {
-    public class AccommodationLocation
+    public class Location
     {
         public string Country { get; set; }
         public string City { get; set; }
 
-        public AccommodationLocation() { }
+        public Location() { }
 
-        public AccommodationLocation(string country, string city)
+        public Location(string country, string city)
         {
             Country = country;
             City = city;
