@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using SIMS_Booking.Enums;
+using SIMS_Booking.State;
 
 namespace SIMS_Booking.Model
 {
-    public class Accommodation : ISerializable
+    public class Accommodation : ISerializable, IDable
     {
+        public int ID { get; set; }
         public string Name { get; set; }
         public Location Location { get; set; }
         public Kind Type { get; set; }
@@ -18,7 +20,7 @@ namespace SIMS_Booking.Model
         public Accommodation() { }
 
         public Accommodation(string name, Location location, Kind type, int maxGuests, int minReservationDays, int cancelationPeriod, List<string> imagesURL)
-        {
+        {            
             Name = name;
             Location = location;
             Type = type;
@@ -32,20 +34,31 @@ namespace SIMS_Booking.Model
             }
         }
 
+        public int getID()
+        {
+            return ID;
+        }
+
+        public void setID(int id)
+        {
+            ID = id;
+        }
+
         public string[] ToCSV()
         {
-            string[] csvValues = { Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancelationPeriod.ToString()};
+            string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancelationPeriod.ToString()};
             return csvValues;
         }
 
         public void FromCSV(string[] values)
         {
-            Name = values[0];
-            Location = new Location(values[1], values[2]);
-            Type = (Kind)Enum.Parse(typeof(Kind), values[3]);
-            MaxGuests = Convert.ToInt32(values[4]);
-            MinReservationDays = Convert.ToInt32(values[5]);
-            CancelationPeriod = Convert.ToInt32(values[6]);          
-        }
+            ID = int.Parse(values[0]);
+            Name = values[1];
+            Location = new Location(values[2], values[3]);
+            Type = (Kind)Enum.Parse(typeof(Kind), values[4]);
+            MaxGuests = Convert.ToInt32(values[5]);
+            MinReservationDays = Convert.ToInt32(values[6]);
+            CancelationPeriod = Convert.ToInt32(values[7]);          
+        }        
     }
 }
