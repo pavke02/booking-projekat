@@ -8,7 +8,7 @@ using System.IO;
 
 namespace SIMS_Booking.Serializer
 {
-    class Serializer<T> where T : ISerializable, new()
+    public class Serializer<T> where T : ISerializable, new()
     {
         private const char Delimiter = '|';
 
