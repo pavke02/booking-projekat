@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace SIMS_Booking.Serializer
@@ -14,31 +10,41 @@ namespace SIMS_Booking.Serializer
 
         public void ToCSV(string fileName, List<T> objects)
         {
-            StringBuilder csv = new StringBuilder();
+            if (!File.Exists(fileName))
+            {
+                File.CreateText(fileName);
+            }
+            StreamWriter streamWriter = new StreamWriter(fileName);
 
             foreach (T obj in objects)
             {
                 string line = string.Join(Delimiter.ToString(), obj.ToCSV());
-                csv.AppendLine(line);
+                streamWriter.WriteLine(line);
             }
-
-            File.WriteAllText(fileName, csv.ToString());
-
+            streamWriter.Close();
         }
 
         public List<T> FromCSV(string fileName)
         {
             List<T> objects = new List<T>();
 
-            foreach (string line in File.ReadLines(fileName))
+            try
             {
-                string[] csvValues = line.Split(Delimiter);
-                T obj = new T();
-                obj.FromCSV(csvValues);
-                objects.Add(obj);
+                foreach (string line in File.ReadLines(fileName))
+                {
+                    string[] csvValues = line.Split(Delimiter);
+                    T obj = new T();
+                    obj.FromCSV(csvValues);
+                    objects.Add(obj);
+                }
+                return objects;
             }
-
-            return objects;
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
+                File.CreateText(fileName).Close();                
+                return objects;
+            }
         }
     }
 }

@@ -5,13 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using SIMS_Booking.Serializer;
 using SIMS_Booking.Enums;
+using SIMS_Booking.State;
 
 namespace SIMS_Booking.Model
 {
 
 
-    public class User : ISerializable
+    public class User : ISerializable, IDable
     {
+        public int ID { get; set; }
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -25,18 +27,28 @@ namespace SIMS_Booking.Model
             Password = password;
         }
 
+        public int getID()
+        {
+            return ID;
+        }
+
+        public void setID(int id)
+        {
+            ID = id;
+        }
+
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Username, Password, Role.ToString() };
+            string[] csvValues = { ID.ToString(), Username, Password, Role.ToString() };
             return csvValues;
         }
 
         public void FromCSV(string[] values)
         {
-            Id = Convert.ToInt32(values[0]);
+            ID = Convert.ToInt32(values[0]);
             Username = values[1];
             Password = values[2];
             Role = (Roles)Enum.Parse(typeof(Roles), values[3]);
-        }
+        }        
     }
 }
