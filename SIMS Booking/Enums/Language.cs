@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace SIMS_Booking.Enums
 {
-    public enum Kind
+    public class Language
     {
-        NoKind,
-        Apartment,
-        House,
-        Cottage
     }
 }

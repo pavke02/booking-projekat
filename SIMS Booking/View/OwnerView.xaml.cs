@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
@@ -13,11 +13,13 @@ namespace SIMS_Booking.View
 {    
     public partial class OwnerView : Window
     {
-        public Dictionary<string, List<string>> Countries { get; set; }
+        public Dictionary<string, List<string>> countries { get; set; }
 
         public List<string> TypesCollection { get; set; }
 
-        private readonly AccomodationRepository _accommodationRepository;
+
+        private AccomodationRepository _accommodationRepository;
+        private CityCountryRepository _cityCountryRepository;
 
         private string accommodationName;
         public string AccommodationName
@@ -124,24 +126,16 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }        
 
-        public OwnerView(AccomodationRepository accomodationRepository)
+        public OwnerView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository)
         {
             InitializeComponent();
             DataContext = this;
 
             _accommodationRepository = accomodationRepository;
+            _cityCountryRepository = cityCountryRepository;
 
-            Countries = new Dictionary<string, List<string>>()
-            {
-                {"Austria", new List<string>(){ "Graz", "Salzburg", "Vienna" } },
-                {"England", new List<string>(){"Birmingham", "London", "Manchester"} },
-                {"France", new List<string>(){"Bordeaux", "Marseille", "Paris" } },
-                {"Germany", new List<string>(){"Berlin", "Frankfurt", "Mainz" } },
-                {"Italy", new List<string>(){"Milano", "Roma", "Venice"} },
-                {"Serbia", new List<string>(){"Belgrade", "Nis", "Novi Sad" } },
-                {"Spain", new List<string>(){"Barcelona", "Madrid", "Malaga"} }
-            };            
-            
+            countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
+                      
             TypesCollection = new List<string>
             {
                 "Apartment",
@@ -153,7 +147,7 @@ namespace SIMS_Booking.View
         private void ChangeCities(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             CityCb.Items.Clear();            
-            foreach(string city in Countries.ElementAt(CountryCb.SelectedIndex).Value)
+            foreach(string city in countries.ElementAt(CountryCb.SelectedIndex).Value)
             {                
                 CityCb.Items.Add(city).ToString();
             }                        
@@ -168,15 +162,11 @@ namespace SIMS_Booking.View
 
         private void Publish(object sender, RoutedEventArgs e)
         {
-            List<Accommodation> accommodations = _accommodationRepository.Load();
             Location location = new Location(Country.Key, City);            
             Accommodation accommodation = new Accommodation(AccommodationName, location, (Kind)Enum.Parse(typeof(Kind), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), new List<string>() { "fdgfd", "gdfgf"});
-            accommodations.Add(accommodation);
-            foreach (Accommodation accommodationFromList in accommodations)
-            {
-                _accommodationRepository.Save(accommodationFromList);
-            }
 
+            _accommodationRepository.Save(accommodation);
+            MessageBox.Show("Accommodation successfully published");
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
