@@ -58,8 +58,7 @@ namespace SIMS_Booking.View
                     switch(user.Role)
                     {
                         case Roles.Owner:
-
-                            OwnerView ownerView = new OwnerView(_accomodationRepository, _cityCountryRepository);
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository);
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
