@@ -13,107 +13,105 @@ namespace SIMS_Booking.View
 {    
     public partial class OwnerView : Window
     {
-        public Dictionary<string, List<string>> countries { get; set; }
-
+        public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> TypesCollection { get; set; }
-
-
+        public List<Accommodation> Accommodations { get; set; }
         private AccomodationRepository _accommodationRepository;
-        private CityCountryRepository _cityCountryRepository;
+        private CityCountryRepository _cityCountryRepository;        
 
-        private string accommodationName;
+        private string _accommodationName;
         public string AccommodationName
         {
-            get => accommodationName;
+            get => _accommodationName;
             set
             {
-                if (value != accommodationName)
+                if (value != _accommodationName)
                 {
-                    accommodationName = value;
+                    _accommodationName = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private string city;
+        private string _city;
         public string City
         {
-            get => city;
+            get => _city;
             set
             {
-                if (value != city)
+                if (value != _city)
                 {
-                    city = value;
+                    _city = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private KeyValuePair<string, List<string>> country;
+        private KeyValuePair<string, List<string>> _country;
         public KeyValuePair<string, List<string>> Country
         {
-            get => country;
+            get => _country;
             set
             {
-                if (value.Key != country.Key)
+                if (value.Key != _country.Key)
                 {
-                    country = value;
+                    _country = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private string kind;
+        private string _kind;
         public string Kind
         {
-            get => kind;
+            get => _kind;
             set
             {
-                if (value != kind)
+                if (value != _kind)
                 {
-                    kind = value;
+                    _kind = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private string maxGuests;
+        private string _maxGuests;
         public string MaxGuests
         {
-            get => maxGuests;
+            get => _maxGuests;
             set
             {
-                if (value != maxGuests)
+                if (value != _maxGuests)
                 {
-                    maxGuests = value;
+                    _maxGuests = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private string minReservationDays;
+        private string _minReservationDays;
         public string MinReservationDays
         {
-            get => minReservationDays;
+            get => _minReservationDays;
             set
             {
-                if (value != minReservationDays)
+                if (value != _minReservationDays)
                 {
-                    minReservationDays = value;
+                    _minReservationDays = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private string cancelationPeriod;
+        private string _cancelationPeriod;
         public string CancelationPeriod
         {
-            get => cancelationPeriod;
+            get => _cancelationPeriod;
             set
             {
-                if (value != cancelationPeriod)
+                if (value != _cancelationPeriod)
                 {
-                    cancelationPeriod = value;
+                    _cancelationPeriod = value;
                     OnPropertyChanged();
                 }
             }
@@ -134,7 +132,9 @@ namespace SIMS_Booking.View
             _accommodationRepository = accomodationRepository;
             _cityCountryRepository = cityCountryRepository;
 
-            countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
+            Accommodations = new List<Accommodation>(_accommodationRepository.Load());
+
+            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
                       
             TypesCollection = new List<string>
             {
@@ -147,7 +147,7 @@ namespace SIMS_Booking.View
         private void ChangeCities(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             CityCb.Items.Clear();            
-            foreach(string city in countries.ElementAt(CountryCb.SelectedIndex).Value)
+            foreach(string city in Countries.ElementAt(CountryCb.SelectedIndex).Value)
             {                
                 CityCb.Items.Add(city).ToString();
             }                        
@@ -164,7 +164,6 @@ namespace SIMS_Booking.View
         {
             Location location = new Location(Country.Key, City);            
             Accommodation accommodation = new Accommodation(AccommodationName, location, (Kind)Enum.Parse(typeof(Kind), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), new List<string>() { "fdgfd", "gdfgf"});
-
             _accommodationRepository.Save(accommodation);
             MessageBox.Show("Accommodation successfully published");
         }

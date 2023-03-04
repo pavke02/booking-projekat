@@ -12,9 +12,9 @@ namespace SIMS_Booking.Repository
 
         public Repository(string filePath)
         {
-            _serializer = new Serializer<T>();  
-            _entityList = new List<T>();
+            _serializer = new Serializer<T>();
             _filePath = filePath;
+            _entityList = Load();            
         }
 
         public List<T> Load()

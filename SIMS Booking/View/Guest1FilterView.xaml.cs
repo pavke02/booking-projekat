@@ -2,34 +2,22 @@
 using SIMS_Booking.Repository;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using SIMS_Booking.Enums;
-using SIMS_Booking.View;
+
 
 namespace SIMS_Booking.View
 {
-    /// <summary>
-    /// Interaction logic for Guest1FilterView.xaml
-    /// </summary>
     public partial class Guest1FilterView : Window
     {
         public Dictionary<string, List<string>> Countries { get; set; }
-
         public List<string> TypesCollection { get; set; }
+        public List<Accommodation> Accommodations { get; set; }
+        public AccomodationRepository _accommodationRepository { get; set; }
+        private CityCountryRepository _cityCountryRepository;
 
         private string _accommodationName;
         public string AccommodationName
@@ -113,11 +101,7 @@ namespace SIMS_Booking.View
                     OnPropertyChanged();
                 }
             }
-        }
-
-        public List<Accommodation> Accommodations { get; set; }
-
-        public AccomodationRepository Repository { get; set; }
+        }        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -126,23 +110,16 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
          
-        public Guest1FilterView()
+        public Guest1FilterView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository)
         {
             InitializeComponent();
             DataContext = this;
-            Repository = new AccomodationRepository();
-            Accommodations = Repository.Load();
 
-            Countries = new Dictionary<string, List<string>>()
-            {
-                {"Austria", new List<string>(){ "Graz", "Salzburg", "Vienna" } },
-                {"England", new List<string>(){"Birmingham", "London", "Manchester"} },
-                {"France", new List<string>(){"Bordeaux", "Marseille", "Paris" } },
-                {"Germany", new List<string>(){"Berlin", "Frankfurt", "Mainz" } },
-                {"Italy", new List<string>(){"Milano", "Roma", "Venice"} },
-                {"Serbia", new List<string>(){"Belgrade", "Nis", "Novi Sad" } },
-                {"Spain", new List<string>(){"Barcelona", "Madrid", "Malaga"} }
-            };
+            _accommodationRepository = accomodationRepository;
+            _cityCountryRepository = cityCountryRepository; 
+
+            Accommodations = _accommodationRepository.Load();
+            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
 
             TypesCollection = new List<string>
             {
@@ -150,8 +127,6 @@ namespace SIMS_Booking.View
                 "House",
                 "Cottage"
             };
-
-
         }
 
         private void ChangeCities(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -182,7 +157,7 @@ namespace SIMS_Booking.View
             {
                 if (window.GetType() == typeof(Guest1MainView))
                 {
-                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = Repository.Load();
+                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationRepository.Load();
 
                 }
             }
@@ -192,7 +167,7 @@ namespace SIMS_Booking.View
         private void ApplyFilters(object sender, RoutedEventArgs e)
         {
            // Repository = new AccomodationRepository();
-            List<Accommodation> accommodationsFiltered = Repository.Load();
+            List<Accommodation> accommodationsFiltered = _accommodationRepository.Load();
             int numberOfDeleted = 0;
             foreach (Accommodation accommodation in Accommodations)
             {
@@ -228,8 +203,6 @@ namespace SIMS_Booking.View
                 }
             }
 
-
-
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(Guest1MainView))
@@ -237,9 +210,7 @@ namespace SIMS_Booking.View
                     ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = accommodationsFiltered;
 
                 }
-            }
-            
-
+            }           
         }
     }
 }
