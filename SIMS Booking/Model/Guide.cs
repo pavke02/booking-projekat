@@ -23,6 +23,7 @@ namespace SIMS_Booking.Model
         public Guide () { }
 
         public Guide (string name, Location location, string description, DriverLanguages language, int maxGuests, Stops stops, List<DateTime> startTour, double time, List<string> imagesURL)
+
         {
 
             Name = name;
@@ -55,6 +56,7 @@ namespace SIMS_Booking.Model
          Name = values[0];
             Location = new Location(values[1], values[2]);
             Language = (DriverLanguages)Enum.Parse(typeof(DriverLanguages), values[3]);
+
             MaxGuests = Convert.ToInt32 (values[4]);
             Stops = new Stops(values[5], values[6]);
             //starttour = new
