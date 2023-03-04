@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Serializer;
-
+using SIMS_Booking.State;
 
 namespace SIMS_Booking.Model
 {
-    public class Guide : ISerializable
+    public class Guide : ISerializable, IDable
     {
 
+        public int ID { get; set; }
         public string Name { get; set; }
         public Location Location  { get; set; }
         public string Description { get; set; }
@@ -22,9 +20,8 @@ namespace SIMS_Booking.Model
         public double Time { get; set; }
         public List<string> ImagesURL { get; set; }
 
-
-
         public Guide () { }
+
         public Guide (string name, Location location, string description, Language language, int maxGuests, Stops stops, List<DateTime> startTour, double time, List<string> imagesURL)
         {
 
@@ -43,9 +40,17 @@ namespace SIMS_Booking.Model
             }
         }
 
+        public int getID()
+        {
+            return ID;
+        }
 
+        public void setID(int id)
+        {
+            ID = id;
+        }
 
-        void ISerializable.FromCSV(string[] values)
+        public void FromCSV(string[] values)
         {
          Name = values[0];
             Location = new Location(values[1], values[2]);
@@ -56,12 +61,10 @@ namespace SIMS_Booking.Model
             Time = Convert.ToInt32 (values[8]);
         }
 
-        string[] ISerializable.ToCSV()
+        public string[] ToCSV()
         {
             string[] csvValues = { Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(), Stops.ToString(), Time.ToString() };
             return csvValues;
-        }
+        }        
     }
-
-    
 }
