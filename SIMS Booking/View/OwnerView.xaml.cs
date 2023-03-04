@@ -13,11 +13,12 @@ namespace SIMS_Booking.View
 {    
     public partial class OwnerView : Window
     {
-        public Dictionary<string, List<string>> Countries { get; set; }
+        public Dictionary<string, List<string>> countries { get; set; }
 
         public List<string> TypesCollection { get; set; }
 
         private AccomodationRepository _accommodationRepository;
+        private CityCountryRepository _cityCountryRepository;
 
         private string accommodationName;
         public string AccommodationName
@@ -124,24 +125,16 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }        
 
-        public OwnerView(AccomodationRepository accomodationRepository)
+        public OwnerView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository)
         {
             InitializeComponent();
             DataContext = this;
 
             _accommodationRepository = accomodationRepository;
+            _cityCountryRepository = cityCountryRepository;
 
-            Countries = new Dictionary<string, List<string>>()
-            {
-                {"Austria", new List<string>(){ "Graz", "Salzburg", "Vienna" } },
-                {"England", new List<string>(){"Birmingham", "London", "Manchester"} },
-                {"France", new List<string>(){"Bordeaux", "Marseille", "Paris" } },
-                {"Germany", new List<string>(){"Berlin", "Frankfurt", "Mainz" } },
-                {"Italy", new List<string>(){"Milano", "Roma", "Venice"} },
-                {"Serbia", new List<string>(){"Belgrade", "Nis", "Novi Sad" } },
-                {"Spain", new List<string>(){"Barcelona", "Madrid", "Malaga"} }
-            };            
-            
+            countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
+                      
             TypesCollection = new List<string>
             {
                 "Apartment",
@@ -153,7 +146,7 @@ namespace SIMS_Booking.View
         private void ChangeCities(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             CityCb.Items.Clear();            
-            foreach(string city in Countries.ElementAt(CountryCb.SelectedIndex).Value)
+            foreach(string city in countries.ElementAt(CountryCb.SelectedIndex).Value)
             {                
                 CityCb.Items.Add(city).ToString();
             }                        

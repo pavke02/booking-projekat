@@ -43,7 +43,7 @@
             </StackPanel>
 
             <ComboBox x:Name="CountryCb" Grid.Row="1" Grid.Column="1" 
-                      Height="30" Margin="10" VerticalContentAlignment="Center" ItemsSource="{Binding Countries}" DisplayMemberPath="Key" SelectionChanged="ChangeCities" SelectedItem="{Binding Country}">
+                      Height="30" Margin="10" VerticalContentAlignment="Center" ItemsSource="{Binding countries}" DisplayMemberPath="Key" SelectionChanged="ChangeCities" SelectedItem="{Binding Country}">
             </ComboBox>
 
 
