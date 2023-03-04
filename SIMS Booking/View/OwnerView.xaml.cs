@@ -17,7 +17,7 @@ namespace SIMS_Booking.View
 
         public List<string> TypesCollection { get; set; }
 
-        private AccomodationRepository _accommodationRepository;
+        private readonly AccomodationRepository _accommodationRepository;
 
         private string accommodationName;
         public string AccommodationName
@@ -168,9 +168,15 @@ namespace SIMS_Booking.View
 
         private void Publish(object sender, RoutedEventArgs e)
         {
+            List<Accommodation> accommodations = _accommodationRepository.Load();
             Location location = new Location(Country.Key, City);            
             Accommodation accommodation = new Accommodation(AccommodationName, location, (Kind)Enum.Parse(typeof(Kind), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), new List<string>() { "fdgfd", "gdfgf"});
-            _accommodationRepository.Save(accommodation);
+            accommodations.Add(accommodation);
+            foreach (Accommodation accommodationFromList in accommodations)
+            {
+                _accommodationRepository.Save(accommodationFromList);
+            }
+
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
