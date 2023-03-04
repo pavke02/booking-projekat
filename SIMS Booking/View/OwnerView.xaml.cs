@@ -171,6 +171,7 @@ namespace SIMS_Booking.View
             Location location = new Location(Country.Key, City);            
             Accommodation accommodation = new Accommodation(AccommodationName, location, (Kind)Enum.Parse(typeof(Kind), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), new List<string>() { "fdgfd", "gdfgf"});
             _accommodationRepository.Save(accommodation);
+            MessageBox.Show("Accommodation successfully published");
         }
 
         private void Cancel(object sender, RoutedEventArgs e)
