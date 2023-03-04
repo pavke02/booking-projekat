@@ -63,7 +63,7 @@ namespace SIMS_Booking.View
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
-                            Guest1MainView guest1View = new Guest1MainView(_accommodationRepository);
+                            Guest1MainView guest1View = new Guest1MainView(_accomodationRepository);
                             guest1View.Show();
                             break;
                     }

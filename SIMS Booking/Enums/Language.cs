@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace SIMS_Booking.Enums
 {
-    public class Language
+    public enum DriverLanguages
     {
+        English,
+        Serbian
     }
 }

@@ -47,7 +47,7 @@ namespace SIMS_Booking.Model
         public string[] ToCSV()
         {
 
-            string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancelationPeriod.ToString()};
+            string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancellationPeriod.ToString()};
             return csvValues;
         }
 
@@ -60,7 +60,7 @@ namespace SIMS_Booking.Model
             Type = (Kind)Enum.Parse(typeof(Kind), values[4]);
             MaxGuests = Convert.ToInt32(values[5]);
             MinReservationDays = Convert.ToInt32(values[6]);
-            CancelationPeriod = Convert.ToInt32(values[7]);          
+            CancellationPeriod = Convert.ToInt32(values[7]);          
         }        
     }
 }
