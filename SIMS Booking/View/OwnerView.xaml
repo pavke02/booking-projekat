@@ -46,9 +46,9 @@
                       Height="30" Margin="10" VerticalContentAlignment="Center" ItemsSource="{Binding Countries}" DisplayMemberPath="Key" SelectionChanged="ChangeCities" SelectedItem="{Binding Country}">
             </ComboBox>
 
+            <ComboBox x:Name="CityCb" Grid.Row="2" Grid.Column="1" 
+                      Height="30" Margin="10" VerticalContentAlignment="Center" SelectedItem="{Binding City}">
 
-            <ComboBox x:Name="City" Grid.Row="2" Grid.Column="1" 
-                      Height="30" Margin="10" VerticalContentAlignment="Center" ItemsSource="{Binding SelectedCountry.Cities}" SelectedItem="{Binding SelectedCity}" >
             </ComboBox>
 
             <ComboBox x:Name="Type" Grid.Row="3" Grid.Column="1" 
