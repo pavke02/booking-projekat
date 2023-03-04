@@ -1,4 +1,4 @@
-﻿using SIMS_Booking.Serializer;
+using SIMS_Booking.Serializer;
 using System;
 using System.Collections.Generic;
 using SIMS_Booking.Enums;
@@ -14,19 +14,19 @@ namespace SIMS_Booking.Model
         public Kind Type { get; set; }
         public int MaxGuests { get; set; }
         public int MinReservationDays { get; set; }
-        public int CancelationPeriod { get; set; }
+        public int CancellationPeriod { get; set; }
         public List<string> ImagesURL { get; set; }
 
         public Accommodation() { }
 
-        public Accommodation(string name, Location location, Kind type, int maxGuests, int minReservationDays, int cancelationPeriod, List<string> imagesURL)
+        public Accommodation(string name, Location location, Kind type, int maxGuests, int minReservationDays, int cancellationPeriod, List<string> imagesURL)
         {            
             Name = name;
             Location = location;
             Type = type;
             MaxGuests = maxGuests;
             MinReservationDays = minReservationDays;
-            CancelationPeriod = cancelationPeriod;
+            CancellationPeriod = cancellationPeriod;
             ImagesURL = new List<string>();
             foreach(string image in imagesURL)
             {
@@ -46,7 +46,8 @@ namespace SIMS_Booking.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancelationPeriod.ToString()};
+
+            string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancellationPeriod.ToString()};
             return csvValues;
         }
 
@@ -58,7 +59,7 @@ namespace SIMS_Booking.Model
             Type = (Kind)Enum.Parse(typeof(Kind), values[4]);
             MaxGuests = Convert.ToInt32(values[5]);
             MinReservationDays = Convert.ToInt32(values[6]);
-            CancelationPeriod = Convert.ToInt32(values[7]);          
+            CancellationPeriod = Convert.ToInt32(values[7]);          
         }        
     }
 }
