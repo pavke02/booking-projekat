@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
@@ -8,16 +8,19 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
+using SIMS_Booking.Observer;
+using System.Collections.ObjectModel;
 
 namespace SIMS_Booking.View
-{    
-    public partial class OwnerView : Window
+{
+    public partial class OwnerMainView : Window, IObserver
     {
         public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> TypesCollection { get; set; }
-        public List<Accommodation> Accommodations { get; set; }
+        public ObservableCollection<Accommodation> Accommodations { get; set; }
         private AccomodationRepository _accommodationRepository;
-        private CityCountryRepository _cityCountryRepository;        
+        private CityCountryRepository _cityCountryRepository;
 
         private string _accommodationName;
         public string AccommodationName
@@ -122,55 +125,75 @@ namespace SIMS_Booking.View
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }        
+        }
 
-        public OwnerView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository)
+        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository)
         {
             InitializeComponent();
-            DataContext = this;
+            DataContext = this;                       
 
             _accommodationRepository = accomodationRepository;
+            _accommodationRepository.Subscribe(this);
+            Accommodations = new ObservableCollection<Accommodation>(_accommodationRepository.Load());
+
             _cityCountryRepository = cityCountryRepository;
-
-            Accommodations = new List<Accommodation>(_accommodationRepository.Load());
-
             Countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
-                      
+
             TypesCollection = new List<string>
             {
                 "Apartment",
                 "House",
                 "Cottage"
             };
-        }      
+        }
 
-        private void ChangeCities(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void ChangeCities(object sender, SelectionChangedEventArgs e)
         {
-            CityCb.Items.Clear();            
-            foreach(string city in Countries.ElementAt(CountryCb.SelectedIndex).Value)
-            {                
-                CityCb.Items.Add(city).ToString();
+            cityCb.Items.Clear();
+
+            if(countryCb.SelectedIndex != -1) 
+            {
+                foreach (string city in Countries.ElementAt(countryCb.SelectedIndex).Value)
+                    cityCb.Items.Add(city).ToString();
             }                        
         }
 
         private void UploadImage(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image files|*.jpg;*.png";            
-            openFileDialog.Multiselect = true;               
-        }        
+            openFileDialog.Filter = "Image files|*.jpg;*.png";
+            openFileDialog.Multiselect = true;
+        }
 
         private void Publish(object sender, RoutedEventArgs e)
         {
-            Location location = new Location(Country.Key, City);            
-            Accommodation accommodation = new Accommodation(AccommodationName, location, (Kind)Enum.Parse(typeof(Kind), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), new List<string>() { "fdgfd", "gdfgf"});
+            Location location = new Location(Country.Key, City);
+            Accommodation accommodation = new Accommodation(AccommodationName, location, (Kind)Enum.Parse(typeof(Kind), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), new List<string>() { "fdgfd", "gdfgf" });
             _accommodationRepository.Save(accommodation);
-            MessageBox.Show("Accommodation successfully published");
+            MessageBox.Show("Accommodation published successfully");
         }
 
-        private void Cancel(object sender, RoutedEventArgs e)
+        private void Reset(object sender, RoutedEventArgs e)
         {
+            accommodationNameTb.Clear();
+            maxGuestsTb.Clear();
+            minReservationDaysTb.Clear();
+            cancelationPeriodTb.Clear();
+            countryCb.SelectedItem = null;
+            cityCb.SelectedItem = null;
+            typeCb.SelectedItem = null;
+        }
 
-        }   
+        private void UpdateAccommodations(List<Accommodation> accommodations)
+        {
+            Accommodations.Clear();
+            foreach(var accommodation in accommodations)
+                Accommodations.Add(accommodation);
+        }
+
+        public void Update()
+        {
+            UpdateAccommodations(_accommodationRepository.GetAll());
+        }
     }
 }
