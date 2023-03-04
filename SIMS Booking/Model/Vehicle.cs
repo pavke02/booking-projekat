@@ -11,17 +11,17 @@ namespace SIMS_Booking.Model
         public int ID { get; set; }
         public Location Location { get; set; }
         public int MaxPeople  { get; set; }
-        public List<DriverLanguage> Languages { get; set; }
+        public List<DriverLanguages> Languages { get; set; }
         public List<string> ImagesURL { get; set; }
 
         public Vehicle() { }
 
-        public Vehicle(Location location, int maxPeople, List<DriverLanguage> languages, List<string> imagesURL)
+        public Vehicle(Location location, int maxPeople, List<DriverLanguages> languages, List<string> imagesURL)
         {
             Location = location;
-            MaxPeople = maxPeople;
-            Languages = new List<DriverLanguage>();
-            foreach (DriverLanguage language in languages)
+            MaxPeople = maxPeople; 
+            Languages = new List<DriverLanguages>();
+            foreach (DriverLanguages language in languages)
             {
                 Languages.Add(language);
             }

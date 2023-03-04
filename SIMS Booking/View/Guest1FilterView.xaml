@@ -35,29 +35,29 @@
             <Label Grid.Row="5" Grid.Column="0" Height="30">Minimum reservation (in days)</Label>
 
             <StackPanel Grid.Row="0" Grid.Column="1">
-                <TextBox Name ="NameTb"  Text="{Binding Path=AccommodationName, UpdateSourceTrigger=LostFocus}" Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="10, 10, 10, 10" Padding="5, 0, 5, 0"></TextBox>
+                <TextBox Name ="NameTb"  Text="{Binding Path=AccommodationName, Mode=TwoWay}" Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="10, 10, 10, 10" Padding="5, 0, 5, 0"></TextBox>
                 <Label x:Name="NameValidation" FontSize="7" Foreground="Red" Visibility="Hidden">Veliko pocetno slovo.</Label>
             </StackPanel>
 
             <ComboBox x:Name="CountryCb" Grid.Row="1" Grid.Column="1" 
-                      Height="30" Margin="10" VerticalContentAlignment="Center" ItemsSource="{Binding Countries}" DisplayMemberPath="Key" SelectionChanged="ChangeCities   " SelectedItem="{Binding Country}">
+                      Height="30" Margin="10" VerticalContentAlignment="Center" ItemsSource="{Binding Countries, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Key" SelectionChanged="ChangeCities" SelectedItem="{Binding Country,  Mode=TwoWay}">
             </ComboBox>
 
             <ComboBox x:Name="CityCb" Grid.Row="2" Grid.Column="1" 
-                      Height="30" Margin="10" VerticalContentAlignment="Center" SelectedItem="{Binding City}">
+                      Height="30" Margin="10" VerticalContentAlignment="Center" SelectedItem="{Binding City,  Mode=TwoWay}">
             </ComboBox>
 
             <ComboBox x:Name="TypeCb" Grid.Row="3" Grid.Column="1" 
-                      Height="30" Margin="10" VerticalContentAlignment="Center" ItemsSource="{Binding TypesCollection}" SelectedItem="{Binding Kind}" >
+                      Height="30" Margin="10" VerticalContentAlignment="Center" ItemsSource="{Binding TypesCollection}" SelectedItem="{Binding Kind,  Mode=TwoWay}" >
             </ComboBox>
 
             <StackPanel Grid.Row="4" Grid.Column="1">
-                <TextBox Name="MaxGuestsTb" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=LostFocus}" Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="10, 10, 10, 10" Padding="5, 0, 5, 0"></TextBox>
+                <TextBox Name="MaxGuestsTb" Text="{Binding Path=MaxGuests,  Mode=TwoWay}" Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="10, 10, 10, 10" Padding="5, 0, 5, 0"></TextBox>
                 <Label x:Name="MaxGuestsValidation" FontSize="11" Grid.Row="0" Grid.Column="1" Foreground="Red" Visibility="Hidden">Number of guests must be between 1 and 20.</Label>
             </StackPanel>
 
             <StackPanel Grid.Row="5" Grid.Column="1">
-                <TextBox Name="MinReservationDaysTb" Text="{Binding Path=MinReservationDays, UpdateSourceTrigger=LostFocus}" Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="10, 10, 10, 10" Padding="5, 0, 5, 0"></TextBox>
+                <TextBox Name="MinReservationDaysTb" Text="{Binding Path=MinReservationDays,  Mode=TwoWay}" Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="10, 10, 10, 10" Padding="5, 0, 5, 0"></TextBox>
                 <Label x:Name="MinReservationValidation" FontSize="11" Grid.Row="0" Grid.Column="1" Foreground="Red" Visibility="Hidden">Minimum reservation must be between 1 and 20.</Label>
             </StackPanel>
 
