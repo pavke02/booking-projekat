@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
@@ -16,6 +16,7 @@ namespace SIMS_Booking.View
         public Dictionary<string, List<string>> countries { get; set; }
 
         public List<string> TypesCollection { get; set; }
+
 
         private AccomodationRepository _accommodationRepository;
         private CityCountryRepository _cityCountryRepository;
@@ -163,6 +164,7 @@ namespace SIMS_Booking.View
         {
             Location location = new Location(Country.Key, City);            
             Accommodation accommodation = new Accommodation(AccommodationName, location, (Kind)Enum.Parse(typeof(Kind), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), new List<string>() { "fdgfd", "gdfgf"});
+
             _accommodationRepository.Save(accommodation);
             MessageBox.Show("Accommodation successfully published");
         }

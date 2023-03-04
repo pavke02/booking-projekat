@@ -31,5 +31,11 @@ namespace SIMS_Booking.Model
             Country = values[0];
             City = values[1];
         }
+
+        public override string ToString()
+        {
+            string location = City + ", " + Country;
+            return location;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using SIMS_Booking.Serializer;
+using SIMS_Booking.Serializer;
 using System;
 using System.Collections.Generic;
 using SIMS_Booking.Enums;
@@ -14,7 +14,7 @@ namespace SIMS_Booking.Model
         public Kind Type { get; set; }
         public int MaxGuests { get; set; }
         public int MinReservationDays { get; set; }
-        public int CancelationPeriod { get; set; }
+        public int CancellationPeriod { get; set; }
         public List<string> ImagesURL { get; set; }
 
         public Accommodation() { }
@@ -26,7 +26,7 @@ namespace SIMS_Booking.Model
             Type = type;
             MaxGuests = maxGuests;
             MinReservationDays = minReservationDays;
-            CancelationPeriod = cancelationPeriod;
+            CancellationPeriod = cancelationPeriod;
             ImagesURL = new List<string>();
             foreach(string image in imagesURL)
             {
@@ -46,12 +46,14 @@ namespace SIMS_Booking.Model
 
         public string[] ToCSV()
         {
+
             string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancelationPeriod.ToString()};
             return csvValues;
         }
 
         public void FromCSV(string[] values)
         {
+
             ID = int.Parse(values[0]);
             Name = values[1];
             Location = new Location(values[2], values[3]);
