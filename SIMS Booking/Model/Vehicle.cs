@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using SIMS_Booking.Enums;
+using SIMS_Booking.State;
 
 namespace SIMS_Booking.Model
 {
-    public class Vehicle : ISerializable
+    public class Vehicle : ISerializable, IDable
     {
-
+        public int ID { get; set; }
         public Location Location { get; set; }
         public int MaxPeople  { get; set; }
         public List<DriverLanguages> Languages { get; set; }
@@ -31,6 +32,16 @@ namespace SIMS_Booking.Model
             }
         }
 
+        public int getID()
+        {
+            return ID;
+        }
+
+        public void setID(int id)
+        {
+            ID = id;
+        }
+
         public void FromCSV(string[] values)
         {
             Location = new Location(values[0], values[1]);
@@ -41,6 +52,6 @@ namespace SIMS_Booking.Model
         {
             string[] csvValues = { Location.Country, Location.City, MaxPeople.ToString() };
             return csvValues;
-        }
+        }       
     }
 }
