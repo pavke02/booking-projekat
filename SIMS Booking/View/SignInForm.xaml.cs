@@ -13,7 +13,7 @@ namespace SIMS_Booking.View
 
         private readonly UserRepository _userRepository;
 
-        private readonly AccomodationRepository _accomodationRepository;
+        private readonly AccomodationRepository _accommodationRepository;
         private readonly CityCountryRepository _cityCountryRepository;
 
         private string _username;
@@ -44,7 +44,7 @@ namespace SIMS_Booking.View
 
             _userRepository = new UserRepository();
 
-            _accomodationRepository = new AccomodationRepository();
+            _accommodationRepository = new AccomodationRepository();
             _cityCountryRepository = new CityCountryRepository();
         }
 
@@ -62,7 +62,7 @@ namespace SIMS_Booking.View
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
-                            Guest1MainView guest1View = new Guest1MainView(_accommodationRepository);
+                            Guest1MainView guest1View = new Guest1MainView(_accommodationRepository, _cityCountryRepository);
                             guest1View.Show();
                             break;
                     }
