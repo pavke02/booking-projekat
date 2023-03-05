@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.Observer;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace SIMS_Booking.View
 {
@@ -120,6 +121,19 @@ namespace SIMS_Booking.View
             }
         }
 
+        private string _imageURLs;
+        public string ImageURLs
+        {
+            get => _imageURLs;
+            set
+            {
+                if (value != _imageURLs)
+                {
+                    _imageURLs = value;                                                         
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -158,17 +172,17 @@ namespace SIMS_Booking.View
             }                        
         }
 
-        private void UploadImage(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image files|*.jpg;*.png";
-            openFileDialog.Multiselect = true;
-        }
 
         private void Publish(object sender, RoutedEventArgs e)
         {
             Location location = new Location(Country.Key, City);
-            Accommodation accommodation = new Accommodation(AccommodationName, location, (Kind)Enum.Parse(typeof(Kind), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), new List<string>() { "fdgfd", "gdfgf" });
+
+            List<string> imageURLs = new List<string>();
+            string[] values = ImageURLs.Split("\n");
+            foreach (string value in values)
+                imageURLs.Add(value);
+
+            Accommodation accommodation = new Accommodation(AccommodationName, location, (Kind)Enum.Parse(typeof(Kind), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
             _accommodationRepository.Save(accommodation);
             MessageBox.Show("Accommodation published successfully");
         }
@@ -184,6 +198,28 @@ namespace SIMS_Booking.View
             typeCb.SelectedItem = null;
         }
 
+        private void AddImage(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();            
+
+            bool? response = openFileDialog.ShowDialog();
+
+            if(response == true)
+            {
+                string filePath = openFileDialog.FileName;                
+                if(imageTb.Text == "")
+                {
+                    imageTb.Text = filePath;
+                    ImageURLs = imageTb.Text;
+                }                    
+                else
+                {
+                    imageTb.Text = imageTb.Text + "\n" + filePath;
+                    ImageURLs = imageTb.Text;
+                }                    
+            }
+        }
+
         private void UpdateAccommodations(List<Accommodation> accommodations)
         {
             Accommodations.Clear();
@@ -194,6 +230,6 @@ namespace SIMS_Booking.View
         public void Update()
         {
             UpdateAccommodations(_accommodationRepository.GetAll());
-        }
+        }        
     }
 }

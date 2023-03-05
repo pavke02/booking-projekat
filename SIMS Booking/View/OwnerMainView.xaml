@@ -91,9 +91,11 @@
                             <ColumnDefinition Width="600"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="70, 20, 0, 0">ImageURLs:</Label>
-                        <TextBox Grid.Column="1" Height="150" Width="525" Margin="40, 20, 0, 0"
-                                 Text="{Binding Path=ImageURLs}"></TextBox>
+                        <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                Height="40" Width="100" Margin="70, 20, 0, 0"
+                                Content="Add Image" Click="AddImage"></Button>
+                        <TextBox Grid.Column="1" Height="150" Width="525" Margin="40, 20, 0, 0"                                 
+                                 Name="imageTb"></TextBox>
                     </Grid>
 
                     <Separator Width="1100">
