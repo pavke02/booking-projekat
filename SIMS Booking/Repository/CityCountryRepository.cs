@@ -32,13 +32,11 @@ namespace SIMS_Booking.Repository
                     {
                         if (countries.ContainsKey(key))
                         {
-                            countries[key].Add(values[i]);
-                            Trace.WriteLine(values[i]);
+                            countries[key].Add(values[i]);                            
                         }
                         else
                         {
-                            countries[key] = new List<string>() { values[i] };
-                            Trace.WriteLine(values[i]);
+                            countries[key] = new List<string>() { values[i] };                            
                         }
                     }
                 }
