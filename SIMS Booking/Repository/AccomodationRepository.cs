@@ -5,6 +5,6 @@ namespace SIMS_Booking.Repository
 {
     public class AccomodationRepository : Repository<Accommodation>, ISubject
     {       
-        public AccomodationRepository() : base("../../../Resources/Data/accommodations.csv") { }        
+        public AccomodationRepository() : base("../../../Resources/Data/accommodations.csv") { }                  
     }
 }

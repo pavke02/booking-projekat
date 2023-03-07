@@ -19,9 +19,11 @@ namespace SIMS_Booking.View
     {
         public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> TypesCollection { get; set; }
-        public ObservableCollection<Accommodation> Accommodations { get; set; }
+        public ObservableCollection<Accommodation> Accommodations { get; set; }      
+        public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         private AccomodationRepository _accommodationRepository;
         private CityCountryRepository _cityCountryRepository;
+        private ReservationRepository _reservationRepository;
 
         private string _accommodationName;
         public string AccommodationName
@@ -141,24 +143,23 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository)
+        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository)
         {
             InitializeComponent();
             DataContext = this;                       
 
             _accommodationRepository = accomodationRepository;
             _accommodationRepository.Subscribe(this);
-            Accommodations = new ObservableCollection<Accommodation>(_accommodationRepository.Load());
+            Accommodations = new ObservableCollection<Accommodation>(_accommodationRepository.GetAll());
+
+            _reservationRepository = reservationRepository;
+            _reservationRepository.Subscribe(this);            
+            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationRepository.GetAll());
 
             _cityCountryRepository = cityCountryRepository;
             Countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
 
-            TypesCollection = new List<string>
-            {
-                "Apartment",
-                "House",
-                "Cottage"
-            };
+            TypesCollection = new List<string> { "Apartment", "House", "Cottage" };            
         }
 
         private void ChangeCities(object sender, SelectionChangedEventArgs e)

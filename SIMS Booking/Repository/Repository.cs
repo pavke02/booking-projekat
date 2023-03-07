@@ -3,6 +3,7 @@ using SIMS_Booking.Serializer;
 using SIMS_Booking.State;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SIMS_Booking.Repository
 {
@@ -35,9 +36,13 @@ namespace SIMS_Booking.Repository
         }
 
         public List<T> GetAll()
-        {
-            Load();
+        {            
             return _entityList;
+        }
+
+        public T GetById(int id)
+        {
+            return _entityList.FirstOrDefault(e => e.getID() == id);
         }
 
         public int GetNextId(List<T> etities) 
