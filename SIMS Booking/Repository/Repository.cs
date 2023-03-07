@@ -1,17 +1,22 @@
-﻿using SIMS_Booking.Serializer;
+﻿using SIMS_Booking.Observer;
+using SIMS_Booking.Serializer;
 using SIMS_Booking.State;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SIMS_Booking.Repository
 {
-    public class Repository<T> where T: ISerializable, IDable, new()
+    public class Repository<T> where T : ISerializable, IDable, new()
     {
         protected readonly string _filePath;
         protected readonly Serializer<T> _serializer;
         protected List<T> _entityList;
+        protected List<IObserver> _observers;
 
         public Repository(string filePath)
         {
+            _observers = new List<IObserver>();
             _serializer = new Serializer<T>();
             _filePath = filePath;
             _entityList = Load();            
@@ -27,6 +32,17 @@ namespace SIMS_Booking.Repository
             entity.setID(GetNextId(_entityList));
             _entityList.Add(entity);            
             _serializer.ToCSV(_filePath, _entityList);
+            NotifyObservers();
+        }
+
+        public List<T> GetAll()
+        {            
+            return _entityList;
+        }
+
+        public T GetById(int id)
+        {
+            return _entityList.FirstOrDefault(e => e.getID() == id);
         }
 
         public int GetNextId(List<T> etities) 
@@ -45,6 +61,24 @@ namespace SIMS_Booking.Repository
                 }
             }
             return maxi + 1;
+        }        
+
+        public void Subscribe(IObserver observer)
+        {
+            _observers.Add(observer);
+        }
+
+        public void Unsubscribe(IObserver observer)
+        {
+            _observers.Remove(observer);
+        }
+
+        public void NotifyObservers()
+        {
+            foreach (var observer in _observers)
+            {
+                observer.Update();
+            }
         }
     }
 }

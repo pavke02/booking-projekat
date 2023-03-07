@@ -1,6 +1,7 @@
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
+using SIMS_Booking.Repository.RelationsRepository;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -14,7 +15,11 @@ namespace SIMS_Booking.View
         private readonly UserRepository _userRepository;
 
         private readonly AccomodationRepository _accommodationRepository;
-        private readonly CityCountryRepository _cityCountryRepository;
+
+        private readonly CityCountryRepository _cityCountryRepository;   
+        private readonly ReservationRepository _reservationRepository;
+
+        private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
 
         private string _username;
         public string Username
@@ -44,7 +49,13 @@ namespace SIMS_Booking.View
 
             _userRepository = new UserRepository();
             _accommodationRepository = new AccomodationRepository();
-            _cityCountryRepository = new CityCountryRepository();
+
+            _cityCountryRepository = new CityCountryRepository();   
+            _reservationRepository = new ReservationRepository();
+
+            _reservedAccommodationRepository = new ReservedAccommodationRepository();
+
+            _reservedAccommodationRepository.LoadAccommodationsAndUsersInReservation(_userRepository, _accommodationRepository, _reservationRepository);
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
@@ -58,7 +69,7 @@ namespace SIMS_Booking.View
                     {
                         case Roles.Owner:
 
-                            OwnerView ownerView = new OwnerView(_accommodationRepository, _cityCountryRepository);
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository, _reservationRepository);
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
