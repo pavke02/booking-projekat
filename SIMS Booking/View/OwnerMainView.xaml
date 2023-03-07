@@ -8,7 +8,7 @@
         Title="OwnerMainView" Height="600" Width="1300" FontSize="18">
     <Grid>
         <TabControl TabStripPlacement="Left">
-            <TabItem Name="accommodationsOverviewTab" Header="YourAccommodations" Height="60" Width="200">
+            <TabItem Name="accommodationsOverviewTab" Header="Your Accommodations" Height="60">
                 <DataGrid x:Name="accommodationsGrid" 
                           ItemsSource="{Binding Path=Accommodations, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedAccommodation, UpdateSourceTrigger=PropertyChanged}"
@@ -21,7 +21,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            <TabItem Name="publishTab" Header="PublishAccommodation" Height="60">
+            <TabItem Name="publishTab" Header="Publish Accommodation" Height="60">
                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid Margin="0, 20, 0, 0">
                         <Grid.RowDefinitions>
@@ -117,6 +117,20 @@
                         </Button>
                     </Grid>
                 </WrapPanel>
+            </TabItem>
+            <TabItem Name="reservedAccommodations" Header="Reserved Accommodations" Height="60">
+                <DataGrid x:Name="reservedAccommodationGrid"
+                          ItemsSource="{Binding Path=ReservedAccommodations, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Path=SelectedReservedAccommodation, UpdateSourceTrigger=PropertyChanged}"
+                          IsReadOnly="True" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Reserved by" Binding="{Binding User.Username}" Width="200"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Accommodation.Name}" Width="200"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Accommodation.Type}" Width="*"/>
+                        <DataGridTextColumn Header="Stard Date" Binding="{Binding StartDate}" Width="250"/>
+                        <DataGridTextColumn Header="End Date" Binding="{Binding EndDate}" Width="250"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
         </TabControl>
         <Separator HorizontalAlignment="Left" Margin="1346,682,0,0" VerticalAlignment="Top"/>
