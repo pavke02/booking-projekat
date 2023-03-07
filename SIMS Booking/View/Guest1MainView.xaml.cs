@@ -1,14 +1,17 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.Model;
+using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.View
 {
-    public partial class Guest1MainView : Window
-    {
+
+    public partial class Guest1MainView : Window, IObserver
+    {        
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> Reservations { get; set; }
         public ObservableCollection<Reservation> UserReservations { get; set; }
@@ -16,22 +19,23 @@ namespace SIMS_Booking.View
         public ObservableCollection<Accommodation> AccommodationsReorganized { get; set; }
         public User LoggedUser { get; set; }
 
+
         private readonly AccomodationRepository _accommodationRepository;
         private readonly CityCountryRepository _cityCountryRepository;
         private ReservationRepository _reservationRepository;
-
-
 
         public Guest1MainView(AccomodationRepository accommodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, User loggedUser)
         {
             InitializeComponent();
             DataContext = this;
             DataGridAccommodations.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+
             LoggedUser = loggedUser;
 
             _accommodationRepository = accommodationRepository;
             _cityCountryRepository = cityCountryRepository;
             _reservationRepository = reservationRepository;
+            _accommodationRepository.Subscribe(this);
 
             Accommodations = new ObservableCollection<Accommodation>(accommodationRepository.Load());
             Reservations = new ObservableCollection<Reservation>(reservationRepository.Load());
@@ -74,6 +78,18 @@ namespace SIMS_Booking.View
         private void OpenGallery(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        private void UpdateAccommodations(List<Accommodation> accommodations)
+        {
+            Accommodations.Clear();
+            foreach (var accommodation in accommodations)
+                Accommodations.Add(accommodation);
+        }
+
+        public void Update()
+        {
+            UpdateAccommodations(_accommodationRepository.GetAll());
         }
     }
 }

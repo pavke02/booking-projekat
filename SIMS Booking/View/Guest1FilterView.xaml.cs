@@ -131,43 +131,35 @@ namespace SIMS_Booking.View
 
         private void ChangeCities(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            CityCb.Items.Clear();
-            if (CountryCb.SelectedIndex != -1)
+            cityCb.Items.Clear();
+            if (countryCb.SelectedIndex != -1)
             {
-                foreach (string city in Countries.ElementAt(CountryCb.SelectedIndex).Value)
+                foreach (string city in Countries.ElementAt(countryCb.SelectedIndex).Value)
                 {
-                    CityCb.Items.Add(city).ToString();
+                    cityCb.Items.Add(city).ToString();
                 }
             }
             
         }
 
-        private void Cancel(object sender, RoutedEventArgs e)
+        private void Reset(object sender, RoutedEventArgs e)
         {
 
-            NameTb.Clear();
-            AccommodationName = "";
-            CountryCb.SelectedItem = null;
-            Country = new KeyValuePair<string, List<string>>();
-            CityCb.SelectedItem = null;
-            City = "";
-            TypeCb.SelectedItem = null;
-            Kind = Kind.NoKind;
-            MaxGuestsTb.Clear();
-            MaxGuests = "0";
-            MinReservationDaysTb.Clear();
-            MinReservationDays = "10";
-            
+            nameTb.Text = "";
+            countryCb.SelectedIndex = -1;
+            cityCb.SelectedIndex = -1;
+            typeCb.SelectedIndex = -1;
+            maxGuestsTb.Text = "";
+            minReservationDaysTb.Text = "";
+
 
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(Guest1MainView))
                 {
                     ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationRepository.Load();
-
                 }
             }
-
         }
 
         private void ApplyFilters(object sender, RoutedEventArgs e)
@@ -187,7 +179,7 @@ namespace SIMS_Booking.View
                     accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
                     numberOfDeleted++;
                 }
-                else if (accommodation.Location.City != City && CityCb.SelectedIndex != -1)
+                else if (accommodation.Location.City != City && cityCb.SelectedIndex != -1)
                 {
                     accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
                     numberOfDeleted++;

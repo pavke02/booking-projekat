@@ -1,61 +1,53 @@
-﻿using SIMS_Booking.State;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using SIMS_Booking.Serializer;
+using SIMS_Booking.State;
+using System;
+
 
 namespace SIMS_Booking.Model
 {
     public class Reservation : ISerializable, IDable
     {
-        public int Id { get; set; }
-        public int AccommodationId { get; set; }
-        public int UserId { get; set; }
+
+        public int ID { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public Accommodation Accommodation { get; set; }
+        public User User { get; set; }
 
-        public Reservation()
-        {
-        }
+        public Reservation() { }
 
-        public Reservation(int id, int accommodationId, int userId, DateTime startDate, DateTime endDate)
-        {
-            Id = id;
-            AccommodationId = accommodationId;
-            UserId = userId;
+        public Reservation(DateTime startDate, DateTime endDate, Accommodation accommodation, User user)
+        {            
             StartDate = startDate;
             EndDate = endDate;
+            Accommodation = accommodation;
+            User = user;
+        }
+
+        public int getID()
+        {
+            return ID;
+        }
+
+        public void setID(int id)
+        {
+            ID = id;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues =
-            {
-                Id.ToString(), AccommodationId.ToString(), UserId.ToString(), StartDate.ToShortDateString(),
-                EndDate.ToShortDateString()
-            };
+
+            string[] csvValues = { ID.ToString(), StartDate.ToShortDateString(), EndDate.ToShortDateString() };
             return csvValues;
         }
 
         public void FromCSV(string[] values)
         {
-            Id = int.Parse(values[0]);
-            AccommodationId = int.Parse(values[1]);
-            UserId = int.Parse(values[2]);
-            StartDate = DateTime.Parse(values[3]);
-            EndDate = DateTime.Parse(values[4]);
-        }
+            ID = int.Parse(values[0]);
+            StartDate = DateTime.Parse(values[1]);
+            EndDate = DateTime.Parse(values[2]);        
 
-        public int getID()
-        {
-            return Id;
-        }
-
-        public void setID(int id)
-        {
-            Id = id;
         }
     }
 }
