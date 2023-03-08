@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
+
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Observer;
@@ -12,7 +12,7 @@ using SIMS_Booking.Repository.RelationsRepository;
 
 namespace SIMS_Booking.View;
 
-public partial class Guest1ReservationView : Window, IObserver
+public partial class Guest1ReservationView : Window
 {
     private readonly Accommodation _selectedAccommodation;
     public User LoggedUser { get; set; }
@@ -54,13 +54,11 @@ public partial class Guest1ReservationView : Window, IObserver
             return;
         }
 
-        Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate,
-            _selectedAccommodation, LoggedUser);
+        Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, _selectedAccommodation, LoggedUser);
         _reservationRepository.Save(reservation);
         ReservedAccommodation reservedAccommodation =
             new ReservedAccommodation(LoggedUser.ID, _selectedAccommodation.ID, reservation.ID);
-        _reservedAccommodationRepository.Save(reservedAccommodation);
-        Update();
+        _reservedAccommodationRepository.Save(reservedAccommodation);        
         Close();
     }
 
@@ -155,17 +153,5 @@ public partial class Guest1ReservationView : Window, IObserver
         }
 
         return nextBlackoutDate.Start.AddDays(-1);
-    }
-
-    private void UpdateReservations(List<Reservation> reservations)
-    {
-        Reservations.Clear();
-        foreach (var accommodation in reservations)
-            Reservations.Add(accommodation);
-    }
-
-    public void Update()
-    {
-        UpdateReservations(_reservationRepository.GetAll());
     }
 }

@@ -12,7 +12,7 @@ namespace SIMS_Booking.Model
         public int ID { get; set; }
         public string Name { get; set; }
         public Location Location { get; set; }
-        public Kind Type { get; set; }
+        public AccommodationType Type { get; set; }
         public int MaxGuests { get; set; }
         public int MinReservationDays { get; set; }
         public int CancellationPeriod { get; set; }
@@ -20,7 +20,7 @@ namespace SIMS_Booking.Model
 
         public Accommodation() { }
 
-        public Accommodation(string name, Location location, Kind type, int maxGuests, int minReservationDays, int cancellationPeriod, List<string> imagesURL)
+        public Accommodation(string name, Location location, AccommodationType type, int maxGuests, int minReservationDays, int cancellationPeriod, List<string> imagesURL)
         {            
             Name = name;
             Location = location;
@@ -57,7 +57,7 @@ namespace SIMS_Booking.Model
             ID = int.Parse(values[0]);
             Name = values[1];
             Location = new Location(values[2], values[3]);
-            Type = (Kind)Enum.Parse(typeof(Kind), values[4]);
+            Type = (AccommodationType)Enum.Parse(typeof(AccommodationType), values[4]);
             MaxGuests = Convert.ToInt32(values[5]);
             MinReservationDays = Convert.ToInt32(values[6]);
             CancellationPeriod = Convert.ToInt32(values[7]);

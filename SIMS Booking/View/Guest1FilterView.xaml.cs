@@ -61,8 +61,8 @@ namespace SIMS_Booking.View
             }
         }
 
-        private Kind _kind;
-        public Kind Kind
+        private AccommodationType _kind;
+        public AccommodationType Kind
         {
             get => _kind;
             set
@@ -152,7 +152,7 @@ namespace SIMS_Booking.View
             cityCb.SelectedItem = null;
             City = "";
             typeCb.SelectedItem = null;
-            Kind = Kind.NoKind;
+            Kind = AccommodationType.NoKind;
             maxGuestsTb.Clear();
             MaxGuests = "0";
             minReservationDaysTb.Clear();
@@ -190,7 +190,7 @@ namespace SIMS_Booking.View
                     accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
                     numberOfDeleted++;
                 }
-                else if (accommodation.Type != Kind && Kind != Kind.NoKind)
+                else if (accommodation.Type != Kind && Kind != AccommodationType.NoKind)
                 {
                     accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
                     numberOfDeleted++;

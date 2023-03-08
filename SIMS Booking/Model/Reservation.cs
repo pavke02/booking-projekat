@@ -2,7 +2,8 @@
 using SIMS_Booking.Serializer;
 using SIMS_Booking.State;
 using System;
-
+using System.Globalization;
+using System.Threading;
 
 namespace SIMS_Booking.Model
 {
@@ -36,8 +37,7 @@ namespace SIMS_Booking.Model
         }
 
         public string[] ToCSV()
-        {
-
+        {            
             string[] csvValues = { ID.ToString(), StartDate.ToShortDateString(), EndDate.ToShortDateString() };
             return csvValues;
         }
@@ -46,8 +46,7 @@ namespace SIMS_Booking.Model
         {
             ID = int.Parse(values[0]);
             StartDate = DateTime.Parse(values[1]);
-            EndDate = DateTime.Parse(values[2]);        
-
+            EndDate = DateTime.Parse(values[2]);
         }
     }
 }
