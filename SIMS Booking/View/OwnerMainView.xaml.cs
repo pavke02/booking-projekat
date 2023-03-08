@@ -183,7 +183,7 @@ namespace SIMS_Booking.View
             foreach (string value in values)
                 imageURLs.Add(value);
 
-            Accommodation accommodation = new Accommodation(AccommodationName, location, (Kind)Enum.Parse(typeof(Kind), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
+            Accommodation accommodation = new Accommodation(AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
             _accommodationRepository.Save(accommodation);
             MessageBox.Show("Accommodation published successfully");
         }

@@ -127,8 +127,8 @@
                         <DataGridTextColumn Header="Reserved by" Binding="{Binding User.Username}" Width="200"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Accommodation.Name}" Width="200"/>
                         <DataGridTextColumn Header="Type" Binding="{Binding Accommodation.Type}" Width="*"/>
-                        <DataGridTextColumn Header="Stard Date" Binding="{Binding StartDate}" Width="250"/>
-                        <DataGridTextColumn Header="End Date" Binding="{Binding EndDate}" Width="250"/>
+                        <DataGridTextColumn Header="Stard Date" Binding="{Binding StartDate, StringFormat=d}" Width="250"/>
+                        <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=d}" Width="250"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

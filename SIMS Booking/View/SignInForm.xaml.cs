@@ -4,8 +4,10 @@ using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Printing;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Windows;
 
 
@@ -13,12 +15,8 @@ namespace SIMS_Booking.View
 {
     public partial class SignInForm : Window
     {
-
         private readonly UserRepository _userRepository;
-
         private readonly AccomodationRepository _accommodationRepository;
-
-
         private readonly CityCountryRepository _cityCountryRepository;   
         private readonly ReservationRepository _reservationRepository;
 
@@ -50,9 +48,10 @@ namespace SIMS_Booking.View
             InitializeComponent();
             DataContext = this;
 
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
             _userRepository = new UserRepository();
             _accommodationRepository = new AccomodationRepository();
-
             _cityCountryRepository = new CityCountryRepository();   
             _reservationRepository = new ReservationRepository();
 
