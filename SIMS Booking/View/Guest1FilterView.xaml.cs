@@ -145,12 +145,18 @@ namespace SIMS_Booking.View
         private void Reset(object sender, RoutedEventArgs e)
         {
 
-            nameTb.Text = "";
-            countryCb.SelectedIndex = -1;
-            cityCb.SelectedIndex = -1;
-            typeCb.SelectedIndex = -1;
-            maxGuestsTb.Text = "";
-            minReservationDaysTb.Text = "";
+            nameTb.Clear();
+            AccommodationName = "";
+            countryCb.SelectedItem = null;
+            Country = new KeyValuePair<string, List<string>>();
+            cityCb.SelectedItem = null;
+            City = "";
+            typeCb.SelectedItem = null;
+            Kind = Kind.NoKind;
+            maxGuestsTb.Clear();
+            MaxGuests = "0";
+            minReservationDaysTb.Clear();
+            MinReservationDays = "10";
 
 
             foreach (Window window in Application.Current.Windows)
