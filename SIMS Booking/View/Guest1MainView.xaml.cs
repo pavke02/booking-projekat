@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
+using SIMS_Booking.Repository.RelationsRepository;
 
 namespace SIMS_Booking.View
 {
@@ -23,8 +24,9 @@ namespace SIMS_Booking.View
         private readonly AccomodationRepository _accommodationRepository;
         private readonly CityCountryRepository _cityCountryRepository;
         private ReservationRepository _reservationRepository;
+        private ReservedAccommodationRepository _reservedAccommodationRepository;
 
-        public Guest1MainView(AccomodationRepository accommodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, User loggedUser)
+        public Guest1MainView(AccomodationRepository accommodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, ReservedAccommodationRepository reservedAccommodationRepository, User loggedUser)
         {
             InitializeComponent();
             DataContext = this;
@@ -35,10 +37,11 @@ namespace SIMS_Booking.View
             _accommodationRepository = accommodationRepository;
             _cityCountryRepository = cityCountryRepository;
             _reservationRepository = reservationRepository;
+            _reservedAccommodationRepository = reservedAccommodationRepository;
             _accommodationRepository.Subscribe(this);
 
             Accommodations = new ObservableCollection<Accommodation>(accommodationRepository.Load());
-            Reservations = new ObservableCollection<Reservation>(reservationRepository.Load());
+            Reservations = new ObservableCollection<Reservation>(reservationRepository.GetAll());
             UserReservations = getUserReservations(Reservations);
         }
 
@@ -71,7 +74,7 @@ namespace SIMS_Booking.View
         private void Reserve(object sender, RoutedEventArgs e)
         {
             Guest1ReservationView reservationView =
-                new Guest1ReservationView(SelectedAccommodation, LoggedUser, _reservationRepository);
+                new Guest1ReservationView(SelectedAccommodation, LoggedUser, _reservationRepository, _reservedAccommodationRepository);
             reservationView.Show();
         }
 

@@ -62,6 +62,7 @@ namespace SIMS_Booking.Model
             MinReservationDays = Convert.ToInt32(values[6]);
             CancellationPeriod = Convert.ToInt32(values[7]);
           //  ImageURLs = values[8].Split(',').ToList();
+
         }        
     }
 }
