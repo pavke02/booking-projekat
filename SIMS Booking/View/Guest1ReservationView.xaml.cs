@@ -6,12 +6,13 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
+using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
 
 namespace SIMS_Booking.View;
 
-public partial class Guest1ReservationView : Window
+public partial class Guest1ReservationView : Window, IObserver
 {
     private readonly Accommodation _selectedAccommodation;
     public User LoggedUser { get; set; }
@@ -20,32 +21,6 @@ public partial class Guest1ReservationView : Window
     public List<Reservation> AccommodationReservations { get; set; }
     private ReservedAccommodationRepository _reservedAccommodationRepository;
 
-    /*public Guest1ReservationView(Accommodation selectedAccommodation, User loggedUser, ReservationRepository reservationRepository, ReservedAccommodationRepository reservedAccommodationRepository)
-    {
-        DataContext = this;
-
-        _selectedAccommodation = selectedAccommodation;
-        _reservationRepository = reservationRepository;
-        _reservedAccommodationRepository = reservedAccommodationRepository;
-        LoggedUser = loggedUser;
-
-        startDateDp.DisplayDateStart = DateTime.Today.AddDays(1);
-        endDateDp.DisplayDateStart = DateTime.Today.AddDays(1 + _selectedAccommodation.MinReservationDays);
-
-        startDateDp.DisplayDate = DateTime.Today.AddDays(1);
-
-        Reservations = _reservationRepository.GetAll();
-        AccommodationReservations = getAccommodationReservations(Reservations);
-        DisableReservedDates(AccommodationReservations, startDateDp, endDateDp);
-
-        InitializeComponent();
-
-        int minimumDaysOfReservation = _selectedAccommodation.MinReservationDays;
-        MinDaysLabel.Content = $"Minimum duration of reservation: {minimumDaysOfReservation} days.";
-        int maxGuests = _selectedAccommodation.MaxGuests;
-        MaxGuestsLabel.Content = $"Maximum number of guests: {maxGuests} guests.";
-
-    }*/
 
     public Guest1ReservationView(Accommodation selectedAccommodation, User loggedUser, ReservationRepository reservationRepository, ReservedAccommodationRepository reservedAccommodationRepository)
     {
@@ -61,13 +36,7 @@ public partial class Guest1ReservationView : Window
         int maxGuests = _selectedAccommodation.MaxGuests;
         MaxGuestsLabel.Content = $"Maximum number of guests: {maxGuests} guests.";
 
-        // Set the start date to tomorrow
-        //startDateDp.SelectedDate = DateTime.Today.AddDays(1);
         startDateDp.DisplayDateStart = DateTime.Today.AddDays(1);
-
-        // Set the end date to 6 days later
-        //endDateDp.SelectedDate = null;
-        //endDateDp.DisplayDateStart = endDateDp.SelectedDate.Value;
 
         Reservations = _reservationRepository.GetAll();
         AccommodationReservations = getAccommodationReservations(Reservations);
@@ -91,7 +60,7 @@ public partial class Guest1ReservationView : Window
         ReservedAccommodation reservedAccommodation =
             new ReservedAccommodation(LoggedUser.ID, _selectedAccommodation.ID, reservation.ID);
         _reservedAccommodationRepository.Save(reservedAccommodation);
-
+        Update();
         Close();
     }
 
@@ -146,7 +115,7 @@ public partial class Guest1ReservationView : Window
 
         foreach (Reservation reservation in reservations)
         {
-            if (reservation.User.ID == LoggedUser.ID)
+            if (reservation.Accommodation.ID == _selectedAccommodation.ID)
             {
                 accommodationReservations.Add(reservation);
             }
@@ -187,5 +156,15 @@ public partial class Guest1ReservationView : Window
         return nextBlackoutDate.Start.AddDays(-1);
     }
 
+    private void UpdateReservations(List<Reservation> reservations)
+    {
+        Reservations.Clear();
+        foreach (var accommodation in reservations)
+            Reservations.Add(accommodation);
+    }
 
+    public void Update()
+    {
+        UpdateReservations(_reservationRepository.GetAll());
+    }
 }
