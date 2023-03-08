@@ -1,29 +1,24 @@
-﻿using SIMS_Booking.Model;
+using SIMS_Booking.Enums;
+using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
-using System;
-using System.Collections.Generic;
+using SIMS_Booking.Repository.RelationsRepository;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace SIMS_Booking.View
 {
-    /// <summary>
-    /// Interaction logic for SignInForm.xaml
-    /// </summary>
     public partial class SignInForm : Window
     {
-        private readonly UserRepository _repository;
+
+        private readonly UserRepository _userRepository;
+
+        private readonly AccomodationRepository _accommodationRepository;
+        private readonly CityCountryRepository _cityCountryRepository;   
+        private readonly ReservationRepository _reservationRepository;
+
+        private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
 
         private string _username;
         public string Username
@@ -50,16 +45,35 @@ namespace SIMS_Booking.View
         {
             InitializeComponent();
             DataContext = this;
-            _repository = new UserRepository();
+
+            _userRepository = new UserRepository();
+            _accommodationRepository = new AccomodationRepository();
+            _cityCountryRepository = new CityCountryRepository();   
+            _reservationRepository = new ReservationRepository();
+
+            _reservedAccommodationRepository = new ReservedAccommodationRepository();
+
+            _reservedAccommodationRepository.LoadAccommodationsAndUsersInReservation(_userRepository, _accommodationRepository, _reservationRepository);
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
         {
-            User user = _repository.GetByUsername(Username);
+            User user = _userRepository.GetByUsername(Username);
             if (user != null)
             {
                 if (user.Password == txtPassword.Password)
-                {
+                {                    
+                    switch(user.Role)
+                    {
+                        case Roles.Owner:
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository, _reservationRepository);
+                            ownerView.Show();
+                            break;
+                        case Roles.Guest1:
+                            Guest1MainView guest1View = new Guest1MainView(_accommodationRepository, _cityCountryRepository);
+                            guest1View.Show();
+                            break;
+                    }
                     Close();
                 }
                 else
@@ -71,7 +85,6 @@ namespace SIMS_Booking.View
             {
                 MessageBox.Show("Wrong username!");
             }
-
         }
     }
 }
