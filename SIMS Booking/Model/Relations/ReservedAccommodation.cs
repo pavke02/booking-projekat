@@ -2,7 +2,7 @@
 
 namespace SIMS_Booking.Model.Relations
 {
-    internal class ReservedAccommodation : ISerializable
+    public class ReservedAccommodation : ISerializable
     {
         public int UserId { get; set; }
         public int AccommodationId { get; set; }

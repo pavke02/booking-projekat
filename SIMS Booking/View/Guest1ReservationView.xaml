@@ -36,7 +36,7 @@
             <Label Name="MaxGuestsLabel" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" FontSize="14" VerticalContentAlignment="Center" HorizontalAlignment="Center"></Label>
 
             <DatePicker Name="startDateDp" SelectedDateChanged="startDateDpSelectionChanged" Grid.Row="0" Grid.Column="1" Height="30" VerticalContentAlignment="Center "></DatePicker>
-            <DatePicker Name="endDateDp" Grid.Row="1" Grid.Column="1" Height="30" VerticalContentAlignment="Center "></DatePicker>
+            <DatePicker Name="endDateDp" Grid.Row="1" Grid.Column="1" Height="30" VerticalContentAlignment="Center " IsEnabled="False"></DatePicker>
             <TextBox Name="guestNumberTextBox" Grid.Row="2" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0"></TextBox>
         </Grid>
 

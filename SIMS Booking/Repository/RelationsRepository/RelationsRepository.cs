@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SIMS_Booking.Repository.RelationsRepository
 {
-    internal class RelationsRepository<T> where T : ISerializable, new()
+    public class RelationsRepository<T> where T : ISerializable, new()
     {
         protected readonly string _filePath;
         protected readonly Serializer<T> _serializer;

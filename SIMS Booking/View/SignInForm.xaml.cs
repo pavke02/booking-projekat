@@ -3,6 +3,7 @@ using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Printing;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -44,7 +45,6 @@ namespace SIMS_Booking.View
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
         public SignInForm()
         {
             InitializeComponent();
@@ -59,6 +59,7 @@ namespace SIMS_Booking.View
             _reservedAccommodationRepository = new ReservedAccommodationRepository();
 
             _reservedAccommodationRepository.LoadAccommodationsAndUsersInReservation(_userRepository, _accommodationRepository, _reservationRepository);
+            
 
         }
 
@@ -77,7 +78,7 @@ namespace SIMS_Booking.View
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
-                            Guest1MainView guest1View = new Guest1MainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, user);
+                            Guest1MainView guest1View = new Guest1MainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, _reservedAccommodationRepository ,user);
                             guest1View.Show();
                             break;
                     }

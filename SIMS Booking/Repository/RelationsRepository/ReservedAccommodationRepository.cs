@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SIMS_Booking.Repository.RelationsRepository
 {
-    internal class ReservedAccommodationRepository : RelationsRepository<ReservedAccommodation>
+    public class ReservedAccommodationRepository : RelationsRepository<ReservedAccommodation>
     {
         public ReservedAccommodationRepository() : base("../../../Resources/Data/reservedAccommodations.csv") { }
 

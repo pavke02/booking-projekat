@@ -1,7 +1,7 @@
 ﻿
 namespace SIMS_Booking.Enums
 {
-    public enum DriverLanguages
+    public enum DriverLanguage
     {
         English,
         Serbian
