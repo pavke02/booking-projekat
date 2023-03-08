@@ -54,7 +54,7 @@ namespace SIMS_Booking.View
                 new ObservableCollection<Reservation>();
             foreach (Reservation reservation in reservations)
             {
-                if (reservation.UserId == LoggedUser.ID)
+                if (reservation.User.ID == LoggedUser.ID)
                 {
                     userReservations.Add(reservation);
                 }

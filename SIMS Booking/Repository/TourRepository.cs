@@ -8,8 +8,10 @@ using SIMS_Booking.Serializer;
 
 namespace SIMS_Booking.Repository
 {
-    public class GuideRepository : Repository<Guide>
+    public class TourRepository : Repository<Tour>
     {
-        public GuideRepository() : base("../../../Resources/Data/guides.csv") { }    
+
+        public TourRepository() : base("../../../Resources/Data/guides.csv") { }    
+
     }
 }

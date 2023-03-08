@@ -70,7 +70,7 @@ public partial class Guest1ReservationView : Window
 
         foreach (Reservation reservation in reservations)
         {
-            if (reservation.UserId == LoggedUser.ID)
+            if (reservation.User.ID == LoggedUser.ID)
             {
                 accommodationReservations.Add(reservation);
             }
