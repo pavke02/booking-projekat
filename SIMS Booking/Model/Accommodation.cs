@@ -47,7 +47,6 @@ namespace SIMS_Booking.Model
 
         public string[] ToCSV()
         {
-
             string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancellationPeriod.ToString(), string.Join(',', ImageURLs)};
             return csvValues;
         }
