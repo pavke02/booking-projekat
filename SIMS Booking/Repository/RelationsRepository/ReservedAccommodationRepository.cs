@@ -14,7 +14,7 @@ namespace SIMS_Booking.Repository.RelationsRepository
             {                
                 foreach (Reservation reservation in reservationRepository.GetAll())
                 {
-                    if (reservedAccommodation.ReservationId == reservation.ID)
+                    if (reservedAccommodation.ReservationId == reservation.getID())
                     {
                         reservation.Accommodation = accomodationRepository.GetById(reservedAccommodation.AccommodationId);
                         reservation.User = userRepository.GetById(reservedAccommodation.UserId);

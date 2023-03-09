@@ -40,7 +40,7 @@ namespace SIMS_Booking.View
 
             _reservationRepository = reservationRepository;
             _reservationRepository.Subscribe(this);
-            UserReservations = new ObservableCollection<Reservation>(_reservationRepository.GetReservationsByUser(loggedUser.ID));            
+            UserReservations = new ObservableCollection<Reservation>(_reservationRepository.GetReservationsByUser(loggedUser.getID()));            
 
             _cityCountryRepository = cityCountryRepository;            
             _reservedAccommodationRepository = reservedAccommodationRepository;                                               
@@ -86,7 +86,7 @@ namespace SIMS_Booking.View
         public void Update()
         {
             UpdateAccommodations(_accommodationRepository.GetAll());
-            UpdateUserReservations(_reservationRepository.GetReservationsByUser(LoggedUser.ID).ToList());
+            UpdateUserReservations(_reservationRepository.GetReservationsByUser(LoggedUser.getID()).ToList());
         }
     }
 }

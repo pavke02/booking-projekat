@@ -2,8 +2,6 @@
 {
     public class Stops
     {
-
-
         public string Start { get; set; }
         public string End { get; set; }
 
@@ -15,16 +13,16 @@
             End = end;
         }
 
-        public string[] ToCSV()
-        {
-            string[] csvValues = { Start, End };
-            return csvValues;
-        }
-
         public void FromCSV(string[] values)
         {
             Start = values[0];
             End = values[1];
         }
+
+        public string[] ToCSV()
+        {
+            string[] csvValues = { Start, End };
+            return csvValues;
+        }       
     }
 }

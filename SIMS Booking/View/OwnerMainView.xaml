@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SIMS_Booking.View"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:converters="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
         Title="OwnerMainView" Height="600" Width="1300" FontSize="18">
     <Grid>
@@ -119,18 +119,38 @@
                 </WrapPanel>
             </TabItem>
             <TabItem Name="reservedAccommodations" Header="Reserved Accommodations" Height="60">
-                <DataGrid x:Name="reservedAccommodationGrid"
+                <StackPanel>
+                    <DataGrid x:Name="reservedAccommodationGrid" Height="480" VerticalAlignment="Top"
                           ItemsSource="{Binding Path=ReservedAccommodations, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding Path=SelectedReservedAccommodation, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Path=SelectedReservedAccommodation, UpdateSourceTrigger=PropertyChanged}"                                                                                                                                                                                      
+                          SelectionChanged="CheckDate"                          
                           IsReadOnly="True" AutoGenerateColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Reserved by" Binding="{Binding User.Username}" Width="200"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Accommodation.Name}" Width="200"/>
-                        <DataGridTextColumn Header="Type" Binding="{Binding Accommodation.Type}" Width="*"/>
-                        <DataGridTextColumn Header="Stard Date" Binding="{Binding StartDate, StringFormat=d}" Width="250"/>
-                        <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=d}" Width="250"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                        <DataGrid.Resources>
+                            <converters:ColorConverter x:Key="ColorConverter"></converters:ColorConverter>
+                        </DataGrid.Resources>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EndDate, Converter={StaticResource ColorConverter}}" Value="True">
+                                        <Setter Property="Background" Value="Coral"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>
+                        <DataGrid.Columns >
+                            <DataGridTextColumn Header="Reserved by" Binding="{Binding User.Username}" Width="200"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Accommodation.Name}" Width="200"/>
+                            <DataGridTextColumn Header="Type" Binding="{Binding Accommodation.Type}" Width="*"/>
+                            <DataGridTextColumn Header="Stard Date" Binding="{Binding StartDate, StringFormat=d}" Width="250"/>
+                            <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=d }" Width="250"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Button Name="reviewGuestClick" Content="Review Guest" Click="RateGuest"
+                            Width="150" Height="40" Margin="0, 30, 50, 0" HorizontalAlignment="Right"
+                            IsEnabled="false">
+                    </Button>
+                </StackPanel>
             </TabItem>
         </TabControl>
         <Separator HorizontalAlignment="Left" Margin="1346,682,0,0" VerticalAlignment="Top"/>

@@ -8,7 +8,7 @@ namespace SIMS_Booking.Model
 {
     public class Vehicle : ISerializable, IDable
     {
-        public int ID { get; set; }
+        private int ID;
         public Location Location { get; set; }
         public int MaxPeople  { get; set; }
         public List<DriverLanguage> Languages { get; set; }

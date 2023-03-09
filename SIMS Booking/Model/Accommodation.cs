@@ -9,7 +9,7 @@ namespace SIMS_Booking.Model
 {
     public class Accommodation : ISerializable, IDable
     {
-        public int ID { get; set; }
+        private int ID;
         public string Name { get; set; }
         public Location Location { get; set; }
         public AccommodationType Type { get; set; }
@@ -45,13 +45,7 @@ namespace SIMS_Booking.Model
             ID = id;
         }
 
-        public string[] ToCSV()
-        {
-
-            string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancellationPeriod.ToString(), string.Join(',', ImageURLs)};
-            return csvValues;
-        }
-
+        //ToDo:
         public void FromCSV(string[] values)
         {
             ID = int.Parse(values[0]);
@@ -61,8 +55,14 @@ namespace SIMS_Booking.Model
             MaxGuests = Convert.ToInt32(values[5]);
             MinReservationDays = Convert.ToInt32(values[6]);
             CancellationPeriod = Convert.ToInt32(values[7]);
-          //  ImageURLs = values[8].Split(',').ToList();
+            //  ImageURLs = values[8].Split(',').ToList();
+        }
 
-        }        
+        public string[] ToCSV()
+        {
+
+            string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancellationPeriod.ToString(), string.Join(',', ImageURLs)};
+            return csvValues;
+        }              
     }
 }
