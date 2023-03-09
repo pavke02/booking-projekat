@@ -19,6 +19,7 @@ namespace SIMS_Booking.View
         private readonly AccomodationRepository _accommodationRepository;
         private readonly CityCountryRepository _cityCountryRepository;   
         private readonly ReservationRepository _reservationRepository;
+        private readonly GuestReviewRepository _guestReviewRepository;
 
         private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
 
@@ -48,12 +49,13 @@ namespace SIMS_Booking.View
             InitializeComponent();
             DataContext = this;
 
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");            
 
             _userRepository = new UserRepository();
             _accommodationRepository = new AccomodationRepository();
             _cityCountryRepository = new CityCountryRepository();   
             _reservationRepository = new ReservationRepository();
+            _guestReviewRepository = new GuestReviewRepository();
 
             _reservedAccommodationRepository = new ReservedAccommodationRepository();
 
@@ -73,7 +75,7 @@ namespace SIMS_Booking.View
                     {
                         case Roles.Owner:
 
-                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository, _reservationRepository);
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, _guestReviewRepository);
                             ownerView.Show();
                             break;
                         case Roles.Guest1:

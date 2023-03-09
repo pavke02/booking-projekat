@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using SIMS_Booking.Enums;
+﻿using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
 using System;
@@ -11,19 +10,24 @@ using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.Observer;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Windows.Data;
+using System.Globalization;
+using System.Data;
 
 namespace SIMS_Booking.View
 {
-    public partial class OwnerMainView : Window, IObserver
+    public partial class OwnerMainView : Window, IObserver, INotifyPropertyChanged
     {
         public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> TypesCollection { get; set; }
-        public ObservableCollection<Accommodation> Accommodations { get; set; }      
+        public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
+        public Reservation SelectedReservedAccommodation { get; set; }
+
         private AccomodationRepository _accommodationRepository;
         private CityCountryRepository _cityCountryRepository;
         private ReservationRepository _reservationRepository;
+        private GuestReviewRepository _guestReviewRepository;
 
         private string _accommodationName;
         public string AccommodationName
@@ -131,7 +135,7 @@ namespace SIMS_Booking.View
             {
                 if (value != _imageURLs)
                 {
-                    _imageURLs = value;                                                         
+                    _imageURLs = value;
                 }
             }
         }
@@ -143,37 +147,48 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository)
+        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, GuestReviewRepository guestReviewRepository)
         {
             InitializeComponent();
-            DataContext = this;                       
+            DataContext = this;            
 
             _accommodationRepository = accomodationRepository;
             _accommodationRepository.Subscribe(this);
             Accommodations = new ObservableCollection<Accommodation>(_accommodationRepository.GetAll());
 
             _reservationRepository = reservationRepository;
-            _reservationRepository.Subscribe(this);            
+            _reservationRepository.Subscribe(this);
             ReservedAccommodations = new ObservableCollection<Reservation>(_reservationRepository.GetAll());
 
             _cityCountryRepository = cityCountryRepository;
-            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
+            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
 
-            TypesCollection = new List<string> { "Apartment", "House", "Cottage" };            
+            _guestReviewRepository = guestReviewRepository;
+
+            TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
+        }
+
+        //ToDo: Napraviti da se ovo proverava na svakih 10min recimo
+        private void CheckDate(object sender, SelectionChangedEventArgs e)
+        {
+            if (DateTime.Now >= SelectedReservedAccommodation.EndDate && (DateTime.Now - SelectedReservedAccommodation.EndDate.Date).TotalDays < 5)
+                reviewGuestClick.IsEnabled = true;
+            else
+                reviewGuestClick.IsEnabled = false;
         }
 
         private void ChangeCities(object sender, SelectionChangedEventArgs e)
         {
             cityCb.Items.Clear();
 
-            if(countryCb.SelectedIndex != -1) 
+            if (countryCb.SelectedIndex != -1)
             {
                 foreach (string city in Countries.ElementAt(countryCb.SelectedIndex).Value)
                     cityCb.Items.Add(city).ToString();
-            }                        
+            }
         }
 
-
+        //ToDO:
         private void Publish(object sender, RoutedEventArgs e)
         {
             Location location = new Location(Country.Key, City);
@@ -201,30 +216,36 @@ namespace SIMS_Booking.View
 
         private void AddImage(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();            
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
 
             bool? response = openFileDialog.ShowDialog();
 
-            if(response == true)
+            if (response == true)
             {
-                string filePath = openFileDialog.FileName;                
-                if(imageTb.Text == "")
+                string filePath = openFileDialog.FileName;
+                if (imageTb.Text == "")
                 {
                     imageTb.Text = filePath;
                     ImageURLs = imageTb.Text;
-                }                    
+                }
                 else
                 {
                     imageTb.Text = imageTb.Text + "\n" + filePath;
                     ImageURLs = imageTb.Text;
-                }                    
+                }
             }
+        }
+
+        private void RateGuest(object sender, RoutedEventArgs e)
+        {
+            GuestReviewView guestReviewView = new GuestReviewView(_guestReviewRepository);
+            guestReviewView.ShowDialog();
         }
 
         private void UpdateAccommodations(List<Accommodation> accommodations)
         {
             Accommodations.Clear();
-            foreach(var accommodation in accommodations)
+            foreach (var accommodation in accommodations)
                 Accommodations.Add(accommodation);
         }
 
@@ -233,4 +254,16 @@ namespace SIMS_Booking.View
             UpdateAccommodations(_accommodationRepository.GetAll());
         }        
     }
+    class ColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+           return DateTime.Now >= (DateTime)value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+           throw new NotImplementedException();
+        }
+    }    
 }

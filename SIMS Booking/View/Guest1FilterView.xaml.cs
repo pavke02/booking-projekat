@@ -119,7 +119,7 @@ namespace SIMS_Booking.View
             _cityCountryRepository = cityCountryRepository; 
 
             Accommodations = _accommodationRepository.Load();
-            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
+            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
 
             TypesCollection = new List<string>
             {

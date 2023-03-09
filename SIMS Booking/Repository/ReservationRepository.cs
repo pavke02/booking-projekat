@@ -12,7 +12,7 @@ namespace SIMS_Booking.Repository
             ObservableCollection<Reservation> userReservations = new ObservableCollection<Reservation>();
             foreach (Reservation reservation in _entityList)
             {
-                 if (reservation.User.ID == userId)
+                 if (reservation.User.getID() == userId)
                  {
                     userReservations.Add(reservation);
                  }

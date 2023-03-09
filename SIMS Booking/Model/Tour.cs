@@ -11,8 +11,7 @@ namespace SIMS_Booking.Model
 {
     public class Tour : ISerializable, IDable
     {
-
-        public int ID { get; set; }
+        private int ID;
         public string Name { get; set; }
         public Location Location { get; set; }
         public string Description { get; set; }
@@ -22,8 +21,6 @@ namespace SIMS_Booking.Model
         public DateTime StartTour { get; set; } // DateTime startTime
         public int Time { get; set; }
         public List<string> ImagesURL { get; set; }
-
-
 
         public Tour () { }
         public Tour (string name, Location location, string description, String language, int maxGuests, Stops stops, DateTime startTour, int time, List<string> imagesURL)
@@ -44,7 +41,15 @@ namespace SIMS_Booking.Model
             }
         }
 
+        public int getID()
+        {
+            return ID;
+        }
 
+        public void setID(int id)
+        {
+            ID = id;
+        }
 
         void ISerializable.FromCSV(string[] values)
         {
@@ -61,18 +66,6 @@ namespace SIMS_Booking.Model
         {
             string[] csvValues = { Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(), Stops.ToString(), Time.ToString() };
             return csvValues;
-        }
-
-        public int getID()
-        {
-            return ID;
-        }
-
-        public void setID(int id)
-        {
-            ID = id;
-        }
-    }
-
-    
+        }        
+    }   
 }
