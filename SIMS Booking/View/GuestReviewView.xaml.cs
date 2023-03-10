@@ -7,7 +7,7 @@ using System.Windows;
 namespace SIMS_Booking.View
 {
  
-    public partial class GuestReviewView : Window
+    public partial class GuestReviewView : Window, IDataErrorInfo
     {
         private GuestReviewRepository _guestReviewRepository;
 
@@ -61,7 +61,7 @@ namespace SIMS_Booking.View
                     OnPropertyChanged();
                 }
             }
-        }
+        }        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -84,5 +84,45 @@ namespace SIMS_Booking.View
             _guestReviewRepository.Save(guestReview);
             Close();
         }
-    }
+
+        private void TextBoxCheck(object sender, RoutedEventArgs e)
+        {
+            submitButton.IsEnabled = false;
+            if(IsValid)
+            {
+                submitButton.IsEnabled = true;
+            }
+        }
+
+        public string Error => null;
+
+        public string this[string columnName]
+        {
+            get
+            {
+                if(columnName == "Comment")
+                {
+                    if (string.IsNullOrEmpty(Comment))
+                        return "Required";
+                }
+                return null;
+            }
+        }
+
+        private readonly string[] validatedProperties = { "Comment" };
+
+        public bool IsValid
+        {
+            get
+            {
+                foreach (var property in validatedProperties)
+                {
+                    if (this[property] != null)
+                        return false;
+                }
+
+                return true;
+            }
+        }        
+    }    
 }
