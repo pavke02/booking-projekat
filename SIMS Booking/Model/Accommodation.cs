@@ -18,7 +18,10 @@ namespace SIMS_Booking.Model
         public int CancellationPeriod { get; set; }
         public List<string> ImageURLs { get; set; }
 
-        public Accommodation() { }
+        public Accommodation() 
+        {
+            ImageURLs = new List<string>(); 
+        }
 
         public Accommodation(string name, Location location, AccommodationType type, int maxGuests, int minReservationDays, int cancellationPeriod, List<string> imagesURL)
         {            
@@ -55,7 +58,7 @@ namespace SIMS_Booking.Model
             MaxGuests = Convert.ToInt32(values[5]);
             MinReservationDays = Convert.ToInt32(values[6]);
             CancellationPeriod = Convert.ToInt32(values[7]);
-            //  ImageURLs = values[8].Split(',').ToList();
+            ImageURLs = values[8].Split(',').ToList();
         }
 
         public string[] ToCSV()

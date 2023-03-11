@@ -12,11 +12,15 @@ using SIMS_Booking.Observer;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Globalization;
+using System.Diagnostics;
+using SIMS_Booking.IOValidation;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SIMS_Booking.View
 {
     public partial class OwnerMainView : Window, IObserver, INotifyPropertyChanged, IDataErrorInfo
     {
+        string[] https;
         public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> TypesCollection { get; set; }
         public ObservableCollection<Accommodation> Accommodations { get; set; }
@@ -135,6 +139,7 @@ namespace SIMS_Booking.View
                 if (value != _imageURLs)
                 {
                     _imageURLs = value;
+                    OnPropertyChanged();
                 }
             }
         }        
@@ -164,7 +169,7 @@ namespace SIMS_Booking.View
 
             _guestReviewRepository = guestReviewRepository;
 
-            TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
+            TypesCollection = new List<string> { "Apartment", "House", "Cottage" };            
         }
 
         //ToDo: Napraviti da se ovo proverava na svakih 10min recimo
@@ -196,7 +201,7 @@ namespace SIMS_Booking.View
             string[] values = ImageURLs.Split("\n");
             foreach (string value in values)
                 imageURLs.Add(value);
-
+            
             Accommodation accommodation = new Accommodation(AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType), AccommodationType), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
             _accommodationRepository.Save(accommodation);
             MessageBox.Show("Accommodation published successfully");
@@ -208,31 +213,32 @@ namespace SIMS_Booking.View
             maxGuestsTb.Clear();
             minReservationDaysTb.Clear();
             cancelationPeriodTb.Clear();
+            imageTb.Clear();
+            ImageURLs = "";
             countryCb.SelectedItem = null;
             cityCb.SelectedItem = null;
-            typeCb.SelectedItem = null;
+            typeCb.SelectedItem = null;            
+        }
+
+        private void ClearURLs(object sender, RoutedEventArgs e)
+        {
+            imageTb.Clear();
+            ImageURLs = "";    
+            publishButton.IsEnabled = false;
         }
 
         private void AddImage(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-
-            bool? response = openFileDialog.ShowDialog();
-
-            if (response == true)
-            {
-                string filePath = openFileDialog.FileName;
-                if (imageTb.Text == "")
-                {
-                    imageTb.Text = filePath;
-                    ImageURLs = imageTb.Text;
-                }
-                else
-                {
-                    imageTb.Text = imageTb.Text + "\n" + filePath;
-                    ImageURLs = imageTb.Text;
-                }
+            if (imageTb.Text == "")
+            {                            
+                ImageURLs = urlTb.Text;
             }
+            else
+            {                
+                ImageURLs = imageTb.Text + "\n" + urlTb.Text;
+            }
+
+            urlTb.Clear();
         }
 
         private void RateGuest(object sender, RoutedEventArgs e)
@@ -261,44 +267,49 @@ namespace SIMS_Booking.View
             {
                 if (columnName == "AccommodationName")
                 {
-                    if (string.IsNullOrEmpty(AccommodationName)) 
+                    if (string.IsNullOrEmpty(AccommodationName) || string.IsNullOrWhiteSpace(AccommodationName)) 
                         return "Required";
                 }                                  
                 else if( columnName == "City")
                 {
-                    if (string.IsNullOrEmpty(City)) 
+                    if (string.IsNullOrEmpty(City) || string.IsNullOrWhiteSpace(City)) 
                         return "Required";
                 }                
                 else if(columnName == "Country")
                 {
-                    if (string.IsNullOrEmpty(Country.ToString())) 
+                    if (string.IsNullOrEmpty(Country.ToString()) || string.IsNullOrWhiteSpace(Country.ToString())) 
                         return "Required";
                 }
                 else if (columnName == "MaxGuests")
                 {
-                    if (string.IsNullOrEmpty(MaxGuests)) 
+                    if (string.IsNullOrEmpty(MaxGuests) || string.IsNullOrWhiteSpace(MaxGuests)) 
                         return "Required";
                 }
                 else if(columnName == "MinReservationDays")
                 {
-                    if (string.IsNullOrEmpty(MinReservationDays)) 
+                    if (string.IsNullOrEmpty(MinReservationDays) || string.IsNullOrWhiteSpace(MinReservationDays)) 
                         return "Required";
                 }                
                 else if(columnName == "CancelationPeriod")
                 {
-                    if (string.IsNullOrEmpty(CancelationPeriod)) 
-                        return "Cancelation period is required";
+                    if (string.IsNullOrEmpty(CancelationPeriod) || string.IsNullOrWhiteSpace(CancelationPeriod)) 
+                        return "Required";
                 }
                 else if(columnName == "AccommodationType")
                 {
-                    if(string.IsNullOrEmpty(AccommodationType)) 
+                    if(string.IsNullOrEmpty(AccommodationType) || string.IsNullOrWhiteSpace(AccommodationType)) 
+                        return "Required";
+                }
+                else if(columnName == "ImageURLs")
+                {
+                    if (string.IsNullOrEmpty(ImageURLs) || string.IsNullOrWhiteSpace(ImageURLs))
                         return "Required";
                 }
                 return null;
             }
         }
 
-        private void TextBoxCheck(object sender, RoutedEventArgs e)
+        private void IsPublishable(object sender, RoutedEventArgs e)
         {
             publishButton.IsEnabled = false;
             if(IsValid)
@@ -307,7 +318,16 @@ namespace SIMS_Booking.View
             }
         }
 
-        private readonly string[] validatedProperties = { "AccommodationName", "City", "Country", "MaxGuests", "MinReservationDays", "CancelationPeriod", "AccommodationType" };
+        private void ImageTbCheck(object sender, TextChangedEventArgs e)
+        {
+            addURLButton.Visibility = Visibility.Hidden;            
+            if (!string.IsNullOrEmpty(urlTb.Text) && !string.IsNullOrWhiteSpace(urlTb.Text) && InputValidation.IsValidURL(urlTb.Text))
+            {
+                addURLButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        private readonly string[] validatedProperties = { "AccommodationName", "City", "Country", "MaxGuests", "MinReservationDays", "CancelationPeriod", "AccommodationType", "ImageURLs" };
 
         public bool IsValid
         {
