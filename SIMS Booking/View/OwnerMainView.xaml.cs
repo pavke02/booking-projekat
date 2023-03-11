@@ -12,9 +12,7 @@ using SIMS_Booking.Observer;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Globalization;
-using System.Diagnostics;
-using SIMS_Booking.IOValidation;
-using static System.Net.Mime.MediaTypeNames;
+using SIMS_Booking.Repository.RelationsRepository;
 
 namespace SIMS_Booking.View
 {
@@ -25,12 +23,13 @@ namespace SIMS_Booking.View
         public List<string> TypesCollection { get; set; }
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
-        public Reservation SelectedReservedAccommodation { get; set; }
+        public Reservation SelectedReservation { get; set; }
 
         private AccomodationRepository _accommodationRepository;
         private CityCountryRepository _cityCountryRepository;
         private ReservationRepository _reservationRepository;
         private GuestReviewRepository _guestReviewRepository;
+        private ReservedAccommodationRepository _reservedAccommodationRepository;
 
         private string _accommodationName;
         public string AccommodationName
@@ -151,7 +150,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, GuestReviewRepository guestReviewRepository)
+        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, GuestReviewRepository guestReviewRepository, ReservedAccommodationRepository reservedAccommodationRepository)
         {
             InitializeComponent();
             DataContext = this;            
@@ -162,12 +161,14 @@ namespace SIMS_Booking.View
 
             _reservationRepository = reservationRepository;
             _reservationRepository.Subscribe(this);
-            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationRepository.GetAll());
+            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationRepository.GetUnreviewedReservations());
 
             _cityCountryRepository = cityCountryRepository;
             Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
 
             _guestReviewRepository = guestReviewRepository;
+
+            _reservedAccommodationRepository = reservedAccommodationRepository;            
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };            
         }
@@ -186,7 +187,12 @@ namespace SIMS_Booking.View
         //ToDo: Napraviti da se ovo proverava na svakih 10min recimo
         private void CheckDate(object sender, SelectionChangedEventArgs e)
         {
-            if (DateTime.Now >= SelectedReservedAccommodation.EndDate && (DateTime.Now - SelectedReservedAccommodation.EndDate.Date).TotalDays < 5)
+            if(SelectedReservation == null)
+            {
+                reviewGuestClick.IsEnabled = false;
+                return;
+            }                
+            if (DateTime.Now >= SelectedReservation.EndDate && (DateTime.Now - SelectedReservation.EndDate.Date).TotalDays < 5)
                 reviewGuestClick.IsEnabled = true;
             else
                 reviewGuestClick.IsEnabled = false;
@@ -204,39 +210,28 @@ namespace SIMS_Booking.View
             Accommodation accommodation = new Accommodation(AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType), AccommodationType), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
             _accommodationRepository.Save(accommodation);
             MessageBox.Show("Accommodation published successfully");
+            ClearTextBoxes();
         }
 
         private void AddImage(object sender, RoutedEventArgs e)
         {
-            if (imageTb.Text == "")
-            {
-                ImageURLs = urlTb.Text;
-            }
-            else
-            {
-                ImageURLs = imageTb.Text + "\n" + urlTb.Text;
-            }
+            if (imageTb.Text == "")            
+                ImageURLs = urlTb.Text;            
+            else            
+                ImageURLs = imageTb.Text + "\n" + urlTb.Text;            
 
             urlTb.Clear();
         }
 
         private void RateGuest(object sender, RoutedEventArgs e)
         {
-            GuestReviewView guestReviewView = new GuestReviewView(_guestReviewRepository);
+            GuestReviewView guestReviewView = new GuestReviewView(_guestReviewRepository, _reservedAccommodationRepository, _reservationRepository, _reservationRepository.GetById(SelectedReservation.getID()));
             guestReviewView.ShowDialog();
         }
 
         private void Reset(object sender, RoutedEventArgs e)
         {
-            accommodationNameTb.Clear();
-            maxGuestsTb.Clear();
-            minReservationDaysTb.Clear();
-            cancelationPeriodTb.Clear();
-            imageTb.Clear();
-            ImageURLs = "";
-            countryCb.SelectedItem = null;
-            cityCb.SelectedItem = null;
-            typeCb.SelectedItem = null;            
+            ClearTextBoxes();
         }
 
         private void ClearURLs(object sender, RoutedEventArgs e)
@@ -264,6 +259,19 @@ namespace SIMS_Booking.View
             }
         }
 
+        private void ClearTextBoxes()
+        {
+            accommodationNameTb.Clear();
+            maxGuestsTb.Clear();
+            minReservationDaysTb.Clear();
+            cancelationPeriodTb.Clear();
+            imageTb.Clear();
+            ImageURLs = "";
+            countryCb.SelectedItem = null;
+            cityCb.SelectedItem = null;
+            typeCb.SelectedItem = null;
+        }
+
         private void UpdateAccommodations(List<Accommodation> accommodations)
         {
             Accommodations.Clear();
@@ -271,9 +279,17 @@ namespace SIMS_Booking.View
                 Accommodations.Add(accommodation);
         }
 
+        private void UpdateReservedAccommodations(List<Reservation> reservations)
+        {
+            ReservedAccommodations.Clear();
+            foreach (var reservation in reservations)
+                ReservedAccommodations.Add(reservation);
+        }
+
         public void Update()
         {
             UpdateAccommodations(_accommodationRepository.GetAll());
+            UpdateReservedAccommodations(_reservationRepository.GetUnreviewedReservations());
         }        
 
         public string Error => null;

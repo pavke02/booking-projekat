@@ -168,7 +168,7 @@
                 <StackPanel>
                     <DataGrid x:Name="reservedAccommodationGrid" Height="480" VerticalAlignment="Top"
                           ItemsSource="{Binding Path=ReservedAccommodations, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding Path=SelectedReservedAccommodation, UpdateSourceTrigger=PropertyChanged}"                                                                                                                                                                                      
+                          SelectedItem="{Binding Path=SelectedReservation, UpdateSourceTrigger=PropertyChanged}"                                                                                                                                                                                      
                           SelectionChanged="CheckDate"                          
                           IsReadOnly="True" AutoGenerateColumns="False">
                         <DataGrid.Resources>

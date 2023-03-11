@@ -1,6 +1,9 @@
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+
 namespace SIMS_Booking.Repository
 {
     public class ReservationRepository : Repository<Reservation>, ISubject
@@ -19,6 +22,11 @@ namespace SIMS_Booking.Repository
             }
            
            return userReservations;            
+        }
+
+        public List<Reservation> GetUnreviewedReservations()
+        {
+            return _entityList.Where(e => !e.IsReviewed).ToList();                
         }
     }
 }

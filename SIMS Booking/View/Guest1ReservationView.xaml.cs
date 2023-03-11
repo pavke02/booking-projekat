@@ -54,7 +54,7 @@ public partial class Guest1ReservationView : Window
             return;
         }
 
-        Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, _selectedAccommodation, LoggedUser);
+        Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, _selectedAccommodation, LoggedUser, false);
         _reservationRepository.Save(reservation);
         ReservedAccommodation reservedAccommodation =
             new ReservedAccommodation(LoggedUser.getID(), _selectedAccommodation.getID(), reservation.getID());
