@@ -9,8 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="View\add.png" />
+    <None Remove="View\remove.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Resources\Images\" />
     <Folder Include="Resources\Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="View\add.png" />
+    <Resource Include="View\remove.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\Images\add.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

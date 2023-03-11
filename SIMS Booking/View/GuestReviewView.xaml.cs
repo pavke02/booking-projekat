@@ -76,14 +76,7 @@ namespace SIMS_Booking.View
             DataContext = this;            
 
             _guestReviewRepository = guestReviewRepository;
-        }
-
-        private void SubminReview(object sender, RoutedEventArgs e)
-        {
-            GuestReview guestReview = new GuestReview(Tidiness, RuleFollowing, Comment);
-            _guestReviewRepository.Save(guestReview);
-            Close();
-        }
+        }        
 
         private void TextBoxCheck(object sender, RoutedEventArgs e)
         {
@@ -92,6 +85,13 @@ namespace SIMS_Booking.View
             {
                 submitButton.IsEnabled = true;
             }
+        }
+
+        private void SubmitReview(object sender, RoutedEventArgs e)
+        {
+            GuestReview guestReview = new GuestReview(Tidiness, RuleFollowing, Comment);
+            _guestReviewRepository.Save(guestReview);
+            Close();
         }
 
         public string Error => null;

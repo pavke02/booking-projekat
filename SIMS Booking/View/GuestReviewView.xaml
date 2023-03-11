@@ -55,7 +55,7 @@
                                  Name="commentTb">
                 </TextBox>
                 <Button Content="Submin Review" Width="100" Height="40" Margin="0, 40, 0, 0" HorizontalAlignment="Center"
-                        Click="SubminReview" IsEnabled="False"
+                        Click="SubmitReview" IsEnabled="False"
                         Name="submitButton">
                 </Button>
             </StackPanel>
