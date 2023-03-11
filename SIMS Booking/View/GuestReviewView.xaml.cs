@@ -1,5 +1,6 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
+using SIMS_Booking.Repository.RelationsRepository;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -10,6 +11,9 @@ namespace SIMS_Booking.View
     public partial class GuestReviewView : Window, IDataErrorInfo
     {
         private GuestReviewRepository _guestReviewRepository;
+        private ReservedAccommodationRepository _reservedAccommodationRepository;
+        private ReservationRepository _reservationRepository;
+        private Reservation _reservation;
 
         private int tidiness = 0;
         public int Tidiness
@@ -70,12 +74,16 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public GuestReviewView(GuestReviewRepository guestReviewRepository)
+        public GuestReviewView(GuestReviewRepository guestReviewRepository, ReservedAccommodationRepository reservedAccommodationRepository, ReservationRepository reservationRepository, Reservation reservation)
         {
             InitializeComponent();
             DataContext = this;            
 
+            _reservation = reservation;
+
             _guestReviewRepository = guestReviewRepository;
+            _reservedAccommodationRepository = reservedAccommodationRepository;
+            _reservationRepository = reservationRepository;
         }        
 
         private void TextBoxCheck(object sender, RoutedEventArgs e)
@@ -89,8 +97,9 @@ namespace SIMS_Booking.View
 
         private void SubmitReview(object sender, RoutedEventArgs e)
         {
-            GuestReview guestReview = new GuestReview(Tidiness, RuleFollowing, Comment);
-            _guestReviewRepository.Save(guestReview);
+            _guestReviewRepository.SubmitReview(Tidiness, RuleFollowing, Comment, _reservation);
+            _reservationRepository.Update(_reservation);
+            //_reservedAccommodationRepository.DeleteByReservation(_reservation.getID());
             Close();
         }
 

@@ -55,13 +55,12 @@ namespace SIMS_Booking.View
             _accommodationRepository = new AccomodationRepository();
             _cityCountryRepository = new CityCountryRepository();   
             _reservationRepository = new ReservationRepository();
-            _guestReviewRepository = new GuestReviewRepository();
+            _guestReviewRepository = new GuestReviewRepository();            
 
             _reservedAccommodationRepository = new ReservedAccommodationRepository();
 
             _reservedAccommodationRepository.LoadAccommodationsAndUsersInReservation(_userRepository, _accommodationRepository, _reservationRepository);
-            
-
+            _guestReviewRepository.LoadReservationInGuestReview(_reservationRepository);
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
@@ -75,7 +74,7 @@ namespace SIMS_Booking.View
                     {
                         case Roles.Owner:
 
-                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, _guestReviewRepository);
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, _guestReviewRepository, _reservedAccommodationRepository);
                             ownerView.Show();
                             break;
                         case Roles.Guest1:

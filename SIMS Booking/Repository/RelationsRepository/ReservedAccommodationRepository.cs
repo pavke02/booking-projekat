@@ -1,6 +1,6 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
-using System.Linq;
+using SIMS_Booking.Observer;
 
 namespace SIMS_Booking.Repository.RelationsRepository
 {
@@ -22,5 +22,15 @@ namespace SIMS_Booking.Repository.RelationsRepository
                 }
             }
         }
+
+        public void DeleteByReservation(int reservationId)
+        {
+            foreach (ReservedAccommodation reservedAccommodation in _entityList)
+                if(reservedAccommodation.ReservationId == reservationId)
+                {
+                    Delete(reservedAccommodation);
+                    break;
+                }                    
+        }       
     }
 }

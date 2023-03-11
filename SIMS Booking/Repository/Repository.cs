@@ -35,6 +35,18 @@ namespace SIMS_Booking.Repository
             NotifyObservers();
         }
 
+        public T? Update(T entity)
+        {            
+            T? current = _entityList.Find(c => c.getID() == entity.getID());
+            if (current == null) return default(T);
+            int index = _entityList.IndexOf(current);
+            _entityList.Remove(current);
+            _entityList.Insert(index, entity);       // keep ascending order of ids in file 
+            _serializer.ToCSV(_filePath, _entityList);
+            NotifyObservers();
+            return entity;
+        }
+
         public List<T> GetAll()
         {            
             return _entityList;
