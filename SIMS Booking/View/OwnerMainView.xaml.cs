@@ -172,15 +172,6 @@ namespace SIMS_Booking.View
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };            
         }
 
-        //ToDo: Napraviti da se ovo proverava na svakih 10min recimo
-        private void CheckDate(object sender, SelectionChangedEventArgs e)
-        {
-            if (DateTime.Now >= SelectedReservedAccommodation.EndDate && (DateTime.Now - SelectedReservedAccommodation.EndDate.Date).TotalDays < 5)
-                reviewGuestClick.IsEnabled = true;
-            else
-                reviewGuestClick.IsEnabled = false;
-        }
-
         private void ChangeCities(object sender, SelectionChangedEventArgs e)
         {
             cityCb.Items.Clear();
@@ -192,7 +183,15 @@ namespace SIMS_Booking.View
             }
         }
 
-        //ToDO:
+        //ToDo: Napraviti da se ovo proverava na svakih 10min recimo
+        private void CheckDate(object sender, SelectionChangedEventArgs e)
+        {
+            if (DateTime.Now >= SelectedReservedAccommodation.EndDate && (DateTime.Now - SelectedReservedAccommodation.EndDate.Date).TotalDays < 5)
+                reviewGuestClick.IsEnabled = true;
+            else
+                reviewGuestClick.IsEnabled = false;
+        }        
+        
         private void Publish(object sender, RoutedEventArgs e)
         {
             Location location = new Location(Country.Key, City);
@@ -205,6 +204,26 @@ namespace SIMS_Booking.View
             Accommodation accommodation = new Accommodation(AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType), AccommodationType), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
             _accommodationRepository.Save(accommodation);
             MessageBox.Show("Accommodation published successfully");
+        }
+
+        private void AddImage(object sender, RoutedEventArgs e)
+        {
+            if (imageTb.Text == "")
+            {
+                ImageURLs = urlTb.Text;
+            }
+            else
+            {
+                ImageURLs = imageTb.Text + "\n" + urlTb.Text;
+            }
+
+            urlTb.Clear();
+        }
+
+        private void RateGuest(object sender, RoutedEventArgs e)
+        {
+            GuestReviewView guestReviewView = new GuestReviewView(_guestReviewRepository);
+            guestReviewView.ShowDialog();
         }
 
         private void Reset(object sender, RoutedEventArgs e)
@@ -225,26 +244,24 @@ namespace SIMS_Booking.View
             imageTb.Clear();
             ImageURLs = "";    
             publishButton.IsEnabled = false;
+        }                
+
+        private void IsPublishable(object sender, RoutedEventArgs e)
+        {
+            publishButton.IsEnabled = false;
+            if (IsValid)
+            {
+                publishButton.IsEnabled = true;
+            }
         }
 
-        private void AddImage(object sender, RoutedEventArgs e)
+        private void ImageTbCheck(object sender, TextChangedEventArgs e)
         {
-            if (imageTb.Text == "")
-            {                            
-                ImageURLs = urlTb.Text;
+            addURLButton.Visibility = Visibility.Hidden;
+            if (!string.IsNullOrEmpty(urlTb.Text) && !string.IsNullOrWhiteSpace(urlTb.Text) && Uri.IsWellFormedUriString("https://www.google.com", UriKind.Absolute))
+            {
+                addURLButton.Visibility = Visibility.Visible;
             }
-            else
-            {                
-                ImageURLs = imageTb.Text + "\n" + urlTb.Text;
-            }
-
-            urlTb.Clear();
-        }
-
-        private void RateGuest(object sender, RoutedEventArgs e)
-        {
-            GuestReviewView guestReviewView = new GuestReviewView(_guestReviewRepository);
-            guestReviewView.ShowDialog();
         }
 
         private void UpdateAccommodations(List<Accommodation> accommodations)
@@ -257,7 +274,7 @@ namespace SIMS_Booking.View
         public void Update()
         {
             UpdateAccommodations(_accommodationRepository.GetAll());
-        }
+        }        
 
         public string Error => null;
 
@@ -307,25 +324,7 @@ namespace SIMS_Booking.View
                 }
                 return null;
             }
-        }
-
-        private void IsPublishable(object sender, RoutedEventArgs e)
-        {
-            publishButton.IsEnabled = false;
-            if(IsValid)
-            {
-                publishButton.IsEnabled = true;
-            }
-        }
-
-        private void ImageTbCheck(object sender, TextChangedEventArgs e)
-        {
-            addURLButton.Visibility = Visibility.Hidden;            
-            if (!string.IsNullOrEmpty(urlTb.Text) && !string.IsNullOrWhiteSpace(urlTb.Text) && InputValidation.IsValidURL(urlTb.Text))
-            {
-                addURLButton.Visibility = Visibility.Visible;
-            }
-        }
+        }        
 
         private readonly string[] validatedProperties = { "AccommodationName", "City", "Country", "MaxGuests", "MinReservationDays", "CancelationPeriod", "AccommodationType", "ImageURLs" };
 
