@@ -12,11 +12,10 @@ using SIMS_Booking.Observer;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Globalization;
-using System.Data;
 
 namespace SIMS_Booking.View
 {
-    public partial class OwnerMainView : Window, IObserver, INotifyPropertyChanged
+    public partial class OwnerMainView : Window, IObserver, INotifyPropertyChanged, IDataErrorInfo
     {
         public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> TypesCollection { get; set; }
@@ -71,15 +70,15 @@ namespace SIMS_Booking.View
             }
         }
 
-        private string _kind;
-        public string Kind
+        private string _accommodationType;
+        public string AccommodationType
         {
-            get => _kind;
+            get => _accommodationType;
             set
             {
-                if (value != _kind)
+                if (value != _accommodationType)
                 {
-                    _kind = value;
+                    _accommodationType = value;
                     OnPropertyChanged();
                 }
             }
@@ -138,7 +137,7 @@ namespace SIMS_Booking.View
                     _imageURLs = value;
                 }
             }
-        }
+        }        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -198,7 +197,7 @@ namespace SIMS_Booking.View
             foreach (string value in values)
                 imageURLs.Add(value);
 
-            Accommodation accommodation = new Accommodation(AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
+            Accommodation accommodation = new Accommodation(AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType), AccommodationType), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
             _accommodationRepository.Save(accommodation);
             MessageBox.Show("Accommodation published successfully");
         }
@@ -252,8 +251,79 @@ namespace SIMS_Booking.View
         public void Update()
         {
             UpdateAccommodations(_accommodationRepository.GetAll());
+        }
+
+        public string Error => null;
+
+        public string this[string columnName]
+        {
+            get
+            {
+                if (columnName == "AccommodationName")
+                {
+                    if (string.IsNullOrEmpty(AccommodationName)) 
+                        return "Required";
+                }                                  
+                else if( columnName == "City")
+                {
+                    if (string.IsNullOrEmpty(City)) 
+                        return "Required";
+                }                
+                else if(columnName == "Country")
+                {
+                    if (string.IsNullOrEmpty(Country.ToString())) 
+                        return "Required";
+                }
+                else if (columnName == "MaxGuests")
+                {
+                    if (string.IsNullOrEmpty(MaxGuests)) 
+                        return "Required";
+                }
+                else if(columnName == "MinReservationDays")
+                {
+                    if (string.IsNullOrEmpty(MinReservationDays)) 
+                        return "Required";
+                }                
+                else if(columnName == "CancelationPeriod")
+                {
+                    if (string.IsNullOrEmpty(CancelationPeriod)) 
+                        return "Cancelation period is required";
+                }
+                else if(columnName == "AccommodationType")
+                {
+                    if(string.IsNullOrEmpty(AccommodationType)) 
+                        return "Required";
+                }
+                return null;
+            }
+        }
+
+        private void TextBoxCheck(object sender, RoutedEventArgs e)
+        {
+            publishButton.IsEnabled = false;
+            if(IsValid)
+            {
+                publishButton.IsEnabled = true;
+            }
+        }
+
+        private readonly string[] validatedProperties = { "AccommodationName", "City", "Country", "MaxGuests", "MinReservationDays", "CancelationPeriod", "AccommodationType" };
+
+        public bool IsValid
+        {
+            get
+            {
+                foreach (var property in validatedProperties)
+                {
+                    if (this[property] != null)
+                        return false;
+                }
+
+                return true;
+            }
         }        
     }
+
     class ColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

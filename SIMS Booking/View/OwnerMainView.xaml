@@ -6,6 +6,17 @@
         xmlns:converters="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
         Title="OwnerMainView" Height="600" Width="1300" FontSize="18">
+
+    <Window.Resources>
+        <ControlTemplate x:Key="ValidationTemplate">
+            <StackPanel>
+                <!-- Placeholder for the TextBox itself -->
+                <AdornedElementPlaceholder x:Name="textBox" />
+                <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red" FontSize="12"/>
+            </StackPanel>
+        </ControlTemplate>
+    </Window.Resources>
+    
     <Grid>
         <TabControl TabStripPlacement="Left">
             <TabItem Name="accommodationsOverviewTab" Header="Your Accommodations" Height="60">
@@ -37,24 +48,32 @@
 
                         <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="75, 20, 0, 0">Name</Label>
                         <TextBox Grid.Column="1" Grid.Row="0" Height="30" Width="180" Margin="0, 20, 0, 0" 
-                                 Text="{Binding Path=AccommodationName, UpdateSourceTrigger=LostFocus}"
+                                 Text="{Binding Path=AccommodationName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+                                 LostFocus="TextBoxCheck"
                                  Name="accommodationNameTb"></TextBox>
 
                         <Label Grid.Column="2" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Country</Label>
                         <ComboBox Grid.Column="3" Grid.Row="0" Height="30" Width="180" Margin="0, 20, 0, 0"  
                                   ItemsSource="{Binding Countries}" DisplayMemberPath="Key" SelectionChanged="ChangeCities" SelectedItem="{Binding Country}"
+                                  Validation.ErrorTemplate="{StaticResource ValidationTemplate}"  
+                                  LostFocus="TextBoxCheck"
                                   x:Name="countryCb">
                         </ComboBox>
 
                         <Label Grid.Column="0" Grid.Row="1" Height="40" Margin="75, 20, 0, 0">City</Label>
                         <ComboBox Grid.Column="1" Grid.Row="1" Height="30" Width="180" Margin="0, 20, 0, 0" 
-                                  SelectedItem="{Binding City}"
+                                  SelectedItem="{Binding City}"                                  
+                                  Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+                                  LostFocus="TextBoxCheck"
                                   x:Name="cityCb">
                         </ComboBox>
 
                         <Label Grid.Column="2" Grid.Row="1" Height="40" Margin="20, 20, 0, 0">Type</Label>
                         <ComboBox Grid.Column="3"  Grid.Row="1" Height="30" Width="180" Margin="0, 20, 0, 0" 
-                                  ItemsSource="{Binding TypesCollection}" SelectedItem="{Binding Kind}" 
+                                  ItemsSource="{Binding TypesCollection}" SelectedItem="{Binding AccommodationType}" 
+                                  Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+                                  LostFocus="TextBoxCheck"
                                   x:Name="typeCb">
                         </ComboBox>
                     </Grid>
@@ -71,17 +90,23 @@
 
                         <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Maximum number of guests</Label>
                         <TextBox Grid.Column="1" Grid.Row="0" Height="30" Margin="0, 20, 0, 0"
-                                 Text="{Binding Path=MaxGuests, UpdateSourceTrigger=LostFocus}"
+                                 Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+                                 LostFocus="TextBoxCheck"
                                  Name="maxGuestsTb"></TextBox>
 
                         <Label Grid.Column="0" Grid.Row="1" Height="40" Margin="20, 20, 0, 0">Minimum reservation(in days)</Label>
                         <TextBox Grid.Column="1" Grid.Row="1" Height="30" Margin="0, 20, 0, 0"
-                                 Text="{Binding Path=MinReservationDays, UpdateSourceTrigger=LostFocus}"
+                                 Text="{Binding Path=MinReservationDays, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                 LostFocus="TextBoxCheck"
+                                 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
                                  Name="minReservationDaysTb"></TextBox>
 
                         <Label Grid.Column="0" Grid.Row="2" Height="40" Margin="20, 20, 0, 0">Cancelation period(in days)</Label>
                         <TextBox Grid.Column="1" Grid.Row="2" Height="30" Margin="0, 20, 0, 0"
-                                 Text="{Binding Path=CancelationPeriod, UpdateSourceTrigger=LostFocus}"
+                                 Text="{Binding Path=CancelationPeriod, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                 LostFocus="TextBoxCheck"
+                                 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
                                  Name="cancelationPeriodTb"></TextBox>
                     </Grid>
 
@@ -95,7 +120,8 @@
                                 Height="40" Width="100" Margin="70, 20, 0, 0"
                                 Content="Add Image" Click="AddImage"></Button>
                         <TextBox Grid.Column="1" Height="150" Width="525" Margin="40, 20, 0, 0"                                 
-                                 Name="imageTb"></TextBox>
+                                 Name="imageTb">
+                        </TextBox>
                     </Grid>
 
                     <Separator Width="1100">
@@ -109,6 +135,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Button Grid.Column="0" Content="Publish" Click="Publish" 
+                                Name="publishButton" IsEnabled="False"
                                 Height="40" Width="200" Margin="0, 0, 0, 0">
                             
                         </Button>
