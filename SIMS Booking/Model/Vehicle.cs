@@ -3,23 +3,28 @@ using System;
 using System.Collections.Generic;
 using SIMS_Booking.Enums;
 using SIMS_Booking.State;
+using System.Linq;
 
 namespace SIMS_Booking.Model
 {
     public class Vehicle : ISerializable, IDable
     {
         public int ID { get; set; }
-        public Location Location { get; set; }
-        public int MaxPeople  { get; set; }
+        public List<Location> Locations { get; set; }
+        public int MaxGuests  { get; set; }
         public List<DriverLanguage> Languages { get; set; }
         public List<string> ImagesURL { get; set; }
 
         public Vehicle() { }
 
-        public Vehicle(Location location, int maxPeople, List<DriverLanguage> languages, List<string> imagesURL)
+        public Vehicle(List<Location> locations, int maxGuests, List<DriverLanguage> languages, List<string> imagesURL)
         {
-            Location = location;
-            MaxPeople = maxPeople;
+            Locations = new List<Location>();
+            foreach (Location location in locations)
+            {
+                Locations.Add(location);
+            }
+            MaxGuests = maxGuests;
             Languages = new List<DriverLanguage>();
             foreach (DriverLanguage language in languages)
             {
@@ -44,14 +49,59 @@ namespace SIMS_Booking.Model
 
         public void FromCSV(string[] values)
         {
-            Location = new Location(values[0], values[1]);
-            MaxPeople = Convert.ToInt32(values[2]);
+            // Read ID
+            ID = Convert.ToInt32(values[0]);
+
+            // Read Locations
+            var locations = new List<Location>();
+            var locationValues = values[1].Split(';');
+            foreach (var locationValue in locationValues)
+            {
+                var locationParts = locationValue.Split(',');
+                var location = new Location
+                {
+                    Country = locationParts[0],
+                    City = locationParts[1]
+                };
+                locations.Add(location);
+            }
+            Locations = locations;
+
+            // Read MaxPeople
+            MaxGuests = Convert.ToInt32(values[2]);
+
+            // Read DriverLanguages
+            var driverLanguages = new List<DriverLanguage>();
+            var driverLanguageValues = values[3].Split(',');
+            foreach (var driverLanguageValue in driverLanguageValues)
+            {
+                driverLanguages.Add((DriverLanguage)Enum.Parse(typeof(DriverLanguage), driverLanguageValue));
+            }
+            Languages = driverLanguages;
+
+            // Read ImagesURL
+            //ImagesURL = values[3].Split(',').ToList();
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Location.Country, Location.City, MaxPeople.ToString() };
+            // Convert Locations to string value
+            var locationValues = Locations.Select(location => $"{location.Country},{location.City}");
+            var locationsValue = string.Join(";", locationValues);
+
+            // Convert DriverLanguages to string value
+            var driverLanguageValues = Languages.Select(driverLanguage => driverLanguage.ToString());
+            var driverLanguagesValue = string.Join(",", driverLanguageValues);
+
+            // Create CSV string array
+            string[] csvValues = {
+                ID.ToString(),
+                locationsValue,
+                MaxGuests.ToString(),
+                driverLanguagesValue//,
+                //string.Join(',', ImagesURL)
+                };
             return csvValues;
-        }       
+        }
     }
 }

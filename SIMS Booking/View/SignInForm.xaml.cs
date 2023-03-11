@@ -17,6 +17,7 @@ namespace SIMS_Booking.View
         private readonly AccomodationRepository _accommodationRepository;
         private readonly CityCountryRepository _cityCountryRepository;   
         private readonly ReservationRepository _reservationRepository;
+        private readonly VehicleRepository _vehicleRepository;
 
         private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
 
@@ -50,6 +51,7 @@ namespace SIMS_Booking.View
             _accommodationRepository = new AccomodationRepository();
             _cityCountryRepository = new CityCountryRepository();   
             _reservationRepository = new ReservationRepository();
+            _vehicleRepository = new VehicleRepository();
 
             _reservedAccommodationRepository = new ReservedAccommodationRepository();
 
@@ -72,6 +74,10 @@ namespace SIMS_Booking.View
                         case Roles.Guest1:
                             Guest1MainView guest1View = new Guest1MainView(_accommodationRepository, _cityCountryRepository);
                             guest1View.Show();
+                            break;
+                        case Roles.Driver:
+                            DriverView driverView = new DriverView(_vehicleRepository, _cityCountryRepository);
+                            driverView.Show();
                             break;
                     }
                     Close();
