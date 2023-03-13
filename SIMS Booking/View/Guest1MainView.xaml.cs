@@ -43,7 +43,7 @@ namespace SIMS_Booking.View
             UserReservations = new ObservableCollection<Reservation>(_reservationRepository.GetReservationsByUser(loggedUser.getID()));            
 
             _cityCountryRepository = cityCountryRepository;            
-            _reservedAccommodationRepository = reservedAccommodationRepository;                                               
+            _reservedAccommodationRepository = reservedAccommodationRepository;
         }
 
         private void AddFilters(object sender, RoutedEventArgs e)
@@ -66,7 +66,8 @@ namespace SIMS_Booking.View
 
         private void OpenGallery(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            Guest1GalleryView galleryView = new Guest1GalleryView(SelectedAccommodation);
+            galleryView.Show();
         }
 
         private void UpdateAccommodations(List<Accommodation> accommodations)
@@ -87,6 +88,28 @@ namespace SIMS_Booking.View
         {
             UpdateAccommodations(_accommodationRepository.GetAll());
             UpdateUserReservations(_reservationRepository.GetReservationsByUser(LoggedUser.getID()).ToList());
+        }
+
+        private void TabChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (TabC.SelectedIndex == 1)
+            {
+                ReserveButton.IsEnabled = false;
+                ViewGalleryButton.IsEnabled = false;
+                AddFiltersButton.IsEnabled = false;
+            }
+            else if(TabC.SelectedIndex == 0 && DataGridAccommodations.SelectedIndex == -1)
+            {
+                ReserveButton.IsEnabled = false;
+                ViewGalleryButton.IsEnabled = false;
+                AddFiltersButton.IsEnabled = true;
+            }
+            else
+            {
+                ReserveButton.IsEnabled = true;
+                ViewGalleryButton.IsEnabled = true;
+                AddFiltersButton.IsEnabled = true;
+            }
         }
     }
 }
