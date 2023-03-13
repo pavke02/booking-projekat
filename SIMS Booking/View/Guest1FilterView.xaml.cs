@@ -61,8 +61,8 @@ namespace SIMS_Booking.View
             }
         }
 
-        private Kind _kind;
-        public Kind Kind
+        private AccommodationType _kind;
+        public AccommodationType Kind
         {
             get => _kind;
             set
@@ -119,7 +119,7 @@ namespace SIMS_Booking.View
             _cityCountryRepository = cityCountryRepository; 
 
             Accommodations = _accommodationRepository.Load();
-            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
+            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
 
             TypesCollection = new List<string>
             {
@@ -144,13 +144,20 @@ namespace SIMS_Booking.View
 
         private void Reset(object sender, RoutedEventArgs e)
         {
-            nameTb.Text = "";
-            countryCb.SelectedIndex = -1;
-            cityCb.SelectedIndex = -1;
-            typeCb.SelectedIndex = -1;
-            maxGuestsTb.Text = "";
-            minReservationDaysTb.Text = "";
-            
+
+            nameTb.Clear();
+            AccommodationName = "";
+            countryCb.SelectedItem = null;
+            Country = new KeyValuePair<string, List<string>>();
+            cityCb.SelectedItem = null;
+            City = "";
+            typeCb.SelectedItem = null;
+            Kind = AccommodationType.NoKind;
+            maxGuestsTb.Clear();
+            MaxGuests = "0";
+            minReservationDaysTb.Clear();
+            MinReservationDays = "10";
+
 
             foreach (Window window in Application.Current.Windows)
             {
@@ -183,7 +190,7 @@ namespace SIMS_Booking.View
                     accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
                     numberOfDeleted++;
                 }
-                else if (accommodation.Type != Kind && Kind != Kind.NoKind)
+                else if (accommodation.Type != Kind && Kind != AccommodationType.NoKind)
                 {
                     accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
                     numberOfDeleted++;

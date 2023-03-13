@@ -9,15 +9,15 @@ namespace SIMS_Booking.Model
 {
     public class Vehicle : ISerializable, IDable
     {
-        public int ID { get; set; }
+        private int ID;
         public List<Location> Locations { get; set; }
         public int MaxGuests  { get; set; }
-        public List<DriverLanguage> Languages { get; set; }
+        public List<Language> Languages { get; set; }
         public List<string> ImagesURL { get; set; }
 
         public Vehicle() { }
 
-        public Vehicle(List<Location> locations, int maxGuests, List<DriverLanguage> languages, List<string> imagesURL)
+        public Vehicle(List<Location> locations, int maxGuests, List<Language> languages, List<string> imagesURL)
         {
             Locations = new List<Location>();
             foreach (Location location in locations)
@@ -25,8 +25,8 @@ namespace SIMS_Booking.Model
                 Locations.Add(location);
             }
             MaxGuests = maxGuests;
-            Languages = new List<DriverLanguage>();
-            foreach (DriverLanguage language in languages)
+            Languages = new List<Language>();
+            foreach (Language language in languages)
             {
                 Languages.Add(language);
             }
@@ -71,11 +71,11 @@ namespace SIMS_Booking.Model
             MaxGuests = Convert.ToInt32(values[2]);
 
             // Read DriverLanguages
-            var driverLanguages = new List<DriverLanguage>();
+            var driverLanguages = new List<Language>();
             var driverLanguageValues = values[3].Split(',');
             foreach (var driverLanguageValue in driverLanguageValues)
             {
-                driverLanguages.Add((DriverLanguage)Enum.Parse(typeof(DriverLanguage), driverLanguageValue));
+                driverLanguages.Add((Language)Enum.Parse(typeof(Language), driverLanguageValue));
             }
             Languages = driverLanguages;
 

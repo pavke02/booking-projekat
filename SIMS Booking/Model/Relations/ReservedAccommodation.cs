@@ -1,8 +1,9 @@
-﻿using SIMS_Booking.Serializer;
+﻿using SIMS_Booking.Observer;
+using SIMS_Booking.Serializer;
 
 namespace SIMS_Booking.Model.Relations
 {
-    internal class ReservedAccommodation : ISerializable
+    public class ReservedAccommodation : ISerializable
     {
         public int UserId { get; set; }
         public int AccommodationId { get; set; }
@@ -15,6 +16,13 @@ namespace SIMS_Booking.Model.Relations
             UserId = userId;
             AccommodationId = accommodationId;
             ReservationId = reservationId;
+        }        
+
+        public void FromCSV(string[] values)
+        {
+            UserId = int.Parse(values[0]);
+            AccommodationId = int.Parse(values[1]);
+            ReservationId = int.Parse(values[2]);
         }
 
         public string[] ToCSV()
@@ -22,13 +30,6 @@ namespace SIMS_Booking.Model.Relations
 
             string[] csvValues = { UserId.ToString(), AccommodationId.ToString(), ReservationId.ToString() };
             return csvValues;
-        }
-
-        public void FromCSV(string[] values)
-        {
-            UserId = int.Parse(values[0]);
-            AccommodationId = int.Parse(values[1]);
-            ReservationId = int.Parse(values[2]);
         }
     }
 }

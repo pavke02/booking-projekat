@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using SIMS_Booking.Enums;
+﻿using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
 using System;
@@ -11,19 +10,26 @@ using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.Observer;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Windows.Data;
+using System.Globalization;
+using SIMS_Booking.Repository.RelationsRepository;
 
 namespace SIMS_Booking.View
 {
-    public partial class OwnerMainView : Window, IObserver
+    public partial class OwnerMainView : Window, IObserver, INotifyPropertyChanged, IDataErrorInfo
     {
+        string[] https;
         public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> TypesCollection { get; set; }
-        public ObservableCollection<Accommodation> Accommodations { get; set; }      
+        public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
+        public Reservation SelectedReservation { get; set; }
+
         private AccomodationRepository _accommodationRepository;
         private CityCountryRepository _cityCountryRepository;
         private ReservationRepository _reservationRepository;
+        private GuestReviewRepository _guestReviewRepository;
+        private ReservedAccommodationRepository _reservedAccommodationRepository;
 
         private string _accommodationName;
         public string AccommodationName
@@ -67,15 +73,15 @@ namespace SIMS_Booking.View
             }
         }
 
-        private string _kind;
-        public string Kind
+        private string _accommodationType;
+        public string AccommodationType
         {
-            get => _kind;
+            get => _accommodationType;
             set
             {
-                if (value != _kind)
+                if (value != _accommodationType)
                 {
-                    _kind = value;
+                    _accommodationType = value;
                     OnPropertyChanged();
                 }
             }
@@ -131,10 +137,11 @@ namespace SIMS_Booking.View
             {
                 if (value != _imageURLs)
                 {
-                    _imageURLs = value;                                                         
+                    _imageURLs = value;
+                    OnPropertyChanged();
                 }
             }
-        }
+        }        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -143,21 +150,25 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository)
+        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, GuestReviewRepository guestReviewRepository, ReservedAccommodationRepository reservedAccommodationRepository)
         {
             InitializeComponent();
-            DataContext = this;                       
+            DataContext = this;            
 
             _accommodationRepository = accomodationRepository;
             _accommodationRepository.Subscribe(this);
             Accommodations = new ObservableCollection<Accommodation>(_accommodationRepository.GetAll());
 
             _reservationRepository = reservationRepository;
-            _reservationRepository.Subscribe(this);            
-            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationRepository.GetAll());
+            _reservationRepository.Subscribe(this);
+            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationRepository.GetUnreviewedReservations());
 
             _cityCountryRepository = cityCountryRepository;
-            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
+            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
+
+            _guestReviewRepository = guestReviewRepository;
+
+            _reservedAccommodationRepository = reservedAccommodationRepository;            
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };            
         }
@@ -166,14 +177,27 @@ namespace SIMS_Booking.View
         {
             cityCb.Items.Clear();
 
-            if(countryCb.SelectedIndex != -1) 
+            if (countryCb.SelectedIndex != -1)
             {
                 foreach (string city in Countries.ElementAt(countryCb.SelectedIndex).Value)
                     cityCb.Items.Add(city).ToString();
-            }                        
+            }
         }
 
-
+        //ToDo: Napraviti da se ovo proverava na svakih 10min recimo
+        private void CheckDate(object sender, SelectionChangedEventArgs e)
+        {
+            if(SelectedReservation == null)
+            {
+                reviewGuestClick.IsEnabled = false;
+                return;
+            }                
+            if (DateTime.Now >= SelectedReservation.EndDate && (DateTime.Now - SelectedReservation.EndDate.Date).TotalDays < 5)
+                reviewGuestClick.IsEnabled = true;
+            else
+                reviewGuestClick.IsEnabled = false;
+        }        
+        
         private void Publish(object sender, RoutedEventArgs e)
         {
             Location location = new Location(Country.Key, City);
@@ -182,55 +206,169 @@ namespace SIMS_Booking.View
             string[] values = ImageURLs.Split("\n");
             foreach (string value in values)
                 imageURLs.Add(value);
-
-            Accommodation accommodation = new Accommodation(AccommodationName, location, (Kind)Enum.Parse(typeof(Kind), Kind), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
+            
+            Accommodation accommodation = new Accommodation(AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType), AccommodationType), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
             _accommodationRepository.Save(accommodation);
             MessageBox.Show("Accommodation published successfully");
+            ClearTextBoxes();
+        }
+
+        private void AddImage(object sender, RoutedEventArgs e)
+        {
+            if (imageTb.Text == "")            
+                ImageURLs = urlTb.Text;            
+            else            
+                ImageURLs = imageTb.Text + "\n" + urlTb.Text;            
+
+            urlTb.Clear();
+        }
+
+        private void RateGuest(object sender, RoutedEventArgs e)
+        {
+            GuestReviewView guestReviewView = new GuestReviewView(_guestReviewRepository, _reservedAccommodationRepository, _reservationRepository, _reservationRepository.GetById(SelectedReservation.getID()));
+            guestReviewView.ShowDialog();
         }
 
         private void Reset(object sender, RoutedEventArgs e)
+        {
+            ClearTextBoxes();
+        }
+
+        private void ClearURLs(object sender, RoutedEventArgs e)
+        {
+            imageTb.Clear();
+            ImageURLs = "";    
+            publishButton.IsEnabled = false;
+        }                
+
+        private void IsPublishable(object sender, RoutedEventArgs e)
+        {
+            publishButton.IsEnabled = false;
+            if (IsValid)
+            {
+                publishButton.IsEnabled = true;
+            }
+        }
+
+        private void ImageTbCheck(object sender, TextChangedEventArgs e)
+        {
+            addURLButton.Visibility = Visibility.Hidden;
+            if (!string.IsNullOrEmpty(urlTb.Text) && !string.IsNullOrWhiteSpace(urlTb.Text) && Uri.IsWellFormedUriString("https://www.google.com", UriKind.Absolute))
+            {
+                addURLButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void ClearTextBoxes()
         {
             accommodationNameTb.Clear();
             maxGuestsTb.Clear();
             minReservationDaysTb.Clear();
             cancelationPeriodTb.Clear();
+            imageTb.Clear();
+            ImageURLs = "";
             countryCb.SelectedItem = null;
             cityCb.SelectedItem = null;
             typeCb.SelectedItem = null;
         }
 
-        private void AddImage(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();            
-
-            bool? response = openFileDialog.ShowDialog();
-
-            if(response == true)
-            {
-                string filePath = openFileDialog.FileName;                
-                if(imageTb.Text == "")
-                {
-                    imageTb.Text = filePath;
-                    ImageURLs = imageTb.Text;
-                }                    
-                else
-                {
-                    imageTb.Text = imageTb.Text + "\n" + filePath;
-                    ImageURLs = imageTb.Text;
-                }                    
-            }
-        }
-
         private void UpdateAccommodations(List<Accommodation> accommodations)
         {
             Accommodations.Clear();
-            foreach(var accommodation in accommodations)
+            foreach (var accommodation in accommodations)
                 Accommodations.Add(accommodation);
+        }
+
+        private void UpdateReservedAccommodations(List<Reservation> reservations)
+        {
+            ReservedAccommodations.Clear();
+            foreach (var reservation in reservations)
+                ReservedAccommodations.Add(reservation);
         }
 
         public void Update()
         {
             UpdateAccommodations(_accommodationRepository.GetAll());
+            UpdateReservedAccommodations(_reservationRepository.GetUnreviewedReservations());
+        }        
+
+        public string Error => null;
+
+        public string this[string columnName]
+        {
+            get
+            {
+                if (columnName == "AccommodationName")
+                {
+                    if (string.IsNullOrEmpty(AccommodationName) || string.IsNullOrWhiteSpace(AccommodationName)) 
+                        return "Required";
+                }                                  
+                else if( columnName == "City")
+                {
+                    if (string.IsNullOrEmpty(City) || string.IsNullOrWhiteSpace(City)) 
+                        return "Required";
+                }                
+                else if(columnName == "Country")
+                {
+                    if (string.IsNullOrEmpty(Country.ToString()) || string.IsNullOrWhiteSpace(Country.ToString())) 
+                        return "Required";
+                }
+                else if (columnName == "MaxGuests")
+                {
+                    if (string.IsNullOrEmpty(MaxGuests) || string.IsNullOrWhiteSpace(MaxGuests)) 
+                        return "Required";
+                }
+                else if(columnName == "MinReservationDays")
+                {
+                    if (string.IsNullOrEmpty(MinReservationDays) || string.IsNullOrWhiteSpace(MinReservationDays)) 
+                        return "Required";
+                }                
+                else if(columnName == "CancelationPeriod")
+                {
+                    if (string.IsNullOrEmpty(CancelationPeriod) || string.IsNullOrWhiteSpace(CancelationPeriod)) 
+                        return "Required";
+                }
+                else if(columnName == "AccommodationType")
+                {
+                    if(string.IsNullOrEmpty(AccommodationType) || string.IsNullOrWhiteSpace(AccommodationType)) 
+                        return "Required";
+                }
+                else if(columnName == "ImageURLs")
+                {
+                    if (string.IsNullOrEmpty(ImageURLs) || string.IsNullOrWhiteSpace(ImageURLs))
+                        return "Required";
+                }
+                return null;
+            }
+        }        
+
+        private readonly string[] validatedProperties = { "AccommodationName", "City", "Country", "MaxGuests", "MinReservationDays", "CancelationPeriod", "AccommodationType", "ImageURLs" };
+
+        public bool IsValid
+        {
+            get
+            {
+                foreach (var property in validatedProperties)
+                {
+                    if (this[property] != null)
+                        return false;
+                }
+
+                return true;
+            }
         }        
     }
+
+    class ColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+           return DateTime.Now >= (DateTime)value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+           throw new NotImplementedException();
+        }
+    }    
 }

@@ -32,6 +32,20 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
+            <TabItem Header="Your Reservations">
+                <DataGrid
+                    Name="DataGridReservations"
+                    ItemsSource="{Binding Path=UserReservations, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedReservation, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True"
+                    Width="900" Height="320">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Accommodation ID" Binding="{Binding Accommodation.Name}" Width="170"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "End Date" Binding="{Binding EndDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
         </TabControl>
 
         <StackPanel  Grid.Row="3" Orientation="Horizontal" Margin="50, 0, 50, 0" Height="40">

@@ -19,7 +19,7 @@ namespace SIMS_Booking.Repository
             countries = new Dictionary<string, List<string>>();
         }
 
-        public void Load()
+        public Dictionary<string, List<string>> Load()
         {            
             using (StreamReader sr = new StreamReader(path))
             {
@@ -40,13 +40,9 @@ namespace SIMS_Booking.Repository
                         }
                     }
                 }
-            }
-        }
 
-        public Dictionary<string, List<string>> GetAll()
-        {
-            Load();
-            return countries;
+                return countries;
+            }
         }
     }
 }
