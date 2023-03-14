@@ -23,7 +23,7 @@ namespace SIMS_Booking.Model
         public List<string> ImagesURL { get; set; }
 
         public Tour () { }
-        public Tour (string name, Location location, string description, String language, int maxGuests, Stops stops, DateTime startTour, int time, List<string> imagesURL)
+        public Tour (string name, Location location, string description, Language language, int maxGuests, Stops stops, DateTime startTour, int time, List<string> imagesURL)
         {
 
             Name = name;

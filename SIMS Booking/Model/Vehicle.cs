@@ -15,7 +15,11 @@ namespace SIMS_Booking.Model
         public List<Language> Languages { get; set; }
         public List<string> ImagesURL { get; set; }
 
-        public Vehicle() { }
+        public Vehicle()
+        {
+            Locations = new List<Location>();
+            Languages = new List<Language>();
+        }
 
         public Vehicle(List<Location> locations, int maxGuests, List<Language> languages, List<string> imagesURL)
         {
@@ -53,7 +57,7 @@ namespace SIMS_Booking.Model
             ID = Convert.ToInt32(values[0]);
 
             // Read Locations
-            var locations = new List<Location>();
+            /*var locations = new List<Location>();
             var locationValues = values[1].Split(';');
             foreach (var locationValue in locationValues)
             {
@@ -66,18 +70,20 @@ namespace SIMS_Booking.Model
                 locations.Add(location);
             }
             Locations = locations;
+            */
 
             // Read MaxPeople
-            MaxGuests = Convert.ToInt32(values[2]);
+            MaxGuests = Convert.ToInt32(values[1]);
 
             // Read DriverLanguages
-            var driverLanguages = new List<Language>();
+            /*var driverLanguages = new List<Language>();
             var driverLanguageValues = values[3].Split(',');
             foreach (var driverLanguageValue in driverLanguageValues)
             {
                 driverLanguages.Add((Language)Enum.Parse(typeof(Language), driverLanguageValue));
             }
             Languages = driverLanguages;
+            */
 
             // Read ImagesURL
             //ImagesURL = values[3].Split(',').ToList();
@@ -86,19 +92,21 @@ namespace SIMS_Booking.Model
         public string[] ToCSV()
         {
             // Convert Locations to string value
-            var locationValues = Locations.Select(location => $"{location.Country},{location.City}");
+            /* var locationValues = Locations.Select(location => $"{location.Country},{location.City}");
             var locationsValue = string.Join(";", locationValues);
+            */
 
             // Convert DriverLanguages to string value
-            var driverLanguageValues = Languages.Select(driverLanguage => driverLanguage.ToString());
+            /*var driverLanguageValues = Languages.Select(driverLanguage => driverLanguage.ToString());
             var driverLanguagesValue = string.Join(",", driverLanguageValues);
+            */
 
             // Create CSV string array
             string[] csvValues = {
                 ID.ToString(),
-                locationsValue,
+                //locationsValue,
                 MaxGuests.ToString(),
-                driverLanguagesValue//,
+                //driverLanguagesValue//,
                 //string.Join(',', ImagesURL)
                 };
             return csvValues;

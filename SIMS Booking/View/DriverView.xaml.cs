@@ -19,6 +19,8 @@ using System.Windows.Controls;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
+using SIMS_Booking.Repository.RelationsRepository;
+using System.Diagnostics;
 
 namespace SIMS_Booking.View
 {
@@ -27,8 +29,10 @@ namespace SIMS_Booking.View
         public ObservableCollection<Vehicle> Vehicles { get; set; }
         private VehicleRepository _vehicleRepository;
         private CityCountryRepository _cityCountryRepository;
+        private DriverLanguagesRepository _driverLanguagesRepository;
+        private DriverLocationsRepository _driverLocationsRepository;
 
-        public DriverView(VehicleRepository vehicleRepository, CityCountryRepository cityCountryRepository)
+        public DriverView(VehicleRepository vehicleRepository, DriverLanguagesRepository driverLanguagesRepository, DriverLocationsRepository driverLocationsRepository, CityCountryRepository cityCountryRepository)
         {
             InitializeComponent();
 
@@ -36,7 +40,13 @@ namespace SIMS_Booking.View
 
             _vehicleRepository = vehicleRepository;
             _vehicleRepository.Subscribe(this);
-            Vehicles = new ObservableCollection<Vehicle>(vehicleRepository.Load());
+
+            _driverLanguagesRepository = driverLanguagesRepository;
+            _driverLocationsRepository = driverLocationsRepository;
+
+            Vehicles = new ObservableCollection<Vehicle>(vehicleRepository.GetAll());
+            foreach (Vehicle vehicle in Vehicles)
+                Trace.WriteLine(vehicle.Locations);
         }
 
         private void UpdateVehicles(List<Vehicle> vehicles)

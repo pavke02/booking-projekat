@@ -23,6 +23,8 @@ namespace SIMS_Booking.View
         private readonly GuestReviewRepository _guestReviewRepository;
 
         private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
+        private readonly DriverLanguagesRepository _driverLanguagesRepository;
+        private readonly DriverLocationsRepository _driverLocationsRepository;
 
 
         private string _username;
@@ -63,6 +65,12 @@ namespace SIMS_Booking.View
 
             _reservedAccommodationRepository.LoadAccommodationsAndUsersInReservation(_userRepository, _accommodationRepository, _reservationRepository);
             _guestReviewRepository.LoadReservationInGuestReview(_reservationRepository);
+
+            _driverLanguagesRepository = new DriverLanguagesRepository();
+            _driverLocationsRepository = new DriverLocationsRepository();
+
+            _driverLanguagesRepository.AddDriverLanguagesToVehicles(_vehicleRepository);
+            _driverLocationsRepository.AddDriverLocationsToVehicles(_vehicleRepository);
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
@@ -84,7 +92,7 @@ namespace SIMS_Booking.View
                             guest1View.Show();
                             break;
                         case Roles.Driver:
-                            DriverView driverView = new DriverView(_vehicleRepository, _cityCountryRepository);
+                            DriverView driverView = new DriverView(_vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository);
                             driverView.Show();
                             break;
                     }
