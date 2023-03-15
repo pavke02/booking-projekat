@@ -18,12 +18,12 @@
             <TabItem Header="Vehicles">
                 <DataGrid
                     Name="DataGridVehicles"
-                    ItemsSource="{Binding Path=Vehicles, UpdateSourceTrigger=PropertyChanged}"
-                    SelectedItem="{Binding Path=SelectedVehicles, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding Vehicles, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding SelectedVehicles, UpdateSourceTrigger=PropertyChanged}"
                     AutoGenerateColumns="False" IsReadOnly="True"
                     Width="900" Height="320">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Locations" Binding="{Binding Locations}" Width="300"></DataGridTextColumn>
+                        <DataGridTextColumn x:Name="LocationsColumn" Header="Locations" Binding="{Binding DriverLocations}" Width="300"></DataGridTextColumn>
                         <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="300"></DataGridTextColumn>
                         <DataGridTextColumn Header= "Driver Languages" Binding="{Binding Languages}" Width="300"></DataGridTextColumn>
                     </DataGrid.Columns>
