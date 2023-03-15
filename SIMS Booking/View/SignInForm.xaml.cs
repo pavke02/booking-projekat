@@ -19,9 +19,12 @@ namespace SIMS_Booking.View
         private readonly AccomodationRepository _accommodationRepository;
         private readonly CityCountryRepository _cityCountryRepository;   
         private readonly ReservationRepository _reservationRepository;
+        private readonly VehicleRepository _vehicleRepository;
         private readonly GuestReviewRepository _guestReviewRepository;
 
         private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
+        private readonly DriverLanguagesRepository _driverLanguagesRepository;
+        private readonly DriverLocationsRepository _driverLocationsRepository;
 
 
         private string _username;
@@ -55,12 +58,19 @@ namespace SIMS_Booking.View
             _accommodationRepository = new AccomodationRepository();
             _cityCountryRepository = new CityCountryRepository();   
             _reservationRepository = new ReservationRepository();
+            _vehicleRepository = new VehicleRepository();
             _guestReviewRepository = new GuestReviewRepository();            
 
             _reservedAccommodationRepository = new ReservedAccommodationRepository();
 
             _reservedAccommodationRepository.LoadAccommodationsAndUsersInReservation(_userRepository, _accommodationRepository, _reservationRepository);
             _guestReviewRepository.LoadReservationInGuestReview(_reservationRepository);
+
+            _driverLanguagesRepository = new DriverLanguagesRepository();
+            _driverLocationsRepository = new DriverLocationsRepository();
+
+            _driverLanguagesRepository.AddDriverLanguagesToVehicles(_vehicleRepository);
+            _driverLocationsRepository.AddDriverLocationsToVehicles(_vehicleRepository);
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
@@ -80,6 +90,10 @@ namespace SIMS_Booking.View
                         case Roles.Guest1:
                             Guest1MainView guest1View = new Guest1MainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, _reservedAccommodationRepository ,user);
                             guest1View.Show();
+                            break;
+                        case Roles.Driver:
+                            DriverView driverView = new DriverView(_vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository);
+                            driverView.Show();
                             break;
                     }
                     Close();

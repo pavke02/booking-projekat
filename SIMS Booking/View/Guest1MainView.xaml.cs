@@ -20,7 +20,6 @@ namespace SIMS_Booking.View
         public ObservableCollection<Accommodation> AccommodationsReorganized { get; set; }
         public User LoggedUser { get; set; }
 
-
         private readonly AccomodationRepository _accommodationRepository;
         private readonly CityCountryRepository _cityCountryRepository;
         private ReservationRepository _reservationRepository;
