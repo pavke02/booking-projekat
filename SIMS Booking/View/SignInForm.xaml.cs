@@ -15,15 +15,11 @@ namespace SIMS_Booking.View
     {
 
         private readonly UserRepository _userRepository;
-
         private readonly AccomodationRepository _accommodationRepository;
-
-
         private readonly CityCountryRepository _cityCountryRepository;   
         private readonly ReservationRepository _reservationRepository;
-
         private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
-
+        private readonly TourRepository _tourRepository;
 
         private string _username;
         public string Username
@@ -50,11 +46,12 @@ namespace SIMS_Booking.View
             InitializeComponent();
             DataContext = this;
 
+
             _userRepository = new UserRepository();
             _accommodationRepository = new AccomodationRepository();
-
             _cityCountryRepository = new CityCountryRepository();   
             _reservationRepository = new ReservationRepository();
+            _tourRepository = new TourRepository();
 
             _reservedAccommodationRepository = new ReservedAccommodationRepository();
 
@@ -81,6 +78,11 @@ namespace SIMS_Booking.View
                             Guest1MainView guest1View = new Guest1MainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, _reservedAccommodationRepository ,user);
                             guest1View.Show();
                             break;
+                        case Roles.Guide:
+                            GuideMainView guideView = new GuideMainView(_tourRepository);
+                            guideView.Show();
+                            break;
+                            
                     }
                     Close();
                 }
