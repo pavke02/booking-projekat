@@ -61,7 +61,7 @@ namespace SIMS_Booking.View
             }
         }
 
-        private AccommodationType _kind;
+        /*private AccommodationType _kind;
         public AccommodationType Kind
         {
             get => _kind;
@@ -70,6 +70,21 @@ namespace SIMS_Booking.View
                 if (value != _kind)
                 {
                     _kind = value;
+                    OnPropertyChanged();
+                }
+            }
+        }*/
+
+        private List<AccommodationType> _kinds;
+
+        public List<AccommodationType> Kinds
+        {
+            get => _kinds;
+            set
+            {
+                if (value != _kinds)
+                {
+                    _kinds = value;
                     OnPropertyChanged();
                 }
             }
@@ -119,7 +134,14 @@ namespace SIMS_Booking.View
             _cityCountryRepository = cityCountryRepository; 
 
             Accommodations = _accommodationRepository.Load();
-            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.GetAll());
+            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
+
+            nameTb.Clear();
+            AccommodationName = "";
+            HouseCheckBox.IsChecked = true;
+            ApartmentCheckBox.IsChecked = true;
+            CottageCheckBox.IsChecked = true;
+
 
             TypesCollection = new List<string>
             {
@@ -151,12 +173,13 @@ namespace SIMS_Booking.View
             Country = new KeyValuePair<string, List<string>>();
             cityCb.SelectedItem = null;
             City = "";
-            typeCb.SelectedItem = null;
-            Kind = AccommodationType.NoKind;
-            maxGuestsTb.Clear();
+            HouseCheckBox.IsChecked = true;
+            ApartmentCheckBox.IsChecked = true;
+            CottageCheckBox.IsChecked = true;
             MaxGuests = "0";
-            minReservationDaysTb.Clear();
+            maxGuestsTb.Clear();
             MinReservationDays = "10";
+            minReservationDaysTb.Clear();
 
 
             foreach (Window window in Application.Current.Windows)
@@ -173,6 +196,22 @@ namespace SIMS_Booking.View
            // Repository = new AccomodationRepository();
             List<Accommodation> accommodationsFiltered = _accommodationRepository.Load();
             int numberOfDeleted = 0;
+
+            Kinds = new List<AccommodationType>();
+
+            if (HouseCheckBox.IsChecked == true)
+            {
+                Kinds.Add(AccommodationType.House);
+            }
+            if (ApartmentCheckBox.IsChecked == true)
+            {
+                Kinds.Add(AccommodationType.Apartment);
+            }
+            if (CottageCheckBox.IsChecked == true)
+            {
+                Kinds.Add(AccommodationType.Cottage);
+            }
+
             foreach (Accommodation accommodation in Accommodations)
             {
                 if (!accommodation.Name.ToLower().Contains(AccommodationName.ToLower()))
@@ -181,7 +220,7 @@ namespace SIMS_Booking.View
                     numberOfDeleted++;
                 }
                 else if (Country.Key != accommodation.Location.Country && Country.Key != null)
-                {
+                { 
                     accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
                     numberOfDeleted++;
                 }
@@ -190,7 +229,7 @@ namespace SIMS_Booking.View
                     accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
                     numberOfDeleted++;
                 }
-                else if (accommodation.Type != Kind && Kind != AccommodationType.NoKind)
+                else if (!Kinds.Contains(accommodation.Type))
                 {
                     accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
                     numberOfDeleted++;

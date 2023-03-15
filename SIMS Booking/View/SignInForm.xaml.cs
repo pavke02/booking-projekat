@@ -20,8 +20,12 @@ namespace SIMS_Booking.View
         private readonly CityCountryRepository _cityCountryRepository;   
         private readonly ReservationRepository _reservationRepository;
         private readonly TourRepository _tourRepository;
+        private readonly VehicleRepository _vehicleRepository;
+        private readonly GuestReviewRepository _guestReviewRepository;
 
         private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
+        private readonly DriverLanguagesRepository _driverLanguagesRepository;
+        private readonly DriverLocationsRepository _driverLocationsRepository;
 
 
         private string _username;
@@ -49,19 +53,26 @@ namespace SIMS_Booking.View
             InitializeComponent();
             DataContext = this;
 
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");            
 
             _userRepository = new UserRepository();
             _accommodationRepository = new AccomodationRepository();
             _cityCountryRepository = new CityCountryRepository();   
             _reservationRepository = new ReservationRepository();
             _tourRepository = new TourRepository();
+            _vehicleRepository = new VehicleRepository();
+            _guestReviewRepository = new GuestReviewRepository();            
 
             _reservedAccommodationRepository = new ReservedAccommodationRepository();
 
             _reservedAccommodationRepository.LoadAccommodationsAndUsersInReservation(_userRepository, _accommodationRepository, _reservationRepository);
-            
+            _guestReviewRepository.LoadReservationInGuestReview(_reservationRepository);
 
+            _driverLanguagesRepository = new DriverLanguagesRepository();
+            _driverLocationsRepository = new DriverLocationsRepository();
+
+            _driverLanguagesRepository.AddDriverLanguagesToVehicles(_vehicleRepository);
+            _driverLocationsRepository.AddDriverLocationsToVehicles(_vehicleRepository);
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
@@ -75,7 +86,7 @@ namespace SIMS_Booking.View
                     {
                         case Roles.Owner:
 
-                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository, _reservationRepository);
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, _guestReviewRepository, _reservedAccommodationRepository);
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
@@ -85,6 +96,9 @@ namespace SIMS_Booking.View
                         case Roles.Guest2:
                             Guest2MainView guest2View = new Guest2MainView(_tourRepository,user);
                             guest2View.Show();
+                        case Roles.Driver:
+                            DriverView driverView = new DriverView(_vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository);
+                            driverView.Show();
                             break;
                     }
                     Close();

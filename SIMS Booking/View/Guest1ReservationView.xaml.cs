@@ -54,10 +54,10 @@ public partial class Guest1ReservationView : Window
             return;
         }
 
-        Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, _selectedAccommodation, LoggedUser);
+        Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, _selectedAccommodation, LoggedUser, false);
         _reservationRepository.Save(reservation);
         ReservedAccommodation reservedAccommodation =
-            new ReservedAccommodation(LoggedUser.ID, _selectedAccommodation.ID, reservation.ID);
+            new ReservedAccommodation(LoggedUser.getID(), _selectedAccommodation.getID(), reservation.getID());
         _reservedAccommodationRepository.Save(reservedAccommodation);        
         Close();
     }
@@ -114,7 +114,7 @@ public partial class Guest1ReservationView : Window
         foreach (Reservation reservation in reservations)
         {
 
-            if (reservation.Accommodation.ID == _selectedAccommodation.ID)
+            if (reservation.Accommodation.getID() == _selectedAccommodation.getID())
             {
                 accommodationReservations.Add(reservation);
             }
