@@ -63,6 +63,48 @@ namespace SIMS_Booking.View
             }
         }
 
+        private int _tidiness;
+        public int Tidiness
+        {
+            get => _tidiness;
+            set
+            {
+                if (value != _tidiness)
+                {
+                    _tidiness = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _ruleFollowing;
+        public int RuleFollowing
+        {
+            get => _ruleFollowing;
+            set
+            {
+                if (value != _ruleFollowing)
+                {
+                    _ruleFollowing = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _comment;
+        public string Comment
+        {
+            get => _comment;
+            set
+            {
+                if (value != _comment)
+                {
+                    _comment = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -79,6 +121,9 @@ namespace SIMS_Booking.View
             AccommodationName = review.Reservation.Accommodation.Name;
             StartDate = review.Reservation.StartDate.ToShortDateString();
             EndDate = review.Reservation.EndDate.ToShortDateString();
+            Tidiness = review.Tidiness;
+            RuleFollowing = review.RuleFollowing;
+            Comment = review.Comment;
         }
     }
 }
