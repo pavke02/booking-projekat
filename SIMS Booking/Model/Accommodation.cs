@@ -48,7 +48,7 @@ namespace SIMS_Booking.Model
             ID = id;
         }
 
-        //ToDo:
+
         public void FromCSV(string[] values)
         {
             ID = int.Parse(values[0]);
