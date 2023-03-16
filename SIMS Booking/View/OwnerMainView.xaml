@@ -55,7 +55,7 @@
 
                         <Label Grid.Column="2" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Country</Label>
                         <ComboBox Grid.Column="3" Grid.Row="0" Height="30" Width="180" Margin="0, 20, 0, 0"  
-                                  ItemsSource="{Binding Countries}" DisplayMemberPath="Key" SelectionChanged="ChangeCities" SelectedItem="{Binding Country}"
+                                  ItemsSource="{Binding Countries}" DisplayMemberPath="Key" SelectionChanged="FillCityCb" SelectedItem="{Binding Country}"
                                   Validation.ErrorTemplate="{StaticResource ValidationTemplate}"  
                                   LostFocus="IsPublishable"
                                   x:Name="countryCb">
@@ -164,12 +164,12 @@
                     </Grid>
                 </WrapPanel>
             </TabItem>
-            <TabItem Name="reservedAccommodations" Header="Reserved Accommodations" Height="60">
+            <TabItem Name="reservedAccommodationsTab" Header="Reserved Accommodations" Height="60">
                 <StackPanel>
                     <DataGrid x:Name="reservedAccommodationGrid" Height="480" VerticalAlignment="Top"
                           ItemsSource="{Binding Path=ReservedAccommodations, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedReservation, UpdateSourceTrigger=PropertyChanged}"                                                                                                                                                                                      
-                          SelectionChanged="CheckDate"                          
+                          SelectionChanged="IsReviewable"                          
                           IsReadOnly="True" AutoGenerateColumns="False">
                         <DataGrid.Resources>
                             <converters:ColorConverter x:Key="ColorConverter"></converters:ColorConverter>
@@ -185,16 +185,37 @@
                         </DataGrid.CellStyle>
                         <DataGrid.Columns >
                             <DataGridTextColumn Header="Reserved by" Binding="{Binding User.Username}" Width="200"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Accommodation.Name}" Width="200"/>
-                            <DataGridTextColumn Header="Type" Binding="{Binding Accommodation.Type}" Width="*"/>
-                            <DataGridTextColumn Header="Stard Date" Binding="{Binding StartDate, StringFormat=d}" Width="250"/>
-                            <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=d }" Width="250"/>
+                            <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Accommodation.Name}" Width="240"/>
+                            <DataGridTextColumn Header="Accommodation Type" Binding="{Binding Accommodation.Type}" Width="*"/>
+                            <DataGridTextColumn Header="Stard Date" Binding="{Binding StartDate, StringFormat=d}" Width="210"/>
+                            <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=d }" Width="210"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
                     <Button Name="reviewGuestClick" Content="Review Guest" Click="RateGuest"
                             Width="150" Height="40" Margin="0, 30, 50, 0" HorizontalAlignment="Right"
                             IsEnabled="false">
+                    </Button>
+                </StackPanel>
+            </TabItem>
+            <TabItem Name="pastReservationsTab" Header="Reservation History" Height="60">
+                <StackPanel>
+                    <DataGrid x:Name="pastReservationGrid" Height="480" VerticalAlignment="Top"
+                          ItemsSource="{Binding Path=PastReservations, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Path=SelectedReview, UpdateSourceTrigger=PropertyChanged}"
+                          IsReadOnly="True" AutoGenerateColumns="False">
+                        <DataGrid.Columns >
+                            <DataGridTextColumn Header="Reserved by" Binding="{Binding Reservation.User.Username}" Width="200"/>
+                            <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="240"/>
+                            <DataGridTextColumn Header="Accommodation Type" Binding="{Binding Reservation.Accommodation.Type}" Width="*"/>
+                            <DataGridTextColumn Header="Stard Date" Binding="{Binding Reservation.StartDate, StringFormat=d}" Width="210"/>
+                            <DataGridTextColumn Header="End Date" Binding="{Binding Reservation.EndDate, StringFormat=d }" Width="210"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Button Name="reviewDetails" Content="Show Review" Click="ShowReview"
+                            Width="150" Height="40" Margin="0, 30, 50, 0" HorizontalAlignment="Right"
+                            >
                     </Button>
                 </StackPanel>
             </TabItem>

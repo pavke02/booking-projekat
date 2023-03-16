@@ -19,6 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ToastNotifications" Version="2.5.1" />
+    <PackageReference Include="ToastNotifications.Messages" Version="2.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="View\add.png" />
     <Resource Include="View\remove.png" />
   </ItemGroup>

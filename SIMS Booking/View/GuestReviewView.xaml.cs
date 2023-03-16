@@ -98,8 +98,7 @@ namespace SIMS_Booking.View
         private void SubmitReview(object sender, RoutedEventArgs e)
         {
             _guestReviewRepository.SubmitReview(Tidiness, RuleFollowing, Comment, _reservation);
-            _reservationRepository.Update(_reservation);
-            //_reservedAccommodationRepository.DeleteByReservation(_reservation.getID());
+            _reservationRepository.Update(_reservation);            
             Close();
         }
 

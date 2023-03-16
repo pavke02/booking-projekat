@@ -1,6 +1,7 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
-using System.Xml.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SIMS_Booking.Repository
 {
@@ -21,6 +22,11 @@ namespace SIMS_Booking.Repository
             reservation.IsReviewed = true;
             GuestReview guestReview = new GuestReview(tidiness, ruleFollowing, comment, reservation);
             Save(guestReview);
+        }
+
+        public List<GuestReview> GetReviewedReservations()
+        {
+            return _entityList.Where(e => e.Reservation.IsReviewed).ToList();
         }
     }
 }
