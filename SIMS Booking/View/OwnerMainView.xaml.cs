@@ -189,6 +189,8 @@ namespace SIMS_Booking.View
             {
                 if (ReservedAccommodations.FirstOrDefault(s => s.EndDate <= DateTime.Now && (DateTime.Now - s.EndDate.Date).TotalDays <= 5) != null)
                     notifier.ShowInformation("You have guests to review!");
+
+                _reservationRepository.RemoveUnreviewedReservations(_guestReviewRepository);
                 timer.Stop();
             };
             timer.Start();
@@ -196,7 +198,7 @@ namespace SIMS_Booking.View
             _date = DateTime.Now;
             _checkDateTimer = new DispatcherTimer();
             _checkDateTimer.Tick += new EventHandler(CheckDate);
-            _checkDateTimer.Interval = new TimeSpan(0, 5, 0);
+            _checkDateTimer.Interval = new TimeSpan(0, 1, 0);
             _checkDateTimer.Start();            
         }   
         
@@ -298,7 +300,7 @@ namespace SIMS_Booking.View
         private void ImageTbCheck(object sender, TextChangedEventArgs e)
         {
             addURLButton.Visibility = Visibility.Hidden;
-            if (!string.IsNullOrEmpty(urlTb.Text) && !string.IsNullOrWhiteSpace(urlTb.Text) && Uri.IsWellFormedUriString("https://www.google.com", UriKind.RelativeOrAbsolute))
+            if (!string.IsNullOrEmpty(urlTb.Text) && !string.IsNullOrWhiteSpace(urlTb.Text) && Uri.IsWellFormedUriString("https://www.google.com", UriKind.Absolute))
             {
                 addURLButton.Visibility = Visibility.Visible;
             }
