@@ -205,7 +205,7 @@ namespace SIMS_Booking.View
         ~OwnerMainView() { notifier.Dispose(); _checkDateTimer.Stop(); }
 
         //Metoda koja proverava da li user idalje moze da se oceni naspram datuma. 
-        //Metoda se poziva na svakih 5min za slucaj da se datum promeni u tom periodu
+        //Metoda se poziva na svakih 1min za slucaj da se datum promeni u tom periodu
         public void CheckDate(object sender, EventArgs e)
         {            
             if (_date.Date != DateTime.Now.Date)
