@@ -22,8 +22,7 @@ using System.Windows.Threading;
 namespace SIMS_Booking.View
 {
     public partial class OwnerMainView : Window, IObserver, INotifyPropertyChanged, IDataErrorInfo
-    {
-        //string[] https;
+    {        
         public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> TypesCollection { get; set; }
         public ObservableCollection<Accommodation> Accommodations { get; set; }
@@ -295,10 +294,11 @@ namespace SIMS_Booking.View
                     reviewGuestClick.IsEnabled = false;
         }
 
+        //ToDo: srediti da radi samo za validne URLove
         private void ImageTbCheck(object sender, TextChangedEventArgs e)
         {
             addURLButton.Visibility = Visibility.Hidden;
-            if (!string.IsNullOrEmpty(urlTb.Text) && !string.IsNullOrWhiteSpace(urlTb.Text) && Uri.IsWellFormedUriString("https://www.google.com", UriKind.Absolute))
+            if (!string.IsNullOrEmpty(urlTb.Text) && !string.IsNullOrWhiteSpace(urlTb.Text) && Uri.IsWellFormedUriString("https://www.google.com", UriKind.RelativeOrAbsolute))
             {
                 addURLButton.Visibility = Visibility.Visible;
             }
