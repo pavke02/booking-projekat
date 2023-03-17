@@ -20,6 +20,8 @@ namespace SIMS_Booking.View
         private readonly ReservationRepository _reservationRepository;
         private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
         private readonly TourRepository _tourRepository;
+        private readonly ToursCheckpointRepository _tourCheckpointRepository;
+        private readonly TourPointRepository _tourPointRepository;
 
         private string _username;
         public string Username
@@ -52,12 +54,16 @@ namespace SIMS_Booking.View
             _cityCountryRepository = new CityCountryRepository();   
             _reservationRepository = new ReservationRepository();
             _tourRepository = new TourRepository();
+            _tourPointRepository = new TourPointRepository(); 
 
             _reservedAccommodationRepository = new ReservedAccommodationRepository();
+            _tourCheckpointRepository = new ToursCheckpointRepository();
 
             _reservedAccommodationRepository.LoadAccommodationsAndUsersInReservation(_userRepository, _accommodationRepository, _reservationRepository);
-            
 
+            _tourCheckpointRepository.LoadToursCheckpoint(_tourRepository, _tourPointRepository);
+
+           
         }
 
         private void SignIn(object sender, RoutedEventArgs e)

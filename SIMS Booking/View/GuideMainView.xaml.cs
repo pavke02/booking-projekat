@@ -180,7 +180,6 @@ namespace SIMS_Booking.View
             if (int.TryParse(Time.Text, out vreme))
             {
                 tour.Time = vreme;
-
             }
             else
             {

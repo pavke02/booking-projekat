@@ -13,6 +13,7 @@ namespace SIMS_Booking.Repository
     {
 
         public TourRepository() : base("../../../Resources/Data/guides.csv") { }
+        
 
         public List<Tour> GetTodaysTours()
         {
