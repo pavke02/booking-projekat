@@ -25,9 +25,9 @@ namespace SIMS_Booking.Repository
            return userReservations;            
         }
 
-        public List<Reservation> GetUnreviewedReservations()
+        public List<Reservation> GetUnreviewedReservations(int id)
         {
-            return _entityList.Where(e => !e.IsReviewed).ToList();                
+            return _entityList.Where(e => !e.IsReviewed && e.Accommodation.User.getID() == id).ToList();                
         }
 
         //Metoda proverava da li je istekao rok za ocenjivanje,

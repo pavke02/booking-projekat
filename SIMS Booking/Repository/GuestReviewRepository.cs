@@ -24,9 +24,9 @@ namespace SIMS_Booking.Repository
             Save(guestReview);
         }
 
-        public List<GuestReview> GetReviewedReservations()
+        public List<GuestReview> GetReviewedReservations(int id)
         {
-            return _entityList.Where(e => e.Reservation.IsReviewed).ToList();
+            return _entityList.Where(e => e.Reservation.IsReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
         }
     }
 }
