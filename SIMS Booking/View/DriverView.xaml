@@ -9,29 +9,54 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="70"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TabControl x:Name="Tab" Width="900" Height="350" Grid.Row="2">
+        <WrapPanel  Grid.Row="1" Orientation="Horizontal">
+            <Label Content="Vehicle" Margin="448,0,0,0" Width="100" Height="50" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        </WrapPanel>
+
+        <WrapPanel  Grid.Row="2" Orientation="Horizontal">
+            <Label HorizontalAlignment="Center" Height="50" Width="100" HorizontalContentAlignment="Center" Content="Locations" VerticalContentAlignment="Center" FontSize="14" Margin="120,0,0,0"/>
+            <Label HorizontalAlignment="Center" Height="50" Width="100" HorizontalContentAlignment="Center" Content="Languages" VerticalContentAlignment="Center" FontSize="14" Margin="120,0,0,0"/>
+            <Label HorizontalAlignment="Center" Height="50" Width="100" HorizontalContentAlignment="Center" Content="MaxGuests" VerticalContentAlignment="Center" FontSize="14" Margin="120,0,0,0"/>
+            <Label HorizontalAlignment="Center" Height="50" Width="100" HorizontalContentAlignment="Center" Content="Images" VerticalContentAlignment="Center" FontSize="14" Margin="120,0,0,0"/>
+            
+        </WrapPanel>
+
+        <WrapPanel  Grid.Row="3" Orientation="Horizontal">
+            <TextBlock Name = "LocationsTB" 
+                TextWrapping= "Wrap" Width="200" Height="150" Margin="70,20,0,0" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Stretch" TextAlignment="Center"/>
+            <TextBlock Name = "LanguagesTB"
+                TextWrapping="Wrap" Width="200" Height="150" Margin="20,20,0,0" FontSize="14" HorizontalAlignment="Center" TextAlignment="Center"/>
+            <TextBlock Name = "MaxGuestsTB"
+                TextWrapping="Wrap" Width="200" Height="150" Margin="20,20,0,0" FontSize="14" HorizontalAlignment="Center" TextAlignment="Center"/>
+            <Button Content="View Gallery" Margin="20,20,0,0" Width="200" Background="White" FontSize="14"/>
+
+        </WrapPanel>
+
+        <!--<TabControl x:Name="Tab" Width="900" Height="350" Grid.Row="2">
             <TabItem Header="Vehicles">
                 <DataGrid
                     Name="DataGridVehicles"
                     ItemsSource="{Binding Vehicles, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding SelectedVehicles, UpdateSourceTrigger=PropertyChanged}"
                     AutoGenerateColumns="False" IsReadOnly="True"
-                    Width="900" Height="320">
-                    <DataGrid.Columns>
+                    Width="900" Height="320" SelectionChanged="DataGridVehicles_SelectionChanged">
+                    --><!--<DataGrid.Columns>
                         <DataGridTextColumn x:Name="LocationsColumn" Header="Locations" Binding="{Binding DriverLocations}" Width="300"></DataGridTextColumn>
                         <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="300"></DataGridTextColumn>
                         <DataGridTextColumn Header= "Driver Languages" Binding="{Binding Languages}" Width="300"></DataGridTextColumn>
-                    </DataGrid.Columns>
+                    </DataGrid.Columns>--><!--
+                    
                 </DataGrid>
             </TabItem>
-        </TabControl>
-        <StackPanel  Grid.Row="3" Orientation="Horizontal" Margin="50, 0, 50, 0" Height="40">
-            <Button Content="Add Vehicle" Padding="5, 0, 5, 0" Margin="0, 0, 10, 0 " Click="AddVehicle" Width="75">
+        </TabControl>-->
+        <StackPanel  Grid.Row="4" Orientation="Horizontal" Margin="50, 0, 50, 0" Height="40">
+            <Button Name="addVehicle" Content="Add Vehicle" Padding="5, 0, 5, 0" Margin="0, 0, 10, 0 " Click="AddVehicle" Width="75">
 
             </Button>
         </StackPanel>

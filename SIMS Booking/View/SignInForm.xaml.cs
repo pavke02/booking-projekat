@@ -101,7 +101,7 @@ namespace SIMS_Booking.View
                             guest2View.Show();
                             break;
                         case Roles.Driver:
-                            DriverView driverView = new DriverView(_vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository);
+                            DriverView driverView = new DriverView(user, _vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository);
                             driverView.Show();
                             break;
                     }
