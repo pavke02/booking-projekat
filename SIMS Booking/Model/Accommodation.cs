@@ -13,6 +13,7 @@ namespace SIMS_Booking.Model
         public string Name { get; set; }
         public Location Location { get; set; }
         public AccommodationType Type { get; set; }
+        public User User { get; set; }
         public int MaxGuests { get; set; }
         public int MinReservationDays { get; set; }
         public int CancellationPeriod { get; set; }
@@ -23,11 +24,12 @@ namespace SIMS_Booking.Model
             ImageURLs = new List<string>(); 
         }
 
-        public Accommodation(string name, Location location, AccommodationType type, int maxGuests, int minReservationDays, int cancellationPeriod, List<string> imagesURL)
+        public Accommodation(string name, Location location, AccommodationType type, User user, int maxGuests, int minReservationDays, int cancellationPeriod, List<string> imagesURL)
         {            
             Name = name;
             Location = location;
             Type = type;
+            User = user;
             MaxGuests = maxGuests;
             MinReservationDays = minReservationDays;
             CancellationPeriod = cancellationPeriod;

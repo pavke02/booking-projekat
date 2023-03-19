@@ -18,6 +18,7 @@ using ToastNotifications.Position;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using System.Windows.Threading;
+using SIMS_Booking.Model.Relations;
 
 namespace SIMS_Booking.View
 {
@@ -33,13 +34,15 @@ namespace SIMS_Booking.View
         public GuestReview SelectedReview { get; set; }
 
         private DateTime _date;
-        private DispatcherTimer _checkDateTimer;             
+        private DispatcherTimer _checkDateTimer;
+        private User _user;
 
         private AccomodationRepository _accommodationRepository;
         private CityCountryRepository _cityCountryRepository;
         private ReservationRepository _reservationRepository;
         private GuestReviewRepository _guestReviewRepository;
         private ReservedAccommodationRepository _reservedAccommodationRepository;
+        private UsersAccommodationRepository _usersAccommodationRepository;
 
         private string _accommodationName;
         public string AccommodationName
@@ -160,27 +163,30 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }                
 
-        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, GuestReviewRepository guestReviewRepository, ReservedAccommodationRepository reservedAccommodationRepository)
+        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, GuestReviewRepository guestReviewRepository, ReservedAccommodationRepository reservedAccommodationRepository, UsersAccommodationRepository usersAccommodationRepository, User user)
         {
             InitializeComponent();
-            DataContext = this;            
+            DataContext = this;
+
+            _user = user;
 
             _accommodationRepository = accomodationRepository;
             _accommodationRepository.Subscribe(this);
-            Accommodations = new ObservableCollection<Accommodation>(_accommodationRepository.GetAll());
+            Accommodations = new ObservableCollection<Accommodation>(_accommodationRepository.GetByUserId(_user.getID()));
 
             _reservationRepository = reservationRepository;
             _reservationRepository.Subscribe(this);
-            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationRepository.GetUnreviewedReservations());
+            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationRepository.GetUnreviewedReservations(_user.getID()));
 
             _guestReviewRepository = guestReviewRepository;
             _guestReviewRepository.Subscribe(this);
-            PastReservations = new ObservableCollection<GuestReview>(_guestReviewRepository.GetReviewedReservations());
+            PastReservations = new ObservableCollection<GuestReview>(_guestReviewRepository.GetReviewedReservations(_user.getID()));
 
             _cityCountryRepository = cityCountryRepository;
             Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
 
-            _reservedAccommodationRepository = reservedAccommodationRepository;            
+            _reservedAccommodationRepository = reservedAccommodationRepository;
+            _usersAccommodationRepository = usersAccommodationRepository;
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };                        
 
@@ -238,8 +244,11 @@ namespace SIMS_Booking.View
             foreach (string value in values)
                 imageURLs.Add(value);
             
-            Accommodation accommodation = new Accommodation(AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType), AccommodationType), int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
+            Accommodation accommodation = new Accommodation(AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType), AccommodationType), _user, int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
             _accommodationRepository.Save(accommodation);
+
+            UsersAccommodation usersAccommodation = new UsersAccommodation(_user.getID(), accommodation.getID());
+            _usersAccommodationRepository.Save(usersAccommodation);
             MessageBox.Show("Accommodation published successfully");
             ClearTextBoxes();
         }
@@ -342,9 +351,9 @@ namespace SIMS_Booking.View
 
         public void Update()
         {
-            UpdateAccommodations(_accommodationRepository.GetAll());
-            UpdateReservedAccommodations(_reservationRepository.GetUnreviewedReservations());
-            UpdatePastReservations(_guestReviewRepository.GetReviewedReservations());
+            UpdateAccommodations(_accommodationRepository.GetByUserId(_user.getID()));
+            UpdateReservedAccommodations(_reservationRepository.GetUnreviewedReservations(_user.getID()));
+            UpdatePastReservations(_guestReviewRepository.GetReviewedReservations(_user.getID()));
         }        
 
         public string Error => null;

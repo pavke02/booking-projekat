@@ -21,9 +21,10 @@ namespace SIMS_Booking.View
         private readonly ReservationRepository _reservationRepository;
         private readonly TourRepository _tourRepository;
         private readonly VehicleRepository _vehicleRepository;
-        private readonly GuestReviewRepository _guestReviewRepository;
+        private readonly GuestReviewRepository _guestReviewRepository;        
 
         private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
+        private readonly UsersAccommodationRepository _usersAccommodationRepository;
         private readonly DriverLanguagesRepository _driverLanguagesRepository;
         private readonly DriverLocationsRepository _driverLocationsRepository;
 
@@ -64,8 +65,10 @@ namespace SIMS_Booking.View
             _guestReviewRepository = new GuestReviewRepository();            
 
             _reservedAccommodationRepository = new ReservedAccommodationRepository();
+            _usersAccommodationRepository = new UsersAccommodationRepository();
 
             _reservedAccommodationRepository.LoadAccommodationsAndUsersInReservation(_userRepository, _accommodationRepository, _reservationRepository);
+            _usersAccommodationRepository.LoadUsersInAccommodation(_userRepository, _accommodationRepository);
             _guestReviewRepository.LoadReservationInGuestReview(_reservationRepository);
 
             _driverLanguagesRepository = new DriverLanguagesRepository();
@@ -86,7 +89,7 @@ namespace SIMS_Booking.View
                     {
                         case Roles.Owner:
 
-                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, _guestReviewRepository, _reservedAccommodationRepository);
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, _guestReviewRepository, _reservedAccommodationRepository, _usersAccommodationRepository, user);
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
