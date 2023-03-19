@@ -104,9 +104,7 @@ namespace SIMS_Booking.View
         {
             string languagesText = languagesTb.Text;
             string[] languageStrings = languagesText.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
             List<Language> languages = new List<Language>();
-
             foreach (string languageString in languageStrings)
             {
                 if (Enum.TryParse(languageString, out Language language))
@@ -115,12 +113,9 @@ namespace SIMS_Booking.View
                 }
             }
 
-
             string locationsText = locationsTb.Text;
             string[] locationStrings = locationsText.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
             List<Location> locations = new List<Location>();
-
             foreach (string locationString in locationStrings)
             {
                 string[] countryAndCity = locationString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -134,7 +129,14 @@ namespace SIMS_Booking.View
                 }
             }
 
+            string imagesText = imagesTb.Text;
+            string[] imageStrings = imagesText.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             List<string> imageurls = new List<string>();
+            foreach (string imageString in imageStrings)
+            {
+                    imageurls.Add(imageString);
+            }
+
 
             Vehicle vehicle = new Vehicle(locations, int.Parse(maxGuests.Text), languages, imageurls, User);
             _vehicleRepository.Save(vehicle);
