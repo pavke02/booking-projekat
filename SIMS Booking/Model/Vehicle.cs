@@ -10,6 +10,8 @@ namespace SIMS_Booking.Model
     public class Vehicle : ISerializable, IDable
     {
         private int ID;
+        public User User { get; set; }
+        public int UserID { get; set; }
         public List<Location> Locations { get; set; }
         public int MaxGuests  { get; set; }
         public List<Language> Languages { get; set; }
@@ -21,7 +23,7 @@ namespace SIMS_Booking.Model
             Languages = new List<Language>();
         }
 
-        public Vehicle(List<Location> locations, int maxGuests, List<Language> languages, List<string> imagesURL)
+        public Vehicle(List<Location> locations, int maxGuests, List<Language> languages, List<string> imagesURL, User user)
         {
             Locations = new List<Location>();
             foreach (Location location in locations)
@@ -39,6 +41,8 @@ namespace SIMS_Booking.Model
             {
                 ImagesURL.Add(image);
             }
+            User = user;
+            UserID = user.getID();
         }
 
         public int getID()
@@ -53,61 +57,17 @@ namespace SIMS_Booking.Model
 
         public void FromCSV(string[] values)
         {
-            // Read ID
             ID = Convert.ToInt32(values[0]);
-
-            // Read Locations
-            /*var locations = new List<Location>();
-            var locationValues = values[1].Split(';');
-            foreach (var locationValue in locationValues)
-            {
-                var locationParts = locationValue.Split(',');
-                var location = new Location
-                {
-                    Country = locationParts[0],
-                    City = locationParts[1]
-                };
-                locations.Add(location);
-            }
-            Locations = locations;
-            */
-
-            // Read MaxPeople
             MaxGuests = Convert.ToInt32(values[1]);
-
-            // Read DriverLanguages
-            /*var driverLanguages = new List<Language>();
-            var driverLanguageValues = values[3].Split(',');
-            foreach (var driverLanguageValue in driverLanguageValues)
-            {
-                driverLanguages.Add((Language)Enum.Parse(typeof(Language), driverLanguageValue));
-            }
-            Languages = driverLanguages;
-            */
-
-            // Read ImagesURL
-            //ImagesURL = values[3].Split(',').ToList();
+            UserID = Convert.ToInt32(values[2]);
         }
 
         public string[] ToCSV()
         {
-            // Convert Locations to string value
-            /* var locationValues = Locations.Select(location => $"{location.Country},{location.City}");
-            var locationsValue = string.Join(";", locationValues);
-            */
-
-            // Convert DriverLanguages to string value
-            /*var driverLanguageValues = Languages.Select(driverLanguage => driverLanguage.ToString());
-            var driverLanguagesValue = string.Join(",", driverLanguageValues);
-            */
-
-            // Create CSV string array
             string[] csvValues = {
                 ID.ToString(),
-                //locationsValue,
                 MaxGuests.ToString(),
-                //driverLanguagesValue//,
-                //string.Join(',', ImagesURL)
+                UserID.ToString()
                 };
             return csvValues;
         }

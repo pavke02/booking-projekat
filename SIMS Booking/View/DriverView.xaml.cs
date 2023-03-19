@@ -6,21 +6,79 @@ using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
 using System.Diagnostics;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using SIMS_Booking.Enums;
+using System.Windows.Controls;
 
 namespace SIMS_Booking.View
 {
-    public partial class DriverView : Window, IObserver
+    public partial class DriverView : Window , INotifyPropertyChanged, IObserver
     {
-        public ObservableCollection<Vehicle> Vehicles { get; set; }
-        public ObservableCollection<string> DriverLocations { get; set; }
+        public Vehicle Vehicle { get; set; }
+        public User User { get; set; }
+
         private VehicleRepository _vehicleRepository;
         private CityCountryRepository _cityCountryRepository;
         private DriverLanguagesRepository _driverLanguagesRepository;
         private DriverLocationsRepository _driverLocationsRepository;
 
-        public DriverView(VehicleRepository vehicleRepository, DriverLanguagesRepository driverLanguagesRepository, DriverLocationsRepository driverLocationsRepository, CityCountryRepository cityCountryRepository)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private List<Location> _locations;
+        public List<Location> Locations
+        {
+            get => _locations;
+            set
+            {
+                if (value != _locations)
+                {
+                    _locations = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private List<Language> _languages;
+        public List<Language> Languages
+        {
+            get => _languages;
+            set
+            {
+                if (value != _languages)
+                {
+                    _languages = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int _maxGuests;
+        public int MaxGuests
+        {
+            get => _maxGuests;
+            set
+            {
+                if (value != _maxGuests)
+                {
+                    _maxGuests = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
+        public DriverView(User user, VehicleRepository vehicleRepository, DriverLanguagesRepository driverLanguagesRepository, DriverLocationsRepository driverLocationsRepository, CityCountryRepository cityCountryRepository)
         {
             InitializeComponent();
+            DataContext = this;
+
+            User = user;
 
             _cityCountryRepository = cityCountryRepository;
 
@@ -30,46 +88,86 @@ namespace SIMS_Booking.View
             _driverLanguagesRepository = driverLanguagesRepository;
             _driverLocationsRepository = driverLocationsRepository;
 
-            Vehicles = new ObservableCollection<Vehicle>(vehicleRepository.GetAll());
-            DriverLocations = ShowLocations(Vehicles);
+            Vehicle = _vehicleRepository.GetVehicleByUserID(User.getID());
 
-            DataGridVehicles.ItemsSource = Vehicles;
-        }
+            Languages = new List<Language>();
+            Locations = new List<Location>();
 
-        public ObservableCollection<string> ShowLocations(ObservableCollection<Vehicle> vehicles)
-        {
-            ObservableCollection<string> vehicleLocations = new ObservableCollection<string>();
-
-            foreach(Vehicle vehicle in vehicles)
+            if (Vehicle != null)
             {
-                string oneLocation = "";
-                foreach(Location location in vehicle.Locations)
+                foreach (Language language in Vehicle.Languages)
                 {
-                    oneLocation += location.ToString() + " ";
+                    Languages.Add(language);
                 }
-                vehicleLocations.Add(oneLocation);
+                foreach (Location location in Vehicle.Locations)
+                {
+                    Locations.Add(location);
+                }
+                MaxGuests = Vehicle.MaxGuests;
+
+                LocationsTB.Text = LocationsToString(Locations);
+                LanguagesTB.Text = LanguagesToString(Languages);
+                MaxGuestsTB.Text = MaxGuests.ToString();
             }
 
 
-            return vehicleLocations;
+            if (string.IsNullOrEmpty(MaxGuestsTB.Text))
+            {
+                addVehicle.IsEnabled = true;
+            }
+            else
+            {
+                addVehicle.IsEnabled = false;
+            }
+
         }
 
-        private void UpdateVehicles(List<Vehicle> vehicles)
+        public string LocationsToString(List<Location> locations)
         {
-            Vehicles.Clear();
-            foreach (var vehicle in vehicles)
-                Vehicles.Add(vehicle);
+            string AllLocations = "";
+            foreach(Location location in locations)
+            {
+                AllLocations += location.Country.ToString() + ", " + location.City.ToString() + "\n";
+            }
+            return AllLocations;
         }
 
-        public void Update()
+        public string LanguagesToString(List<Language> languages)
         {
-            UpdateVehicles(_vehicleRepository.GetAll());
+            string AllLanguages = "";
+            foreach (Language language in Languages)
+            {
+                AllLanguages += language.ToString() + "\n";
+            }
+            return AllLanguages;
         }
 
         private void AddVehicle(object sender, RoutedEventArgs e)
         {
-            DriverAddVehicle driverAddVehicle = new DriverAddVehicle();
+            DriverAddVehicle driverAddVehicle = new DriverAddVehicle(_vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository, User);
             driverAddVehicle.Show();
+        }
+
+        public void Update()
+        {
+            Vehicle = _vehicleRepository.GetVehicleByUserID(User.getID());
+
+            if (Vehicle != null)
+            {
+                foreach (Language language in Vehicle.Languages)
+                {
+                    Languages.Add(language);
+                }
+                foreach (Location location in Vehicle.Locations)
+                {
+                    Locations.Add(location);
+                }
+                MaxGuests = Vehicle.MaxGuests;
+
+                LocationsTB.Text = LocationsToString(Locations);
+                LanguagesTB.Text = LanguagesToString(Languages);
+                MaxGuestsTB.Text = MaxGuests.ToString();
+            }
         }
     }
 }
