@@ -11,7 +11,7 @@ namespace SIMS_Booking.Model
 {
     public class Tour : ISerializable, IDable
     {
-        private int ID;
+        private int ID = -1;
         public string Name { get; set; }
         public Location Location { get; set; }
         public string Description { get; set; }
@@ -20,6 +20,8 @@ namespace SIMS_Booking.Model
         public Stops Stops { get; set; }
         public DateTime StartTour { get; set; } // DateTime startTime
         public int Time { get; set; }
+        
+        public int NumberOfGuests { get; set; }
         public List<string> ImagesURL { get; set; }
 
         public Tour () { }
@@ -56,15 +58,16 @@ namespace SIMS_Booking.Model
             Name = values[0];
             Location = new Location(values[1], values[2]);
             Language = (Language)Enum.Parse(typeof(Language), values[3]);
-            MaxGuests = Convert.ToInt32 (values[4]);
+            MaxGuests = Convert.ToInt32(values[4]);
             Stops = new Stops(values[5], values[6]);
             StartTour = DateTime.Parse(values[7]);
             Time = Convert.ToInt32 (values[8]);
+            Description = values[9];
         }
 
         string[] ISerializable.ToCSV()
         {
-            string[] csvValues = { Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(), Stops.ToString(), Time.ToString() };
+            string[] csvValues = { Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(), Stops.ToString(), Time.ToString(), Description };
             return csvValues;
         }        
     }   
