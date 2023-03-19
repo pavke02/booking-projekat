@@ -114,10 +114,12 @@ namespace SIMS_Booking.View
             if (string.IsNullOrEmpty(MaxGuestsTB.Text))
             {
                 addVehicle.IsEnabled = true;
+                driverGallery.IsEnabled = false;
             }
             else
             {
                 addVehicle.IsEnabled = false;
+                driverGallery.IsEnabled = true;
             }
 
         }
@@ -168,6 +170,23 @@ namespace SIMS_Booking.View
                 LanguagesTB.Text = LanguagesToString(Languages);
                 MaxGuestsTB.Text = MaxGuests.ToString();
             }
+
+            if (string.IsNullOrEmpty(MaxGuestsTB.Text))
+            {
+                addVehicle.IsEnabled = true;
+                driverGallery.IsEnabled = false;
+            }
+            else
+            {
+                addVehicle.IsEnabled = false;
+                driverGallery.IsEnabled = true;
+            }
+        }
+
+        private void driverGallery_Click(object sender, RoutedEventArgs e)
+        {
+            DriverGalleryView galleryView = new DriverGalleryView(Vehicle);
+            galleryView.Show();
         }
     }
 }
