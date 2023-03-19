@@ -36,9 +36,7 @@
         <Button Content="Reserve Taxi" HorizontalAlignment="Left" Height="50" Margin="43,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="100" Click="Reserve_Taxi"/>
         <Button Content="Reserve Tour" HorizontalAlignment="Left" Height="50" Margin="203,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="100" Click="Reserve_Tour"/>
 
-        <Label  Content="Number of guests:" Margin="70,0,293,0" VerticalAlignment="Center" Grid.Row="1" />
-        <TextBox Name="SearchGuestNumberTextBox" Grid.Row="1" VerticalContentAlignment="Center" FontSize="14" Padding="5 0" Margin="203,2,410,0" Text="{Binding SearchLocation, UpdateSourceTrigger=PropertyChanged}"/>
-
+       
 
     </Grid>
 </Window>

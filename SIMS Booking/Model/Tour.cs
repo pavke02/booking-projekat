@@ -20,6 +20,8 @@ namespace SIMS_Booking.Model
         public Stops Stops { get; set; }
         public DateTime StartTour { get; set; } // DateTime startTime
         public int Time { get; set; }
+        
+        public int NumberOfGuests { get; set; }
         public List<string> ImagesURL { get; set; }
 
         public Tour () { }

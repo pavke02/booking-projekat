@@ -67,29 +67,7 @@ namespace SIMS_Booking.View
             return SelectedTour.getID()+ 1;
         }
 
-        public ObservableCollection<Tour> filteredData
-        {
-            get
-            {
-                var result = Tours;
-                if (searchGuestNumber != 0)
-                {
-                    result = new ObservableCollection<Tour>(result.Where(a => a.MaxGuests >= searchGuestNumber));
-                }
-
-                return result;
-            }
-        }
-
-        public int SearchGuestNumber
-        {
-            get { return searchGuestNumber; }
-            set
-            {
-                searchGuestNumber = value;
-                OnPropertyChanged(nameof(filteredData));
-            }
-        }
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -110,19 +88,22 @@ namespace SIMS_Booking.View
         private void Reserve_Tour(object sender, RoutedEventArgs e)
         {
 
-            if (SelectedTour == null)
+            if (SelectedTour != null)
             {
-               
-                    
-                MessageBox.Show("Please select the tour!");
+                Guest2TourReservation reservation = new Guest2TourReservation(SelectedTour.Name,SelectedTour.Location,SelectedTour.Description,SelectedTour.Language, SelectedTour.MaxGuests,SelectedTour.Time);
+
+                 reservation.ShowDialog();
 
 
             }
             else
             {
-                MessageBox.Show("Tour has been selected!");
+                MessageBox.Show("Please select the tour!");
+
+
+
             }
-            
+
         }
 
 
