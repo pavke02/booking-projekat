@@ -203,6 +203,7 @@
                     <DataGrid x:Name="pastReservationGrid" Height="480" VerticalAlignment="Top"
                           ItemsSource="{Binding Path=PastReservations, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedReview, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionChanged="IsShowable"
                           IsReadOnly="True" AutoGenerateColumns="False">
                         <DataGrid.Columns >
                             <DataGridTextColumn Header="Reserved by" Binding="{Binding Reservation.User.Username}" Width="200"/>
@@ -215,7 +216,7 @@
 
                     <Button Name="reviewDetails" Content="Show Review" Click="ShowReview"
                             Width="150" Height="40" Margin="0, 30, 50, 0" HorizontalAlignment="Right"
-                            >
+                            IsEnabled="False">
                     </Button>
                 </StackPanel>
             </TabItem>

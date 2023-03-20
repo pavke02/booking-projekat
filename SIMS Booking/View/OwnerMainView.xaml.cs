@@ -13,12 +13,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Globalization;
 using SIMS_Booking.Repository.RelationsRepository;
-using ToastNotifications;
-using ToastNotifications.Position;
-using ToastNotifications.Lifetime;
-using ToastNotifications.Messages;
-using System.Windows.Threading;
 using SIMS_Booking.Model.Relations;
+using SIMS_Booking.State;
 
 namespace SIMS_Booking.View
 {
@@ -32,9 +28,7 @@ namespace SIMS_Booking.View
 
         public Reservation SelectedReservation { get; set; }
         public GuestReview SelectedReview { get; set; }
-
-        private DateTime _date;
-        private DispatcherTimer _checkDateTimer;
+                
         private User _user;
 
         private AccomodationRepository _accommodationRepository;
@@ -188,41 +182,10 @@ namespace SIMS_Booking.View
             _reservedAccommodationRepository = reservedAccommodationRepository;
             _usersAccommodationRepository = usersAccommodationRepository;
 
-            TypesCollection = new List<string> { "Apartment", "House", "Cottage" };                        
+            TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
-            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-            timer.Tick += (sender, args) =>
-            {
-                if (ReservedAccommodations.FirstOrDefault(s => s.EndDate <= DateTime.Now && (DateTime.Now - s.EndDate.Date).TotalDays <= 5) != null)
-                    notifier.ShowInformation("You have guests to review!");
-
-                _reservationRepository.RemoveUnreviewedReservations(_guestReviewRepository);
-                timer.Stop();
-            };
-            timer.Start();
-
-            _date = DateTime.Now;
-            _checkDateTimer = new DispatcherTimer();
-            _checkDateTimer.Tick += new EventHandler(CheckDate);
-            _checkDateTimer.Interval = new TimeSpan(0, 1, 0);
-            _checkDateTimer.Start();            
-        }   
-        
-        ~OwnerMainView() { notifier.Dispose(); _checkDateTimer.Stop(); }
-
-        //Metoda koja proverava da li user idalje moze da se oceni naspram datuma. 
-        //Metoda se poziva na svakih 1min za slucaj da se datum promeni u tom periodu
-        public void CheckDate(object sender, EventArgs e)
-        {            
-            if (_date.Date != DateTime.Now.Date)
-            {
-                _date = DateTime.Now;
-                if (ReservedAccommodations.FirstOrDefault(s => s.EndDate <= DateTime.Now && (DateTime.Now - s.EndDate.Date).TotalDays <= 5) != null)
-                    notifier.ShowInformation("You have guests to review!");
-                
-               _reservationRepository.RemoveUnreviewedReservations(_guestReviewRepository);                
-            }
-        }
+            Timer timer = new Timer(ReservedAccommodations, _reservationRepository, _guestReviewRepository);   
+        }                                  
 
         private void FillCityCb(object sender, SelectionChangedEventArgs e)
         {
@@ -303,6 +266,13 @@ namespace SIMS_Booking.View
                     reviewGuestClick.IsEnabled = true;
                 else
                     reviewGuestClick.IsEnabled = false;
+        }
+
+        private void IsShowable(object sender, SelectionChangedEventArgs e)
+        {
+            reviewDetails.IsEnabled = false;
+            if (SelectedReview != null)
+                reviewDetails.IsEnabled = true;
         }
 
         //ToDo: srediti da radi samo za validne URLove
@@ -420,29 +390,14 @@ namespace SIMS_Booking.View
 
                 return true;
             }
-        }
-
-        Notifier notifier = new Notifier(cfg =>
-        {
-            cfg.PositionProvider = new WindowPositionProvider(
-                parentWindow: Application.Current.MainWindow,
-                corner: Corner.TopRight,
-                offsetX: 10,
-                offsetY: 10);
-
-            cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
-                notificationLifetime: TimeSpan.FromSeconds(3),
-                maximumNotificationCount: MaximumNotificationCount.FromCount(1));
-
-            cfg.Dispatcher = Application.Current.Dispatcher;
-        });        
+        }        
     }
 
     class ColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-           //ToDo:
+           //ToDo: Srediti da radi za promenu dana// Po mogucnosti staviti u poseban namespace
            return DateTime.Now >= (DateTime)value && (DateTime.Now - (DateTime)value).TotalDays <= 5;
         }
 
