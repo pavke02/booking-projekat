@@ -27,6 +27,7 @@ namespace SIMS_Booking.View
         public User LoggedUser { get; set; }
         public int searchGuestNumber;
 
+        private ReservedToursRepository _reservedToursRepository;
         private readonly TourRepository _tourRepository;
         private readonly VehicleRepository _vehicleRepository;
 
@@ -90,9 +91,8 @@ namespace SIMS_Booking.View
 
             if (SelectedTour != null)
             {
-                Guest2TourReservation reservation = new Guest2TourReservation(SelectedTour.Name,SelectedTour.Location,SelectedTour.Description,SelectedTour.Language, SelectedTour.MaxGuests,SelectedTour.Time);
-
-                 reservation.ShowDialog();
+                Guest2TourReservation reservation = new Guest2TourReservation(SelectedTour.Name,SelectedTour.Location,SelectedTour.Description,SelectedTour.Language, SelectedTour.MaxGuests,SelectedTour.Time, LoggedUser);
+                reservation.ShowDialog();
 
 
             }
