@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using SIMS_Booking.Enums;
+using SIMS_Booking.Observer;
 
 
 namespace SIMS_Booking.View
@@ -16,7 +17,7 @@ namespace SIMS_Booking.View
         public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> TypesCollection { get; set; }
         public List<Accommodation> Accommodations { get; set; }
-        public AccomodationRepository _accommodationRepository { get; set; }
+        private AccomodationRepository _accommodationRepository { get; set; }
         private CityCountryRepository _cityCountryRepository;
 
         private string _accommodationName;
@@ -60,20 +61,6 @@ namespace SIMS_Booking.View
                 }
             }
         }
-
-        /*private AccommodationType _kind;
-        public AccommodationType Kind
-        {
-            get => _kind;
-            set
-            {
-                if (value != _kind)
-                {
-                    _kind = value;
-                    OnPropertyChanged();
-                }
-            }
-        }*/
 
         private List<AccommodationType> _kinds;
 
@@ -125,23 +112,18 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
          
-        public Guest1FilterView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository)
+        public Guest1FilterView(AccomodationRepository accommodationRepository, CityCountryRepository cityCountryRepository)
         {
             InitializeComponent();
             DataContext = this;
 
-            _accommodationRepository = accomodationRepository;
+            _accommodationRepository = accommodationRepository;
             _cityCountryRepository = cityCountryRepository; 
 
             Accommodations = _accommodationRepository.Load();
             Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
 
-            nameTb.Clear();
             AccommodationName = "";
-            HouseCheckBox.IsChecked = true;
-            ApartmentCheckBox.IsChecked = true;
-            CottageCheckBox.IsChecked = true;
-
 
             TypesCollection = new List<string>
             {
@@ -166,7 +148,19 @@ namespace SIMS_Booking.View
 
         private void Reset(object sender, RoutedEventArgs e)
         {
+            ClearFilterFields();
 
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(Guest1MainView))
+                {
+                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationRepository.Load();
+                }
+            }
+        }
+
+        private void ClearFilterFields()
+        {
             nameTb.Clear();
             AccommodationName = "";
             countryCb.SelectedItem = null;
@@ -180,72 +174,50 @@ namespace SIMS_Booking.View
             maxGuestsTb.Clear();
             MinReservationDays = "10";
             minReservationDaysTb.Clear();
-
-
-            foreach (Window window in Application.Current.Windows)
-            {
-                if (window.GetType() == typeof(Guest1MainView))
-                {
-                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationRepository.Load();
-                }
-            }
         }
 
         private void ApplyFilters(object sender, RoutedEventArgs e)
         {
-           // Repository = new AccomodationRepository();
             List<Accommodation> accommodationsFiltered = _accommodationRepository.Load();
             int numberOfDeleted = 0;
 
-            Kinds = new List<AccommodationType>();
-
-            if (HouseCheckBox.IsChecked == true)
-            {
-                Kinds.Add(AccommodationType.House);
-            }
-            if (ApartmentCheckBox.IsChecked == true)
-            {
-                Kinds.Add(AccommodationType.Apartment);
-            }
-            if (CottageCheckBox.IsChecked == true)
-            {
-                Kinds.Add(AccommodationType.Cottage);
-            }
+            UpdateKindsState();
 
             foreach (Accommodation accommodation in Accommodations)
             {
-                if (!accommodation.Name.ToLower().Contains(AccommodationName.ToLower()))
-                { 
-                    accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
-                    numberOfDeleted++;
-                }
-                else if (Country.Key != accommodation.Location.Country && Country.Key != null)
-                { 
-                    accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
-                    numberOfDeleted++;
-                }
-                else if (accommodation.Location.City != City && cityCb.SelectedIndex != -1)
-                {
-                    accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
-                    numberOfDeleted++;
-                }
-                else if (!Kinds.Contains(accommodation.Type))
-                {
-                    accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
-                    numberOfDeleted++;
-                }
-                else if (accommodation.MaxGuests < Convert.ToInt32(MaxGuests) && MaxGuests != null)
-                {
-                    accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
-                    numberOfDeleted++;
-                }
-                else if (accommodation.MinReservationDays > Convert.ToInt32(MinReservationDays) && MinReservationDays != null)
+                bool fitsFilter = (accommodation.Name.ToLower().Contains(AccommodationName.ToLower()) || AccommodationName == "") && (Country.Key == accommodation.Location.Country || countryCb.SelectedIndex == -1)
+                    && (accommodation.Location.City == City || cityCb.SelectedIndex == -1) && Kinds.Contains(accommodation.Type) && (accommodation.MaxGuests >= Convert.ToInt32(MaxGuests) || MaxGuests == null)
+                    && (accommodation.MinReservationDays <= Convert.ToInt32(MinReservationDays) || MinReservationDays == null);
+
+                if (!fitsFilter)
                 {
                     accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
                     numberOfDeleted++;
                 }
             }
 
+            UpdateAccommodationsDataGrid(accommodationsFiltered);
+
+        }
+
+        private void UpdateKindsState()
+        {
+            Kinds = new List<AccommodationType>();
+            Kinds.Clear();
+
+            if (HouseCheckBox.IsChecked == true)
+                Kinds.Add(AccommodationType.House);
+
+            if (ApartmentCheckBox.IsChecked == true)
+                Kinds.Add(AccommodationType.Apartment);
+            
+            if (CottageCheckBox.IsChecked == true)
+                Kinds.Add(AccommodationType.Cottage);
+
+        }
+
+        private void UpdateAccommodationsDataGrid(List<Accommodation> accommodationsFiltered)
+        {
             foreach (Window window in Application.Current.Windows)
             {
                 if (window.GetType() == typeof(Guest1MainView))
@@ -253,7 +225,7 @@ namespace SIMS_Booking.View
                     ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = accommodationsFiltered;
 
                 }
-            }           
+            }
         }
     }
 }
