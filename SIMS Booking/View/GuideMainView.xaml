@@ -60,6 +60,7 @@
 
         <Label Margin="30,248,250,148">City</Label>
         <ComboBox Margin="126,249,707,527" 
+                                  ItemsSource="{Binding Cities}"
                                   SelectedItem="{Binding City}"
                                   x:Name="cityCb"/>
 

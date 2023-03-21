@@ -31,6 +31,7 @@ namespace SIMS_Booking.View
         public ObservableCollection<Tour> AllTours { get; set; }
         public ObservableCollection<TourPoint> AllCheckpoints { get; set; }
         public ObservableCollection <String> Checkpoints{ get; set; }
+        public List<string> Cities { get; set; }
 
         public Tour Tour { get; set; }
         public Tour Tour1 { get; set; }
@@ -270,7 +271,7 @@ namespace SIMS_Booking.View
             _tourPointRepository.Subscribe(this);
 
             _confirmTourRepository = confirmTourRepository;
-            //_tour - Tour;
+            Cities = new List<string> { "Serbia,Novi Sad", "Serbia,Belgrade" };
 
             TodaysTours = new ObservableCollection<Tour>(_tourRepository.GetTodaysTours());
             AllTours = new ObservableCollection<Tour>(_tourRepository.GetAll());
@@ -304,24 +305,18 @@ namespace SIMS_Booking.View
         }
 
 
-        //private void UpdateTodaysTour(List<Tour> todaysTours)
-        //{
-        //    TodaysTours.Clear();
-        //    foreach (var tour in todaysTours)
-        //        TodaysTours.Add(tour);
-        //}
-
+       
         public void Update()
         {
             UpdateTour(_tourRepository.GetAll(),_tourRepository.GetTodaysTours());
-            //UpdateTodaysTour(_tourRepository.GetAll());
+          
         }
 
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
 
 
-            Location location = new Location("Serbia", "Novi Sad");
+           
 
             List<string> imageURLs = new List<string>();
             string[] values = ImageURLs.Split("\n");
@@ -346,6 +341,9 @@ namespace SIMS_Booking.View
 
 
             }
+
+            string[] v = City.Split(",");
+            Location location = new Location(v[0], v[1]);
 
 
 
