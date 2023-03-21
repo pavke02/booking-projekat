@@ -8,7 +8,7 @@
         Title="Guest2TourReservation" Height="450" Width="800">
     <Grid>
 
-        <Label Content="How many people would you like to make a reservation for?" HorizontalAlignment="Left" Margin="22,298,0,0" VerticalAlignment="Top"/>
+        <Label Content="How many people would you like to make a reservation for?" HorizontalAlignment="Left" Margin="24,315,0,0" VerticalAlignment="Top"/>
 
         <Button Content="Confirm" HorizontalAlignment="Left" Margin="186,367,0,0" VerticalAlignment="Top" Width="148" Height="46" Click="Confirm"/>
         <Button Content="Cancel" HorizontalAlignment="Left" Margin="373,367,0,0" VerticalAlignment="Top" Width="135" Height="46" Click="Cancel"/>
@@ -27,7 +27,8 @@
         <Label Content="Time:" HorizontalAlignment="Left" Margin="24,230,0,0" VerticalAlignment="Top"/>
         <Label Content="Tour informations:" HorizontalAlignment="Left" Margin="24,21,0,0" VerticalAlignment="Top"/>
         <Label Content="Description:" HorizontalAlignment="Left" Margin="350,47,0,0" VerticalAlignment="Top"/>
-        <TextBox Name="NumberOfGuests" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="400,306,0,0"/>
-
+        <Label Content="AvailableNumber:" HorizontalAlignment="Left" Margin="24,271,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="NumberOfGuests" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="400,323,0,0"/>
+        <TextBox Name="AvailableNumber" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="154,275,0,0"/>
     </Grid>
 </Window>
