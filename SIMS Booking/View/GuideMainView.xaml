@@ -68,7 +68,7 @@
                                  Text="{Binding Path=MaxGuest, UpdateSourceTrigger=LostFocus}"
                                  Name="MaxGuests"/>
 
-        <DatePicker Name="myTimePicker" SelectedDate="{Binding PickTime}" Margin="594,166,507,603"/>
+        <DatePicker Name="myTimePicker" SelectedDate="{Binding StartTour}" Margin="594,166,507,603"/>
 
         <Label Grid.Row="0" Margin="24,338,309,67" RenderTransformOrigin="0.459,0.194">Time</Label>
         <TextBox Grid.Row="0" Margin="122,339,749,439" 

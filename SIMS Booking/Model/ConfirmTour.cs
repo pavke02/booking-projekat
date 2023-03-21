@@ -12,25 +12,27 @@ namespace SIMS_Booking.Model
     public class ConfirmTour :  ISerializable, IDable
     {
         public int Id { get; set; }
-        public string Name { get; set; }
         public int IdTour { get; set; }
         public int IdCheckpoint { get; set; }
-        
+        public int UserId { get; set; }
+        public User User { get; set; }
+
         public ConfirmTour() { }
 
-        public ConfirmTour(int id, string name, int idTour, int idCheckpoint)
+        public ConfirmTour(int id, string name, int idTour, int idCheckpoint , int userId)
         {
             Id = id;
-            Name = name;
             IdTour = idTour;
             IdCheckpoint = idCheckpoint;
+            UserId = userId;
+
 
             
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Name, IdTour.ToString(), IdCheckpoint.ToString() };
+            string[] csvValues = { Id.ToString(),UserId.ToString() ,IdTour.ToString(), IdCheckpoint.ToString() };
 
             return csvValues;
         }
@@ -39,7 +41,7 @@ namespace SIMS_Booking.Model
         {
 
             Id = int.Parse(values[0]);
-            Name = values[1];
+            UserId = int.Parse(values[1]);
             IdTour = int.Parse(values[2]);
             IdCheckpoint = int.Parse(values[3]);
         }

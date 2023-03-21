@@ -38,7 +38,7 @@ namespace SIMS_Booking.Model
         public TourPoint() { }
         public TourPoint( string name, bool @checked)
         {
-            //this.Id = id;
+            
             Name = name;
             CheckedCheckBox = @checked;
         }

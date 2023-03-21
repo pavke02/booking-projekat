@@ -14,28 +14,26 @@ namespace SIMS_Booking.Repository
         public ConfirmTourRepository() : base("../../../Resources/Data/confirmTours.csv") { }
         
 
-        public List<string> GetGuestOnTour(Tour selectedTour)
+
+        public void loadGuests (UserRepository userRepository)
         {
-            List<string> GuestOnTour = new List<string>();
-            bool flag = false;
+            foreach(ConfirmTour tour in _entityList)
+            {
+                tour.User = userRepository.GetById(tour.UserId);
+            }
+        }
+
+
+        public List<User> GetGuestOnTour(Tour selectedTour)
+        {
+            List<User> GuestOnTour = new List<User>();
+           
             foreach (ConfirmTour tour in _entityList)
             {
                 if (tour.IdTour == selectedTour.ID)
                 {
-                    foreach (TourPoint tourPoint in selectedTour.TourPoints)
-                    {
-                        if (tour.IdCheckpoint == tourPoint.getID())
-                        {
-                            GuestOnTour.Add(tour.Name);
-                            flag = true;
-                            
-                        }
-                    }
-                    if (flag)
-                    {
-                        break;
-                    }
-                        
+                    if(tour.IdCheckpoint < 0)
+                    GuestOnTour.Add(tour.User);          
                 }
             }
             return GuestOnTour;

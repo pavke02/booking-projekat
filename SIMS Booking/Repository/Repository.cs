@@ -19,7 +19,7 @@ namespace SIMS_Booking.Repository
             _observers = new List<IObserver>();
             _serializer = new Serializer<T>();
             _filePath = filePath;
-            _entityList = Load();            
+            _entityList = Load();
         }
 
         public List<T> Load()
@@ -27,17 +27,28 @@ namespace SIMS_Booking.Repository
             return _serializer.FromCSV(_filePath);
         }
 
-        public T Save(T entity)
+        public void Save(T entity)
         {
             entity.setID(GetNextId(_entityList));
-            _entityList.Add(entity);            
+            _entityList.Add(entity);
+            _serializer.ToCSV(_filePath, _entityList);
+            NotifyObservers();
+        }
+
+        public T? Update(T entity)
+        {
+            T? current = _entityList.Find(c => c.getID() == entity.getID());
+            if (current == null) return default(T);
+            int index = _entityList.IndexOf(current);
+            _entityList.Remove(current);
+            _entityList.Insert(index, entity);       // keep ascending order of ids in file 
             _serializer.ToCSV(_filePath, _entityList);
             NotifyObservers();
             return entity;
         }
 
         public List<T> GetAll()
-        {            
+        {
             return _entityList;
         }
 
@@ -46,7 +57,7 @@ namespace SIMS_Booking.Repository
             return _entityList.FirstOrDefault(e => e.getID() == id);
         }
 
-        public int GetNextId(List<T> etities) 
+        public int GetNextId(List<T> etities)
         {
             if (_entityList.Count == 0)
             {
@@ -62,7 +73,7 @@ namespace SIMS_Booking.Repository
                 }
             }
             return maxi + 1;
-        }        
+        }
 
         public void Subscribe(IObserver observer)
         {
@@ -80,6 +91,14 @@ namespace SIMS_Booking.Repository
             {
                 observer.Update();
             }
+        }
+        public void Delete(T entity)
+        {
+            _entityList = _serializer.FromCSV(_filePath);
+            T? foundEntity = _entityList.Find(c => c.getID() == entity.getID());
+            if (foundEntity == null) return;
+            _entityList.Remove(foundEntity);
+            _serializer.ToCSV(_filePath, _entityList);
         }
     }
 }

@@ -8,11 +8,13 @@
         Title="ConfirmTourByGuest" Height="450" Width="800">
     <Grid>
 
-        <DataGrid ItemsSource="{Binding GuestOnTour}">
+        <DataGrid SelectedItem="{Binding SelectedUser}" ItemsSource="{Binding GuestOnTour}" AutoGenerateColumns="False" CanUserAddRows="False" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="name" Binding="{Binding }" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Username  }" />
                
             </DataGrid.Columns>
         </DataGrid>
+        <Button Content="Dosao je na turu" Width="100" Height="30" Click="Button_Click"  />
+
     </Grid>
 </Window>

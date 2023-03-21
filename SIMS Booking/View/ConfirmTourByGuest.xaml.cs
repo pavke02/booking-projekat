@@ -24,16 +24,17 @@ namespace SIMS_Booking.View
 {
     public partial class ConfirmTourByGuest : Window, IObserver, INotifyPropertyChanged
     {
-        public ObservableCollection<string> GuestOnTour { get; set; }
-        public ObservableCollection<int> NumberOfTour { get; set; }
-        public ObservableCollection<int> NumberOfCheckpoint { get; set; }
+        public ObservableCollection<User> GuestOnTour { get; set; }
+
 
         private ConfirmTourRepository _confirmTourRepository;
+        private UserRepository _userRepository;
         private Tour _tour;
 
+        public User SelectedUser { get; set; }
 
 
-        public ConfirmTourByGuest(ConfirmTourRepository confirmTourRepository, Tour tour )
+        public ConfirmTourByGuest(ConfirmTourRepository confirmTourRepository, Tour tour)
         {
             InitializeComponent();
             DataContext = this;
@@ -42,19 +43,48 @@ namespace SIMS_Booking.View
             _confirmTourRepository.Subscribe(this);
             _tour = tour;
 
-            GuestOnTour = new ObservableCollection<string>(_confirmTourRepository.GetGuestOnTour(_tour));
-           
+            GuestOnTour = new ObservableCollection<User>(_confirmTourRepository.GetGuestOnTour(tour));
 
+            
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedUser != null)
+            {
+                ConfirmTour temp = new ConfirmTour();
+
+                foreach (ConfirmTour confirmTour in _confirmTourRepository.GetAll())
+                {
+                    Trace.WriteLine(SelectedUser.ID);
+                    if (confirmTour.IdTour == _tour.ID && SelectedUser.getID() == confirmTour.UserId)
+                    {
+                        temp = confirmTour;
+                    }
+                }
+                temp.IdCheckpoint = _tour.CurrentTourPoint;
+                _confirmTourRepository.Update(temp);
+
+            }
+        }
+
+        private void UpdateConfirmGuests(List<User> users)
+        {
+            GuestOnTour.Clear();
+            foreach (var user in users)
+                GuestOnTour.Add(user);
+        }
+
         public void Update()
         {
-            throw new NotImplementedException();
+            UpdateConfirmGuests(_confirmTourRepository.GetGuestOnTour(_tour));
         }
     }
 
 }
-       
+
 

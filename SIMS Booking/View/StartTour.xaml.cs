@@ -43,8 +43,7 @@ namespace SIMS_Booking.View
 
 
         public ObservableCollection<TourPoint> Checkpoints { get; set; }
-        public ObservableCollection<int> brojTure { get; set; }
-        public ObservableCollection<int> brojCheckpointa { get; set; }
+     
         public Tour SelectedTour { get; set; }
         private ConfirmTourRepository gosti { get; set; }
         private ConfirmTourRepository _confirmTourRepository;
@@ -79,6 +78,22 @@ namespace SIMS_Booking.View
 
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
+
+            Checkpoints[0].CheckedCheckBox = true;
+            SelectedTour.CurrentTourPoint = 0;
+            for (int j = 1; j < Checkpoints.Count; j++)
+            {
+                Checkpoints[j].CheckedCheckBox = false;
+            }
+            foreach(ConfirmTour confirmTour in _confirmTourRepository.GetAll())
+            {
+                if(confirmTour.IdTour == SelectedTour.ID)
+                {
+                    _confirmTourRepository.Delete(confirmTour);
+                }
+            }
+
+
             Window.GetWindow(this).Close();
         }
 
@@ -98,6 +113,7 @@ namespace SIMS_Booking.View
 
                     Checkpoints[i].CheckedCheckBox = false;
                     Checkpoints[i + 1].CheckedCheckBox = true;
+                    SelectedTour.CurrentTourPoint = i + 1;
                     OnPropertyChanged();                                                           
                     
                     break;
@@ -108,7 +124,8 @@ namespace SIMS_Booking.View
                     
                     Window.GetWindow(this).Close();
                     Checkpoints[0].CheckedCheckBox = true;
-                    for( int j = 1; j < Checkpoints.Count; j++ )
+                    SelectedTour.CurrentTourPoint = 0;
+                    for ( int j = 1; j < Checkpoints.Count; j++ )
                     {
                         Checkpoints[j].CheckedCheckBox = false;
                     }

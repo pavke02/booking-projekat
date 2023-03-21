@@ -25,6 +25,7 @@ namespace SIMS_Booking.Model
         public DateTime StartTour { get; set; } // DateTime startTime
         public int Time { get; set; }
         public List<string> ImageURLs { get; set; }
+        public int CurrentTourPoint { get; set; }
 
 
 
@@ -50,7 +51,8 @@ namespace SIMS_Booking.Model
                 ImageURLs.Add(image);
             }
 
-            TourPointIds = tourPointIds; 
+            TourPointIds = tourPointIds;
+            CurrentTourPoint = 0;
 
         }
 
@@ -68,12 +70,13 @@ namespace SIMS_Booking.Model
             Time = Convert.ToInt32 (values[7]);
             ImageURLs = values[8].Split(',').ToList();
             TourPointIds = values[9].Split(',').Select(int.Parse).ToList();
+            CurrentTourPoint = int.Parse(values[10]);
         }
 
         string[] ISerializable.ToCSV()
         {
            // string[] csvValues = { Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(), string.Join(',',tourPoints), Time.ToString() };
-            string[] csvValues = { ID.ToString() ,Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(),  StartTour.ToString(), Time.ToString(), string.Join(',', ImageURLs), string.Join(',',TourPointIds) };
+            string[] csvValues = { ID.ToString() ,Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(),  StartTour.ToString(), Time.ToString(), string.Join(',', ImageURLs), string.Join(',',TourPointIds),CurrentTourPoint.ToString() };
 
             return csvValues;
         }

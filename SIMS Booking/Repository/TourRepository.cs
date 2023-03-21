@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,8 @@ namespace SIMS_Booking.Repository
     {
 
         public TourRepository() : base("../../../Resources/Data/guides.csv") { }
-        
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public List<Tour> GetTodaysTours()
         {
@@ -23,7 +25,7 @@ namespace SIMS_Booking.Repository
                 if (DateTime.Today == tour.StartTour)
                 {
                     todaysTours.Add(tour);
-                    
+                   
                 }
             }
             return todaysTours;

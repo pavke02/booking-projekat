@@ -276,7 +276,7 @@ namespace SIMS_Booking.View
             AllTours = new ObservableCollection<Tour>(_tourRepository.GetAll());
             AllCheckpoints = new ObservableCollection<TourPoint>(_tourPointRepository.GetAll());
             Checkpoints = new ObservableCollection<string>();
-
+           
 
         }
 
@@ -292,16 +292,29 @@ namespace SIMS_Booking.View
            
         }
 
-        private void UpdateTour(List<Tour> tours)
+        private void UpdateTour(List<Tour> tours , List<Tour> todaysTours)
         {
             AllTours.Clear();
             foreach (var tour in tours)
                 AllTours.Add(tour);
+
+            TodaysTours.Clear();
+            foreach (var tour in todaysTours)
+                TodaysTours.Add(tour);
         }
+
+
+        //private void UpdateTodaysTour(List<Tour> todaysTours)
+        //{
+        //    TodaysTours.Clear();
+        //    foreach (var tour in todaysTours)
+        //        TodaysTours.Add(tour);
+        //}
 
         public void Update()
         {
-            UpdateTour(_tourRepository.GetAll());
+            UpdateTour(_tourRepository.GetAll(),_tourRepository.GetTodaysTours());
+            //UpdateTodaysTour(_tourRepository.GetAll());
         }
 
         private void Button_Click2(object sender, RoutedEventArgs e)
@@ -327,7 +340,7 @@ namespace SIMS_Booking.View
                 TourPoint tourPoint = new TourPoint(tourPoinName, isFirst);
                 isFirst = false;
 
-                tourPoint = _tourPointRepository.Save(tourPoint);
+                _tourPointRepository.Save(tourPoint); // = tourPoint
                 TourPoints.Add(tourPoint);
                 TourPointIds.Add(tourPoint.getID());
 

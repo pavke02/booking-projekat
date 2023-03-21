@@ -60,7 +60,7 @@ namespace SIMS_Booking.View
             _reservedAccommodationRepository = new ReservedAccommodationRepository();
 
             _reservedAccommodationRepository.LoadAccommodationsAndUsersInReservation(_userRepository, _accommodationRepository, _reservationRepository);
-
+            _confirmTourRepository.loadGuests(_userRepository);
             _tourRepository.LoadCheckpoints(_tourPointRepository);
             //_tourCheckpointRepository.LoadCheckpointsInTour(_tourRepository, _tourPointRepository);
 
