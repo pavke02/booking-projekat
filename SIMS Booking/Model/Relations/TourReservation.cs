@@ -7,21 +7,17 @@ namespace SIMS_Booking.Model.Relations
     public class TourReservation : ISerializable
     {
      
-        public int Id { get; set; }
-        
+        public int UserId { get; set; }
         public int TourId { get; set; }
-        public DateTime StartedTime { get; set; }
-
-        public int GuideId { get; set; }
-        
+        public int Id { get; set; }
 
         public TourReservation() { }
 
-        public TourReservation(int tourId, DateTime startedTime, int guideId) { 
-        
+        public TourReservation( int userId, int tourId) {
+
+            
         TourId = tourId;
-        StartedTime = startedTime;
-        GuideId = guideId;
+        UserId = userId;
         
         }
 
@@ -29,14 +25,14 @@ namespace SIMS_Booking.Model.Relations
         public void FromCSV(string[] values)
         {
             Id = int.Parse(values[0]);
-            TourId= int.Parse(values[1]);
-            GuideId= int.Parse(values[2]);
-
+            UserId = int.Parse(values[1]);
+            TourId= int.Parse(values[2]);
+            
         }
 
         public string[] ToCSV()
         {
-              string[] csvValues = {Id.ToString(),TourId.ToString(), GuideId.ToString()};
+              string[] csvValues = { Id.ToString(),UserId.ToString(),TourId.ToString()};
               return csvValues;
             throw new NotImplementedException();
         }

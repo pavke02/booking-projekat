@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Serializer;
@@ -31,6 +32,9 @@ namespace SIMS_Booking.Model.Relations
             Street = values[0];
             Location = new Location(values[1], values[2]);
         }
+
+        
+
 
     }
 }

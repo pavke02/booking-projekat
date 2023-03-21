@@ -27,7 +27,7 @@
         <Label Content="Time:" HorizontalAlignment="Left" Margin="24,230,0,0" VerticalAlignment="Top"/>
         <Label Content="Tour informations:" HorizontalAlignment="Left" Margin="24,21,0,0" VerticalAlignment="Top"/>
         <Label Content="Description:" HorizontalAlignment="Left" Margin="350,47,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="NumberOfGuests" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="400,306,0,0"/>
+        <TextBox Name="NumberOfGuests" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="400,306,0,0"/>
 
     </Grid>
 </Window>
