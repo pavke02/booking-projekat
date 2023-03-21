@@ -16,33 +16,39 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace SIMS_Booking.View
 {
-    /// <summary>
-    /// Interaction logic for Guest1GalleryView.xaml
-    /// </summary>
+
     public partial class Guest1GalleryView : Window
     {
-        public Accommodation SelectedAccommodation { get; set; }          
+        public Accommodation SelectedAccommodation { get; set; }   
+        public List<string> imageUrlsLeft { get; set; }
+        public List<string> imageUrlsRight { get; set; }
 
         public Guest1GalleryView(Accommodation selectedAccommodation)
         {
             InitializeComponent();
+
             SelectedAccommodation = selectedAccommodation;
-            List<string> imageUrls = new List<string>();
-            List<string> imageUrls2 = new List<string>();
 
-            for (int i = 0; i < selectedAccommodation.ImageURLs.Count / 2; i++)
+            LoadImages();
+
+            imageList.ItemsSource = imageUrlsLeft;
+            imageList2.ItemsSource = imageUrlsRight;
+
+        }
+
+        private void LoadImages()
+        {
+            imageUrlsLeft = new List<string>();
+            imageUrlsRight = new List<string>();
+
+            for (int i = 0; i < SelectedAccommodation.ImageURLs.Count / 2; i++)
             {
-                imageUrls.Add(selectedAccommodation.ImageURLs.ElementAt(i));
+                imageUrlsLeft.Add(SelectedAccommodation.ImageURLs.ElementAt(i));
             }
-            for (int i = selectedAccommodation.ImageURLs.Count/2; i < selectedAccommodation.ImageURLs.Count; i++)
+            for (int i = SelectedAccommodation.ImageURLs.Count / 2; i < SelectedAccommodation.ImageURLs.Count; i++)
             {
-                imageUrls2.Add(selectedAccommodation.ImageURLs.ElementAt(i));
+                imageUrlsRight.Add(SelectedAccommodation.ImageURLs.ElementAt(i));
             }
-
-            imageList.ItemsSource = imageUrls;
-            imageList2.ItemsSource = imageUrls2;
-
-
         }
     }
 }

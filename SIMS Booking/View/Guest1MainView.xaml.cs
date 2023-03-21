@@ -42,7 +42,8 @@ namespace SIMS_Booking.View
             _reservationRepository.Subscribe(this);
             UserReservations = new ObservableCollection<Reservation>(_reservationRepository.GetReservationsByUser(loggedUser.getID()));            
 
-            _cityCountryRepository = cityCountryRepository;            
+            _cityCountryRepository = cityCountryRepository;  
+            
             _reservedAccommodationRepository = reservedAccommodationRepository;
         }
 
@@ -50,11 +51,6 @@ namespace SIMS_Booking.View
         {
             Guest1FilterView filterView = new Guest1FilterView(_accommodationRepository, _cityCountryRepository);
             filterView.Show();
-        }
-
-        public void UpdateFilters(ObservableCollection<Accommodation> accommodations)
-        {
-            DataGridAccommodations.ItemsSource = accommodations;
         }
 
         private void Reserve(object sender, RoutedEventArgs e)
