@@ -13,6 +13,6 @@ namespace SIMS_Booking.Repository
     public class TourRepository : Repository<Tour> , ISubject
     {
 
-        public TourRepository() : base("../../../Resources/Data/tours.csv") { }
+        public TourRepository() : base("../../../Resources/Data/guides.csv") { }
     }
 }

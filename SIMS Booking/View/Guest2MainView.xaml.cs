@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using SIMS_Booking.Model;
+using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
@@ -26,13 +27,15 @@ namespace SIMS_Booking.View
         public Vehicle SelectedVehicle { get; set; }
         public User LoggedUser { get; set; }
         public int searchGuestNumber;
+        public DriverLocations driverLocations { get; set; }
 
-        private ReservedToursRepository _reservedToursRepository;
+        private readonly ReservedToursRepository _reservedToursRepository;
         private readonly TourRepository _tourRepository;
         private readonly VehicleRepository _vehicleRepository;
+        private readonly VehicleReservationRepository _vehicleReservationRepository;
+        private readonly DriverLocationsRepository _driverLocationsRepository;
 
-
-        public Guest2MainView(TourRepository tourRepository, User loggedUser)
+        public Guest2MainView(TourRepository tourRepository, User loggedUser, VehicleRepository vehicleRepository)
         {
             InitializeComponent();
             DataContext = this;
@@ -40,6 +43,9 @@ namespace SIMS_Booking.View
 
             _tourRepository = tourRepository;
             _tourRepository.Subscribe(this);
+            _vehicleRepository = vehicleRepository;
+            _vehicleRepository.Subscribe(this);
+
             Tours = new ObservableCollection<Tour>(tourRepository.GetAll());
 
         
@@ -78,12 +84,12 @@ namespace SIMS_Booking.View
         }
 
         private void Reserve_Taxi(object sender, RoutedEventArgs e)
-        {/*
+        {
             Guest2DrivingReservationView reservationView =
-                new Guest2DrivingReservationView();
+                new Guest2DrivingReservationView(SelectedVehicle,LoggedUser, driverLocations, _driverLocationsRepository);
             
             reservationView.Show();
-           */ 
+            
         }
 
         private void Reserve_Tour(object sender, RoutedEventArgs e)

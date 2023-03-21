@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Observer;
@@ -19,41 +22,89 @@ namespace SIMS_Booking.View
     {
         public readonly Vehicle _selectedVehicle;
         private readonly VehicleRepository _vehicleRepository;
-        public List<Location> Locations {get; set;}
-        public List<Reservation> DrivingReservations { get; set;}
-        public User LoggedUser { get; set;}
+        public List<Location> Locations { get; set; }
+        public List<DriverLocations> DrivingReservations { get; set; }
+        public User LoggedUser { get; set; }
         public Address StartingAddress { get; set; }
-        public Address EndingAddress { get; set;}
+        public Address EndingAddress { get; set; }
         public ReservationOfVehicle ReservationOfVehicle { get; set; }
+        public VehicleReservationRepository _vehicleReservationRespository;
+        private string searchLocation;
+        public ObservableCollection<DriverLocations> drivers { get; set; }
+        public DriverLocations _driverLocations;
+        
+        private  DriverLocationsRepository _driverLocationsRespository;
 
-        public Guest2DrivingReservationView(Vehicle selectedVehicle, User loggedUser, VehicleRepository vehicleRepository, ReservationOfVehicle reservationOfVehicle)
+
+         public Guest2DrivingReservationView(Vehicle selectedVehicle, User loggedUser, DriverLocations driverLocations, DriverLocationsRepository driverLocationsRespository)
         {
             InitializeComponent();
 
+            DataContext = this;
             _selectedVehicle = selectedVehicle;
-            _vehicleRepository = vehicleRepository;
-            reservationOfVehicle = ReservationOfVehicle;
-            LoggedUser= loggedUser;
+            _driverLocations = driverLocations;
+            _driverLocationsRespository = driverLocationsRespository;
+            LoggedUser = loggedUser;
+
+
+
 
             Address startingAddress = StartingAddress;
             Address endingAddress = EndingAddress;
-        
+
+
+
+
+
+
+
+
         }
-        
+
         private void Reserve(object sender, RoutedEventArgs e)
         {
 
-        /*
+
             ReservationOfVehicle reservedVehicle =
-                 new ReservationOfVehicle(LoggedUser.getID(), _selectedVehicle.getID(), reservation.getID());
-             _reservedAccommodationRepository.Save(reservedAccommodation);
-             Close();
-         */
+                 new ReservationOfVehicle(LoggedUser.getID(), _selectedVehicle.getID());
+            _vehicleReservationRespository.Save(reservedVehicle);
+            Close();
+
         }
 
+        public string SearchLocation
+        {
+            get { return searchLocation; }
+            set
+            {
+                searchLocation = value;
+                OnPropertyChanged(nameof(filteredData));
+            }
+        }
+
+        public ObservableCollection<DriverLocations> filteredData
+        {
+            get
+            {
+                var result = drivers;
+
+                if (!string.IsNullOrEmpty(searchLocation))
+                {
+                    result = new ObservableCollection<DriverLocations>(result.Where(a => a.Location.City.ToLower().Contains(searchLocation) || a.Location.Country.ToLower().Contains(searchLocation)));
+                }
 
 
 
+                return result;
+            }
 
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

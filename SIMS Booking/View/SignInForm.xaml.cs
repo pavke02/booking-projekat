@@ -97,7 +97,7 @@ namespace SIMS_Booking.View
                             guest1View.Show();
                             break;
                         case Roles.Guest2:
-                            Guest2MainView guest2View = new Guest2MainView(_tourRepository,user);
+                            Guest2MainView guest2View = new Guest2MainView(_tourRepository,user, _vehicleRepository);
                             guest2View.Show();
                             break;
                         case Roles.Driver:

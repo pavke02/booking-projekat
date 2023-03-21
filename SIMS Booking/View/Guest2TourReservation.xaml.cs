@@ -79,14 +79,14 @@ namespace SIMS_Booking.View
                 MessageBox.Show($"Number of guests cannot be more than the maximum number of guests for this tour ({maxGuests} guests).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else if (maxGuests > Convert.ToInt32(NumberOfGuests.Text))
+            else if (maxGuests >= Convert.ToInt32(NumberOfGuests.Text))
             {
                 int _maxGuests;
 
                 _maxGuests = maxGuests - Convert.ToInt32(NumberOfGuests.Text);
 
-               
-               TourReservation tourReservation= new TourReservation(LoggedUser.getID(),_selectedTour.getID());
+
+                TourReservation tourReservation = new TourReservation(LoggedUser.getID(), _selectedTour.getID());
                 _reservedToursRepository.Save(tourReservation);
                 MessageBox.Show($"You reserved for ({Convert.ToInt32(NumberOfGuests.Text)} guests)");
 
