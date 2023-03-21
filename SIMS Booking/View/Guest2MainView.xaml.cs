@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Printing;
-using System.Reflection.Metadata;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
-using SIMS_Booking.Serializer;
 
 namespace SIMS_Booking.View
 {
@@ -47,8 +42,6 @@ namespace SIMS_Booking.View
             _vehicleRepository.Subscribe(this);
 
             Tours = new ObservableCollection<Tour>(tourRepository.GetAll());
-
-        
         }
         private void UpdateTours(List<Tour> tours)
         {
@@ -97,22 +90,14 @@ namespace SIMS_Booking.View
 
             if (SelectedTour != null)
             {
-                Guest2TourReservation reservation = new Guest2TourReservation(SelectedTour.Name,SelectedTour.Location,SelectedTour.Description,SelectedTour.Language, SelectedTour.MaxGuests,SelectedTour.Time, LoggedUser);
+                Guest2TourReservation reservation = new Guest2TourReservation(SelectedTour.Name, SelectedTour.Location, SelectedTour.Description, (Language)Enum.Parse(typeof(Language), SelectedTour.Language), SelectedTour.MaxGuests, SelectedTour.Time, LoggedUser);
                 reservation.ShowDialog();
-
-
             }
             else
             {
                 MessageBox.Show("Please select the tour!");
-
-
-
             }
 
         }
-
-
-
     }
 }

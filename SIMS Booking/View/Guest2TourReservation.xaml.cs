@@ -33,8 +33,6 @@ namespace SIMS_Booking.View
         public List<Reservation> Reservations { get; set; }
         public List<Reservation> TourReservations { get; set; }
 
-
-
         private int maxGuests;
         private string name;
 
@@ -60,9 +58,6 @@ namespace SIMS_Booking.View
             BoxLanguage.IsReadOnly = true;
             BoxMaxGuests.IsReadOnly = true;
             BoxTime.IsReadOnly = true;
-            
-
-
         }
 
 
@@ -92,17 +87,12 @@ namespace SIMS_Booking.View
 
                 
 
-            }
-
-
-
-          
+            }          
         }
 
-            private void Cancel(object sender, RoutedEventArgs e)
+        private void Cancel(object sender, RoutedEventArgs e)
         {
             GetWindow(this).Close();
         }
-
     }
 }
