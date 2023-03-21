@@ -29,11 +29,15 @@ namespace SIMS_Booking.View
         public int searchGuestNumber;
         public DriverLocations driverLocations { get; set; }
 
+        public ObservableCollection<TourReservation> TourReservation { get; set; }
+
+
         private readonly ReservedToursRepository _reservedToursRepository;
         private readonly TourRepository _tourRepository;
         private readonly VehicleRepository _vehicleRepository;
         private readonly VehicleReservationRepository _vehicleReservationRepository;
         private readonly DriverLocationsRepository _driverLocationsRepository;
+        private readonly TourReservation tourReservation;
 
         public Guest2MainView(TourRepository tourRepository, User loggedUser, VehicleRepository vehicleRepository)
         {
@@ -46,9 +50,12 @@ namespace SIMS_Booking.View
             _vehicleRepository = vehicleRepository;
             _vehicleRepository.Subscribe(this);
 
-            Tours = new ObservableCollection<Tour>(tourRepository.GetAll());
+            _reservedToursRepository = new ReservedToursRepository();
 
-        
+            Tours = new ObservableCollection<Tour>(tourRepository.GetAll());
+            TourReservation = new ObservableCollection<TourReservation>(_reservedToursRepository.GetAll());
+
+
         }
         private void UpdateTours(List<Tour> tours)
         {
@@ -70,11 +77,11 @@ namespace SIMS_Booking.View
             {
                 return 1;
             }
-            
-            return SelectedTour.getID()+ 1;
+
+            return SelectedTour.getID() + 1;
         }
 
-        
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -86,10 +93,10 @@ namespace SIMS_Booking.View
         private void Reserve_Taxi(object sender, RoutedEventArgs e)
         {
             Guest2DrivingReservationView reservationView =
-                new Guest2DrivingReservationView(SelectedVehicle,LoggedUser, driverLocations, _driverLocationsRepository);
-            
+                new Guest2DrivingReservationView(SelectedVehicle, LoggedUser);
+
             reservationView.Show();
-            
+
         }
 
         private void Reserve_Tour(object sender, RoutedEventArgs e)
@@ -97,7 +104,8 @@ namespace SIMS_Booking.View
 
             if (SelectedTour != null)
             {
-                Guest2TourReservation reservation = new Guest2TourReservation(SelectedTour.Name,SelectedTour.Location,SelectedTour.Description,SelectedTour.Language, SelectedTour.MaxGuests,SelectedTour.Time, LoggedUser);
+                //SelectedTour.Name,SelectedTour.Location,SelectedTour.Description,SelectedTour.Language, SelectedTour.MaxGuests,SelectedTour.Time, LoggedUser
+                Guest2TourReservation reservation = new Guest2TourReservation(SelectedTour, LoggedUser);
                 reservation.ShowDialog();
 
 
@@ -116,3 +124,4 @@ namespace SIMS_Booking.View
 
     }
 }
+

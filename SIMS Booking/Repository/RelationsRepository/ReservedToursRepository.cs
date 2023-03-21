@@ -5,16 +5,28 @@ using System.Collections.Generic;
 
 namespace SIMS_Booking.Repository.RelationsRepository
 {
-    public  class ReservedToursRepository : RelationsRepository<TourReservation>
+    public class ReservedToursRepository : RelationsRepository<TourReservation>
     {
 
         public ReservedToursRepository() : base("../../../Resources/Data/reservedTours.csv") { }
 
+        public List<TourReservation> GetAll()
+        {
+            return _entityList;
+        }
 
-
-
-
-
+        public int GetNumberOfGuestsForTour(int tourId)
+        {
+            int numberOfGuests = 0;
+            foreach (TourReservation tourReservation in _entityList)
+            {
+                if (tourReservation.TourId == tourId)
+                {
+                    numberOfGuests += tourReservation.NumberOfGuests;
+                }
+            }
+            return numberOfGuests;
+        }
 
 
     }
