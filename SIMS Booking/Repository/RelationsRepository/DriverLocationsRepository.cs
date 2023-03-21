@@ -7,13 +7,14 @@ using SIMS_Booking.Observer;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.View;
+using System.Net;
 
 namespace SIMS_Booking.Repository.RelationsRepository
 {
-    public class DriverLocationsRepository : RelationsRepository<DriverLocations> , ISubject
+    public class DriverLocationsRepository : RelationsRepository<DriverLocations>
     {
         public DriverLocationsRepository() : base("../../../Resources/Data/driverlocations.csv") { }
-        public void AddDriverLocationsToVehicles(VehicleRepository vehicleRepository) 
+        public void AddDriverLocationsToVehicles(VehicleRepository vehicleRepository)
         {
             foreach (DriverLocations driverLocations in _entityList)
             {
@@ -27,24 +28,11 @@ namespace SIMS_Booking.Repository.RelationsRepository
             }
         }
 
-        public void NotifyObservers()
+        public List<DriverLocations> GetAll()
         {
-            throw new NotImplementedException();
+            return _entityList;
         }
 
-        public void Subscribe(IObserver observer)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void Unsubscribe(IObserver observer)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal IEnumerable<DriverLocations> GetAll()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

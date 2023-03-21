@@ -38,13 +38,13 @@
                 <DataGrid
                     FontSize="14"
                     Name="DataGrid"
-                    ItemsSource="{Binding DriverLocations, UpdateSourceTrigger=PropertyChanged}"
-                    SelectedItem="{Binding Path=searchLocation, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding drivers, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=selectedDriver, UpdateSourceTrigger=PropertyChanged}"
                     AutoGenerateColumns="False" IsReadOnly="True"
                     Width="900" Height="320" Margin="0,0,-6,0">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Location(City)" Binding="{Binding Locations.City }" Width="180"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Location(Country)" Binding="{Binding Locations.Country}" Width="180"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Location(City)" Binding="{Binding Location.City }" Width="180"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Location(Country)" Binding="{Binding Location.Country}" Width="180"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
