@@ -14,8 +14,6 @@ namespace SIMS_Booking.Repository
         public TourPointRepository() : base("../../../Resources/Data/checkpoints.csv") { }
 
 
-        
-
 
     }
 }

@@ -27,12 +27,13 @@ namespace SIMS_Booking.Repository
             return _serializer.FromCSV(_filePath);
         }
 
-        public void Save(T entity)
+        public T Save(T entity)
         {
             entity.setID(GetNextId(_entityList));
             _entityList.Add(entity);            
             _serializer.ToCSV(_filePath, _entityList);
             NotifyObservers();
+            return entity;
         }
 
         public List<T> GetAll()

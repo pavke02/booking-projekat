@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.View
 {
@@ -42,12 +43,12 @@ namespace SIMS_Booking.View
 
 
         public ObservableCollection<TourPoint> Checkpoints { get; set; }
+        public ObservableCollection<int> brojTure { get; set; }
+        public ObservableCollection<int> brojCheckpointa { get; set; }
         public Tour SelectedTour { get; set; }
-
-        public int active;        
-
-        public List<CheckBox> CheckBoxList { get; set; }
-
+        private ConfirmTourRepository gosti { get; set; }
+        private ConfirmTourRepository _confirmTourRepository;
+        private Tour _tour { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -56,53 +57,76 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public StartTour(Tour selectedTour)
+        public StartTour(Tour selectedTour , ConfirmTourRepository confirmTourRepository)
         {
             InitializeComponent();
             DataContext = this;
             SelectedTour = selectedTour;
 
-           Checkpoints = new ObservableCollection<TourPoint>(SelectedTour.tourPoints);
-           // Checked = true;
+            
+            _confirmTourRepository = confirmTourRepository;
+          
+           
+          
+            Checkpoints = new ObservableCollection<TourPoint>(SelectedTour.TourPoints);
+           
 
+           
+          
         }
+            
+        
 
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
             Window.GetWindow(this).Close();
         }
 
+              
         private void Button_Click1(object sender, RoutedEventArgs e)
         {
-
-
-            //var selectedRow = StartTourGrid.SelectedItem as DataRowView; 
-
-            //int selectedIndex = StartTourGrid.Items.IndexOf(selectedRow); 
-
-            //var selectedCheckbox = selectedRow[0] as CheckBox;
-
-            //selectedCheckbox.IsChecked = false;
-
-            //int nextIndex = selectedIndex + 1;
-            //StartTourGrid.SelectedIndex = nextIndex;
-            //var nextRow = StartTourGrid.SelectedItem as DataRowView;
-
-            //var nextCheckbox = nextRow[1] as CheckBox;
-
-            //nextCheckbox.IsChecked = true;
             
+
+            for( int i = 0; i < Checkpoints.Count; i++ )
+            {
+                if ((Checkpoints[i].CheckedCheckBox) && (i != Checkpoints.Count-1))
+                {
+                    
+                    ConfirmTourByGuest confirmTourByGuest = new ConfirmTourByGuest(_confirmTourRepository, SelectedTour);
+                    confirmTourByGuest.ShowDialog();
+                                                                           
+
+                    Checkpoints[i].CheckedCheckBox = false;
+                    Checkpoints[i + 1].CheckedCheckBox = true;
+                    OnPropertyChanged();                                                           
+                    
+                    break;
+                } 
+
+                if(i == Checkpoints.Count-1)
+                {
+                    
+                    Window.GetWindow(this).Close();
+                    Checkpoints[0].CheckedCheckBox = true;
+                    for( int j = 1; j < Checkpoints.Count; j++ )
+                    {
+                        Checkpoints[j].CheckedCheckBox = false;
+                    }
+                }
+
+            }
             
-        }
+
+         }
 
         public void Update()
         {
             throw new NotImplementedException();
-        }   
-        
-       public void SetFirstCheckpoint(object sender, InitializingNewItemEventArgs e)
-        {
-            
         }
     }
+
+   
+        
+      
 }
+

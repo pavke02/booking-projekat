@@ -29,7 +29,16 @@ namespace SIMS_Booking.Repository
             return todaysTours;
         }
 
-       
+       public void LoadCheckpoints(TourPointRepository tp)
+        {
+            foreach (var tour in _entityList)
+            {
+                foreach (var tourPointId in tour.TourPointIds)
+                {
+                    tour.TourPoints.Add(tp.GetById(tourPointId));//ubacuje objekte tourPoint sa odg ID
+                }
+            }
+        }
 
     }
 }

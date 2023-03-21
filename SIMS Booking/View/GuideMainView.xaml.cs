@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
@@ -27,19 +29,55 @@ namespace SIMS_Booking.View
     {
         public ObservableCollection<Tour> TodaysTours { get; set; }
         public ObservableCollection<Tour> AllTours { get; set; }
+        public ObservableCollection<TourPoint> AllCheckpoints { get; set; }
         public ObservableCollection <String> Checkpoints{ get; set; }
 
-        public Tour Tour { get; }
+        public Tour Tour { get; set; }
+        public Tour Tour1 { get; set; }
+        public TourPoint dataTourPoint { get; set; }
 
         private TourRepository _tourRepository;
+        private ObservableCollection<Tour> _allToursRepository;
+        private TourPointRepository _tourPointRepository;
+        private ConfirmTourRepository _confirmTourRepository;
+ 
         public Tour SelectedTour { get; set; }
 
-        private string tourName;
+        private string tourPointName;
+        public string TourPointName
+        {
+            get { return tourPointName; }
+            set
+            {
+                if (value != tourPointName)
+                {
+                    tourPointName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private bool checkedCheckBox;
+        public bool CheckedCheckBox
+        {
+            get { return checkedCheckBox; }
+            set
+            {
+                if (checkedCheckBox != value)
+                {
+                    checkedCheckBox = value;
+                    OnPropertyChanged(nameof(CheckedCheckBox));
+                }
+            }
+        }
 
+
+
+
+        private string tourName;
         public string TourName
         {
             get { return tourName; }
-            set
+            set 
             {
                 if (value != tourName)
                 {
@@ -48,6 +86,67 @@ namespace SIMS_Booking.View
                 }
             }
         }
+
+
+        private string language;
+
+        public string Languages
+        {
+            get { return language; }
+            set
+            {
+                if (value != language)
+                {
+                    language = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
+        private string maxGuest;
+        public string MaxGuest
+        {
+            get => maxGuest;
+            set
+            {
+                if (value != maxGuest)
+                {
+                    maxGuest = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private string time;
+        public string Times
+        {
+            get => time;
+            set
+            {
+                if (value != time)
+                {
+                    time = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
+        private string descriptions;
+
+        public string Descriptions
+        {
+            get =>  descriptions;
+            set
+            {
+                if (value != descriptions)
+                {
+                    descriptions = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
 
         private string city;
@@ -107,6 +206,48 @@ namespace SIMS_Booking.View
             }
         }
 
+        private DateTime startTour;
+        public DateTime StartTour
+        {
+            get => startTour;
+            set
+            {
+                if (value != startTour)
+                {
+                    startTour = value;
+                }
+            }
+        }
+
+        private string imageURLs;
+        
+
+        public string ImageURLs
+        {
+            get => imageURLs;
+            set
+            {
+                if (value != imageURLs)
+                {
+                    imageURLs = value;
+                }
+            }
+        }
+
+        private string tourPointArray;
+
+
+        public string TourPointArray
+        {
+            get => tourPointArray;
+            set
+            {
+                if (value != tourPointArray)
+                {
+                    tourPointArray = value;
+                }
+            }
+        }
 
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -115,19 +256,26 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public GuideMainView(TourRepository  tourRepository)
+        public GuideMainView(TourRepository  tourRepository, ConfirmTourRepository confirmTourRepository, TourPointRepository tourPointRepository )
         {
             InitializeComponent();
             DataContext = this;
             Tour = new Tour();
+            Tour1 = new Tour();
            
             _tourRepository = tourRepository;
             _tourRepository.Subscribe(this);
+
+            _tourPointRepository = tourPointRepository;
+            _tourPointRepository.Subscribe(this);
+
+            _confirmTourRepository = confirmTourRepository;
+            //_tour - Tour;
+
             TodaysTours = new ObservableCollection<Tour>(_tourRepository.GetTodaysTours());
             AllTours = new ObservableCollection<Tour>(_tourRepository.GetAll());
-          //  Checkpoints = new ObservableCollection<string>(SelectedTour.tourPoints);
-
-
+            AllCheckpoints = new ObservableCollection<TourPoint>(_tourPointRepository.GetAll());
+            Checkpoints = new ObservableCollection<string>();
 
 
         }
@@ -137,9 +285,11 @@ namespace SIMS_Booking.View
         {
             if(SelectedTour != null)
             {
-                StartTour startTour = new StartTour(SelectedTour);
+                StartTour startTour = new StartTour(SelectedTour, _confirmTourRepository);
                 startTour.ShowDialog();
             }
+
+           
         }
 
         private void UpdateTour(List<Tour> tours)
@@ -157,42 +307,67 @@ namespace SIMS_Booking.View
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
 
-            Tour tour = new Tour();
 
-            tour.Name = Name.Text;
-            tour.Description = Description.Text;
-            int number;
-            if (int.TryParse(MaxGuests.Text, out number))
-            {
-                tour.MaxGuests = number;
-                
-            }
-            else
-            {
-                MessageBox.Show("Please enter a valid number.");
-            }
+            Location location = new Location("Serbia", "Novi Sad");
 
-            Location location = new Location("Srbija", "Novi Sad");
-            tour.Location = location;
+            List<string> imageURLs = new List<string>();
+            string[] values = ImageURLs.Split("\n");
+            foreach (string value in values)
+                imageURLs.Add(value);
 
 
-            int vreme;
-            if (int.TryParse(Time.Text, out vreme))
-            {
-                tour.Time = vreme;
-            }
-            else
-            {
-                MessageBox.Show("Please enter a valid number for time.");
-            }
-
+            List<int> TourPointIds = new List<int>();
+            List<TourPoint> TourPoints = new List<TourPoint>();
 
             
-            tour.StartTour = myTimePicker.SelectedDate.Value;
+            List<string> tourPoinNames = TourPointArray.Split(",").ToList();
+            bool isFirst = true;
+            foreach (string tourPoinName in tourPoinNames)
+            {
+                TourPoint tourPoint = new TourPoint(tourPoinName, isFirst);
+                isFirst = false;
 
-            _tourRepository.Save(tour);
-            AllTours.Add(tour);
+                tourPoint = _tourPointRepository.Save(tourPoint);
+                TourPoints.Add(tourPoint);
+                TourPointIds.Add(tourPoint.getID());
 
+
+            }
+
+
+
+            Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), StartTour, int.Parse(Times), imageURLs, TourPointIds, TourPoints);
+             _tourRepository.Save(tour);
+
+
+
+
+        }
+
+
+
+       
+
+        private void AddImage(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+
+            bool? response = openFileDialog.ShowDialog();
+
+            if (response == true)
+            {
+                string filePath = openFileDialog.FileName;
+                if (imageTb.Text == "")
+                {
+                    imageTb.Text = filePath;
+                    ImageURLs = imageTb.Text;
+                }
+                else
+                {
+                    imageTb.Text = imageTb.Text + "\n" + filePath;
+                    ImageURLs = imageTb.Text;
+                }
+            }
         }
     }
 }

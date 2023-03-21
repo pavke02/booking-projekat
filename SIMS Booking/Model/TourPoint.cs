@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,29 +10,51 @@ using SIMS_Booking.State;
 namespace SIMS_Booking.Model
 {
 
-    
 
-    public class TourPoint: ISerializable , IDable
+
+    public class TourPoint : ISerializable, IDable, INotifyPropertyChanged
     {
-        public int Id;
+        private int Id;
 
         public string Name { get; set; }
+       
 
-        public bool Checked { get; set; }
+        private bool checkedCheckBox;
+        public bool CheckedCheckBox
+        {
+            get { return checkedCheckBox; }
+            set
+            {
+                if (checkedCheckBox != value)
+                {
+                    checkedCheckBox = value;
+                    OnPropertyChanged(nameof(CheckedCheckBox));
+                }
+            }
+        }
+
+
 
         public TourPoint() { }
-        public TourPoint(int id, string name, bool @checked)
+        public TourPoint( string name, bool @checked)
         {
-            this.Id = id;
+            //this.Id = id;
             Name = name;
-            Checked = @checked;
+            CheckedCheckBox = @checked;
         }
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
 
         public void FromCSV(string[] values)
         {
             Id = int.Parse(values[0]);
             Name = values[1];
-            Checked = bool.Parse(values[2]);
+            CheckedCheckBox = bool.Parse(values[2]);
         }
 
         public int getID()
@@ -46,7 +69,7 @@ namespace SIMS_Booking.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), Name, Checked.ToString() };
+            string[] csvValues = { Id.ToString(), Name, CheckedCheckBox.ToString() };
             return csvValues;
         }
     }

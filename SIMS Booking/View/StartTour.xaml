@@ -8,13 +8,13 @@
         Title="StartTour" Height="450" Width="800">
     <Grid Name="MainGrid">
 
-        <DataGrid Name="StartTourGrid" ItemsSource="{Binding Checkpoints}" InitializingNewItem="SetFirstCheckpoint" AutoGenerateColumns="False">
+        <DataGrid Name="StartTourGrid" ItemsSource="{Binding Checkpoints}"  AutoGenerateColumns="False" CanUserAddRows="false">
             <DataGrid.Columns >
                 <DataGridTextColumn Header="checkpoints" Binding="{Binding Name}" />
                 <DataGridTemplateColumn >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox  IsChecked ="{Binding Checked}"/>
+                            <CheckBox Name="CheckBoxStartTour"  IsChecked ="{Binding CheckedCheckBox, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
