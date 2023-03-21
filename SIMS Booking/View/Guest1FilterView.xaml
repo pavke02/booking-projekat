@@ -36,7 +36,7 @@
 
             <StackPanel Grid.Row="0" Grid.Column="1">
 
-                <TextBox Name ="nameTb"  Text="{Binding Path=AccommodationName, UpdateSourceTrigger=LostFocus}" Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="10, 10, 10, 10" Padding="5, 0, 5, 0"></TextBox>
+                <TextBox Name ="nameTb" Text="{Binding Path=AccommodationName, UpdateSourceTrigger=LostFocus}" Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="10, 10, 10, 10" Padding="5, 0, 5, 0"></TextBox>
             </StackPanel>
 
             <ComboBox x:Name="countryCb" Grid.Row="1" Grid.Column="1" 
@@ -49,14 +49,10 @@
             </ComboBox>
 
             <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="10 0 0 0">
-                <CheckBox Name="HouseCheckBox" Margin="0 2 0 2">House</CheckBox>
-                <CheckBox Name="ApartmentCheckBox" Margin="0 2 0 2">Apartment</CheckBox>
-                <CheckBox Name="CottageCheckBox" Margin="0 2 0 2">Cottage</CheckBox>
+                <CheckBox Name="HouseCheckBox" IsChecked="True" Margin="0 2 0 2">House</CheckBox>
+                <CheckBox Name="ApartmentCheckBox" IsChecked="True" Margin="0 2 0 2">Apartment</CheckBox>
+                <CheckBox Name="CottageCheckBox" IsChecked="True" Margin="0 2 0 2">Cottage</CheckBox>
             </StackPanel>
-
-            <!--<ComboBox x:Name="typeCb" Grid.Row="3" Grid.Column="1" 
-                      Height="30" Margin="10" VerticalContentAlignment="Center" ItemsSource="{Binding TypesCollection}" SelectedItem="{Binding Kind}" >
-            </ComboBox>-->
 
             <StackPanel Grid.Row="4" Grid.Column="1">
                 <TextBox Name="maxGuestsTb" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=LostFocus}" Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="10, 10, 10, 10" Padding="5, 0, 5, 0"></TextBox>

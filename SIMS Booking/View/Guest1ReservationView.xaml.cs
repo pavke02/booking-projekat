@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Observer;
@@ -39,7 +38,8 @@ public partial class Guest1ReservationView : Window
         startDateDp.DisplayDateStart = DateTime.Today.AddDays(1);
 
         Reservations = _reservationRepository.GetAll();
-        AccommodationReservations = getAccommodationReservations(Reservations);
+        AccommodationReservations = GetAccommodationReservations(Reservations);
+
         DisableReservedDates(AccommodationReservations, startDateDp, endDateDp);
         DisableAllImpossibleDates(startDateDp, minimumDaysOfReservation);
     }
@@ -56,9 +56,10 @@ public partial class Guest1ReservationView : Window
 
         Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, _selectedAccommodation, LoggedUser, false);
         _reservationRepository.Save(reservation);
-        ReservedAccommodation reservedAccommodation =
-            new ReservedAccommodation(LoggedUser.getID(), _selectedAccommodation.getID(), reservation.getID());
-        _reservedAccommodationRepository.Save(reservedAccommodation);        
+
+        ReservedAccommodation reservedAccommodation = new ReservedAccommodation(LoggedUser.getID(), _selectedAccommodation.getID(), reservation.getID());
+        _reservedAccommodationRepository.Save(reservedAccommodation);
+        
         Close();
     }
 
@@ -106,8 +107,7 @@ public partial class Guest1ReservationView : Window
 
     }
 
-
-    private List<Reservation> getAccommodationReservations(List<Reservation> reservations)
+    private List<Reservation> GetAccommodationReservations(List<Reservation> reservations)
     {
         List<Reservation> accommodationReservations = new List<Reservation>();
 
@@ -123,7 +123,7 @@ public partial class Guest1ReservationView : Window
         return accommodationReservations;
     }
 
-    private void startDateDpSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void StartDateDpSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (startDateDp.SelectedDate.HasValue)
         {
@@ -143,10 +143,8 @@ public partial class Guest1ReservationView : Window
     {
         var blackoutDates = datePicker.BlackoutDates;
 
-        // Find the first blackout date after the specified date
         var nextBlackoutDate = blackoutDates.FirstOrDefault(d => d.Start > date);
 
-        // If no blackout date is found, return null
         if (nextBlackoutDate == null)
         {
             return null;
