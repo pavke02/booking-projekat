@@ -21,12 +21,14 @@ namespace SIMS_Booking.View
         private readonly ReservationRepository _reservationRepository;
         private readonly TourRepository _tourRepository;
         private readonly VehicleRepository _vehicleRepository;
-        private readonly GuestReviewRepository _guestReviewRepository;        
-
+        private readonly GuestReviewRepository _guestReviewRepository; 
+        
         private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
         private readonly UsersAccommodationRepository _usersAccommodationRepository;
         private readonly DriverLanguagesRepository _driverLanguagesRepository;
         private readonly DriverLocationsRepository _driverLocationsRepository;
+        private readonly TourPointRepository _tourPointRepository;
+        private readonly ConfirmTourRepository _confirmTourRepository;
 
 
         private string _username;
@@ -59,10 +61,12 @@ namespace SIMS_Booking.View
             _userRepository = new UserRepository();
             _accommodationRepository = new AccomodationRepository();
             _cityCountryRepository = new CityCountryRepository();   
-            _reservationRepository = new ReservationRepository();
-            _tourRepository = new TourRepository();
+            _reservationRepository = new ReservationRepository();            
+            _tourRepository = new TourRepository(); // sve ture ali nemamo  tourPoint = null
             _vehicleRepository = new VehicleRepository();
-            _guestReviewRepository = new GuestReviewRepository();            
+            _guestReviewRepository = new GuestReviewRepository();                
+            _tourPointRepository = new TourPointRepository(); // svi tourPointi
+            _confirmTourRepository = new ConfirmTourRepository();
 
             _reservedAccommodationRepository = new ReservedAccommodationRepository();
             _usersAccommodationRepository = new UsersAccommodationRepository();
@@ -76,6 +80,9 @@ namespace SIMS_Booking.View
 
             _driverLanguagesRepository.AddDriverLanguagesToVehicles(_vehicleRepository);
             _driverLocationsRepository.AddDriverLocationsToVehicles(_vehicleRepository);
+            _confirmTourRepository.loadGuests(_userRepository);
+            _tourRepository.LoadCheckpoints(_tourPointRepository);
+            //_tourCheckpointRepository.LoadCheckpointsInTour(_tourRepository, _tourPointRepository);
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
@@ -103,6 +110,10 @@ namespace SIMS_Booking.View
                         case Roles.Driver:
                             DriverView driverView = new DriverView(user, _vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository);
                             driverView.Show();
+                            break;
+                        case Roles.Guide:
+                            GuideMainView guideView = new GuideMainView(_tourRepository, _confirmTourRepository, _tourPointRepository);
+                            guideView.Show();
                             break;
                     }
                     Close();
