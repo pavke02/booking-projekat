@@ -34,29 +34,12 @@
                 TextWrapping="Wrap" Width="200" Height="150" Margin="20,20,0,0" FontSize="14" HorizontalAlignment="Center" TextAlignment="Center"/>
             <TextBlock Name = "MaxGuestsTB"
                 TextWrapping="Wrap" Width="200" Height="150" Margin="20,20,0,0" FontSize="14" HorizontalAlignment="Center" TextAlignment="Center"/>
-            <Button Name="driverGallery" Content="View Gallery" Margin="20,20,0,0" Width="200" Background="White" FontSize="14" Click="driverGallery_Click"/>
+            <Button Name="DriverGallery" Content="View Gallery" Margin="20,20,0,0" Width="200" Background="White" FontSize="14" Click="DriverGallery_Click"/>
 
         </WrapPanel>
 
-        <!--<TabControl x:Name="Tab" Width="900" Height="350" Grid.Row="2">
-            <TabItem Header="Vehicles">
-                <DataGrid
-                    Name="DataGridVehicles"
-                    ItemsSource="{Binding Vehicles, UpdateSourceTrigger=PropertyChanged}"
-                    SelectedItem="{Binding SelectedVehicles, UpdateSourceTrigger=PropertyChanged}"
-                    AutoGenerateColumns="False" IsReadOnly="True"
-                    Width="900" Height="320" SelectionChanged="DataGridVehicles_SelectionChanged">
-                    --><!--<DataGrid.Columns>
-                        <DataGridTextColumn x:Name="LocationsColumn" Header="Locations" Binding="{Binding DriverLocations}" Width="300"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="300"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Driver Languages" Binding="{Binding Languages}" Width="300"></DataGridTextColumn>
-                    </DataGrid.Columns>--><!--
-                    
-                </DataGrid>
-            </TabItem>
-        </TabControl>-->
         <StackPanel  Grid.Row="4" Orientation="Horizontal" Margin="50, 0, 50, 0" Height="40">
-            <Button Name="addVehicle" Content="Add Vehicle" Padding="5, 0, 5, 0" Margin="0, 0, 10, 0 " Click="AddVehicle" Width="75">
+            <Button Name="AddVehicle" Content="Add Vehicle" Padding="5, 0, 5, 0" Margin="0, 0, 10, 0 " Click="AddVehicle_Click" Width="75">
 
             </Button>
         </StackPanel>

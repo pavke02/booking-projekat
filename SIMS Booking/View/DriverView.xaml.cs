@@ -88,39 +88,12 @@ namespace SIMS_Booking.View
             _driverLanguagesRepository = driverLanguagesRepository;
             _driverLocationsRepository = driverLocationsRepository;
 
-            Vehicle = _vehicleRepository.GetVehicleByUserID(User.getID());
-
             Languages = new List<Language>();
             Locations = new List<Location>();
 
-            if (Vehicle != null)
-            {
-                foreach (Language language in Vehicle.Languages)
-                {
-                    Languages.Add(language);
-                }
-                foreach (Location location in Vehicle.Locations)
-                {
-                    Locations.Add(location);
-                }
-                MaxGuests = Vehicle.MaxGuests;
+            Vehicle = _vehicleRepository.GetVehicleByUserID(User.getID());
 
-                LocationsTB.Text = LocationsToString(Locations);
-                LanguagesTB.Text = LanguagesToString(Languages);
-                MaxGuestsTB.Text = MaxGuests.ToString();
-            }
-
-
-            if (string.IsNullOrEmpty(MaxGuestsTB.Text))
-            {
-                addVehicle.IsEnabled = true;
-                driverGallery.IsEnabled = false;
-            }
-            else
-            {
-                addVehicle.IsEnabled = false;
-                driverGallery.IsEnabled = true;
-            }
+            Update();
 
         }
 
@@ -144,7 +117,7 @@ namespace SIMS_Booking.View
             return AllLanguages;
         }
 
-        private void AddVehicle(object sender, RoutedEventArgs e)
+        private void AddVehicle_Click(object sender, RoutedEventArgs e)
         {
             DriverAddVehicle driverAddVehicle = new DriverAddVehicle(_vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository, User);
             driverAddVehicle.Show();
@@ -173,17 +146,17 @@ namespace SIMS_Booking.View
 
             if (string.IsNullOrEmpty(MaxGuestsTB.Text))
             {
-                addVehicle.IsEnabled = true;
-                driverGallery.IsEnabled = false;
+                AddVehicle.IsEnabled = true;
+                DriverGallery.IsEnabled = false;
             }
             else
             {
-                addVehicle.IsEnabled = false;
-                driverGallery.IsEnabled = true;
+                AddVehicle.IsEnabled = false;
+                DriverGallery.IsEnabled = true;
             }
         }
 
-        private void driverGallery_Click(object sender, RoutedEventArgs e)
+        private void DriverGallery_Click(object sender, RoutedEventArgs e)
         {
             DriverGalleryView galleryView = new DriverGalleryView(Vehicle);
             galleryView.Show();

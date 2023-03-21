@@ -102,9 +102,39 @@ namespace SIMS_Booking.View
 
         private void Publish_Click(object sender, RoutedEventArgs e)
         {
+            List<Language> languages = new List<Language>();
+            ReadLanguages(languages);
+
+            List<Location> locations = new List<Location>();
+            ReadLocations(locations);
+
+            List<string> imageurls = new List<string>();
+            ReadImageURLs(imageurls);
+
+            Vehicle vehicle = new Vehicle(locations, int.Parse(maxGuests.Text), languages, imageurls, User);
+            _vehicleRepository.Save(vehicle);
+
+            foreach (Language language in languages)
+            {
+                DriverLanguages driverLanguages = new DriverLanguages(vehicle.getID(), language);
+                _driverLanguagesRepository.Save(driverLanguages);
+            }
+
+            foreach (Location location in locations)
+            {
+                DriverLocations driverLocations = new DriverLocations(vehicle.getID(), location);
+                _driverLocationsRepository.Save(driverLocations);
+            }
+
+            MessageBox.Show("Vehicle published successfully!");
+
+            Close();
+        }
+
+        public void ReadLanguages(List<Language> languages)
+        {
             string languagesText = languagesTb.Text;
             string[] languageStrings = languagesText.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            List<Language> languages = new List<Language>();
             foreach (string languageString in languageStrings)
             {
                 if (Enum.TryParse(languageString, out Language language))
@@ -112,10 +142,12 @@ namespace SIMS_Booking.View
                     languages.Add(language);
                 }
             }
+        }
 
+        public void ReadLocations(List<Location> locations)
+        {
             string locationsText = locationsTb.Text;
             string[] locationStrings = locationsText.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            List<Location> locations = new List<Location>();
             foreach (string locationString in locationStrings)
             {
                 string[] countryAndCity = locationString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -128,34 +160,16 @@ namespace SIMS_Booking.View
                     locations.Add(location);
                 }
             }
+        }
 
+        public void ReadImageURLs(List<string> imageurls)
+        {
             string imagesText = imagesTb.Text;
             string[] imageStrings = imagesText.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            List<string> imageurls = new List<string>();
             foreach (string imageString in imageStrings)
             {
                     imageurls.Add(imageString);
             }
-
-
-            Vehicle vehicle = new Vehicle(locations, int.Parse(maxGuests.Text), languages, imageurls, User);
-            _vehicleRepository.Save(vehicle);
-
-            foreach (Language language in languages)
-            {
-                DriverLanguages driverLanguages = new DriverLanguages(vehicle.getID(), language);
-                _driverLanguagesRepository.Save(driverLanguages);
-            }
-
-            foreach(Location location in locations)
-            {
-                DriverLocations driverLocations = new DriverLocations(vehicle.getID(), location);
-                _driverLocationsRepository.Save(driverLocations);
-            }
-
-            MessageBox.Show("Vehicle published successfully!");
-
-            Close();
         }
     }
 }
