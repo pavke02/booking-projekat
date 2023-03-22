@@ -24,8 +24,7 @@ namespace SIMS_Booking.Repository
             {
                 if (DateTime.Today == tour.StartTour)
                 {
-                    todaysTours.Add(tour);
-                   
+                    todaysTours.Add(tour);                   
                 }
             }
             return todaysTours;
