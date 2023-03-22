@@ -1,7 +1,7 @@
 ﻿
 namespace SIMS_Booking.Enums
 {
-    public enum Kind
+    public enum AccommodationType
     {
         NoKind,
         Apartment,

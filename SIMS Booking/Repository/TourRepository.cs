@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Serializer;
+using SIMS_Booking.View;
 
 namespace SIMS_Booking.Repository
 {
     public class TourRepository : Repository<Tour> , ISubject
     {
 
-        public TourRepository() : base("../../../Resources/Data/guides.csv") { }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public TourRepository() : base("../../../Resources/Data/guides.csv") { }        
 
         public List<Tour> GetTodaysTours()
         {
@@ -41,6 +40,5 @@ namespace SIMS_Booking.Repository
                 }
             }
         }
-
     }
 }

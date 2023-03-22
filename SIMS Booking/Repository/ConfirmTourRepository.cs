@@ -30,7 +30,7 @@ namespace SIMS_Booking.Repository
            
             foreach (ConfirmTour tour in _entityList)
             {
-                if (tour.IdTour == selectedTour.ID)
+                if (tour.IdTour == selectedTour.getID())
                 {
                     if(tour.IdCheckpoint < 0)
                     GuestOnTour.Add(tour.User);          

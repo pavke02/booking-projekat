@@ -87,7 +87,7 @@ namespace SIMS_Booking.View
             }
             foreach(ConfirmTour confirmTour in _confirmTourRepository.GetAll())
             {
-                if(confirmTour.IdTour == SelectedTour.ID)
+                if(confirmTour.IdTour == SelectedTour.getID())
                 {
                     _confirmTourRepository.Delete(confirmTour);
                 }
