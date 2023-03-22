@@ -12,9 +12,7 @@ namespace SIMS_Booking.Repository
     public class ConfirmTourRepository : Repository<ConfirmTour>, ISubject
     {
         public ConfirmTourRepository() : base("../../../Resources/Data/confirmTours.csv") { }
-        
-
-
+      
         public void loadGuests (UserRepository userRepository)
         {
             foreach(ConfirmTour tour in _entityList)
@@ -37,7 +35,6 @@ namespace SIMS_Booking.Repository
                 }
             }
             return GuestOnTour;
-
 
         }
     }

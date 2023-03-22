@@ -271,7 +271,7 @@ namespace SIMS_Booking.View
             _tourPointRepository.Subscribe(this);
 
             _confirmTourRepository = confirmTourRepository;
-            Cities = new List<string> { "Serbia,Novi Sad", "Serbia,Belgrade" };
+            Cities = new List<string> { "Serbia,Novi Sad","Serbia,Ruma", "Serbia,Belgrade","Serbia, Nis","England,London","England,London EAST" };
 
             TodaysTours = new ObservableCollection<Tour>(_tourRepository.GetTodaysTours());
             AllTours = new ObservableCollection<Tour>(_tourRepository.GetAll());
