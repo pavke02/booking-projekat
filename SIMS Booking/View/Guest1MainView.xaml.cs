@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.Model;
@@ -13,13 +14,11 @@ namespace SIMS_Booking.View
 
     public partial class Guest1MainView : Window, IObserver
     {        
-        public ObservableCollection<Accommodation> Accommodations { get; set; }
-        public ObservableCollection<Reservation> Reservations { get; set; }
+        public ObservableCollection<Accommodation> Accommodations { get; set; }        
         public ObservableCollection<Reservation> UserReservations { get; set; }
         public Accommodation SelectedAccommodation { get; set; }
         public ObservableCollection<Accommodation> AccommodationsReorganized { get; set; }
         public User LoggedUser { get; set; }
-
 
         private readonly AccomodationRepository _accommodationRepository;
         private readonly CityCountryRepository _cityCountryRepository;
@@ -35,40 +34,22 @@ namespace SIMS_Booking.View
             LoggedUser = loggedUser;
 
             _accommodationRepository = accommodationRepository;
-            _cityCountryRepository = cityCountryRepository;
-            _reservationRepository = reservationRepository;
-            _reservedAccommodationRepository = reservedAccommodationRepository;
             _accommodationRepository.Subscribe(this);
+            Accommodations = new ObservableCollection<Accommodation>(accommodationRepository.GetAll());
 
-            Accommodations = new ObservableCollection<Accommodation>(accommodationRepository.Load());
-            Reservations = new ObservableCollection<Reservation>(reservationRepository.GetAll());
-            UserReservations = getUserReservations(Reservations);
+            _reservationRepository = reservationRepository;
+            _reservationRepository.Subscribe(this);
+            UserReservations = new ObservableCollection<Reservation>(_reservationRepository.GetReservationsByUser(loggedUser.getID()));            
+
+            _cityCountryRepository = cityCountryRepository;  
+            
+            _reservedAccommodationRepository = reservedAccommodationRepository;
         }
 
         private void AddFilters(object sender, RoutedEventArgs e)
         {
             Guest1FilterView filterView = new Guest1FilterView(_accommodationRepository, _cityCountryRepository);
             filterView.Show();
-        }
-
-        private ObservableCollection<Reservation> getUserReservations(ObservableCollection<Reservation> reservations)
-        {
-            ObservableCollection<Reservation> userReservations =
-                new ObservableCollection<Reservation>();
-            foreach (Reservation reservation in reservations)
-            {
-                if (reservation.User.ID == LoggedUser.ID)
-                {
-                    userReservations.Add(reservation);
-                }
-            }
-
-            return userReservations;
-        }
-
-        public void UpdateFilters(ObservableCollection<Accommodation> accommodations)
-        {
-            DataGridAccommodations.ItemsSource = accommodations;
         }
 
         private void Reserve(object sender, RoutedEventArgs e)
@@ -80,7 +61,8 @@ namespace SIMS_Booking.View
 
         private void OpenGallery(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            Guest1GalleryView galleryView = new Guest1GalleryView(SelectedAccommodation);
+            galleryView.Show();
         }
 
         private void UpdateAccommodations(List<Accommodation> accommodations)
@@ -90,9 +72,39 @@ namespace SIMS_Booking.View
                 Accommodations.Add(accommodation);
         }
 
+        private void UpdateUserReservations(List<Reservation> reservations)
+        {
+            UserReservations.Clear();
+            foreach (var reservation in reservations)
+                UserReservations.Add(reservation);
+        }
+
         public void Update()
         {
             UpdateAccommodations(_accommodationRepository.GetAll());
+            UpdateUserReservations(_reservationRepository.GetReservationsByUser(LoggedUser.getID()).ToList());
+        }
+
+        private void TabChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (TabC.SelectedIndex == 1)
+            {
+                ReserveButton.IsEnabled = false;
+                ViewGalleryButton.IsEnabled = false;
+                AddFiltersButton.IsEnabled = false;
+            }
+            else if(TabC.SelectedIndex == 0 && DataGridAccommodations.SelectedIndex == -1)
+            {
+                ReserveButton.IsEnabled = false;
+                ViewGalleryButton.IsEnabled = false;
+                AddFiltersButton.IsEnabled = true;
+            }
+            else
+            {
+                ReserveButton.IsEnabled = true;
+                ViewGalleryButton.IsEnabled = true;
+                AddFiltersButton.IsEnabled = true;
+            }
         }
     }
 }

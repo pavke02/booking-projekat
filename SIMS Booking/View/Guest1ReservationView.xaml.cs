@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Observer;
@@ -12,7 +11,7 @@ using SIMS_Booking.Repository.RelationsRepository;
 
 namespace SIMS_Booking.View;
 
-public partial class Guest1ReservationView : Window, IObserver
+public partial class Guest1ReservationView : Window
 {
     private readonly Accommodation _selectedAccommodation;
     public User LoggedUser { get; set; }
@@ -39,7 +38,8 @@ public partial class Guest1ReservationView : Window, IObserver
         startDateDp.DisplayDateStart = DateTime.Today.AddDays(1);
 
         Reservations = _reservationRepository.GetAll();
-        AccommodationReservations = getAccommodationReservations(Reservations);
+        AccommodationReservations = GetAccommodationReservations(Reservations);
+
         DisableReservedDates(AccommodationReservations, startDateDp, endDateDp);
         DisableAllImpossibleDates(startDateDp, minimumDaysOfReservation);
     }
@@ -54,13 +54,12 @@ public partial class Guest1ReservationView : Window, IObserver
             return;
         }
 
-        Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate,
-            _selectedAccommodation, LoggedUser);
+        Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, _selectedAccommodation, LoggedUser, false);
         _reservationRepository.Save(reservation);
-        ReservedAccommodation reservedAccommodation =
-            new ReservedAccommodation(LoggedUser.ID, _selectedAccommodation.ID, reservation.ID);
+
+        ReservedAccommodation reservedAccommodation = new ReservedAccommodation(LoggedUser.getID(), _selectedAccommodation.getID(), reservation.getID());
         _reservedAccommodationRepository.Save(reservedAccommodation);
-        Update();
+        
         Close();
     }
 
@@ -108,15 +107,14 @@ public partial class Guest1ReservationView : Window, IObserver
 
     }
 
-
-    private List<Reservation> getAccommodationReservations(List<Reservation> reservations)
+    private List<Reservation> GetAccommodationReservations(List<Reservation> reservations)
     {
         List<Reservation> accommodationReservations = new List<Reservation>();
 
         foreach (Reservation reservation in reservations)
         {
 
-            if (reservation.Accommodation.ID == _selectedAccommodation.ID)
+            if (reservation.Accommodation.getID() == _selectedAccommodation.getID())
             {
                 accommodationReservations.Add(reservation);
             }
@@ -125,7 +123,7 @@ public partial class Guest1ReservationView : Window, IObserver
         return accommodationReservations;
     }
 
-    private void startDateDpSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void StartDateDpSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (startDateDp.SelectedDate.HasValue)
         {
@@ -145,27 +143,13 @@ public partial class Guest1ReservationView : Window, IObserver
     {
         var blackoutDates = datePicker.BlackoutDates;
 
-        // Find the first blackout date after the specified date
         var nextBlackoutDate = blackoutDates.FirstOrDefault(d => d.Start > date);
 
-        // If no blackout date is found, return null
         if (nextBlackoutDate == null)
         {
             return null;
         }
 
         return nextBlackoutDate.Start.AddDays(-1);
-    }
-
-    private void UpdateReservations(List<Reservation> reservations)
-    {
-        Reservations.Clear();
-        foreach (var accommodation in reservations)
-            Reservations.Add(accommodation);
-    }
-
-    public void Update()
-    {
-        UpdateReservations(_reservationRepository.GetAll());
     }
 }

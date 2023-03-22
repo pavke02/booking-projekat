@@ -1,0 +1,59 @@
+﻿<Window x:Class="SIMS_Booking.View.Guest2MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SIMS_Booking.View"
+        mc:Ignorable="d"
+        Title="Guest2MainView" Height="450" Width="800">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TabControl x:Name="TabC" Width="900" Height="350" Grid.Row="2">
+            <TabItem Header="Tours">
+                <DataGrid
+                    Name="DataGridTours"
+                    ItemsSource="{Binding Path=Tours, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedTour, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True" Height="320" Margin="0,0,106,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="170"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="130"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Language" Binding="{Binding Language}" Width="120"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="160"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Description" Binding="{Binding Description}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Time(h)" Binding="{Binding Time}" Width="200"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Reserved Tours" >
+                <DataGrid
+                    Name="DataGridReservedTours"
+                    ItemsSource="{Binding Path=TourReservation, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True" Height="320" Margin="0,0,106,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="User ID" Binding="{Binding UserId}" Width="170"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Tour ID" Binding="{Binding TourId}" Width="130"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+
+            </TabItem>
+
+        </TabControl>
+
+
+
+        <Button Content="Reserve Taxi" HorizontalAlignment="Left" Height="50" Margin="43,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="100" Click="Reserve_Taxi"/>
+        <Button Content="Reserve Tour" HorizontalAlignment="Left" Height="50" Margin="203,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="100" Click="Reserve_Tour"/>
+
+
+
+    </Grid>
+</Window>

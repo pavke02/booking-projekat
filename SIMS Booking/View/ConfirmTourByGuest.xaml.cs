@@ -60,8 +60,8 @@ namespace SIMS_Booking.View
 
                 foreach (ConfirmTour confirmTour in _confirmTourRepository.GetAll())
                 {
-                    Trace.WriteLine(SelectedUser.ID);
-                    if (confirmTour.IdTour == _tour.ID && SelectedUser.getID() == confirmTour.UserId)
+                    Trace.WriteLine(SelectedUser.getID());
+                    if (confirmTour.IdTour == _tour.getID() && SelectedUser.getID() == confirmTour.UserId)
                     {
                         temp = confirmTour;
                     }

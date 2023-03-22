@@ -1,0 +1,38 @@
+﻿<Window x:Class="SIMS_Booking.View.DriverAddVehicle"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SIMS_Booking.View"
+        mc:Ignorable="d"
+        Title="Add Vehicle" Height="400" Width="800">
+    <Grid>
+        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="200" Margin="0,10,0,0" VerticalAlignment="Top" Width="780">
+            <Label Margin="60,10,0,0" Content="Locations" Height="30" Width="80" HorizontalContentAlignment="Center"/>
+            <Label Margin="210,10,0,0" Content="Languages" Height="30" Width="80" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            <Label Margin="210,10,0,0" Content="Images" Height="30" Width="80" HorizontalContentAlignment="Center"/>
+            <TextBox Name="locationsTb" Height="110" TextWrapping="Wrap" Text="" Width="200"/>
+            <TextBox Name="languagesTb" Margin="90,0,0,0" Height="110" TextWrapping="Wrap" Text="" Width="200"/>
+            <TextBox Name="imagesTb" Margin="90,0,0,0" Height="110" TextWrapping="Wrap" Text="" Width="200"/>
+
+            <ComboBox Width="90" Height="35" Margin="5,5,0,0" Name="countryCb" SelectionChanged="ChangeCities" ItemsSource="{Binding Countries}"  DisplayMemberPath="Key"/>
+            <ComboBox Width="90" Height="35" Margin="10,5,0,0" Name="cityCb"/>
+            <ComboBox Width="100" Height="35" Margin="100,5,0,0" Name="languagesCb" ItemsSource="{Binding AllLanguages}"/>
+            <Button Name="AddLanguage" Margin="10,5,0,0" Content="Add language" Height="35" Width="80" Click="AddLanguage_Click" />
+            <TextBox x:Name="imageURL" TextWrapping="Wrap" Width="100" Margin="100,10,0,0" TextAlignment="Center" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Button x:Name="AddImage" Content="Add image" Width="80" Height="30" Margin="10,5,0,0" Click="AddImage_Click"/>
+
+        </WrapPanel>
+        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="134" Margin="0,210,0,0" VerticalAlignment="Top" Width="780">
+
+            <Label Margin="70,50,0,0" Content="Max Guests:" Height="30" Width="80" HorizontalContentAlignment="Center"/>
+            <TextBox Name="maxGuests" Margin="0,50,0,0" Height="25" TextWrapping="Wrap" Text="" Width="100" TextAlignment="Center"/>
+            <Button Name="Publish" Margin="360,90,0,0" Content="Publish" Height="35" Width="70" Click="Publish_Click"/>
+            <Button Margin="20,90,0,0" Content="Cancel" Height="35" Width="70"/>
+
+        </WrapPanel>
+        <Button Name="AddLocation" Content="Add location" HorizontalAlignment="Left" Margin="71,215,0,0" VerticalAlignment="Top" Width="80" Height="30" Click="AddLocation_Click"/>
+
+
+    </Grid>
+</Window>

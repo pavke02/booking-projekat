@@ -11,14 +11,14 @@ using SIMS_Booking.View;
 
 namespace SIMS_Booking.Model
 {
-    public class Tour : ISerializable, IDable, INotifyPropertyChanged
+    public class Tour : ISerializable, IDable
     {
-
-        public int ID { get; set; }
+        private int ID = -1;
         public string Name { get; set; }
         public Location Location { get; set; }
         public string Description { get; set; }
-        public string Language { get; set; }// string
+        //public Language Language { get; set; }// string
+        public string Language { get; set; }
         public int MaxGuests { get; set; }
         public List<int> TourPointIds { get; set; }
         public List<TourPoint> TourPoints { get; set; }
@@ -27,16 +27,10 @@ namespace SIMS_Booking.Model
         public List<string> ImageURLs { get; set; }
         public int CurrentTourPoint { get; set; }
 
-
-
-
         public Tour () { TourPoints = new List<TourPoint>(); }
         public Tour ( string name, Location location, string description, string language, int maxGuests, DateTime startTour, int time, List<string> imagesURL, List<int> tourPointIds, List<TourPoint> tourPoints)
         {
-            TourPoints = tourPoints;
-
-
-            
+            TourPoints = tourPoints;            
             Name = name;
             Location = location;
             Description = description;
@@ -55,8 +49,15 @@ namespace SIMS_Booking.Model
             CurrentTourPoint = 0;
 
         }
+        public int getID()
+        {
+            return ID;
+        }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public void setID(int id)
+        {
+            ID = id;
+        }
 
         void ISerializable.FromCSV(string[] values)
         {
@@ -79,18 +80,6 @@ namespace SIMS_Booking.Model
             string[] csvValues = { ID.ToString() ,Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(),  StartTour.ToString(), Time.ToString(), string.Join(',', ImageURLs), string.Join(',',TourPointIds),CurrentTourPoint.ToString() };
 
             return csvValues;
-        }
-
-        public int getID()
-        {
-            return ID;
-        }
-
-        public void setID(int id)
-        {
-            ID = id;
-        }
-    }
-
-    
+        }             
+    }   
 }

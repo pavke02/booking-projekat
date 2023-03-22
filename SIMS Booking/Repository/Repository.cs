@@ -36,7 +36,7 @@ namespace SIMS_Booking.Repository
         }
 
         public T? Update(T entity)
-        {
+        {            
             T? current = _entityList.Find(c => c.getID() == entity.getID());
             if (current == null) return default(T);
             int index = _entityList.IndexOf(current);
@@ -45,6 +45,15 @@ namespace SIMS_Booking.Repository
             _serializer.ToCSV(_filePath, _entityList);
             NotifyObservers();
             return entity;
+        }
+
+        public void Delete(T entity)
+        {
+            _entityList = _serializer.FromCSV(_filePath);
+            T? foundEntity = _entityList.Find(c => c.getID() == entity.getID());
+            if (foundEntity == null) return;
+            _entityList.Remove(foundEntity);
+            _serializer.ToCSV(_filePath, _entityList);
         }
 
         public List<T> GetAll()
@@ -91,14 +100,6 @@ namespace SIMS_Booking.Repository
             {
                 observer.Update();
             }
-        }
-        public void Delete(T entity)
-        {
-            _entityList = _serializer.FromCSV(_filePath);
-            T? foundEntity = _entityList.Find(c => c.getID() == entity.getID());
-            if (foundEntity == null) return;
-            _entityList.Remove(foundEntity);
-            _serializer.ToCSV(_filePath, _entityList);
-        }
+        }        
     }
 }
