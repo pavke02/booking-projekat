@@ -164,14 +164,19 @@ namespace SIMS_Booking.View
 
             _user = user;
             usernameTb.Text = _user.Username;
+            roleTb.Text = _user.Role.ToString();
 
             _accommodationRepository = accomodationRepository;
             _accommodationRepository.Subscribe(this);
             Accommodations = new ObservableCollection<Accommodation>(_accommodationRepository.GetByUserId(_user.getID()));
 
+            accommodationNumberTb.Text = Accommodations.Count().ToString();
+
             _reservationRepository = reservationRepository;
             _reservationRepository.Subscribe(this);
             ReservedAccommodations = new ObservableCollection<Reservation>(_reservationRepository.GetUnreviewedReservations(_user.getID()));
+
+            reservationNumberTb.Text = ReservedAccommodations.Count().ToString();
 
             _guestReviewRepository = guestReviewRepository;
             _guestReviewRepository.Subscribe(this);
