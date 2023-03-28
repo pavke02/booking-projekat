@@ -349,17 +349,17 @@ namespace SIMS_Booking.View
                 }
                 else if (columnName == "MaxGuests")
                 {
-                    if (string.IsNullOrEmpty(MaxGuests) || string.IsNullOrWhiteSpace(MaxGuests)) 
+                    if (string.IsNullOrEmpty(MaxGuests) || string.IsNullOrWhiteSpace(MaxGuests) || !int.TryParse(MaxGuests, out _)) 
                         return "Required";
                 }
                 else if(columnName == "MinReservationDays")
                 {
-                    if (string.IsNullOrEmpty(MinReservationDays) || string.IsNullOrWhiteSpace(MinReservationDays)) 
+                    if (string.IsNullOrEmpty(MinReservationDays) || string.IsNullOrWhiteSpace(MinReservationDays) || !int.TryParse(MinReservationDays, out _)) 
                         return "Required";
                 }                
                 else if(columnName == "CancelationPeriod")
                 {
-                    if (string.IsNullOrEmpty(CancelationPeriod) || string.IsNullOrWhiteSpace(CancelationPeriod)) 
+                    if (string.IsNullOrEmpty(CancelationPeriod) || string.IsNullOrWhiteSpace(CancelationPeriod) || !int.TryParse(CancelationPeriod, out _)) 
                         return "Required";
                 }
                 else if(columnName == "AccommodationType")
