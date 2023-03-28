@@ -56,7 +56,8 @@ namespace SIMS_Booking.View
             InitializeComponent();
             DataContext = this;
 
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");            
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            startupWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             _userRepository = new UserRepository();
             _accommodationRepository = new AccomodationRepository();
@@ -127,6 +128,13 @@ namespace SIMS_Booking.View
             {
                 MessageBox.Show("Wrong username!");
             }
+        }
+
+        private void SignUp(object sender, RoutedEventArgs e)
+        {
+            SignUpView signUpView = new SignUpView(_userRepository);
+            signUpView.Show();
+            Close();
         }
     }
 }
