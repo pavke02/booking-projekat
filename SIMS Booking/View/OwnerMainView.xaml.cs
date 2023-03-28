@@ -163,6 +163,7 @@ namespace SIMS_Booking.View
             DataContext = this;
 
             _user = user;
+            usernameTb.Text = _user.Username;
 
             _accommodationRepository = accomodationRepository;
             _accommodationRepository.Subscribe(this);
