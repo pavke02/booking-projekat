@@ -76,10 +76,8 @@ namespace SIMS_Booking.Repository
             int maxi = _entityList[0].getID();
             foreach (T entity in etities)
             {
-                if (maxi < entity.getID())
-                {
-                    maxi = entity.getID();
-                }
+                if (maxi < entity.getID())                
+                    maxi = entity.getID();                
             }
             return maxi + 1;
         }
