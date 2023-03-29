@@ -17,6 +17,8 @@ using SIMS_Booking.Model.Relations;
 using SIMS_Booking.State;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
+using System.Xml.Linq;
+using Microsoft.TeamFoundation.Common;
 
 namespace SIMS_Booking.View
 {
@@ -162,7 +164,7 @@ namespace SIMS_Booking.View
         public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, ReservedAccommodationService reservedAccommodationService, UsersAccommodationService usersAccommodationService, User user)
         {
             InitializeComponent();
-            DataContext = this;
+            DataContext = this;            
 
             _user = user;
             usernameTb.Text = _user.Username;
@@ -332,59 +334,69 @@ namespace SIMS_Booking.View
             UpdateAccommodations(_accommodationService.GetByUserId(_user.getID()));
             UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.getID()));
             UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.getID()));
-        }        
+        }
 
-        public string Error => null;
+        public string Error { get { return null; } }
+        public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
 
         public string this[string columnName]
         {
             get
             {
-                if (columnName == "AccommodationName")
+                string result = null;
+                switch(columnName)
                 {
-                    if (string.IsNullOrEmpty(AccommodationName) || string.IsNullOrWhiteSpace(AccommodationName)) 
-                        return "Required";
-                }                                  
-                else if( columnName == "City")
-                {
-                    if (string.IsNullOrEmpty(City) || string.IsNullOrWhiteSpace(City)) 
-                        return "Required";
-                }                
-                else if(columnName == "Country")
-                {
-                    if (string.IsNullOrEmpty(Country.ToString()) || string.IsNullOrWhiteSpace(Country.ToString())) 
-                        return "Required";
+                    case "AccommodationName":
+                        if (string.IsNullOrEmpty(AccommodationName))
+                            result = "Accommodation name must not be empty";
+                        break;
+                    case "MaxGuests":
+                        if(string.IsNullOrEmpty(MaxGuests))
+                            result = "Max guests must not be empty";
+                        else if(!int.TryParse(MaxGuests, out _))
+                            result = "Max guests must be number";
+                        break;
+                    case "MinReservationDays":
+                        if (string.IsNullOrEmpty(MinReservationDays))
+                            result = "Min reservation days must not be empty";
+                        else if (!int.TryParse(MinReservationDays, out _))
+                            result = "Min reservation days must be number";
+                        break;
+                    case "CancelationPeriod":
+                        if (string.IsNullOrEmpty(CancelationPeriod))
+                            result = "Cancelation period must not be empty";
+                        else if (!int.TryParse(CancelationPeriod, out _))
+                            result = "Cancelation period must be number";
+                        break;
+                    case "ImageURLs":
+                        if (string.IsNullOrEmpty(ImageURLs))
+                            result = "You must add atleast one image URL";
+                        break;
+                    case "City":
+                        if(string.IsNullOrEmpty(City))
+                            result = "City can not be empty";
+                        break;
+                    case "Country":
+                        if (string.IsNullOrEmpty(Country.ToString()))
+                            result = "Country can not be empty";
+                        break;
+                    case "AccommodationType":
+                        if (string.IsNullOrEmpty(AccommodationType))
+                            result = "Accommodation type can not be empty";
+                        break;
                 }
-                else if (columnName == "MaxGuests")
-                {
-                    if (string.IsNullOrEmpty(MaxGuests) || string.IsNullOrWhiteSpace(MaxGuests) || !int.TryParse(MaxGuests, out _)) 
-                        return "Required";
-                }
-                else if(columnName == "MinReservationDays")
-                {
-                    if (string.IsNullOrEmpty(MinReservationDays) || string.IsNullOrWhiteSpace(MinReservationDays) || !int.TryParse(MinReservationDays, out _)) 
-                        return "Required";
-                }                
-                else if(columnName == "CancelationPeriod")
-                {
-                    if (string.IsNullOrEmpty(CancelationPeriod) || string.IsNullOrWhiteSpace(CancelationPeriod) || !int.TryParse(CancelationPeriod, out _)) 
-                        return "Required";
-                }
-                else if(columnName == "AccommodationType")
-                {
-                    if(string.IsNullOrEmpty(AccommodationType) || string.IsNullOrWhiteSpace(AccommodationType)) 
-                        return "Required";
-                }
-                else if(columnName == "ImageURLs")
-                {
-                    if (string.IsNullOrEmpty(ImageURLs) || string.IsNullOrWhiteSpace(ImageURLs))
-                        return "Required";
-                }
-                return null;
+
+                if (ErrorCollection.ContainsKey(columnName))
+                    ErrorCollection[columnName] = result;
+                else if (result != null)
+                    ErrorCollection.Add(columnName, result);
+
+                OnPropertyChanged("ErrorCollection");
+                return result;                
             }
         }        
 
-        private readonly string[] validatedProperties = { "AccommodationName", "City", "Country", "MaxGuests", "MinReservationDays", "CancelationPeriod", "AccommodationType", "ImageURLs" };
+        private readonly string[] validatedProperties = { "AccommodationName", "MaxGuests", "MinReservationDays", "CancelationPeriod", "ImageURLs", "City", "Country", "AccommodationType" };
 
         public bool IsValid
         {

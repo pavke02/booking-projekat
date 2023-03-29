@@ -1,7 +1,5 @@
-﻿using Microsoft.TeamFoundation.Common;
-using SIMS_Booking.Enums;
+﻿using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
-using SIMS_Booking.Repository;
 using SIMS_Booking.Service;
 using System.Collections.Generic;
 using System.ComponentModel;
