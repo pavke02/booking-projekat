@@ -22,12 +22,15 @@
                 <StackPanel>
                     <Label FontSize="20" Margin="20, 20, 0, 0">Username:</Label>
                     <TextBox Text="{Binding Path=Username, ValidatesOnDataErrors=True, 
-                        UpdateSourceTrigger=PropertyChanged}"
-                        ToolTip="{Binding ErrorCollection[Username]}"
+                        UpdateSourceTrigger=PropertyChanged}"                        
                         TextChanged="TextBoxCheck"
                      Height="30" Width="280" 
                      Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"
-                     HorizontalAlignment="Left"/>
+                     HorizontalAlignment="Left">
+                        <TextBox.ToolTip>
+                            <TextBlock Text="{Binding ErrorCollection[Username]}"/>
+                        </TextBox.ToolTip>
+                    </TextBox>
 
                     <Label FontSize="20" Margin="20, 20, 0, 0">Password:</Label>
                     <PasswordBox Name="txtPassword" Height="30" Width="280" 

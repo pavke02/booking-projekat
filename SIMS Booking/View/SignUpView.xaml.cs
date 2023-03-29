@@ -94,7 +94,11 @@ namespace SIMS_Booking.View
                 switch (name)
                 {
                     case "Username":
-                        if (string.IsNullOrWhiteSpace(Username)) result = "Username cannot be empty"; break;                        
+                        if (string.IsNullOrWhiteSpace(Username)) 
+                            result = "Username cannot be empty"; 
+                        else if(Username.Length < 6)
+                            result = "Username must be a minimum of 6 characters";
+                        break;                        
                 }
 
                 if (ErrorCollection.ContainsKey(name))
