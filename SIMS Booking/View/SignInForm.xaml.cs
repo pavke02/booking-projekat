@@ -3,9 +3,7 @@ using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
-using System.Printing;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
@@ -16,7 +14,7 @@ namespace SIMS_Booking.View
     public partial class SignInForm : Window
     {
         private readonly UserRepository _userRepository;
-        private readonly AccomodationRepository _accommodationRepository;
+        private readonly AccommodationRepository _accommodationRepository;
         private readonly CityCountryRepository _cityCountryRepository;   
         private readonly ReservationRepository _reservationRepository;
         private readonly TourRepository _tourRepository;
@@ -59,7 +57,7 @@ namespace SIMS_Booking.View
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");            
 
             _userRepository = new UserRepository();
-            _accommodationRepository = new AccomodationRepository();
+            _accommodationRepository = new AccommodationRepository();
             _cityCountryRepository = new CityCountryRepository();   
             _reservationRepository = new ReservationRepository();            
             _tourRepository = new TourRepository(); // sve ture ali nemamo  tourPoint = null

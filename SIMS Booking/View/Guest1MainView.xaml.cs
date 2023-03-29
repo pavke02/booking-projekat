@@ -20,12 +20,12 @@ namespace SIMS_Booking.View
         public ObservableCollection<Accommodation> AccommodationsReorganized { get; set; }
         public User LoggedUser { get; set; }
 
-        private readonly AccomodationRepository _accommodationRepository;
+        private readonly AccommodationRepository _accommodationRepository;
         private readonly CityCountryRepository _cityCountryRepository;
         private ReservationRepository _reservationRepository;
         private ReservedAccommodationRepository _reservedAccommodationRepository;
 
-        public Guest1MainView(AccomodationRepository accommodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, ReservedAccommodationRepository reservedAccommodationRepository, User loggedUser)
+        public Guest1MainView(AccommodationRepository accommodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, ReservedAccommodationRepository reservedAccommodationRepository, User loggedUser)
         {
             InitializeComponent();
             DataContext = this;

@@ -7,7 +7,7 @@ namespace SIMS_Booking.Repository.RelationsRepository
     {
         public UsersAccommodationRepository() : base("../../../Resources/Data/usersAccommodation.csv") { }
 
-        public void LoadUsersInAccommodation(UserRepository userRepository, AccomodationRepository accomodationRepository)
+        public void LoadUsersInAccommodation(UserRepository userRepository, AccommodationRepository accomodationRepository)
         {
             foreach (UsersAccommodation usersAccommodation in _entityList)
             {

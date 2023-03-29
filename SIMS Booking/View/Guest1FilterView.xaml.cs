@@ -17,7 +17,7 @@ namespace SIMS_Booking.View
         public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> TypesCollection { get; set; }
         public List<Accommodation> Accommodations { get; set; }
-        private AccomodationRepository _accommodationRepository { get; set; }
+        private AccommodationRepository _accommodationRepository { get; set; }
         private CityCountryRepository _cityCountryRepository;
 
         private string _accommodationName;
@@ -112,7 +112,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
          
-        public Guest1FilterView(AccomodationRepository accommodationRepository, CityCountryRepository cityCountryRepository)
+        public Guest1FilterView(AccommodationRepository accommodationRepository, CityCountryRepository cityCountryRepository)
         {
             InitializeComponent();
             DataContext = this;
