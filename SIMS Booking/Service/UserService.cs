@@ -13,6 +13,11 @@ namespace SIMS_Booking.Service
             _repository = new UserRepository();
         }
 
+        public void Save(User user)
+        {
+            _repository.Save(user);
+        }
+
         public User GetById(int id)
         {
             return _repository.GetById(id);

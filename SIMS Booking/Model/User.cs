@@ -16,10 +16,11 @@ namespace SIMS_Booking.Model
 
         public User() { }
 
-        public User(string username, string password)
+        public User(string username, string password, Roles role)
         {
             Username = username;
             Password = password;
+            Role = role;
         }
 
         public int getID()
