@@ -289,7 +289,7 @@ namespace SIMS_Booking.View
         private void ImageTbCheck(object sender, TextChangedEventArgs e)
         {
             addURLButton.Visibility = Visibility.Hidden;
-            if (!string.IsNullOrEmpty(urlTb.Text) && !string.IsNullOrWhiteSpace(urlTb.Text) && Uri.IsWellFormedUriString("https://www.google.com", UriKind.Absolute))
+            if (!string.IsNullOrEmpty(urlTb.Text) && !string.IsNullOrWhiteSpace(urlTb.Text) && Uri.IsWellFormedUriString(urlTb.Text, UriKind.Absolute))
             {
                 addURLButton.Visibility = Visibility.Visible;
             }
