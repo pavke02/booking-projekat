@@ -51,7 +51,7 @@
                 <TextBox Grid.Column="1" Grid.Row="1" Height="120" Width="350" Margin="0, 0, 0, 0" 
                                  Text="{Binding Path=Comment, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                  Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
-                                 LostFocus="TextBoxCheck"
+                                 TextChanged="TextBoxCheck"
                                  Name="commentTb">
                 </TextBox>
                 <Button Content="Submin Review" Width="100" Height="40" Margin="0, 40, 0, 0" HorizontalAlignment="Center"
