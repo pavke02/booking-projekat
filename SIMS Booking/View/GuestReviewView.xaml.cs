@@ -1,6 +1,7 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
+using SIMS_Booking.Service;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -10,9 +11,8 @@ namespace SIMS_Booking.View
  
     public partial class GuestReviewView : Window, IDataErrorInfo
     {
-        private GuestReviewRepository _guestReviewRepository;
-        private ReservedAccommodationRepository _reservedAccommodationRepository;
-        private ReservationRepository _reservationRepository;
+        private GuestReviewService _guestReviewService;        
+        private ReservationService _reservationService;
         private Reservation _reservation;
 
         private int tidiness = 0;
@@ -74,16 +74,15 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public GuestReviewView(GuestReviewRepository guestReviewRepository, ReservedAccommodationRepository reservedAccommodationRepository, ReservationRepository reservationRepository, Reservation reservation)
+        public GuestReviewView(GuestReviewService guestReviewService, ReservationService reservationService, Reservation reservation)
         {
             InitializeComponent();
             DataContext = this;            
 
             _reservation = reservation;
 
-            _guestReviewRepository = guestReviewRepository;
-            _reservedAccommodationRepository = reservedAccommodationRepository;
-            _reservationRepository = reservationRepository;
+            _guestReviewService = guestReviewService;            
+            _reservationService = reservationService;
         }        
 
         private void TextBoxCheck(object sender, RoutedEventArgs e)
@@ -97,8 +96,8 @@ namespace SIMS_Booking.View
 
         private void SubmitReview(object sender, RoutedEventArgs e)
         {
-            _guestReviewRepository.SubmitReview(Tidiness, RuleFollowing, Comment, _reservation);
-            _reservationRepository.Update(_reservation);            
+            _guestReviewService.SubmitReview(Tidiness, RuleFollowing, Comment, _reservation);
+            _reservationService.Update(_reservation);            
             Close();
         }
 

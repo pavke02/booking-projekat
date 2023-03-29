@@ -15,6 +15,8 @@ using System.Globalization;
 using SIMS_Booking.Repository.RelationsRepository;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.State;
+using SIMS_Booking.Service;
+using SIMS_Booking.Service.RelationsService;
 
 namespace SIMS_Booking.View
 {
@@ -31,12 +33,12 @@ namespace SIMS_Booking.View
                 
         private User _user;
 
-        private AccommodationRepository _accommodationRepository;
+        private AccommodationService _accommodationService;
         private CityCountryRepository _cityCountryRepository;
-        private ReservationRepository _reservationRepository;
-        private GuestReviewRepository _guestReviewRepository;
-        private ReservedAccommodationRepository _reservedAccommodationRepository;
-        private UsersAccommodationRepository _usersAccommodationRepository;
+        private ReservationService _reservationService;
+        private GuestReviewService _guestReviewService;
+        private ReservedAccommodationService _reservedAccommodationService;
+        private UsersAccommodationService _usersAccommodationService;
 
         private string _accommodationName;
         public string AccommodationName
@@ -157,7 +159,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }                
 
-        public OwnerMainView(AccommodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, GuestReviewRepository guestReviewRepository, ReservedAccommodationRepository reservedAccommodationRepository, UsersAccommodationRepository usersAccommodationRepository, User user)
+        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, ReservedAccommodationService reservedAccommodationService, UsersAccommodationService usersAccommodationService, User user)
         {
             InitializeComponent();
             DataContext = this;
@@ -166,31 +168,31 @@ namespace SIMS_Booking.View
             usernameTb.Text = _user.Username;
             roleTb.Text = _user.Role.ToString();
 
-            _accommodationRepository = accomodationRepository;
-            _accommodationRepository.Subscribe(this);
-            Accommodations = new ObservableCollection<Accommodation>(_accommodationRepository.GetByUserId(_user.getID()));
+            _accommodationService = accommodationService;
+            _accommodationService.Subscribe(this);
+            Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetByUserId(_user.getID()));
 
             accommodationNumberTb.Text = Accommodations.Count().ToString();
 
-            _reservationRepository = reservationRepository;
-            _reservationRepository.Subscribe(this);
-            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationRepository.GetUnreviewedReservations(_user.getID()));
+            _reservationService = reservationService;
+            _reservationService.Subscribe(this);
+            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationService.GetUnreviewedReservations(_user.getID()));
 
             reservationNumberTb.Text = ReservedAccommodations.Count().ToString();
 
-            _guestReviewRepository = guestReviewRepository;
-            _guestReviewRepository.Subscribe(this);
-            PastReservations = new ObservableCollection<GuestReview>(_guestReviewRepository.GetReviewedReservations(_user.getID()));
+            _guestReviewService = guestReviewService;
+            _guestReviewService.Subscribe(this);
+            PastReservations = new ObservableCollection<GuestReview>(_guestReviewService.GetReviewedReservations(_user.getID()));
 
             _cityCountryRepository = cityCountryRepository;
             Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
 
-            _reservedAccommodationRepository = reservedAccommodationRepository;
-            _usersAccommodationRepository = usersAccommodationRepository;
+            _reservedAccommodationService = reservedAccommodationService;
+            _usersAccommodationService = usersAccommodationService;
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
-            Timer timer = new Timer(ReservedAccommodations, _reservationRepository, _guestReviewRepository);   
+            Timer timer = new Timer(ReservedAccommodations, _reservationService, _guestReviewService);   
         }                                  
 
         private void FillCityCb(object sender, SelectionChangedEventArgs e)
@@ -214,10 +216,10 @@ namespace SIMS_Booking.View
                 imageURLs.Add(value);
             
             Accommodation accommodation = new Accommodation(AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType), AccommodationType), _user, int.Parse(MaxGuests), int.Parse(MinReservationDays), int.Parse(CancelationPeriod), imageURLs);
-            _accommodationRepository.Save(accommodation);
+            _accommodationService.Save(accommodation);
 
             UsersAccommodation usersAccommodation = new UsersAccommodation(_user.getID(), accommodation.getID());
-            _usersAccommodationRepository.Save(usersAccommodation);
+            _usersAccommodationService.Save(usersAccommodation);
             MessageBox.Show("Accommodation published successfully");
             ClearTextBoxes();
         }
@@ -240,7 +242,7 @@ namespace SIMS_Booking.View
 
         private void RateGuest(object sender, RoutedEventArgs e)
         {
-            GuestReviewView guestReviewView = new GuestReviewView(_guestReviewRepository, _reservedAccommodationRepository, _reservationRepository, _reservationRepository.GetById(SelectedReservation.getID()));
+            GuestReviewView guestReviewView = new GuestReviewView(_guestReviewService, _reservationService, _reservationService.GetById(SelectedReservation.getID()));
             guestReviewView.ShowDialog();
         }
 
@@ -327,9 +329,9 @@ namespace SIMS_Booking.View
 
         public void Update()
         {
-            UpdateAccommodations(_accommodationRepository.GetByUserId(_user.getID()));
-            UpdateReservedAccommodations(_reservationRepository.GetUnreviewedReservations(_user.getID()));
-            UpdatePastReservations(_guestReviewRepository.GetReviewedReservations(_user.getID()));
+            UpdateAccommodations(_accommodationService.GetByUserId(_user.getID()));
+            UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.getID()));
+            UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.getID()));
         }        
 
         public string Error => null;

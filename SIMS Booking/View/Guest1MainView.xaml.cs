@@ -8,6 +8,8 @@ using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
+using SIMS_Booking.Service;
+using SIMS_Booking.Service.RelationsService;
 
 namespace SIMS_Booking.View
 {
@@ -20,12 +22,12 @@ namespace SIMS_Booking.View
         public ObservableCollection<Accommodation> AccommodationsReorganized { get; set; }
         public User LoggedUser { get; set; }
 
-        private readonly AccommodationRepository _accommodationRepository;
+        private readonly AccommodationService _accommodationService;
         private readonly CityCountryRepository _cityCountryRepository;
-        private ReservationRepository _reservationRepository;
-        private ReservedAccommodationRepository _reservedAccommodationRepository;
+        private ReservationService _reservationService;
+        private ReservedAccommodationService _reservedAccommodationService;
 
-        public Guest1MainView(AccommodationRepository accommodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, ReservedAccommodationRepository reservedAccommodationRepository, User loggedUser)
+        public Guest1MainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser)
         {
             InitializeComponent();
             DataContext = this;
@@ -33,29 +35,29 @@ namespace SIMS_Booking.View
 
             LoggedUser = loggedUser;
 
-            _accommodationRepository = accommodationRepository;
-            _accommodationRepository.Subscribe(this);
-            Accommodations = new ObservableCollection<Accommodation>(accommodationRepository.GetAll());
+            _accommodationService = accommodationService;
+            _accommodationService.Subscribe(this);
+            Accommodations = new ObservableCollection<Accommodation>(accommodationService.GetAll());
 
-            _reservationRepository = reservationRepository;
-            _reservationRepository.Subscribe(this);
-            UserReservations = new ObservableCollection<Reservation>(_reservationRepository.GetReservationsByUser(loggedUser.getID()));            
+            _reservationService = reservationService;
+            _reservationService.Subscribe(this);
+            UserReservations = new ObservableCollection<Reservation>(_reservationService.GetReservationsByUser(loggedUser.getID()));            
 
-            _cityCountryRepository = cityCountryRepository;  
-            
-            _reservedAccommodationRepository = reservedAccommodationRepository;
+            _cityCountryRepository = cityCountryRepository;
+
+            _reservedAccommodationService = reservedAccommodationService;
         }
 
         private void AddFilters(object sender, RoutedEventArgs e)
         {
-            Guest1FilterView filterView = new Guest1FilterView(_accommodationRepository, _cityCountryRepository);
+            Guest1FilterView filterView = new Guest1FilterView(_accommodationService, _cityCountryRepository);
             filterView.Show();
         }
 
         private void Reserve(object sender, RoutedEventArgs e)
         {
             Guest1ReservationView reservationView =
-                new Guest1ReservationView(SelectedAccommodation, LoggedUser, _reservationRepository, _reservedAccommodationRepository);
+                new Guest1ReservationView(SelectedAccommodation, LoggedUser, _reservationService, _reservedAccommodationService);
             reservationView.Show();
         }
 
@@ -81,8 +83,8 @@ namespace SIMS_Booking.View
 
         public void Update()
         {
-            UpdateAccommodations(_accommodationRepository.GetAll());
-            UpdateUserReservations(_reservationRepository.GetReservationsByUser(LoggedUser.getID()).ToList());
+            UpdateAccommodations(_accommodationService.GetAll());
+            UpdateUserReservations(_reservationService.GetReservationsByUser(LoggedUser.getID()).ToList());
         }
 
         private void TabChanged(object sender, SelectionChangedEventArgs e)
