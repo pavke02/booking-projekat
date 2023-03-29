@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
-        Title="SignUpView" Height="420" Width="500">
+        Title="SignUpView" Height="450" Width="500">
 
     <Window.Resources>
         <Style TargetType="RadioButton">
@@ -24,6 +24,7 @@
                     <TextBox Text="{Binding Path=Username, ValidatesOnDataErrors=True, 
                         UpdateSourceTrigger=PropertyChanged}"
                         ToolTip="{Binding ErrorCollection[Username]}"
+                        TextChanged="TextBoxCheck"
                      Height="30" Width="280" 
                      Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"
                      HorizontalAlignment="Left"/>
@@ -36,6 +37,7 @@
                     <PasswordBox Name="txtConfirmPassword" Height="30" Width="280"
                          Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"
                          HorizontalAlignment="Left"/>
+                    <Label Name="passwordValidationLb" FontSize="10" Foreground="Red" Margin="20, 0, 0, 0" Visibility="Hidden">Passwords must be the same</Label>
                 </StackPanel>
 
                 <StackPanel Margin="60, 60, 0, 0">
@@ -47,7 +49,7 @@
                 </StackPanel>
             </WrapPanel>
             <Button Click="SignUp" Content="SIGNUP" FontSize="16" Padding="5" Width="200"
-                    Margin="0, 30, 0, 0" Name="signUpButton">
+                    Margin="0, 30, 0, 0" Name="signUpButton" IsEnabled="False">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="7"/>

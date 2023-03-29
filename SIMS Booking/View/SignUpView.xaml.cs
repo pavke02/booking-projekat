@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media;
 
 namespace SIMS_Booking.View
 {
@@ -45,31 +46,44 @@ namespace SIMS_Booking.View
             _userRepository = userRepository;
         }
 
+        public Roles FindRole()
+        {
+            if (ownerRb.IsChecked == true)
+                return Roles.Owner;
+            else if (guest1Rb.IsChecked == true)
+                return Roles.Guest1;
+            else if (guest2Rb.IsChecked == true)
+                return Roles.Guest2;
+            else if (driverRb.IsChecked == true)
+                return Roles.Driver;
+            else
+                return Roles.Guide;
+        }
+
         private void SignUp(object sender, RoutedEventArgs e)
         {
-            if (txtConfirmPassword.Password != txtPassword.Password || Username.IsNullOrEmpty())
+            if (txtConfirmPassword.Password != txtPassword.Password)
             {
-                MessageBox.Show("All the fields must be correctly filled"); 
+                passwordValidationLb.Visibility = Visibility.Visible;
+                txtConfirmPassword.BorderBrush = Brushes.Red;
+                txtConfirmPassword.BorderThickness = new Thickness (1);
                 return;
             }                
 
-            Roles role;
-            if (ownerRb.IsChecked == true)
-                role = Roles.Owner;
-            else if (guest1Rb.IsChecked == true)
-                role = Roles.Guest1;
-            else if(guest2Rb.IsChecked == true)
-                role = Roles.Guest2;
-            else if(driverRb.IsChecked == true)
-                role = Roles.Driver;
-            else
-                role = Roles.Guide;
-
+            Roles role = FindRole();
+            
             User user = new User(Username, txtPassword.Password, role);
             _userRepository.Save(user);
             SignInForm signInForm = new SignInForm();
             signInForm.Show();
             Close();
+        }
+
+        private void TextBoxCheck(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            signUpButton.IsEnabled = false;
+            if (this["Username"] == null)
+                signUpButton.IsEnabled = true;
         }
 
         public string this[string name]
@@ -80,7 +94,7 @@ namespace SIMS_Booking.View
                 switch (name)
                 {
                     case "Username":
-                        if (string.IsNullOrWhiteSpace(Username)) result = "Username cannot be empty"; break;
+                        if (string.IsNullOrWhiteSpace(Username)) result = "Username cannot be empty"; break;                        
                 }
 
                 if (ErrorCollection.ContainsKey(name))
@@ -91,6 +105,6 @@ namespace SIMS_Booking.View
                 OnPropertyChanged("ErrorCollection");
                 return result;
             }
-        }
+        }        
     }
 }
