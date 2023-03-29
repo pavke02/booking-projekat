@@ -31,7 +31,7 @@ namespace SIMS_Booking.View
                 
         private User _user;
 
-        private AccomodationRepository _accommodationRepository;
+        private AccommodationRepository _accommodationRepository;
         private CityCountryRepository _cityCountryRepository;
         private ReservationRepository _reservationRepository;
         private GuestReviewRepository _guestReviewRepository;
@@ -157,7 +157,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }                
 
-        public OwnerMainView(AccomodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, GuestReviewRepository guestReviewRepository, ReservedAccommodationRepository reservedAccommodationRepository, UsersAccommodationRepository usersAccommodationRepository, User user)
+        public OwnerMainView(AccommodationRepository accomodationRepository, CityCountryRepository cityCountryRepository, ReservationRepository reservationRepository, GuestReviewRepository guestReviewRepository, ReservedAccommodationRepository reservedAccommodationRepository, UsersAccommodationRepository usersAccommodationRepository, User user)
         {
             InitializeComponent();
             DataContext = this;

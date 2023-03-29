@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace SIMS_Booking.Repository
 {
-    public class AccomodationRepository : Repository<Accommodation>, ISubject
+    public class AccommodationRepository : Repository<Accommodation>, ISubject
     {       
-        public AccomodationRepository() : base("../../../Resources/Data/accommodations.csv") { }    
+        public AccommodationRepository() : base("../../../Resources/Data/accommodations.csv") { }    
         
         public List<Accommodation> GetByUserId(int id)
         {
