@@ -2,10 +2,10 @@ using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
+using SIMS_Booking.Service;
+using SIMS_Booking.Service.RelationsService;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
-using System.Printing;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
@@ -15,16 +15,16 @@ namespace SIMS_Booking.View
 {
     public partial class SignInForm : Window
     {
-        private readonly UserRepository _userRepository;
-        private readonly AccomodationRepository _accommodationRepository;
+        private readonly UserService _userService;
+        private readonly AccommodationService _accommodationService;
         private readonly CityCountryRepository _cityCountryRepository;   
-        private readonly ReservationRepository _reservationRepository;
+        private readonly ReservationService _rservationService;
         private readonly TourRepository _tourRepository;
         private readonly VehicleRepository _vehicleRepository;
-        private readonly GuestReviewRepository _guestReviewRepository; 
+        private readonly GuestReviewService _guestReviewService; 
         
-        private readonly ReservedAccommodationRepository _reservedAccommodationRepository;
-        private readonly UsersAccommodationRepository _usersAccommodationRepository;
+        private readonly ReservedAccommodationService _reservedAccommodationService;
+        private readonly UsersAccommodationService _userAccommodationService;
         private readonly DriverLanguagesRepository _driverLanguagesRepository;
         private readonly DriverLocationsRepository _driverLocationsRepository;
         private readonly TourPointRepository _tourPointRepository;
@@ -59,36 +59,36 @@ namespace SIMS_Booking.View
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             startupWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-            _userRepository = new UserRepository();
-            _accommodationRepository = new AccomodationRepository();
+            _userService = new UserService();
+            _accommodationService = new AccommodationService();
             _cityCountryRepository = new CityCountryRepository();   
-            _reservationRepository = new ReservationRepository();            
+            _rservationService = new ReservationService();            
             _tourRepository = new TourRepository(); // sve ture ali nemamo  tourPoint = null
             _vehicleRepository = new VehicleRepository();
-            _guestReviewRepository = new GuestReviewRepository();                
+            _guestReviewService = new GuestReviewService();                
             _tourPointRepository = new TourPointRepository(); // svi tourPointi
             _confirmTourRepository = new ConfirmTourRepository();
 
-            _reservedAccommodationRepository = new ReservedAccommodationRepository();
-            _usersAccommodationRepository = new UsersAccommodationRepository();
+            _reservedAccommodationService = new ReservedAccommodationService();
+            _userAccommodationService = new UsersAccommodationService();
 
-            _reservedAccommodationRepository.LoadAccommodationsAndUsersInReservation(_userRepository, _accommodationRepository, _reservationRepository);
-            _usersAccommodationRepository.LoadUsersInAccommodation(_userRepository, _accommodationRepository);
-            _guestReviewRepository.LoadReservationInGuestReview(_reservationRepository);
+            _reservedAccommodationService.LoadAccommodationsAndUsersInReservation(_userService, _accommodationService, _rservationService);
+            _userAccommodationService.LoadUsersInAccommodation(_userService, _accommodationService);
+            _guestReviewService.LoadReservationInGuestReview(_rservationService);
 
             _driverLanguagesRepository = new DriverLanguagesRepository();
             _driverLocationsRepository = new DriverLocationsRepository();
 
             _driverLanguagesRepository.AddDriverLanguagesToVehicles(_vehicleRepository);
             _driverLocationsRepository.AddDriverLocationsToVehicles(_vehicleRepository);
-            _confirmTourRepository.loadGuests(_userRepository);
+            //_confirmTourRepository.loadGuests(_userService);
             _tourRepository.LoadCheckpoints(_tourPointRepository);
             //_tourCheckpointRepository.LoadCheckpointsInTour(_tourRepository, _tourPointRepository);
         }
 
         private void SignIn(object sender, RoutedEventArgs e)
         {
-            User user = _userRepository.GetByUsername(Username);
+            User user = _userService.GetByUsername(Username);
             if (user != null)
             {
                 if (user.Password == txtPassword.Password)
@@ -97,11 +97,11 @@ namespace SIMS_Booking.View
                     {
                         case Roles.Owner:
 
-                            OwnerMainView ownerView = new OwnerMainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, _guestReviewRepository, _reservedAccommodationRepository, _usersAccommodationRepository, user);
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationService, _cityCountryRepository, _rservationService, _guestReviewService, _reservedAccommodationService, _userAccommodationService, user);
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
-                            Guest1MainView guest1View = new Guest1MainView(_accommodationRepository, _cityCountryRepository, _reservationRepository, _reservedAccommodationRepository ,user);
+                            Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryRepository, _rservationService, _reservedAccommodationService ,user);
                             guest1View.Show();
                             break;
                         case Roles.Guest2:

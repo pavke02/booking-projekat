@@ -9,6 +9,7 @@ using ToastNotifications.Position;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using System.Windows;
+using SIMS_Booking.Service;
 
 namespace SIMS_Booking.State
 {    
@@ -17,15 +18,15 @@ namespace SIMS_Booking.State
         private DateTime _date;
         private DispatcherTimer _checkDateTimer;
 
-        private ReservationRepository _reservationRepository;
-        private GuestReviewRepository _guestReviewRepository;
+        private ReservationService _reservationService;
+        private GuestReviewService _guestReviewService;
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
 
-        public Timer(ObservableCollection<Reservation> reservedAccommodations, ReservationRepository reservationRepository, GuestReviewRepository guestReviewRepository)
+        public Timer(ObservableCollection<Reservation> reservedAccommodations, ReservationService reservationService, GuestReviewService guestReviewService)
         {
             ReservedAccommodations = reservedAccommodations;
-            _reservationRepository = reservationRepository;
-            _guestReviewRepository = guestReviewRepository;
+            _reservationService = reservationService;
+            _guestReviewService = guestReviewService;
 
             var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             timer.Tick += (sender, args) =>
@@ -33,7 +34,7 @@ namespace SIMS_Booking.State
                 if (ReservedAccommodations.FirstOrDefault(s => s.EndDate <= DateTime.Now && (DateTime.Now - s.EndDate.Date).TotalDays <= 5) != null)
                     notifier.ShowInformation("You have guests to review!");
 
-                _reservationRepository.RemoveUnreviewedReservations(_guestReviewRepository);
+                _reservationService.RemoveUnreviewedReservations(_guestReviewService);
                 timer.Stop();
             };
             timer.Start();
@@ -57,7 +58,7 @@ namespace SIMS_Booking.State
                 if (ReservedAccommodations.FirstOrDefault(s => s.EndDate <= DateTime.Now && (DateTime.Now - s.EndDate.Date).TotalDays <= 5) != null)
                     notifier.ShowInformation("You have guests to review!");
 
-                _reservationRepository.RemoveUnreviewedReservations(_guestReviewRepository);
+                _reservationService.RemoveUnreviewedReservations(_guestReviewService);
             }
         }
 
