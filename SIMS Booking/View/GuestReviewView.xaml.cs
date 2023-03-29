@@ -1,6 +1,4 @@
 ﻿using SIMS_Booking.Model;
-using SIMS_Booking.Repository;
-using SIMS_Booking.Repository.RelationsRepository;
 using SIMS_Booking.Service;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -83,15 +81,13 @@ namespace SIMS_Booking.View
 
             _guestReviewService = guestReviewService;            
             _reservationService = reservationService;
-        }        
+        }
 
-        private void TextBoxCheck(object sender, RoutedEventArgs e)
+        private void TextBoxCheck(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             submitButton.IsEnabled = false;
-            if(IsValid)
-            {
-                submitButton.IsEnabled = true;
-            }
+            if (IsValid)            
+                submitButton.IsEnabled = true;            
         }
 
         private void SubmitReview(object sender, RoutedEventArgs e)
