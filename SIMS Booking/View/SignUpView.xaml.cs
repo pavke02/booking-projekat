@@ -2,6 +2,7 @@
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
+using SIMS_Booking.Service;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -12,7 +13,7 @@ namespace SIMS_Booking.View
 {
     public partial class SignUpView : Window, IDataErrorInfo
     {
-        private readonly UserRepository _userRepository;
+        private readonly UserService _userService;
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
         public string Error { get { return null; } }
 
@@ -38,12 +39,12 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public SignUpView(UserRepository userRepository)
+        public SignUpView(UserService userService)
         {
             InitializeComponent();
             DataContext = this;
 
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         public Roles FindRole()
@@ -73,7 +74,7 @@ namespace SIMS_Booking.View
             Roles role = FindRole();
             
             User user = new User(Username, txtPassword.Password, role);
-            _userRepository.Save(user);
+            _userService.Save(user);
             SignInForm signInForm = new SignInForm();
             signInForm.Show();
             Close();
@@ -96,8 +97,10 @@ namespace SIMS_Booking.View
                     case "Username":
                         if (string.IsNullOrWhiteSpace(Username)) 
                             result = "Username cannot be empty"; 
-                        else if(Username.Length < 6)
-                            result = "Username must be a minimum of 6 characters";
+                        else if(Username.Length < 4)
+                            result = "Username must be a minimum of 4 characters";
+                        else if(_userService.GetByUsername(Username) != null)
+                            result = "Username already in use";
                         break;                        
                 }
 

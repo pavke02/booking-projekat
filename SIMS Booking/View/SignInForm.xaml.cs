@@ -132,7 +132,7 @@ namespace SIMS_Booking.View
 
         private void SignUp(object sender, RoutedEventArgs e)
         {
-            SignUpView signUpView = new SignUpView(_userRepository);
+            SignUpView signUpView = new SignUpView(_userService);
             signUpView.Show();
             Close();
         }
