@@ -34,9 +34,21 @@
                             </Grid>
                             <WrapPanel Height="90" Margin="0, 5, 0, 0">
                                 <Button x:Name="signOutButton" Content="Sign Out" Width="120" Height="40" 
-                                         Margin="20, 30, 0, 0"></Button>
+                                         Margin="20, 30, 0, 0">
+                                    <Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
                                 <Button x:Name="switchUserButton" Content="Switch User" Width="120" Height="40" 
-                                          Margin="60, 30, 0, 0"></Button>
+                                          Margin="60, 30, 0, 0">
+                                    <Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
                             </WrapPanel>
                         </StackPanel>
                     </Grid>
@@ -57,7 +69,14 @@
                                 <TextBlock x:Name="ownerRatingTb" Margin="10 , 20, 0, 0"></TextBlock>
                             </WrapPanel>
                             <WrapPanel>
-                                <Button Content="Show User Reviews" Width="180" Height="50" Margin="30, 30, 0, 0"></Button>
+                                <Button Content="Show User Reviews" Width="180" Height="50" Margin="30, 30, 0, 0"
+                                        Click="ShowUsersReviews" Name="showReviewsButton">
+                                    <Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
                                 <StackPanel Margin="230, 0, 0, 0" Width="250">
                                     <TextBlock Text="Owners licence:" Margin="0 ,25, 0, 0" HorizontalAlignment="Center"></TextBlock>
                                     <WrapPanel>

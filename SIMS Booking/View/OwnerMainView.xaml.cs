@@ -236,16 +236,21 @@ namespace SIMS_Booking.View
             urlTb.Clear();
         }
 
-        private void ShowReview(object sender, RoutedEventArgs e)
-        {
-            ReviewDetailsView detailsView = new ReviewDetailsView(SelectedReview);
-            detailsView.ShowDialog();
-        }
-
         private void RateGuest(object sender, RoutedEventArgs e)
         {
             GuestReviewView guestReviewView = new GuestReviewView(_guestReviewService, _reservationService, _reservationService.GetById(SelectedReservation.getID()));
             guestReviewView.ShowDialog();
+        }
+
+        private void ShowReview(object sender, RoutedEventArgs e)
+        {
+            GuestReviewDetailsView detailsView = new GuestReviewDetailsView(SelectedReview);
+            detailsView.ShowDialog();
+        }       
+
+        private void ShowUsersReviews(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void Reset(object sender, RoutedEventArgs e)
@@ -313,8 +318,8 @@ namespace SIMS_Booking.View
             Accommodations.Clear();
             foreach (var accommodation in accommodations)
                 Accommodations.Add(accommodation);
-        }
-
+        }        
+        
         private void UpdateReservedAccommodations(List<Reservation> reservations)
         {
             ReservedAccommodations.Clear();
@@ -335,7 +340,7 @@ namespace SIMS_Booking.View
             UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.getID()));
             UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.getID()));
         }
-
+        
         public string Error { get { return null; } }
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
 
