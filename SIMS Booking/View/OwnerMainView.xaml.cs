@@ -250,7 +250,8 @@ namespace SIMS_Booking.View
 
         private void ShowUsersReviews(object sender, RoutedEventArgs e)
         {
-
+            OwmerReviewDetailsVeiw owmerReviewDetails = new OwmerReviewDetailsVeiw();
+            owmerReviewDetails.ShowDialog();
         }
 
         private void Reset(object sender, RoutedEventArgs e)

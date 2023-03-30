@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace SIMS_Booking.View
 {
     /// <summary>
-    /// Interaction logic for UserReviewDetails.xaml
+    /// Interaction logic for OwmerReviewDetailsVeiw.xaml
     /// </summary>
-    public partial class UserReviewDetails : Window
+    public partial class OwmerReviewDetailsVeiw : Window
     {
-        public UserReviewDetails()
+        public OwmerReviewDetailsVeiw()
         {
             InitializeComponent();
         }
