@@ -8,19 +8,20 @@
         Title="OwmerReviewDetailsVeiw" Height="470" Width="1100">
     <Grid>
         <WrapPanel>
-            <DataGrid x:Name="reservedAccommodationGrid" Height="430" Width="610" VerticalAlignment="Top"
-                          ItemsSource="{Binding Path=Gue, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding Path=SelectedReservation, UpdateSourceTrigger=PropertyChanged}"                                                                                                                                                                                                                                      
+            <DataGrid x:Name="reservedAccommodationGrid" Height="430" Width="610" VerticalAlignment="Top" HorizontalAlignment="Left"
+                          ItemsSource="{Binding Path=OwnersReviews, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Path=SelectedReview, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionChanged="ShowReviewDetails"
                           IsReadOnly="True" AutoGenerateColumns="False">
                 <DataGrid.Columns >
-                    <DataGridTextColumn Header="User" Binding="{Binding User.Username}" Width="110"/>
-                    <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Accommodation.Name}" Width="240"/>
-                    <DataGridTextColumn Header="Stard Date" Binding="{Binding StartDate, StringFormat=d}" Width="130"/>
-                    <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=d }" Width="130"/>
+                    <DataGridTextColumn Header="User" Binding="{Binding Reservation.User.Username}" Width="110"/>
+                    <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="240"/>
+                    <DataGridTextColumn Header="Stard Date" Binding="{Binding Reservation.StartDate, StringFormat=d}" Width="125"/>
+                    <DataGridTextColumn Header="End Date" Binding="{Binding Reservation.EndDate, StringFormat=d }" Width="125"/>
                 </DataGrid.Columns>
             </DataGrid>
 
-            <StackPanel Width="470" Height="440">
+            <StackPanel Width="470" Height="440" Name="details" Visibility="Hidden">
                 <Grid Margin="20, 0, 0, 0" Width="455" HorizontalAlignment="Left">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="150"></ColumnDefinition>
@@ -43,7 +44,7 @@
 
                     <Label Grid.Column="0" Grid.Row="1" FontSize="20" VerticalAlignment="Center">Owner:</Label>
                     <TextBox Grid.Column="1" Grid.Row="1" Height="30" Width="80" Margin="0, 10, 0, 0" Padding="34, 5, 0, 0"
-                                 Text="{Binding ElementName=ruleFollowingSl, Path=Value, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"                                 
+                                 Text="{Binding ElementName=ownersCorrectnessSl, Path=Value, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"                                 
                                  Name="ownersCorrectnessTb" IsReadOnly="True"></TextBox>
                     <Slider Grid.Column="2" Grid.Row="1" Margin="10, 35, 0, 0" Maximum="5" Minimum="0" Width="190" HorizontalAlignment="Left"
                         Name="ownersCorrectnessSl" Value="{Binding OwnersCorrectness, UpdateSourceTrigger=PropertyChanged}"

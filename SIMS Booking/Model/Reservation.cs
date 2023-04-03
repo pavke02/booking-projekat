@@ -11,17 +11,19 @@ namespace SIMS_Booking.Model
         public DateTime EndDate { get; set; }
         public Accommodation Accommodation { get; set; }
         public User User { get; set; }
-        public bool IsReviewed { get; set; }
+        public bool HasOwnerReviewed { get; set; }
+        public bool HasGuestReviewed { get; set; }
 
         public Reservation() { }
 
-        public Reservation(DateTime startDate, DateTime endDate, Accommodation accommodation, User user, bool isReviewed)
+        public Reservation(DateTime startDate, DateTime endDate, Accommodation accommodation, User user, bool hasOwnerReviewed, bool hasGuestReviewed)
         {
             StartDate = startDate;
             EndDate = endDate;
             Accommodation = accommodation;
             User = user;
-            IsReviewed = isReviewed;
+            HasOwnerReviewed = hasOwnerReviewed;
+            HasGuestReviewed = hasGuestReviewed;
         }
 
         public int getID()
@@ -39,12 +41,13 @@ namespace SIMS_Booking.Model
             ID = int.Parse(values[0]);
             StartDate = DateTime.Parse(values[1]);
             EndDate = DateTime.Parse(values[2]);
-            IsReviewed = bool.Parse(values[3]);
+            HasOwnerReviewed = bool.Parse(values[3]);
+            HasGuestReviewed = bool.Parse(values[4]);
         }
 
         public string[] ToCSV()
         {            
-            string[] csvValues = { ID.ToString(), StartDate.ToShortDateString(), EndDate.ToShortDateString(), IsReviewed.ToString() };
+            string[] csvValues = { ID.ToString(), StartDate.ToShortDateString(), EndDate.ToShortDateString(), HasOwnerReviewed.ToString(), HasGuestReviewed.ToString() };
             return csvValues;
         }        
     }

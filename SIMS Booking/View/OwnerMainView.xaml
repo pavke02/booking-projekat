@@ -70,7 +70,7 @@
                             </WrapPanel>
                             <WrapPanel>
                                 <Button Content="Show User Reviews" Width="180" Height="50" Margin="30, 30, 0, 0"
-                                        Click="ShowUsersReviews" Name="showReviewsButton">
+                                        Click="ShowOwnersReviews" Name="showReviewsButton">
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>

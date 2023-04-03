@@ -22,6 +22,7 @@ namespace SIMS_Booking.View
         private readonly TourRepository _tourRepository;
         private readonly VehicleRepository _vehicleRepository;
         private readonly GuestReviewService _guestReviewService; 
+        private readonly OwnerReviewService _ownerReviewService;
         
         private readonly ReservedAccommodationService _reservedAccommodationService;
         private readonly UsersAccommodationService _userAccommodationService;
@@ -65,7 +66,8 @@ namespace SIMS_Booking.View
             _rservationService = new ReservationService();            
             _tourRepository = new TourRepository(); // sve ture ali nemamo  tourPoint = null
             _vehicleRepository = new VehicleRepository();
-            _guestReviewService = new GuestReviewService();                
+            _guestReviewService = new GuestReviewService();
+            _ownerReviewService = new OwnerReviewService();
             _tourPointRepository = new TourPointRepository(); // svi tourPointi
             _confirmTourRepository = new ConfirmTourRepository();
 
@@ -75,6 +77,7 @@ namespace SIMS_Booking.View
             _reservedAccommodationService.LoadAccommodationsAndUsersInReservation(_userService, _accommodationService, _rservationService);
             _userAccommodationService.LoadUsersInAccommodation(_userService, _accommodationService);
             _guestReviewService.LoadReservationInGuestReview(_rservationService);
+            _ownerReviewService.LoadReservationInOwnerReview(_rservationService);
 
             _driverLanguagesRepository = new DriverLanguagesRepository();
             _driverLocationsRepository = new DriverLocationsRepository();
@@ -97,7 +100,7 @@ namespace SIMS_Booking.View
                     {
                         case Roles.Owner:
 
-                            OwnerMainView ownerView = new OwnerMainView(_accommodationService, _cityCountryRepository, _rservationService, _guestReviewService, _reservedAccommodationService, _userAccommodationService, user);
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationService, _cityCountryRepository, _rservationService, _guestReviewService, _reservedAccommodationService, _userAccommodationService, _ownerReviewService, user);
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
