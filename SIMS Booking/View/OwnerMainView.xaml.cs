@@ -270,11 +270,7 @@ namespace SIMS_Booking.View
 
         private void IsPublishable(object sender, RoutedEventArgs e)
         {
-            publishButton.IsEnabled = false;
-            if (IsValid)
-            {
-                publishButton.IsEnabled = true;
-            }
+            publishButton.IsEnabled = IsValid;            
         }
 
         private void IsReviewable(object sender, SelectionChangedEventArgs e)
@@ -288,12 +284,9 @@ namespace SIMS_Booking.View
 
         private void IsShowable(object sender, SelectionChangedEventArgs e)
         {
-            reviewDetails.IsEnabled = false;
-            if (SelectedReview != null)
-                reviewDetails.IsEnabled = true;
+            reviewDetails.IsEnabled = SelectedReview != null;            
         }
-
-        //ToDo: srediti da radi samo za validne URLove
+        
         private void ImageTbCheck(object sender, TextChangedEventArgs e)
         {
             addURLButton.Visibility = Visibility.Hidden;
