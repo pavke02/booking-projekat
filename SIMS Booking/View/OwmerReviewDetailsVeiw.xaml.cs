@@ -17,6 +17,7 @@ namespace SIMS_Booking.View
         private OwnerReviewService _ownerReviewService;
         private User _user;
 
+        #region Property
         private int _tidiness;
         public int Tidiness
         {
@@ -59,6 +60,7 @@ namespace SIMS_Booking.View
                 }
             }
         }
+        #endregion
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -87,6 +89,7 @@ namespace SIMS_Booking.View
             Comment = SelectedReview.Comment;
         }
 
+        #region Update
         private void UpdateOwnersReviews(List<OwnerReview> ownerReviews)
         {
             OwnersReviews.Clear();
@@ -97,6 +100,7 @@ namespace SIMS_Booking.View
         public void Update()
         {
             UpdateOwnersReviews(_ownerReviewService.GetByUserId(_user.getID()));
-        }        
+        }
+        #endregion
     }
 }

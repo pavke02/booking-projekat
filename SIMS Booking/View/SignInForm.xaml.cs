@@ -89,6 +89,7 @@ namespace SIMS_Booking.View
             //_tourCheckpointRepository.LoadCheckpointsInTour(_tourRepository, _tourPointRepository);
         }
 
+        #region SignIn
         private void SignIn(object sender, RoutedEventArgs e)
         {
             User user = _userService.GetByUsername(Username);
@@ -132,6 +133,7 @@ namespace SIMS_Booking.View
                 MessageBox.Show("Wrong username!");
             }
         }
+        #endregion
 
         private void SignUp(object sender, RoutedEventArgs e)
         {

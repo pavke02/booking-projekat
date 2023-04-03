@@ -12,13 +12,10 @@ using SIMS_Booking.Observer;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Globalization;
-using SIMS_Booking.Repository.RelationsRepository;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.State;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
-using System.Xml.Linq;
-using Microsoft.TeamFoundation.Common;
 
 namespace SIMS_Booking.View
 {
@@ -43,6 +40,7 @@ namespace SIMS_Booking.View
         private UsersAccommodationService _usersAccommodationService;
         private OwnerReviewService _ownerReviewService;
 
+        #region Property
         private string _accommodationName;
         public string AccommodationName
         {
@@ -153,7 +151,8 @@ namespace SIMS_Booking.View
                     OnPropertyChanged();
                 }
             }
-        }        
+        }
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -208,8 +207,9 @@ namespace SIMS_Booking.View
                 foreach (string city in Countries.ElementAt(countryCb.SelectedIndex).Value)
                     cityCb.Items.Add(city).ToString();
             }
-        }                     
-        
+        }
+
+        #region Buttons
         private void Publish(object sender, RoutedEventArgs e)
         {
             Location location = new Location(Country.Key, City);
@@ -266,8 +266,10 @@ namespace SIMS_Booking.View
             imageTb.Clear();
             ImageURLs = "";    
             publishButton.IsEnabled = false;
-        }                
+        }
+        #endregion
 
+        #region ButtonValidations
         private void IsPublishable(object sender, RoutedEventArgs e)
         {
             publishButton.IsEnabled = IsValid;            
@@ -295,6 +297,7 @@ namespace SIMS_Booking.View
                 addURLButton.Visibility = Visibility.Visible;
             }
         }
+        #endregion
 
         private void ClearTextBoxes()
         {
@@ -309,6 +312,7 @@ namespace SIMS_Booking.View
             typeCb.SelectedItem = null;
         }
 
+        #region Update
         private void UpdateAccommodations(List<Accommodation> accommodations)
         {
             Accommodations.Clear();
@@ -348,7 +352,9 @@ namespace SIMS_Booking.View
             UpdateNumberOfRegisterdAccommodations();
             UpdateNumberOfReservedAccommodations();
         }
-        
+        #endregion
+
+        #region Validation
         public string Error { get { return null; } }
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
 
@@ -425,6 +431,7 @@ namespace SIMS_Booking.View
             }
         }        
     }
+    #endregion
 
     class ColorConverter : IValueConverter
     {

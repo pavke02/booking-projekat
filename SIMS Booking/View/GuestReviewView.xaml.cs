@@ -13,6 +13,7 @@ namespace SIMS_Booking.View
         private ReservationService _reservationService;
         private Reservation _reservation;
 
+        #region Property
         private int tidiness = 0;
         public int Tidiness
         {
@@ -63,7 +64,8 @@ namespace SIMS_Booking.View
                     OnPropertyChanged();
                 }
             }
-        }        
+        }
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -97,6 +99,7 @@ namespace SIMS_Booking.View
             Close();
         }
 
+        #region Validation
         public string Error => null;
 
         public string this[string columnName]
@@ -126,6 +129,7 @@ namespace SIMS_Booking.View
 
                 return true;
             }
-        }        
-    }    
+        }
+        #endregion
+    }
 }

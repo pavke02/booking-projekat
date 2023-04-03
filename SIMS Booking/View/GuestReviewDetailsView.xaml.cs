@@ -10,6 +10,7 @@ namespace SIMS_Booking.View
     /// </summary>
     public partial class GuestReviewDetailsView : Window
     {
+        #region Property
         private string _username;
         public string Username
         {
@@ -107,6 +108,7 @@ namespace SIMS_Booking.View
                 }
             }
         }
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
