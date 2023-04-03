@@ -51,7 +51,7 @@ namespace SIMS_Booking.Service
 
         public List<Reservation> GetUnreviewedReservations(int id)
         {
-            return _repository.GetAll().Where(e => !e.IsReviewed && e.Accommodation.User.getID() == id).ToList();
+            return _repository.GetAll().Where(e => !e.HasOwnerReviewed && e.Accommodation.User.getID() == id).ToList();
         }
 
         //Metoda proverava da li je istekao rok za ocenjivanje,
@@ -59,9 +59,9 @@ namespace SIMS_Booking.Service
         public void RemoveUnreviewedReservations(GuestReviewService guestReviewService)
         {
             foreach (Reservation reservation in _repository.GetAll().ToList())
-                if ((DateTime.Now - reservation.EndDate).TotalDays > 5 && !reservation.IsReviewed)
+                if ((DateTime.Now - reservation.EndDate).TotalDays > 5 && !reservation.HasOwnerReviewed)
                 {
-                    reservation.IsReviewed = true;
+                    reservation.HasOwnerReviewed = true;
                     _repository.Update(reservation);
                     GuestReview guestReview = new GuestReview(0, 0, null, reservation);
                     guestReviewService.Save(guestReview);

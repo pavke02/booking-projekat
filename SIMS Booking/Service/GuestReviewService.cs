@@ -30,14 +30,14 @@ namespace SIMS_Booking.Service
 
         public void SubmitReview(int tidiness, int ruleFollowing, string comment, Reservation reservation)
         {
-            reservation.IsReviewed = true;
+            reservation.HasOwnerReviewed = true;
             GuestReview guestReview = new GuestReview(tidiness, ruleFollowing, comment, reservation);
             Save(guestReview);
         }
 
         public List<GuestReview> GetReviewedReservations(int id)
         {
-            return _repository.GetAll().Where(e => e.Reservation.IsReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
+            return _repository.GetAll().Where(e => e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
         }
 
         public void Subscribe(IObserver observer)

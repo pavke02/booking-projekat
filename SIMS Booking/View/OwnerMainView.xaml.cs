@@ -41,6 +41,7 @@ namespace SIMS_Booking.View
         private GuestReviewService _guestReviewService;
         private ReservedAccommodationService _reservedAccommodationService;
         private UsersAccommodationService _usersAccommodationService;
+        private OwnerReviewService _ownerReviewService;
 
         private string _accommodationName;
         public string AccommodationName
@@ -161,7 +162,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }                
 
-        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, ReservedAccommodationService reservedAccommodationService, UsersAccommodationService usersAccommodationService, User user)
+        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, ReservedAccommodationService reservedAccommodationService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, User user)
         {
             InitializeComponent();
             DataContext = this;            
@@ -191,6 +192,7 @@ namespace SIMS_Booking.View
 
             _reservedAccommodationService = reservedAccommodationService;
             _usersAccommodationService = usersAccommodationService;
+            _ownerReviewService = ownerReviewService;
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
@@ -246,12 +248,13 @@ namespace SIMS_Booking.View
         {
             GuestReviewDetailsView detailsView = new GuestReviewDetailsView(SelectedReview);
             detailsView.ShowDialog();
-        }       
-
-        private void ShowUsersReviews(object sender, RoutedEventArgs e)
-        {
-
         }
+
+        private void ShowOwnersReviews(object sender, RoutedEventArgs e)
+        {
+            OwmerReviewDetailsVeiw owmerReviewDetails = new OwmerReviewDetailsVeiw(_ownerReviewService, _user);
+            owmerReviewDetails.ShowDialog();
+        }        
 
         private void Reset(object sender, RoutedEventArgs e)
         {
@@ -334,11 +337,23 @@ namespace SIMS_Booking.View
                 PastReservations.Add(guestReview);
         }
 
+        private void UpdateNumberOfRegisterdAccommodations()
+        {
+            accommodationNumberTb.Text = Accommodations.Count().ToString();
+        }
+
+        private void UpdateNumberOfReservedAccommodations()
+        {
+            reservationNumberTb.Text = ReservedAccommodations.Count().ToString();
+        }
+
         public void Update()
         {
             UpdateAccommodations(_accommodationService.GetByUserId(_user.getID()));
             UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.getID()));
             UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.getID()));
+            UpdateNumberOfRegisterdAccommodations();
+            UpdateNumberOfReservedAccommodations();
         }
         
         public string Error { get { return null; } }
