@@ -58,15 +58,15 @@
                         <StackPanel>
                             <WrapPanel>
                                 <TextBlock Text="Number of registerd accommodations:" Margin="20, 20, 0, 0"></TextBlock>
-                                <TextBlock x:Name="accommodationNumberTb" Margin="10 , 20, 0, 0"></TextBlock>
+                                <TextBlock x:Name="accommodationNumberTb" Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
                             </WrapPanel>
                             <WrapPanel>
                                 <TextBlock Text="Number of reserved accommodations:" Margin="20, 20, 0, 0"></TextBlock>
-                                <TextBlock x:Name="reservationNumberTb" Margin="10 , 20, 0, 0"></TextBlock>
+                                <TextBlock x:Name="reservationNumberTb" Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
                             </WrapPanel>
                             <WrapPanel>
                                 <TextBlock Text="Owner rating:" Margin="20, 20, 0, 0"></TextBlock>
-                                <TextBlock x:Name="ownerRatingTb" Margin="10 , 20, 0, 0"></TextBlock>
+                                <TextBlock x:Name="ownerRatingTb" Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
                             </WrapPanel>
                             <WrapPanel>
                                 <Button Content="Show User Reviews" Width="180" Height="50" Margin="30, 30, 0, 0"
@@ -79,12 +79,10 @@
                                 </Button>
                                 <StackPanel Margin="230, 0, 0, 0" Width="250">
                                     <TextBlock Text="Owners licence:" Margin="0 ,25, 0, 0" HorizontalAlignment="Center"></TextBlock>
-                                    <WrapPanel>
-                                        <CheckBox Margin="0 ,20, 0, 0"></CheckBox>
-                                        <TextBlock Text="Regular" Margin="10, 14 , 0 ,0"></TextBlock>
-                                        
-                                        <CheckBox Margin="20 ,20, 0, 0"></CheckBox>
-                                        <TextBlock Text="Super-Owner" Margin="10, 14 , 0 ,0"></TextBlock>
+                                    <WrapPanel HorizontalAlignment="Center">
+                                        <CheckBox Name="regularCb" Margin="0 ,20, 0, 0" IsEnabled="False" Content="Regular" VerticalContentAlignment="Center"></CheckBox>
+
+                                        <CheckBox Name="superCb" Margin="20 ,20, 0, 0" Content="Super-Owner" IsEnabled="False" VerticalContentAlignment="Center"></CheckBox>
                                     </WrapPanel>
                                 </StackPanel>
                             </WrapPanel>

@@ -12,7 +12,7 @@
                           ItemsSource="{Binding Path=OwnersReviews, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedReview, UpdateSourceTrigger=PropertyChanged}"
                           SelectionChanged="ShowReviewDetails"
-                          IsReadOnly="True" AutoGenerateColumns="False">
+                          IsReadOnly="True" AutoGenerateColumns="False" FontSize="18">
                 <DataGrid.Columns >
                     <DataGridTextColumn Header="User" Binding="{Binding Reservation.User.Username}" Width="110"/>
                     <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="240"/>

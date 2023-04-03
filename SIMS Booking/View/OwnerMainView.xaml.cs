@@ -35,8 +35,7 @@ namespace SIMS_Booking.View
         private AccommodationService _accommodationService;
         private CityCountryRepository _cityCountryRepository;
         private ReservationService _reservationService;
-        private GuestReviewService _guestReviewService;
-        private ReservedAccommodationService _reservedAccommodationService;
+        private GuestReviewService _guestReviewService;        
         private UsersAccommodationService _usersAccommodationService;
         private OwnerReviewService _ownerReviewService;
 
@@ -161,7 +160,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }                
 
-        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, ReservedAccommodationService reservedAccommodationService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, User user)
+        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, User user)
         {
             InitializeComponent();
             DataContext = this;            
@@ -188,15 +187,32 @@ namespace SIMS_Booking.View
 
             _cityCountryRepository = cityCountryRepository;
             Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
-
-            _reservedAccommodationService = reservedAccommodationService;
+            
             _usersAccommodationService = usersAccommodationService;
             _ownerReviewService = ownerReviewService;
+
+            CalculateRating(_user.getID());
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
             Timer timer = new Timer(ReservedAccommodations, _reservationService, _guestReviewService);   
-        }                                  
+        }           
+        
+        private void CalculateRating(int id)
+        {
+            double rating = _guestReviewService.CalculateRating(id);
+            ownerRatingTb.Text = Math.Round(rating, 2).ToString();
+            if(rating > 9.5 && PastReservations.Count() > 50)
+            {
+                regularCb.IsChecked = false;
+                superCb.IsChecked = true;
+            }                
+            else
+            {
+                superCb.IsChecked = false;
+                regularCb.IsChecked = true;
+            }                
+        }
 
         private void FillCityCb(object sender, SelectionChangedEventArgs e)
         {
@@ -242,6 +258,7 @@ namespace SIMS_Booking.View
         {
             GuestReviewView guestReviewView = new GuestReviewView(_guestReviewService, _reservationService, _reservationService.GetById(SelectedReservation.getID()));
             guestReviewView.ShowDialog();
+            CalculateRating(_user.getID());
         }
 
         private void ShowReview(object sender, RoutedEventArgs e)

@@ -1,5 +1,4 @@
-﻿
-using SIMS_Booking.Model;
+﻿using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using System.Collections.Generic;
