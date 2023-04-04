@@ -26,9 +26,11 @@ namespace SIMS_Booking.Model
         public int Time { get; set; }
         public List<string> ImageURLs { get; set; }
         public int CurrentTourPoint { get; set; }
+        public TimeOnly TourTime { get; set; }
+        public DateTime EndTimeTour { get; set; }
 
         public Tour () { TourPoints = new List<TourPoint>(); }
-        public Tour ( string name, Location location, string description, string language, int maxGuests, DateTime startTour, int time, List<string> imagesURL, List<int> tourPointIds, List<TourPoint> tourPoints)
+        public Tour ( string name, Location location, string description, string language, int maxGuests, DateTime startTour, int time, List<string> imagesURL, List<int> tourPointIds, List<TourPoint> tourPoints,TimeOnly tourTime)
         {
             TourPoints = tourPoints;            
             Name = name;
@@ -47,6 +49,7 @@ namespace SIMS_Booking.Model
 
             TourPointIds = tourPointIds;
             CurrentTourPoint = 0;
+            TourTime = tourTime;
 
         }
         public int getID()
@@ -72,12 +75,13 @@ namespace SIMS_Booking.Model
             ImageURLs = values[8].Split(',').ToList();
             TourPointIds = values[9].Split(',').Select(int.Parse).ToList();
             CurrentTourPoint = int.Parse(values[10]);
+            TourTime = TimeOnly.Parse(values[11]);
         }
 
         string[] ISerializable.ToCSV()
         {
            // string[] csvValues = { Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(), string.Join(',',tourPoints), Time.ToString() };
-            string[] csvValues = { ID.ToString() ,Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(),  StartTour.ToString(), Time.ToString(), string.Join(',', ImageURLs), string.Join(',',TourPointIds),CurrentTourPoint.ToString() };
+            string[] csvValues = { ID.ToString() ,Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(),  StartTour.ToString(), Time.ToString(), string.Join(',', ImageURLs), string.Join(',',TourPointIds),CurrentTourPoint.ToString(), TourTime.ToString() };
 
             return csvValues;
         }             

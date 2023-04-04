@@ -96,6 +96,9 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
+        <TextBox Grid.Row="0" Margin="508,300,578,461" 
+            Text="{Binding TourTime, UpdateSourceTrigger=LostFocus}"
+            x:Name="tourTime"/>
 
 
 

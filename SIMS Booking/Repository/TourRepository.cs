@@ -39,5 +39,29 @@ namespace SIMS_Booking.Repository
                 }
             }
         }
+
+        public bool ValidTimeOfTour()
+        {
+            foreach(var tour in _entityList)
+            {
+                foreach( var tour1 in _entityList )
+                {
+                if (tour.TourTime.AddHours(tour.Time) > tour1.TourTime.AddHours(tour1.Time))
+                    {
+                        return false;
+                    }
+                }
+
+            }
+            return true;
+        }
+
+        public int CountCheckPoints(string text)
+        {
+            string[] checkpoints = text.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return checkpoints.Length;
+        }
+
+
     }
 }

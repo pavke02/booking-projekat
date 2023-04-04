@@ -61,16 +61,9 @@ namespace SIMS_Booking.View
             InitializeComponent();
             DataContext = this;
             SelectedTour = selectedTour;
-
-            
-            _confirmTourRepository = confirmTourRepository;
-          
-           
-          
-            Checkpoints = new ObservableCollection<TourPoint>(SelectedTour.TourPoints);
-           
-
-           
+                        
+            _confirmTourRepository = confirmTourRepository;                              
+            Checkpoints = new ObservableCollection<TourPoint>(SelectedTour.TourPoints);                     
           
         }
             
@@ -93,14 +86,12 @@ namespace SIMS_Booking.View
                 }
             }
 
-
             Window.GetWindow(this).Close();
         }
 
               
         private void Button_Click1(object sender, RoutedEventArgs e)
-        {
-            
+        {           
 
             for( int i = 0; i < Checkpoints.Count; i++ )
             {

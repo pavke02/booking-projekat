@@ -74,11 +74,25 @@ namespace SIMS_Booking.View
 
 
 
+        private string _tourTime;
+        public string TourTime
+        {
+            get { return _tourTime; }
+            set 
+            {
+                if (value != _tourTime)
+                {
+                    _tourTime = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private string tourName;
         public string TourName
         {
             get { return tourName; }
-            set 
+            set
             {
                 if (value != tourName)
                 {
@@ -314,9 +328,15 @@ namespace SIMS_Booking.View
 
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
+            string text = tourPointTb.Text;
+            int count = _tourRepository.CountCheckPoints(text);
+
+            if (count < 2)
+            {
+                MessageBox.Show("Unesite najmanje dva checkpointa!");
+            }
 
 
-           
 
             List<string> imageURLs = new List<string>();
             string[] values = ImageURLs.Split("\n");
@@ -347,7 +367,7 @@ namespace SIMS_Booking.View
 
 
 
-            Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), StartTour, int.Parse(Times), imageURLs, TourPointIds, TourPoints);
+            Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), StartTour, int.Parse(Times), imageURLs, TourPointIds, TourPoints, TimeOnly.Parse(TourTime));
              _tourRepository.Save(tour);
 
 
