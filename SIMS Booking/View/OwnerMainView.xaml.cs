@@ -195,7 +195,7 @@ namespace SIMS_Booking.View
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
-            Timer timer = new Timer(ReservedAccommodations, _reservationService, _guestReviewService);   
+            NotificationTimer timer = new NotificationTimer(ReservedAccommodations, _reservationService, _guestReviewService);   
         }           
         
         private void CalculateRating(int id)
