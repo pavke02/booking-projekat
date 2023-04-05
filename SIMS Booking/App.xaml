@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <ControlTemplate x:Key="ValidationTemplate" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
