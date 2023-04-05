@@ -40,6 +40,20 @@ namespace SIMS_Booking.Service
             return _repository.GetAll().Where(e => e.Reservation.HasGuestReviewed && e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
         }
 
+        public double CalculateRating(int id)
+        {
+            int numberOfGuestReviews = GetShowableReviews(id).Count();
+            if (numberOfGuestReviews == 0)
+                return 0;
+            double ratingSum = 0;
+            foreach (OwnerReview ownerReview in GetShowableReviews(id))
+            {
+                ratingSum += (double)ownerReview.Tidiness + (double)ownerReview.OwnersCorrectness;
+            }
+
+            return ratingSum / numberOfGuestReviews;
+        }
+
         public void Subscribe(IObserver observer)
         {
             _repository.Subscribe(observer);

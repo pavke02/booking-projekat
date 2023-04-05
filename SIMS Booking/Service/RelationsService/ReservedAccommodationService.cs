@@ -14,11 +14,6 @@ namespace SIMS_Booking.Service.RelationsService
             _repository = new ReservedAccommodationRepository();
         }
 
-        public List<ReservedAccommodation> Load()
-        {
-            return _repository.Load();
-        }
-
         public void Save(ReservedAccommodation reservedAccommodation)
         {
             _repository.Save(reservedAccommodation);
@@ -37,16 +32,6 @@ namespace SIMS_Booking.Service.RelationsService
                     }
                 }
             }
-        }
-
-        public void DeleteByReservation(int reservationId)
-        {
-            foreach (ReservedAccommodation reservedAccommodation in _repository.GetAll())
-                if (reservedAccommodation.ReservationId == reservationId)
-                {
-                    _repository.Delete(reservedAccommodation);
-                    break;
-                }
         }
     }
 }

@@ -38,6 +38,7 @@ namespace SIMS_Booking.View
         private GuestReviewService _guestReviewService;        
         private UsersAccommodationService _usersAccommodationService;
         private OwnerReviewService _ownerReviewService;
+        private PostponementService _postponementService;
 
         #region Property
         private string _accommodationName;
@@ -160,7 +161,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }                
 
-        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, User user)
+        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, PostponementService postponementService, User user)
         {
             InitializeComponent();
             DataContext = this;            
@@ -190,6 +191,7 @@ namespace SIMS_Booking.View
             
             _usersAccommodationService = usersAccommodationService;
             _ownerReviewService = ownerReviewService;
+            _postponementService = postponementService;
 
             CalculateRating(_user.getID());
 
@@ -200,9 +202,9 @@ namespace SIMS_Booking.View
         
         private void CalculateRating(int id)
         {
-            double rating = _guestReviewService.CalculateRating(id);
+            double rating = _ownerReviewService.CalculateRating(id);
             ownerRatingTb.Text = Math.Round(rating, 2).ToString();
-            if(rating > 9.5 && PastReservations.Count() > 50)
+            if(rating > 5.5 && PastReservations.Count() >= 3)
             {
                 regularCb.IsChecked = false;
                 superCb.IsChecked = true;
@@ -275,7 +277,7 @@ namespace SIMS_Booking.View
 
         private void ViewPostponeRequests(object sender, RoutedEventArgs e)
         {
-            PostponeReservationView postponeReservationView = new PostponeReservationView();
+            PostponeReservationView postponeReservationView = new PostponeReservationView(_postponementService, _reservationService, _user);
             postponeReservationView.ShowDialog();
         }
 
