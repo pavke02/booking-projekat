@@ -271,7 +271,13 @@ namespace SIMS_Booking.View
         {
             OwmerReviewDetailsVeiw owmerReviewDetails = new OwmerReviewDetailsVeiw(_ownerReviewService, _user);
             owmerReviewDetails.ShowDialog();
-        }        
+        }
+
+        private void ViewPostponeRequests(object sender, RoutedEventArgs e)
+        {
+            PostponeReservationView postponeReservationView = new PostponeReservationView();
+            postponeReservationView.ShowDialog();
+        }
 
         private void Reset(object sender, RoutedEventArgs e)
         {
@@ -296,9 +302,9 @@ namespace SIMS_Booking.View
         {
             if (SelectedReservation != null)            
                 if (DateTime.Now >= SelectedReservation.EndDate && (DateTime.Now - SelectedReservation.EndDate.Date).TotalDays <= 5)
-                    reviewGuestClick.IsEnabled = true;
+                    reviewGuestButton.IsEnabled = true;
                 else
-                    reviewGuestClick.IsEnabled = false;
+                    reviewGuestButton.IsEnabled = false;
         }
 
         private void IsShowable(object sender, SelectionChangedEventArgs e)

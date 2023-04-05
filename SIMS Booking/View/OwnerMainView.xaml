@@ -288,10 +288,25 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Button Name="reviewGuestClick" Content="Review Guest" Click="RateGuest"
-                            Width="150" Height="40" Margin="0, 30, 50, 0" HorizontalAlignment="Right"
+                    <WrapPanel Height="100">
+                        <Button Name="postponeRequestButton" Content="Postpone Requests" Click="ViewPostponeRequests"
+                            Width="160" Height="40" Margin="680, 30, 20, 0">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="10"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button Name="reviewGuestButton" Content="Review Guest" Click="RateGuest"
+                            Width="150" Height="40" Margin="0, 30, 0, 0"
                             IsEnabled="false">
-                    </Button>
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="10"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </WrapPanel>
                 </StackPanel>
             </TabItem>
             <TabItem Name="pastReservationsTab" Header="Reservation History" Height="60">
