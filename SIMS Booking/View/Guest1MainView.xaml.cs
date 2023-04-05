@@ -19,6 +19,7 @@ namespace SIMS_Booking.View
         public ObservableCollection<Accommodation> Accommodations { get; set; }        
         public ObservableCollection<Reservation> UserReservations { get; set; }
         public Accommodation SelectedAccommodation { get; set; }
+        public Reservation SelectedReservation { get; set; }
         public ObservableCollection<Accommodation> AccommodationsReorganized { get; set; }
         public User LoggedUser { get; set; }
 
@@ -26,8 +27,9 @@ namespace SIMS_Booking.View
         private readonly CityCountryRepository _cityCountryRepository;
         private ReservationService _reservationService;
         private ReservedAccommodationService _reservedAccommodationService;
+        private PostponementService _postponementService;
 
-        public Guest1MainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser)
+        public Guest1MainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService)
         {
             InitializeComponent();
             DataContext = this;
@@ -41,7 +43,9 @@ namespace SIMS_Booking.View
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
-            UserReservations = new ObservableCollection<Reservation>(_reservationService.GetReservationsByUser(loggedUser.getID()));            
+            UserReservations = new ObservableCollection<Reservation>(_reservationService.GetReservationsByUser(loggedUser.getID()));
+
+            _postponementService = postponementService;
 
             _cityCountryRepository = cityCountryRepository;
 
@@ -87,6 +91,28 @@ namespace SIMS_Booking.View
             UpdateUserReservations(_reservationService.GetReservationsByUser(LoggedUser.getID()).ToList());
         }
 
+        public void CancelReservation(object sender, RoutedEventArgs e)
+        {
+            List<Reservation> newReservations = _reservationService.GetAll();
+            foreach (Reservation reservation in newReservations)
+            {
+                if (reservation.getID() == SelectedReservation.getID())
+                {
+                    newReservations.Remove(reservation);
+                    UpdateUserReservations(newReservations);
+                    return;
+                }
+            }
+        }
+
+        private void ChangeReservation(object sender, RoutedEventArgs e)
+        {
+            Guest1ChangeReservationView guest1ChangeReservationView =
+                new Guest1ChangeReservationView(SelectedReservation, LoggedUser, _reservationService,
+                    _reservedAccommodationService, _postponementService);
+            guest1ChangeReservationView.Show();
+        }
+
         private void TabChanged(object sender, SelectionChangedEventArgs e)
         {
             if (TabC.SelectedIndex == 1)
@@ -108,5 +134,7 @@ namespace SIMS_Booking.View
                 AddFiltersButton.IsEnabled = true;
             }
         }
+
+       
     }
 }
