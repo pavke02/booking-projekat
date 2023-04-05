@@ -78,6 +78,9 @@
                     </Style>
                 </Button.Style>
             </Button>
+            <Button x:Name="CanclesReservationButton" Content="Cancel Reservation" Padding="5, 0, 5, 0" Click="CancelReservation">
+            </Button>
+            <Button x:Name="ChangeReservationButton" Content="Change Reservation" Padding="5, 0, 5, 0" Click="ChangeReservation"/>
 
         </StackPanel>
 

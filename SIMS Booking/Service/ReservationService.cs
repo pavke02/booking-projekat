@@ -42,11 +42,25 @@ namespace SIMS_Booking.Service
             ObservableCollection<Reservation> userReservations = new ObservableCollection<Reservation>();
             foreach (Reservation reservation in _repository.GetAll())
             {
+                
                 if (reservation.User.getID() == userId)
                     userReservations.Add(reservation);
             }                
 
             return userReservations;
+        }
+
+        public void RemoveReservation(Reservation reservationToDelete)
+        {
+
+            List<Reservation> reservations = _repository.GetAll();
+            foreach (Reservation reservation in reservations)
+            {
+                if (reservation.getID() == reservationToDelete.getID())
+                {
+                    _repository.Delete(reservation);
+                }
+            }
         }
 
         public List<Reservation> GetUnreviewedReservations(int id)
@@ -66,6 +80,22 @@ namespace SIMS_Booking.Service
                     GuestReview guestReview = new GuestReview(0, 0, null, reservation);
                     guestReviewService.Save(guestReview);
                 }
+        }
+
+        public List<Reservation> GetAccommodationReservations(Accommodation selectedAccommodation)
+        {
+            List<Reservation> accommodationReservations = new List<Reservation>();
+
+            foreach (Reservation reservation in _repository.GetAll())
+            {
+
+                if (reservation.Accommodation.getID() == selectedAccommodation.getID())
+                {
+                    accommodationReservations.Add(reservation);
+                }
+            }
+
+            return accommodationReservations;
         }
 
         public void Subscribe(IObserver observer)

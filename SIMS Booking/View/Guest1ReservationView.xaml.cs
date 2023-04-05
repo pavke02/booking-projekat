@@ -40,7 +40,7 @@ public partial class Guest1ReservationView : Window
         startDateDp.DisplayDateStart = DateTime.Today.AddDays(1);
 
         Reservations = _reservationService.GetAll();
-        AccommodationReservations = GetAccommodationReservations(Reservations);
+        AccommodationReservations = _reservationService.GetAccommodationReservations(selectedAccommodation);
 
         DisableReservedDates(AccommodationReservations, startDateDp, endDateDp);
         DisableAllImpossibleDates(startDateDp, minimumDaysOfReservation);
@@ -107,22 +107,6 @@ public partial class Guest1ReservationView : Window
             datePicker.BlackoutDates.Add(rangeToDelete);
         }
 
-    }
-
-    private List<Reservation> GetAccommodationReservations(List<Reservation> reservations)
-    {
-        List<Reservation> accommodationReservations = new List<Reservation>();
-
-        foreach (Reservation reservation in reservations)
-        {
-
-            if (reservation.Accommodation.getID() == _selectedAccommodation.getID())
-            {
-                accommodationReservations.Add(reservation);
-            }
-        }
-
-        return accommodationReservations;
     }
 
     private void StartDateDpSelectionChanged(object? sender, SelectionChangedEventArgs e)
