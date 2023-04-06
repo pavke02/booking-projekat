@@ -39,6 +39,7 @@ namespace SIMS_Booking.View
         private UsersAccommodationService _usersAccommodationService;
         private OwnerReviewService _ownerReviewService;
         private PostponementService _postponementService;
+        private CancellationRepository _cancellationRepository;
 
         #region Property
         private string _accommodationName;
@@ -161,7 +162,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }                
 
-        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, PostponementService postponementService, User user)
+        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, PostponementService postponementService, User user, CancellationRepository cancellationRepository)
         {
             InitializeComponent();
             DataContext = this;            
@@ -193,11 +194,13 @@ namespace SIMS_Booking.View
             _ownerReviewService = ownerReviewService;
             _postponementService = postponementService;
 
+            _cancellationRepository = cancellationRepository;
+
             CalculateRating(_user.getID());
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
-            NotificationTimer timer = new NotificationTimer(_user, ReservedAccommodations, _reservationService, _guestReviewService);   
+            NotificationTimer timer = new NotificationTimer(_user, ReservedAccommodations, _reservationService, _guestReviewService, null, _cancellationRepository);   
         }           
         
         private void CalculateRating(int id)

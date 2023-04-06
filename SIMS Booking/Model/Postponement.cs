@@ -14,12 +14,13 @@ namespace SIMS_Booking.Model
         public DateTime NewEndDate { get; set; }
         public PostponementStatus Status { get; set; }
         public string Comment { get; set; }
+        public bool IsNotified { get; set; }
 
         public Postponement()
         {
         }
 
-        public Postponement(Reservation reservation, DateTime newStartDate, DateTime newEndDate, PostponementStatus status)
+        public Postponement(Reservation reservation, DateTime newStartDate, DateTime newEndDate, PostponementStatus status, bool isNotified)
         {
             Reservation = reservation;
             ReservationId = reservation.getID();
@@ -27,6 +28,7 @@ namespace SIMS_Booking.Model
             NewEndDate = newEndDate;
             Status = status;
             Comment = "No comment";
+            IsNotified = isNotified;
         }
 
         public string[] ToCSV()
@@ -34,7 +36,7 @@ namespace SIMS_Booking.Model
             string[] csvValues =
             {
                 Id.ToString(), ReservationId.ToString(), NewStartDate.ToShortDateString(),
-                NewEndDate.ToShortDateString(), Status.ToString(), Comment
+                NewEndDate.ToShortDateString(), Status.ToString(), Comment, IsNotified.ToString()
             };
             return csvValues;
         }
@@ -47,6 +49,7 @@ namespace SIMS_Booking.Model
             NewEndDate = (DateTime.Parse(values[3]));
             Status = (PostponementStatus)Enum.Parse(typeof(PostponementStatus), values[4]);
             Comment = values[5];
+            IsNotified = (values[6] == "True"); 
         }
 
         public int getID()

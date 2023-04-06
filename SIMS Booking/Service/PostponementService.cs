@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.TeamFoundation.TestManagement.WebApi;
 
 namespace SIMS_Booking.Service
 {
@@ -87,5 +88,38 @@ namespace SIMS_Booking.Service
         {
             return _repository.GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
         }
+
+        public List<Postponement> GetReviewedPostponements()
+        {
+            List<Postponement> postponements = new List<Postponement>();
+
+            foreach (Postponement postponement in _repository.GetAll())
+            {
+                if (postponement.Status != Enums.PostponementStatus.Pending && !postponement.IsNotified)
+                {
+                    postponements.Add(postponement);
+                }
+            }
+
+            return postponements;
+        }
+
+        public void SetNotifiedPostpoments()
+        {
+            List<Postponement> postponements = _repository.GetAll();
+
+            foreach (Postponement postponement in _repository.GetAll().ToList())
+            {
+                if (postponement.Status != Enums.PostponementStatus.Pending)
+                {
+                    postponement.IsNotified = true;
+                    _repository.Update(postponement);
+                }
+            }
+
+
+        }
+
+
     }
 }

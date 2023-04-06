@@ -33,10 +33,10 @@ namespace SIMS_Booking.Service
             }
         }
 
-        public void SubmitReview(int tidiness, int ownerCorrectness, string comment, Reservation reservation)
+        public void SubmitReview(int tidiness, int ownerCorrectness, string comment, Reservation reservation, List<string> images)
         {
             reservation.HasGuestReviewed = true;
-            OwnerReview ownerReview = new OwnerReview(tidiness, ownerCorrectness, comment, reservation);
+            OwnerReview ownerReview = new OwnerReview(tidiness, ownerCorrectness, comment, reservation, images);
             Save(ownerReview);
         }
 
