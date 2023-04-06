@@ -197,14 +197,14 @@ namespace SIMS_Booking.View
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
-            NotificationTimer timer = new NotificationTimer(ReservedAccommodations, _reservationService, _guestReviewService);   
+            NotificationTimer timer = new NotificationTimer(_user, ReservedAccommodations, _reservationService, _guestReviewService);   
         }           
         
         private void CalculateRating(int id)
         {
             double rating = _ownerReviewService.CalculateRating(id);
             ownerRatingTb.Text = Math.Round(rating, 2).ToString();
-            if(rating > 5.5 && PastReservations.Count() >= 3)
+            if(rating > 9.5 && PastReservations.Count() > 50)
             {
                 regularCb.IsChecked = false;
                 superCb.IsChecked = true;
