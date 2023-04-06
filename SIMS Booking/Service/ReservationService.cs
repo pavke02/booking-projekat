@@ -35,7 +35,12 @@ namespace SIMS_Booking.Service
         public Reservation GetById(int id)
         {
             return _repository.GetById(id);
-        }        
+        }     
+        
+        public List<Reservation> GetByAccommodation(int id) 
+        {
+            return _repository.GetAll().Where(e => e.Accommodation.getID() == id).ToList();
+        }
 
         public ObservableCollection<Reservation> GetReservationsByUser(int userId)
         {
@@ -48,19 +53,6 @@ namespace SIMS_Booking.Service
             }                
 
             return userReservations;
-        }
-
-        public void RemoveReservation(Reservation reservationToDelete)
-        {
-
-            List<Reservation> reservations = _repository.GetAll();
-            foreach (Reservation reservation in reservations)
-            {
-                if (reservation.getID() == reservationToDelete.getID())
-                {
-                    _repository.Delete(reservation);
-                }
-            }
         }
 
         public List<Reservation> GetUnreviewedReservations(int id)
@@ -96,6 +88,14 @@ namespace SIMS_Booking.Service
             }
 
             return accommodationReservations;
+        }
+
+        public void PostponeReservation(int reservationId, DateTime newStartDate, DateTime newEndDate)
+        {
+            Reservation reservation = GetById(reservationId);
+            reservation.StartDate = newStartDate;
+            reservation.EndDate = newEndDate;
+            _repository.Update(reservation);
         }
 
         public void Subscribe(IObserver observer)

@@ -17,12 +17,9 @@ namespace SIMS_Booking.Model.Relations
 
         public TourReservation(int userId, int tourId, int numberOfGuests)
         {
-
-
             TourId = tourId;
             UserId = userId;
             NumberOfGuests = numberOfGuests;
-
         }
 
 
@@ -32,8 +29,6 @@ namespace SIMS_Booking.Model.Relations
             UserId = int.Parse(values[1]);
             TourId = int.Parse(values[2]);
             NumberOfGuests = int.Parse(values[3]);
-
-
         }
 
         public string[] ToCSV()
@@ -42,10 +37,6 @@ namespace SIMS_Booking.Model.Relations
             return csvValues;
             throw new NotImplementedException();
         }
-
-
-
-
     }
 }
 
