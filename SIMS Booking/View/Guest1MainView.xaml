@@ -39,6 +39,7 @@
                     Name="DataGridReservations"
                     ItemsSource="{Binding Path=UserReservations, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding Path=SelectedReservation, UpdateSourceTrigger=PropertyChanged}"
+                    SelectionChanged="DisableReview"
                     AutoGenerateColumns="False" IsReadOnly="True"
                     Width="900" Height="320">
                     <DataGrid.Columns>
@@ -98,6 +99,7 @@
             <Button x:Name="CanclesReservationButton" Content="Cancel Reservation" Padding="5, 0, 5, 0" Click="CancelReservation" Margin="0,0,10,0">
             </Button>
             <Button x:Name="ChangeReservationButton" Content="Change Reservation" Padding="5, 0, 5, 0" Click="ChangeReservation"/>
+            <Button x:Name="ReviewButton" Content="Review Reservation" Padding="5, 0, 5, 0" Click="ReviewReservation" Margin="10,0,0,0"/>
 
         </StackPanel>
 

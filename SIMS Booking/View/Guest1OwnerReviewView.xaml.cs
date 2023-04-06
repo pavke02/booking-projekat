@@ -27,6 +27,7 @@ namespace SIMS_Booking.View
         private OwnerReviewService _ownerReviewService;
         private ReservationService _reservationService;
         private Reservation _reservation;
+        public String ImageURLs;
 
         #region Property
         private int tidiness = 0;
@@ -108,8 +109,12 @@ namespace SIMS_Booking.View
         }
 
         private void SubmitReview(object sender, RoutedEventArgs e)
-        {
-            _ownerReviewService.SubmitReview(Tidiness, OwnerFairness, Comment, _reservation);
+        {   
+            List<string> imageURLs = new List<string>();
+            string[] values = imageTb.Text.Split("\n");
+            foreach (string value in values)
+                imageURLs.Add(value);
+            _ownerReviewService.SubmitReview(Tidiness, OwnerFairness, Comment, _reservation, imageURLs);
             _reservationService.Update(_reservation);
             Close();
         }
@@ -146,5 +151,30 @@ namespace SIMS_Booking.View
             }
         }
         #endregion
+
+        private void ImageTbCheck(object sender, TextChangedEventArgs e)
+        {
+            addURLButton.Visibility = Visibility.Hidden;
+            if (!string.IsNullOrEmpty(urlTb.Text) && !string.IsNullOrWhiteSpace(urlTb.Text) && Uri.IsWellFormedUriString(urlTb.Text, UriKind.Absolute))
+            {
+                addURLButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void AddImage(object sender, RoutedEventArgs e)
+        {
+            if (imageTb.Text == "")
+                imageTb.Text = urlTb.Text;
+            else
+                imageTb.Text += "\n" +urlTb.Text;
+
+            urlTb.Clear();
+        }
+
+        private void ClearURLs(object sender, RoutedEventArgs e)
+        {
+            imageTb.Clear();
+            ImageURLs = "";
+        }
     }
 }

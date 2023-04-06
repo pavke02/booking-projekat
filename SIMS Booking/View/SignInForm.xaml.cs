@@ -75,8 +75,6 @@ namespace SIMS_Booking.View
             _confirmTourRepository = new ConfirmTourRepository();
             _cancellationRepository = new CancellationRepository();
 
-
-
             _reservedAccommodationService = new ReservedAccommodationService();
             _userAccommodationService = new UsersAccommodationService();
 
@@ -107,11 +105,11 @@ namespace SIMS_Booking.View
                     switch(user.Role)
                     {
                         case Roles.Owner:
-                            OwnerMainView ownerView = new OwnerMainView(_accommodationService, _cityCountryRepository, _reservationService, _guestReviewService, _userAccommodationService, _ownerReviewService, _postponementService, user);
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationService, _cityCountryRepository, _reservationService, _guestReviewService, _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationRepository);
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
-                            Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryRepository, _reservationService, _reservedAccommodationService ,user, _postponementService, _cancellationRepository);
+                            Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryRepository, _reservationService, _reservedAccommodationService ,user, _postponementService, _cancellationRepository, _ownerReviewService);
                             guest1View.Show();
                             break;
                         case Roles.Guest2:

@@ -70,7 +70,7 @@ namespace SIMS_Booking.View
 
         private void Postpone(object sender, RoutedEventArgs e)
         {
-            Postponement postponement = new Postponement(_reservationService.GetById(_selectedReservation.getID()), (DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, PostponementStatus.Pending);
+            Postponement postponement = new Postponement(_reservationService.GetById(_selectedReservation.getID()), (DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, PostponementStatus.Pending, false);
             _postponementService.Save(postponement);
             MessageBox.Show("Request sent successfully");
             Close();
