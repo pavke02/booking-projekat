@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using SIMS_Booking.Enums;
+using SIMS_Booking.Observer;
 
 namespace SIMS_Booking.View
 {

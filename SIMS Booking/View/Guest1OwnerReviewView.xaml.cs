@@ -1,6 +1,11 @@
-﻿using System;
+﻿using SIMS_Booking.Model;
+using SIMS_Booking.Service;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,19 +24,127 @@ namespace SIMS_Booking.View
     /// </summary>
     public partial class Guest1OwnerReviewView : Window
     {
-        public Guest1OwnerReviewView()
+        private OwnerReviewService _ownerReviewService;
+        private ReservationService _reservationService;
+        private Reservation _reservation;
+
+        #region Property
+        private int tidiness = 0;
+        public int Tidiness
         {
-            InitializeComponent();
+            get => tidiness;
+            set
+            {
+                if (value != tidiness)
+                {
+                    if (value > 5)
+                        tidiness = 5;
+                    else if (value < 1)
+                        tidiness = 1;
+                    else
+                        tidiness = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
-        private void TextBoxCheck(object sender, TextChangedEventArgs e)
+        private int ownerFairness = 0;
+        public int OwnerFairness
         {
-            throw new NotImplementedException();
+            get => ownerFairness;
+            set
+            {
+                if (value != ownerFairness)
+                {
+                    if (value > 5)
+                        ownerFairness = 5;
+                    else if (value < 1)
+                        ownerFairness = 1;
+                    else
+                        ownerFairness = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string comment;
+        public string Comment
+        {
+            get => comment;
+            set
+            {
+                if (value != comment)
+                {
+                    comment = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public Guest1OwnerReviewView(OwnerReviewService ownerReviewService, ReservationService reservationService, Reservation reservation)
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            _reservation = reservation;
+
+            _ownerReviewService = ownerReviewService;
+            _reservationService = reservationService;
+        }
+
+        private void TextBoxCheck(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            submitButton.IsEnabled = false;
+            if (IsValid)
+                submitButton.IsEnabled = true;
         }
 
         private void SubmitReview(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            _ownerReviewService.SubmitReview(Tidiness, OwnerFairness, Comment, _reservation);
+            _reservationService.Update(_reservation);
+            Close();
         }
+
+        #region Validation
+        public string Error => null;
+
+        public string this[string columnName]
+        {
+            get
+            {
+                if (columnName == "Comment")
+                {
+                    if (string.IsNullOrEmpty(Comment))
+                        return "Required";
+                }
+                return null;
+            }
+        }
+
+        private readonly string[] validatedProperties = { "Comment" };
+
+        public bool IsValid
+        {
+            get
+            {
+                foreach (var property in validatedProperties)
+                {
+                    if (this[property] != null)
+                        return false;
+                }
+
+                return true;
+            }
+        }
+        #endregion
     }
 }

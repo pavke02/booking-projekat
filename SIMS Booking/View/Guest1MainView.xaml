@@ -48,6 +48,23 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
+            <TabItem Header="Your Postponements" Height="50" FontSize="20" Padding="5 ">
+                <DataGrid
+                    FontSize="14"
+                    Name="DataGridPostponements"
+                    ItemsSource="{Binding Path=UserPostponements, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedPostponement, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True"
+                    Width="900" Height="320">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="170"></DataGridTextColumn>
+                        <DataGridTextColumn Header="New Start Date" Binding="{Binding NewStartDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "New End Date" Binding="{Binding NewEndDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Status" Binding="{Binding Status}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Comment" Binding="{Binding Comment}" Width="150"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
         </TabControl>
 
         <StackPanel  Grid.Row="3" Orientation="Horizontal" Margin="50, 0, 50, 0" Height="40">
@@ -78,7 +95,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button x:Name="CanclesReservationButton" Content="Cancel Reservation" Padding="5, 0, 5, 0" Click="CancelReservation">
+            <Button x:Name="CanclesReservationButton" Content="Cancel Reservation" Padding="5, 0, 5, 0" Click="CancelReservation" Margin="0,0,10,0">
             </Button>
             <Button x:Name="ChangeReservationButton" Content="Change Reservation" Padding="5, 0, 5, 0" Click="ChangeReservation"/>
 
