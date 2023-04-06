@@ -102,5 +102,16 @@ namespace SIMS_Booking.Service
         {
             _repository.Subscribe(observer);
         }
+
+        public void DeleteCancelledReservation(int id)
+        {
+            foreach (Reservation reservation in _repository.GetAll().ToList())
+            {
+                if (reservation.getID() == id)
+                {
+                    _repository.Delete(reservation);
+                }
+            }
+        }
     }
 }

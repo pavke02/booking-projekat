@@ -15,6 +15,11 @@ namespace SIMS_Booking.Service
             _repository = new OwnerReviewRepository();
         }
 
+        public void Save(OwnerReview ownerReview)
+        {
+            _repository.Save(ownerReview);
+        }
+
         public List<OwnerReview> GetByUserId(int id)
         {
             return _repository.GetAll().Where(e => e.Reservation.User.getID() == id).ToList();
@@ -28,12 +33,12 @@ namespace SIMS_Booking.Service
             }
         }
 
-        //public void SubmitReview(int tidiness, int ruleFollowing, string comment, Reservation reservation)
-        //{
-        //    reservation.IsReviewed = true;
-        //    GuestReview guestReview = new GuestReview(tidiness, ruleFollowing, comment, reservation);
-        //    Save(guestReview);
-        //}
+        public void SubmitReview(int tidiness, int ownerCorrectness, string comment, Reservation reservation)
+        {
+            reservation.HasGuestReviewed = true;
+            OwnerReview ownerReview = new OwnerReview(tidiness, ownerCorrectness, comment, reservation);
+            Save(ownerReview);
+        }
 
         public List<OwnerReview> GetShowableReviews(int id)
         {

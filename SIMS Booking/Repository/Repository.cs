@@ -48,7 +48,6 @@ namespace SIMS_Booking.Repository
 
         public void Delete(T entity)
         {
-            _entityList = _serializer.FromCSV(_filePath);
             T? foundEntity = _entityList.Find(c => c.getID() == entity.getID());
             if (foundEntity == null) return;
             _entityList.Remove(foundEntity);

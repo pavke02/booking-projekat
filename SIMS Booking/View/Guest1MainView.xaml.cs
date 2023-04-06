@@ -18,6 +18,7 @@ namespace SIMS_Booking.View
     {        
         public ObservableCollection<Accommodation> Accommodations { get; set; }        
         public ObservableCollection<Reservation> UserReservations { get; set; }
+        public ObservableCollection<Postponement> UserPostponements { get; set; }
         public Accommodation SelectedAccommodation { get; set; }
         public Reservation SelectedReservation { get; set; }
         public ObservableCollection<Accommodation> AccommodationsReorganized { get; set; }
@@ -28,8 +29,9 @@ namespace SIMS_Booking.View
         private ReservationService _reservationService;
         private ReservedAccommodationService _reservedAccommodationService;
         private PostponementService _postponementService;
+        private CancellationRepository _cancellationRepository;
 
-        public Guest1MainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService)
+        public Guest1MainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationRepository cancellationRepository)
         {
             InitializeComponent();
             DataContext = this;
@@ -46,8 +48,11 @@ namespace SIMS_Booking.View
             UserReservations = new ObservableCollection<Reservation>(_reservationService.GetReservationsByUser(loggedUser.getID()));
 
             _postponementService = postponementService;
+            _postponementService.Subscribe(this);
+            UserPostponements = new ObservableCollection<Postponement>(_postponementService.GetPostponementsByUser(loggedUser.getID()));
 
             _cityCountryRepository = cityCountryRepository;
+            _cancellationRepository = cancellationRepository;
 
             _reservedAccommodationService = reservedAccommodationService;
         }
@@ -85,24 +90,49 @@ namespace SIMS_Booking.View
                 UserReservations.Add(reservation);
         }
 
+        private void UpdateUserPostponements(List<Postponement> postponements)
+        {
+           UserPostponements.Clear();
+           foreach (var postponement in postponements)
+           {
+               UserPostponements.Add(postponement);
+           }
+        }
+
+
         public void Update()
         {
             UpdateAccommodations(_accommodationService.GetAll());
             UpdateUserReservations(_reservationService.GetReservationsByUser(LoggedUser.getID()).ToList());
+            UpdateUserPostponements(_postponementService.GetPostponementsByUser(LoggedUser.getID()).ToList());
         }
+
+
 
         public void CancelReservation(object sender, RoutedEventArgs e)
         {
+            if (SelectedReservation.StartDate - DateTime.Today <
+                TimeSpan.FromDays(SelectedReservation.Accommodation.CancellationPeriod))
+            {
+                MessageBox.Show("It is not possible to cancel reservation after cancellation period.");
+                return;
+            }
             List<Reservation> newReservations = _reservationService.GetAll();
             foreach (Reservation reservation in newReservations)
             {
                 if (reservation.getID() == SelectedReservation.getID())
                 {
+                    _postponementService.DeletePostponementsByReservationId(reservation.getID());
+                    _reservationService.DeleteCancelledReservation(reservation.getID());
+                    _cancellationRepository.Save(reservation);
                     newReservations.Remove(reservation);
                     UpdateUserReservations(newReservations);
+                    UpdateUserPostponements(_postponementService.GetAll().ToList());
                     return;
                 }
             }
+
+
         }
 
         private void ChangeReservation(object sender, RoutedEventArgs e)

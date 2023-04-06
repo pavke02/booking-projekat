@@ -18,6 +18,7 @@ namespace SIMS_Booking.Model
         public DateTime NewStartDate { get; set; }
         public DateTime NewEndDate { get; set; }
         public PostponementStatus Status { get; set; }
+        public string Comment { get; set; }
 
         public Postponement()
         {
@@ -30,6 +31,7 @@ namespace SIMS_Booking.Model
             NewStartDate = newStartDate;
             NewEndDate = newEndDate;
             Status = status;
+            Comment = "No comment";
         }
 
         public string[] ToCSV()
@@ -37,7 +39,7 @@ namespace SIMS_Booking.Model
             string[] csvValues =
             {
                 Id.ToString(), ReservationId.ToString(), NewStartDate.ToShortDateString(),
-                NewEndDate.ToShortDateString(), Status.ToString()
+                NewEndDate.ToShortDateString(), Status.ToString(), Comment
             };
             return csvValues;
         }
@@ -49,6 +51,7 @@ namespace SIMS_Booking.Model
             NewStartDate = (DateTime.Parse(values[2]));
             NewEndDate = (DateTime.Parse(values[3]));
             Status = (PostponementStatus)Enum.Parse(typeof(PostponementStatus), values[4]);
+            Comment = values[5];
         }
 
         public int getID()
