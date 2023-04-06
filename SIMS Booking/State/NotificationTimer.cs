@@ -13,21 +13,32 @@ using SIMS_Booking.Service;
 
 namespace SIMS_Booking.State
 {    
-    internal class Timer
+    internal class NotificationTimer
     {
         private DateTime _date;
         private DispatcherTimer _checkDateTimer;
 
         private ReservationService _reservationService;
         private GuestReviewService _guestReviewService;
+        private User _user;
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
 
-        public Timer(ObservableCollection<Reservation> reservedAccommodations, ReservationService reservationService, GuestReviewService guestReviewService)
+
+        public NotificationTimer(User user, ObservableCollection<Reservation> reservedAccommodations = null, ReservationService reservationService = null, GuestReviewService guestReviewService = null)
         {
             ReservedAccommodations = reservedAccommodations;
             _reservationService = reservationService;
             _guestReviewService = guestReviewService;
+            _user = user;
 
+            if(_user.Role == Enums.Roles.Owner)
+                ReviewNotifications();
+        }
+
+        ~NotificationTimer() { _checkDateTimer.Stop(); notifier.Dispose(); }
+
+        public void ReviewNotifications()
+        {
             var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             timer.Tick += (sender, args) =>
             {
@@ -45,8 +56,6 @@ namespace SIMS_Booking.State
             _checkDateTimer.Interval = new TimeSpan(0, 1, 0);
             _checkDateTimer.Start();
         }
-
-        ~Timer() { _checkDateTimer.Stop(); notifier.Dispose(); }
 
         //Metoda koja proverava da li user idalje moze da se oceni naspram datuma. 
         //Metoda se poziva na svakih 1min za slucaj da se datum promeni u tom periodu
