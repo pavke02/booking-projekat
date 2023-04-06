@@ -19,6 +19,11 @@ namespace SIMS_Booking.Service
             _repository = new PostponementRepository();
         }
 
+        public List<Postponement> Load()
+        {
+            return _repository.Load();
+        }
+
         public void Save(Postponement postponement)
         {
             _repository.Save(postponement);
@@ -32,11 +37,11 @@ namespace SIMS_Booking.Service
         public Postponement GetById(int id)
         {
             return _repository.GetById(id);
-        }        
+        }
 
-        public List<Postponement> GetByUserId(int id)
+        public void Subscribe(IObserver observer)
         {
-            return _repository.GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
+            _repository.Subscribe(observer);
         }
 
         public void LoadReservationInPostponement(ReservationService reservationService)
@@ -46,7 +51,6 @@ namespace SIMS_Booking.Service
                 postponement.Reservation = reservationService.GetById(postponement.ReservationId);
             }
         }
-
 
         public ObservableCollection<Postponement> GetPostponementsByUser(int userId)
         {
@@ -70,6 +74,7 @@ namespace SIMS_Booking.Service
                     _repository.Delete(postponement);
                 }
             }
+        }
 
         public void ApprovePostponement(int id)
         {
@@ -78,10 +83,9 @@ namespace SIMS_Booking.Service
             _repository.Update(postponement);
         }
 
-        public void Subscribe(IObserver observer)
+        public List<Postponement> GetByUserId(int id)
         {
-            _repository.Subscribe(observer);
-
+            return _repository.GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
         }
     }
 }
