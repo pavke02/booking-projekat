@@ -1,13 +1,12 @@
-﻿using SIMS_Booking.Model;
-using SIMS_Booking.Observer;
-using SIMS_Booking.Service;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using SIMS_Booking.Model;
+using SIMS_Booking.Observer;
+using SIMS_Booking.Service;
 
-namespace SIMS_Booking.View
+namespace SIMS_Booking.View.Owner
 {    
     public partial class PostponeReservationView : Window, IObserver
     {

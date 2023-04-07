@@ -1,9 +1,9 @@
-﻿using SIMS_Booking.Model;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using SIMS_Booking.Model;
 
-namespace SIMS_Booking.View
+namespace SIMS_Booking.View.Owner
 {
     /// <summary>
     /// Interaction logic for GuestReviewDetailsView.xaml
