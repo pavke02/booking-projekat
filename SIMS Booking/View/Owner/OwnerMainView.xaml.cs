@@ -1,23 +1,23 @@
-﻿using SIMS_Booking.Enums;
-using SIMS_Booking.Model;
-using SIMS_Booking.Repository;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using SIMS_Booking.Observer;
-using System.Collections.ObjectModel;
 using System.Windows.Data;
-using System.Globalization;
+using SIMS_Booking.Enums;
+using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
-using SIMS_Booking.State;
+using SIMS_Booking.Observer;
+using SIMS_Booking.Repository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
+using SIMS_Booking.State;
 
-namespace SIMS_Booking.View
+namespace SIMS_Booking.View.Owner
 {
     public partial class OwnerMainView : Window, IObserver, INotifyPropertyChanged, IDataErrorInfo
     {        

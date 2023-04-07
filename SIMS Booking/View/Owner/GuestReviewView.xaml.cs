@@ -1,10 +1,10 @@
-﻿using SIMS_Booking.Model;
-using SIMS_Booking.Service;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using SIMS_Booking.Model;
+using SIMS_Booking.Service;
 
-namespace SIMS_Booking.View
+namespace SIMS_Booking.View.Owner
 {
  
     public partial class GuestReviewView : Window, IDataErrorInfo
