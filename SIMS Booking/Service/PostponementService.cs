@@ -4,6 +4,7 @@ using SIMS_Booking.Repository;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using SIMS_Booking.Enums;
 
 namespace SIMS_Booking.Service
 {
@@ -36,11 +37,11 @@ namespace SIMS_Booking.Service
             return _repository.GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
         }
 
-        public void ApprovePostponement(int id)
+        public void ReviewPostponementRequest(int id, string comment, PostponementStatus status)
         {
             Postponement postponement = GetById(id);
-            postponement.Status = Enums.PostponementStatus.Accepted;
-            postponement.Comment = "Approved";
+            postponement.Status = status;
+            postponement.Comment = comment;
             _repository.Update(postponement);
         }
 

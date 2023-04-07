@@ -59,6 +59,5 @@ namespace SIMS_Booking.Service
         {
            _repository.Save(tour);
         }
-
     }
 }
