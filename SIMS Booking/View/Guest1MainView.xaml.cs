@@ -28,11 +28,11 @@ namespace SIMS_Booking.View
 
         private readonly AccommodationService _accommodationService;
         private readonly CityCountryRepository _cityCountryRepository;
-        private ReservationService _reservationService;
-        private ReservedAccommodationService _reservedAccommodationService;
-        private PostponementService _postponementService;
-        private CancellationRepository _cancellationRepository;
-        private OwnerReviewService _ownerReviewService;
+        private readonly ReservationService _reservationService;
+        private readonly ReservedAccommodationService _reservedAccommodationService;
+        private readonly PostponementService _postponementService;
+        private readonly CancellationRepository _cancellationRepository;
+        private readonly OwnerReviewService _ownerReviewService;
 
         public Guest1MainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationRepository cancellationRepository, OwnerReviewService ownerReviewService)
         {
@@ -51,7 +51,7 @@ namespace SIMS_Booking.View
             UserReservations = new ObservableCollection<Reservation>(_reservationService.GetReservationsByUser(loggedUser.getID()));
 
             _postponementService = postponementService;
-            NotificationTimer timer = new NotificationTimer(loggedUser, null, null, null, _postponementService);
+            NotificationTimer timer = new NotificationTimer(loggedUser, _postponementService);
             _postponementService.Subscribe(this);
             UserPostponements = new ObservableCollection<Postponement>(_postponementService.GetPostponementsByUser(loggedUser.getID()));
 
@@ -136,8 +136,6 @@ namespace SIMS_Booking.View
                     return;
                 }
             }
-
-
         }
 
         private void ChangeReservation(object sender, RoutedEventArgs e)
@@ -179,16 +177,16 @@ namespace SIMS_Booking.View
 
         private void DisableReview(object sender, SelectionChangedEventArgs e)
         {
-           
-                if (DateTime.Today - SelectedReservation.EndDate > TimeSpan.FromDays(5) || DateTime.Today - SelectedReservation.EndDate < TimeSpan.FromDays(0))
-                {
-                    ReviewButton.IsEnabled = false;
-                }
-                else
-                {
-                    ReviewButton.IsEnabled = true;
-                }
-            
+            if (SelectedReservation == null) return;
+
+            if (DateTime.Today - SelectedReservation.EndDate > TimeSpan.FromDays(5) || DateTime.Today - SelectedReservation.EndDate < TimeSpan.FromDays(0))
+            {
+                ReviewButton.IsEnabled = false;
+            }
+            else
+            {
+                ReviewButton.IsEnabled = true;
+            }
         }
     }
 }

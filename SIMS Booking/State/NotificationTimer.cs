@@ -19,15 +19,17 @@ namespace SIMS_Booking.State
         private DateTime _date;
         private DispatcherTimer _checkDateTimer;
 
-        private ReservationService _reservationService;
-        private GuestReviewService _guestReviewService;
-        private PostponementService _postponementService;
-        private CancellationRepository _cancellationRepository;
-        private User _user;
+        private readonly ReservationService _reservationService;
+        private readonly GuestReviewService _guestReviewService;
+        private readonly PostponementService _postponementService;
+        private readonly CancellationRepository _cancellationRepository;
+        private readonly User _user;
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
 
 
-        public NotificationTimer(User user, ObservableCollection<Reservation> reservedAccommodations = null, ReservationService reservationService = null, GuestReviewService guestReviewService = null, PostponementService postponementService = null, CancellationRepository cancellationRepository = null)
+        public NotificationTimer(User user, PostponementService postponementService = null, ObservableCollection<Reservation> reservedAccommodations = null, 
+                                 ReservationService reservationService = null, GuestReviewService guestReviewService = null, 
+                                 CancellationRepository cancellationRepository = null)
         {
             ReservedAccommodations = reservedAccommodations;
             _reservationService = reservationService;
@@ -46,7 +48,13 @@ namespace SIMS_Booking.State
         }
 
 
-        ~NotificationTimer() { _checkDateTimer.Stop(); notifier.Dispose(); }
+        ~NotificationTimer()
+        {
+            if (_checkDateTimer != null)
+                _checkDateTimer.Stop();
+
+            notifier.Dispose();
+        }
 
         private void OwnerReviewedNotification()
         {
@@ -62,12 +70,6 @@ namespace SIMS_Booking.State
                 timer.Stop();
             };
             timer.Start();
-
-            _date = DateTime.Now;
-            _checkDateTimer = new DispatcherTimer();
-            _checkDateTimer.Tick += new EventHandler(CheckDate);
-            _checkDateTimer.Interval = new TimeSpan(0, 1, 0);
-            _checkDateTimer.Start();
         }
 
         public void CancellationNotifications()
@@ -85,12 +87,6 @@ namespace SIMS_Booking.State
                 timer.Stop();
             };
             timer.Start();
-
-            _date = DateTime.Now;
-            _checkDateTimer = new DispatcherTimer();
-            _checkDateTimer.Tick += new EventHandler(CheckDate);
-            _checkDateTimer.Interval = new TimeSpan(0, 1, 0);
-            _checkDateTimer.Start();
         }
 
 

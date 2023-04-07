@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SIMS_Booking.Serializer;
+﻿using SIMS_Booking.Serializer;
 using SIMS_Booking.State;
 
 namespace SIMS_Booking.Model
@@ -25,9 +20,6 @@ namespace SIMS_Booking.Model
             IdTour = idTour;
             IdCheckpoint = idCheckpoint;
             UserId = userId;
-
-
-            
         }
 
         public string[] ToCSV()

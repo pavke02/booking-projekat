@@ -30,16 +30,14 @@ namespace SIMS_Booking.View
         public Reservation SelectedReservation { get; set; }
         public GuestReview SelectedReview { get; set; }
                 
-        private User _user;
+        private readonly User _user;
 
-        private AccommodationService _accommodationService;
-        private CityCountryRepository _cityCountryRepository;
-        private ReservationService _reservationService;
-        private GuestReviewService _guestReviewService;        
-        private UsersAccommodationService _usersAccommodationService;
-        private OwnerReviewService _ownerReviewService;
-        private PostponementService _postponementService;
-        private CancellationRepository _cancellationRepository;
+        private readonly AccommodationService _accommodationService;
+        private readonly ReservationService _reservationService;
+        private readonly GuestReviewService _guestReviewService;        
+        private readonly UsersAccommodationService _usersAccommodationService;
+        private readonly OwnerReviewService _ownerReviewService;
+        private readonly PostponementService _postponementService;
 
         #region Property
         private string _accommodationName;
@@ -155,7 +153,7 @@ namespace SIMS_Booking.View
         }
         #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -187,20 +185,17 @@ namespace SIMS_Booking.View
             _guestReviewService.Subscribe(this);
             PastReservations = new ObservableCollection<GuestReview>(_guestReviewService.GetReviewedReservations(_user.getID()));
 
-            _cityCountryRepository = cityCountryRepository;
-            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
+            Countries = new Dictionary<string, List<string>>(cityCountryRepository.Load());
             
             _usersAccommodationService = usersAccommodationService;
             _ownerReviewService = ownerReviewService;
             _postponementService = postponementService;
 
-            _cancellationRepository = cancellationRepository;
-
             CalculateRating(_user.getID());
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
-            NotificationTimer timer = new NotificationTimer(_user, ReservedAccommodations, _reservationService, _guestReviewService, null, _cancellationRepository);   
+            NotificationTimer timer = new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationRepository);   
         }           
         
         private void CalculateRating(int id)
