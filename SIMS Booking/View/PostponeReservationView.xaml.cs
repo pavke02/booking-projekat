@@ -28,7 +28,7 @@ namespace SIMS_Booking.View
             _reservationService = reservationService;
 
             _postponementService = postponementService;
-            //_postponementService.Subscribe(this);
+            _postponementService.Subscribe(this);
             PostponementRequests = new ObservableCollection<Postponement>(_postponementService.GetByUserId(_user.getID()));            
         }
 
