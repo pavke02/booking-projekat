@@ -61,10 +61,11 @@ namespace SIMS_Booking.View
             InitializeComponent();
             DataContext = this;
             SelectedTour = selectedTour;
+
                         
             _confirmTourRepository = confirmTourRepository;                              
             Checkpoints = new ObservableCollection<TourPoint>(SelectedTour.TourPoints);                     
-          
+
         }
             
         

@@ -37,6 +37,11 @@ namespace SIMS_Booking.Repository.RelationsRepository
             _serializer.ToCSV(_filePath, _entityList);            
         }
 
+        public List<T> GetAll()
+        {
+            return _entityList;
+        }
+
         //public void Subscribe(IObserver observer)
         //{
         //    _observers.Add(observer);

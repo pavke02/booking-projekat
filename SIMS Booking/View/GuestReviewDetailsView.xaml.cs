@@ -5,9 +5,13 @@ using System.Windows;
 
 namespace SIMS_Booking.View
 {
-    public partial class ReviewDetailsView : Window, INotifyPropertyChanged
-    {        
-        private string _username;        
+    /// <summary>
+    /// Interaction logic for GuestReviewDetailsView.xaml
+    /// </summary>
+    public partial class GuestReviewDetailsView : Window
+    {
+        #region Property
+        private string _username;
         public string Username
         {
             get => _username;
@@ -104,6 +108,7 @@ namespace SIMS_Booking.View
                 }
             }
         }
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -112,7 +117,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public ReviewDetailsView(GuestReview review)
+        public GuestReviewDetailsView(GuestReview review)
         {
             InitializeComponent();
             DataContext = this;

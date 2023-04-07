@@ -1,6 +1,5 @@
 ﻿using SIMS_Booking.Model;
-using SIMS_Booking.Repository;
-using SIMS_Booking.Repository.RelationsRepository;
+using SIMS_Booking.Service;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -10,11 +9,11 @@ namespace SIMS_Booking.View
  
     public partial class GuestReviewView : Window, IDataErrorInfo
     {
-        private GuestReviewRepository _guestReviewRepository;
-        private ReservedAccommodationRepository _reservedAccommodationRepository;
-        private ReservationRepository _reservationRepository;
+        private GuestReviewService _guestReviewService;        
+        private ReservationService _reservationService;
         private Reservation _reservation;
 
+        #region Property
         private int tidiness = 0;
         public int Tidiness
         {
@@ -65,7 +64,8 @@ namespace SIMS_Booking.View
                     OnPropertyChanged();
                 }
             }
-        }        
+        }
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -74,34 +74,32 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public GuestReviewView(GuestReviewRepository guestReviewRepository, ReservedAccommodationRepository reservedAccommodationRepository, ReservationRepository reservationRepository, Reservation reservation)
+        public GuestReviewView(GuestReviewService guestReviewService, ReservationService reservationService, Reservation reservation)
         {
             InitializeComponent();
             DataContext = this;            
 
             _reservation = reservation;
 
-            _guestReviewRepository = guestReviewRepository;
-            _reservedAccommodationRepository = reservedAccommodationRepository;
-            _reservationRepository = reservationRepository;
-        }        
+            _guestReviewService = guestReviewService;            
+            _reservationService = reservationService;
+        }
 
-        private void TextBoxCheck(object sender, RoutedEventArgs e)
+        private void TextBoxCheck(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             submitButton.IsEnabled = false;
-            if(IsValid)
-            {
-                submitButton.IsEnabled = true;
-            }
+            if (IsValid)            
+                submitButton.IsEnabled = true;            
         }
 
         private void SubmitReview(object sender, RoutedEventArgs e)
         {
-            _guestReviewRepository.SubmitReview(Tidiness, RuleFollowing, Comment, _reservation);
-            _reservationRepository.Update(_reservation);            
+            _guestReviewService.SubmitReview(Tidiness, RuleFollowing, Comment, _reservation);
+            _reservationService.Update(_reservation);            
             Close();
         }
 
+        #region Validation
         public string Error => null;
 
         public string this[string columnName]
@@ -131,6 +129,7 @@ namespace SIMS_Booking.View
 
                 return true;
             }
-        }        
-    }    
+        }
+        #endregion
+    }
 }

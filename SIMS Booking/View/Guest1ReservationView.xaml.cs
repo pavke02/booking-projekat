@@ -8,6 +8,8 @@ using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
+using SIMS_Booking.Service;
+using SIMS_Booking.Service.RelationsService;
 
 namespace SIMS_Booking.View;
 
@@ -15,19 +17,19 @@ public partial class Guest1ReservationView : Window
 {
     private readonly Accommodation _selectedAccommodation;
     public User LoggedUser { get; set; }
-    private ReservationRepository _reservationRepository;
+    private ReservationService _reservationService;
     public List<Reservation> Reservations { get; set; }
     public List<Reservation> AccommodationReservations { get; set; }
-    private ReservedAccommodationRepository _reservedAccommodationRepository;
+    private ReservedAccommodationService _reservedAccommodationService;
 
 
-    public Guest1ReservationView(Accommodation selectedAccommodation, User loggedUser, ReservationRepository reservationRepository, ReservedAccommodationRepository reservedAccommodationRepository)
+    public Guest1ReservationView(Accommodation selectedAccommodation, User loggedUser, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService)
     {
         InitializeComponent();
 
         _selectedAccommodation = selectedAccommodation;
-        _reservationRepository = reservationRepository;
-        _reservedAccommodationRepository = reservedAccommodationRepository;
+        _reservationService = reservationService;
+        _reservedAccommodationService = reservedAccommodationService;
         LoggedUser = loggedUser;
 
         int minimumDaysOfReservation = _selectedAccommodation.MinReservationDays;
@@ -37,8 +39,8 @@ public partial class Guest1ReservationView : Window
 
         startDateDp.DisplayDateStart = DateTime.Today.AddDays(1);
 
-        Reservations = _reservationRepository.GetAll();
-        AccommodationReservations = GetAccommodationReservations(Reservations);
+        Reservations = _reservationService.GetAll();
+        AccommodationReservations = _reservationService.GetAccommodationReservations(selectedAccommodation);
 
         DisableReservedDates(AccommodationReservations, startDateDp, endDateDp);
         DisableAllImpossibleDates(startDateDp, minimumDaysOfReservation);
@@ -54,11 +56,11 @@ public partial class Guest1ReservationView : Window
             return;
         }
 
-        Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, _selectedAccommodation, LoggedUser, false);
-        _reservationRepository.Save(reservation);
+        Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, _selectedAccommodation, LoggedUser, false, false);
+        _reservationService.Save(reservation);
 
         ReservedAccommodation reservedAccommodation = new ReservedAccommodation(LoggedUser.getID(), _selectedAccommodation.getID(), reservation.getID());
-        _reservedAccommodationRepository.Save(reservedAccommodation);
+        _reservedAccommodationService.Save(reservedAccommodation);
         
         Close();
     }
@@ -105,22 +107,6 @@ public partial class Guest1ReservationView : Window
             datePicker.BlackoutDates.Add(rangeToDelete);
         }
 
-    }
-
-    private List<Reservation> GetAccommodationReservations(List<Reservation> reservations)
-    {
-        List<Reservation> accommodationReservations = new List<Reservation>();
-
-        foreach (Reservation reservation in reservations)
-        {
-
-            if (reservation.Accommodation.getID() == _selectedAccommodation.getID())
-            {
-                accommodationReservations.Add(reservation);
-            }
-        }
-
-        return accommodationReservations;
     }
 
     private void StartDateDpSelectionChanged(object? sender, SelectionChangedEventArgs e)

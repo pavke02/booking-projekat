@@ -1,7 +1,6 @@
 ﻿using SIMS_Booking.Observer;
 using SIMS_Booking.Serializer;
 using SIMS_Booking.State;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -49,7 +48,6 @@ namespace SIMS_Booking.Repository
 
         public void Delete(T entity)
         {
-            _entityList = _serializer.FromCSV(_filePath);
             T? foundEntity = _entityList.Find(c => c.getID() == entity.getID());
             if (foundEntity == null) return;
             _entityList.Remove(foundEntity);
@@ -76,10 +74,8 @@ namespace SIMS_Booking.Repository
             int maxi = _entityList[0].getID();
             foreach (T entity in etities)
             {
-                if (maxi < entity.getID())
-                {
-                    maxi = entity.getID();
-                }
+                if (maxi < entity.getID())                
+                    maxi = entity.getID();                
             }
             return maxi + 1;
         }

@@ -7,18 +7,89 @@
         mc:Ignorable="d"
         Title="OwnerMainView" Height="600" Width="1300" FontSize="18">
 
-    <Window.Resources>
-        <ControlTemplate x:Key="ValidationTemplate">
-            <StackPanel>
-                <!-- Placeholder for the TextBox itself -->
-                <AdornedElementPlaceholder x:Name="textBox" />
-                <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red" FontSize="12"/>
-            </StackPanel>
-        </ControlTemplate>
-    </Window.Resources>
-    
     <Grid>
         <TabControl TabStripPlacement="Left">
+            <TabItem Name="profileTab" Header="Profile" Height="60">
+                <WrapPanel>
+                    <Grid>
+                        <Rectangle Height="400" Width="345" Stroke="Black" StrokeThickness="2"></Rectangle>
+                        <StackPanel>
+                            <Grid>
+                                <Rectangle RadiusX="100" RadiusY="100" Height="160" Width="200" Stroke="Black" 
+                                       VerticalAlignment="Top" Margin="0, 5, 0, 0"></Rectangle>
+                                <Image Source="../Resources/Images/owner.png" Height="140" Width="150"
+                                       Margin="0, 5, 0, 15"></Image>
+                            </Grid>
+                            <Grid>
+                                <Rectangle RadiusX="20" RadiusY="20" Width="300" Height="60" Stroke="Black"
+                                       Margin="0, 10, 0, 0"></Rectangle>
+                                <TextBlock Text="Username:" Foreground="DarkGray" Margin="40, 15, 0, 0"></TextBlock>
+                                <TextBlock x:Name="usernameTb" Foreground="Black" FontWeight="Bold" Margin="80, 40, 0, 0"></TextBlock>
+                            </Grid>
+                            <Grid>
+                                <Rectangle RadiusX="20" RadiusY="20" Width="300" Height="60" Stroke="Black"
+                                       Margin="0, 10, 0, 0"></Rectangle>
+                                <TextBlock Text="Role:" Foreground="DarkGray" Margin="40, 15, 0, 0"></TextBlock>
+                                <TextBlock x:Name="roleTb" Foreground="Black" FontWeight="Bold" Margin="80, 40, 0, 0"></TextBlock>
+                            </Grid>
+                            <WrapPanel Height="90" Margin="0, 5, 0, 0">
+                                <Button x:Name="signOutButton" Content="Sign Out" Width="120" Height="40" 
+                                         Margin="20, 30, 0, 0">
+                                    <Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                                <Button x:Name="switchUserButton" Content="Switch User" Width="120" Height="40" 
+                                          Margin="60, 30, 0, 0">
+                                    <Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Grid>
+                    <Grid>
+                        <Rectangle Width="703.5" Height="244" Stroke="Black" StrokeThickness="2"
+                                   VerticalAlignment="Top"></Rectangle>
+                        <StackPanel>
+                            <WrapPanel>
+                                <TextBlock Text="Number of registerd accommodations:" Margin="20, 20, 0, 0"></TextBlock>
+                                <TextBlock x:Name="accommodationNumberTb" Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
+                            </WrapPanel>
+                            <WrapPanel>
+                                <TextBlock Text="Number of reserved accommodations:" Margin="20, 20, 0, 0"></TextBlock>
+                                <TextBlock x:Name="reservationNumberTb" Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
+                            </WrapPanel>
+                            <WrapPanel>
+                                <TextBlock Text="Owner rating:" Margin="20, 20, 0, 0"></TextBlock>
+                                <TextBlock x:Name="ownerRatingTb" Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
+                            </WrapPanel>
+                            <WrapPanel>
+                                <Button Content="Show User Reviews" Width="180" Height="50" Margin="30, 30, 0, 0"
+                                        Click="ShowOwnersReviews" Name="showReviewsButton">
+                                    <Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                                <StackPanel Margin="230, 0, 0, 0" Width="250">
+                                    <TextBlock Text="Owners licence:" Margin="0 ,25, 0, 0" HorizontalAlignment="Center"></TextBlock>
+                                    <WrapPanel HorizontalAlignment="Center">
+                                        <CheckBox Name="regularCb" Margin="0 ,20, 0, 0" IsEnabled="False" Content="Regular" VerticalContentAlignment="Center"></CheckBox>
+
+                                        <CheckBox Name="superCb" Margin="20 ,20, 0, 0" Content="Super-Owner" IsEnabled="False" VerticalContentAlignment="Center"></CheckBox>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Grid>
+                </WrapPanel>
+            </TabItem>
             <TabItem Name="accommodationsOverviewTab" Header="Your Accommodations" Height="60">
                 <DataGrid x:Name="accommodationsGrid" 
                           ItemsSource="{Binding Path=Accommodations, UpdateSourceTrigger=PropertyChanged}"
@@ -49,33 +120,43 @@
                         <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="75, 20, 0, 0">Name</Label>
                         <TextBox Grid.Column="1" Grid.Row="0" Height="30" Width="180" Margin="0, 20, 0, 0" 
                                  VerticalContentAlignment="Center"
-                                 Text="{Binding Path=AccommodationName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+                                 Text="{Binding Path=AccommodationName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"                                 
                                  TextChanged="IsPublishable"
-                                 Name="accommodationNameTb"></TextBox>
+                                 Name="accommodationNameTb">
+                            <TextBox.ToolTip>
+                                <TextBlock Text="{Binding ErrorCollection[AccommodationName]}"/>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
                         <Label Grid.Column="2" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Country</Label>
                         <ComboBox Grid.Column="3" Grid.Row="0" Height="30" Width="180" Margin="0, 20, 0, 0"  
-                                  ItemsSource="{Binding Countries}" DisplayMemberPath="Key" SelectionChanged="FillCityCb" SelectedItem="{Binding Country}"
-                                  Validation.ErrorTemplate="{StaticResource ValidationTemplate}"  
+                                  ItemsSource="{Binding Countries}" DisplayMemberPath="Key" SelectionChanged="FillCityCb" 
+                                  SelectedItem="{Binding Country, ValidatesOnDataErrors=True}"                                  
                                   LostFocus="IsPublishable"
                                   x:Name="countryCb">
+                            <ComboBox.ToolTip>
+                                <TextBlock Text="{Binding ErrorCollection[Countries]}"/>
+                            </ComboBox.ToolTip>
                         </ComboBox>
 
                         <Label Grid.Column="0" Grid.Row="1" Height="40" Margin="75, 20, 0, 0">City</Label>
                         <ComboBox Grid.Column="1" Grid.Row="1" Height="30" Width="180" Margin="0, 20, 0, 0" 
-                                  SelectedItem="{Binding City}"                                  
-                                  Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+                                  SelectedItem="{Binding City, ValidatesOnDataErrors=True}"                                                                    
                                   LostFocus="IsPublishable"
                                   x:Name="cityCb">
+                            <ComboBox.ToolTip>
+                                <TextBlock Text="{Binding ErrorCollection[City]}"/>
+                            </ComboBox.ToolTip>
                         </ComboBox>
 
                         <Label Grid.Column="2" Grid.Row="1" Height="40" Margin="20, 20, 0, 0">Type</Label>
                         <ComboBox Grid.Column="3"  Grid.Row="1" Height="30" Width="180" Margin="0, 20, 0, 0" 
-                                  ItemsSource="{Binding TypesCollection}" SelectedItem="{Binding AccommodationType}" 
-                                  Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+                                  ItemsSource="{Binding TypesCollection}" SelectedItem="{Binding AccommodationType, ValidatesOnDataErrors=True}"                                   
                                   LostFocus="IsPublishable"
                                   x:Name="typeCb">
+                            <ComboBox.ToolTip>
+                                <TextBlock Text="{Binding ErrorCollection[AccommodationType]}"/>
+                            </ComboBox.ToolTip>
                         </ComboBox>
                     </Grid>
                     <Grid Margin="0, 20, 0, 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -92,26 +173,35 @@
                         <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Maximum number of guests</Label>
                         <TextBox Grid.Column="1" Grid.Row="0" Height="30" Margin="0, 20, 0, 0"
                                  VerticalContentAlignment="Center"
-                                 Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+                                 Text="{Binding Path=MaxGuests, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"                                 
                                  TextChanged="IsPublishable"
-                                 Name="maxGuestsTb"></TextBox>
+                                 Name="maxGuestsTb">
+                            <TextBox.ToolTip>
+                                <TextBlock Text="{Binding ErrorCollection[MaxGuests]}"/>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
                         <Label Grid.Column="0" Grid.Row="1" Height="40" Margin="20, 20, 0, 0">Minimum reservation(in days)</Label>
                         <TextBox Grid.Column="1" Grid.Row="1" Height="30" Margin="0, 20, 0, 0"
                                  VerticalContentAlignment="Center"
-                                 Text="{Binding Path=MinReservationDays, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                 TextChanged="IsPublishable"
-                                 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
-                                 Name="minReservationDaysTb"></TextBox>
+                                 Text="{Binding Path=MinReservationDays, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="IsPublishable"                                 
+                                 Name="minReservationDaysTb">
+                            <TextBox.ToolTip>
+                                <TextBlock Text="{Binding ErrorCollection[MinReservationDays]}"/>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
                         <Label Grid.Column="0" Grid.Row="2" Height="40" Margin="20, 20, 0, 0">Cancelation period(in days)</Label>
                         <TextBox Grid.Column="1" Grid.Row="2" Height="30" Margin="0, 20, 0, 0"
                                  VerticalContentAlignment="Center"
-                                 Text="{Binding Path=CancelationPeriod, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                 TextChanged="IsPublishable"
-                                 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
-                                 Name="cancelationPeriodTb"></TextBox>
+                                 Text="{Binding Path=CancelationPeriod, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="IsPublishable"                                 
+                                 Name="cancelationPeriodTb">
+                            <TextBox.ToolTip>
+                                <TextBlock Text="{Binding ErrorCollection[CancelationPeriod]}"/>
+                            </TextBox.ToolTip>
+                        </TextBox>
                     </Grid>
 
                     <Grid Height="200" Width="1100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -129,20 +219,22 @@
                                     Name="urlTb"></TextBox>
                                 <Button Background="Transparent" BorderBrush="Transparent" Margin="10, 5, 20, 0"
                                         Name="addURLButton" Visibility="Hidden" Click="AddImage">
-                                    <Image Source="/View/add.png" Height="30" Width="30"/>
+                                    <Image Source="../Resources/Images/add.png" Height="30" Width="30"/>
                                 </Button>
                             </WrapPanel>
                         </StackPanel>
                         <WrapPanel Grid.Column="1" Width="650">
                             <TextBox Grid.Column="2" Height="150" Width="525" Margin="40, 20, 0, 0"                                                                  
                                  Text="{Binding Path=ImageURLs, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                 TextChanged="IsPublishable"
-                                 Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
+                                 TextChanged="IsPublishable"                                 
                                  Name="imageTb" IsReadOnly="True">
+                                <TextBox.ToolTip>
+                                    <TextBlock Text="{Binding ErrorCollection[ImageURLs]}"/>
+                                </TextBox.ToolTip>
                             </TextBox>
                             <Button Background="Transparent" BorderBrush="Transparent" Margin="10, 20, 0, 0"
                                 Name="clerURLs" Height="30" Width="30" Click="ClearURLs">
-                                <Image Source="/View/remove.png" Height="30" Width="30"/>
+                                <Image Source="../Resources/Images/remove.png" Height="30" Width="30"/>
                             </Button>
                         </WrapPanel>
                     </Grid>
@@ -196,10 +288,25 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Button Name="reviewGuestClick" Content="Review Guest" Click="RateGuest"
-                            Width="150" Height="40" Margin="0, 30, 50, 0" HorizontalAlignment="Right"
+                    <WrapPanel Height="100">
+                        <Button Name="postponeRequestButton" Content="Postpone Requests" Click="ViewPostponeRequests"
+                            Width="160" Height="40" Margin="680, 30, 20, 0">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="10"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button Name="reviewGuestButton" Content="Review Guest" Click="RateGuest"
+                            Width="150" Height="40" Margin="0, 30, 0, 0"
                             IsEnabled="false">
-                    </Button>
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="10"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </WrapPanel>
                 </StackPanel>
             </TabItem>
             <TabItem Name="pastReservationsTab" Header="Reservation History" Height="60">

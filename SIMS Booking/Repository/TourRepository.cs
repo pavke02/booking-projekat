@@ -16,6 +16,7 @@ namespace SIMS_Booking.Repository
 
         public TourRepository() : base("../../../Resources/Data/guides.csv") { }        
 
+
         public List<Tour> GetTodaysTours()
         {
             List<Tour> todaysTours = new List<Tour>();
@@ -61,6 +62,7 @@ namespace SIMS_Booking.Repository
             string[] checkpoints = text.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             return checkpoints.Length;
         }
+
 
 
     }

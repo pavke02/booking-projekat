@@ -1,0 +1,64 @@
+﻿<Window x:Class="SIMS_Booking.View.SignUpView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SIMS_Booking.View"
+        mc:Ignorable="d"
+        Title="SignUpView" Height="450" Width="500">
+
+    <Window.Resources>
+        <Style TargetType="RadioButton">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5, 10, 0, 0"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="SignUp" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
+                       Margin="0, 10, 0, 0"></TextBlock>
+            <WrapPanel Margin="0, 0, 0, 0">
+                <StackPanel>
+                    <Label FontSize="20" Margin="20, 20, 0, 0">Username:</Label>
+                    <TextBox Text="{Binding Path=Username, ValidatesOnDataErrors=True, 
+                             UpdateSourceTrigger=PropertyChanged}"                        
+                     TextChanged="TextBoxCheck"
+                     Height="30" Width="280" 
+                     Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"
+                     HorizontalAlignment="Left">
+                        <TextBox.ToolTip>
+                            <TextBlock Text="{Binding ErrorCollection[Username]}"/>
+                        </TextBox.ToolTip>
+                    </TextBox>
+
+                    <Label FontSize="20" Margin="20, 20, 0, 0">Password:</Label>
+                    <PasswordBox Name="txtPassword" Height="30" Width="280" 
+                         Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"/>
+
+                    <Label FontSize="20" Margin="20, 20, 0, 0">Confrim Password:</Label>
+                    <PasswordBox Name="txtConfirmPassword" Height="30" Width="280"
+                         Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"
+                         HorizontalAlignment="Left"/>
+                    <Label Name="passwordValidationLb" FontSize="10" Foreground="Red" Margin="20, 0, 0, 0" Visibility="Hidden">Passwords must be the same</Label>
+                </StackPanel>
+
+                <StackPanel Margin="60, 60, 0, 0">
+                    <RadioButton x:Name="ownerRb" Content="Owner" IsChecked="True"></RadioButton>
+                    <RadioButton x:Name="guest1Rb" Content="Guest1"></RadioButton>
+                    <RadioButton x:Name="guest2Rb" Content="Guest2"></RadioButton>
+                    <RadioButton x:Name="driverRb" Content="Driver"></RadioButton>
+                    <RadioButton x:Name="guideRb" Content="Guide"></RadioButton>
+                </StackPanel>
+            </WrapPanel>
+            <Button Click="SignUp" Content="SIGNUP" FontSize="16" Padding="5" Width="200"
+                    Margin="0, 30, 0, 0" Name="signUpButton" IsEnabled="False">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="7"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
