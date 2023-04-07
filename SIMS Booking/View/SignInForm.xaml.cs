@@ -19,7 +19,7 @@ namespace SIMS_Booking.View
         private readonly AccommodationService _accommodationService;
         private readonly CityCountryRepository _cityCountryRepository;   
         private readonly ReservationService _rservationService;
-        private readonly TourRepository _tourRepository;
+        private readonly TourService _tourService;
         private readonly VehicleRepository _vehicleRepository;
         private readonly GuestReviewService _guestReviewService; 
         private readonly OwnerReviewService _ownerReviewService;
@@ -63,8 +63,8 @@ namespace SIMS_Booking.View
             _userService = new UserService();
             _accommodationService = new AccommodationService();
             _cityCountryRepository = new CityCountryRepository();   
-            _rservationService = new ReservationService();            
-            _tourRepository = new TourRepository(); // sve ture ali nemamo  tourPoint = null
+            _rservationService = new ReservationService();
+            _tourService = new TourService(); // sve ture ali nemamo  tourPoint = null
             _vehicleRepository = new VehicleRepository();
             _guestReviewService = new GuestReviewService();
             _ownerReviewService = new OwnerReviewService();
@@ -85,7 +85,7 @@ namespace SIMS_Booking.View
             _driverLanguagesRepository.AddDriverLanguagesToVehicles(_vehicleRepository);
             _driverLocationsRepository.AddDriverLocationsToVehicles(_vehicleRepository);
             //_confirmTourRepository.loadGuests(_userService);
-            _tourRepository.LoadCheckpoints(_tourPointRepository);
+            _tourService.LoadCheckpoints(_tourPointRepository);
             //_tourCheckpointRepository.LoadCheckpointsInTour(_tourRepository, _tourPointRepository);
         }
 
@@ -108,7 +108,7 @@ namespace SIMS_Booking.View
                             guest1View.Show();
                             break;
                         case Roles.Guest2:
-                            Guest2MainView guest2View = new Guest2MainView(_tourRepository,user, _vehicleRepository);
+                            Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleRepository);
                             guest2View.Show();
                             break;
                         case Roles.Driver:
@@ -116,7 +116,7 @@ namespace SIMS_Booking.View
                             driverView.Show();
                             break;
                         case Roles.Guide:
-                            GuideMainView guideView = new GuideMainView(_tourRepository, _confirmTourRepository, _tourPointRepository);
+                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourRepository, _tourPointRepository);
                             guideView.Show();
                             break;
                     }

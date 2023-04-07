@@ -9,6 +9,7 @@ using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
+using SIMS_Booking.Service;
 
 namespace SIMS_Booking.View
 {
@@ -28,26 +29,26 @@ namespace SIMS_Booking.View
 
 
         private readonly ReservedToursRepository _reservedToursRepository;
-        private readonly TourRepository _tourRepository;
+        private readonly TourService _tourService;
         private readonly VehicleRepository _vehicleRepository;
         private readonly VehicleReservationRepository _vehicleReservationRepository;
         private readonly DriverLocationsRepository _driverLocationsRepository;
         private readonly TourReservation tourReservation;
 
-        public Guest2MainView(TourRepository tourRepository, User loggedUser, VehicleRepository vehicleRepository)
+        public Guest2MainView(TourService tourService, User loggedUser, VehicleRepository vehicleRepository)
         {
             InitializeComponent();
             DataContext = this;
             LoggedUser = loggedUser;
 
-            _tourRepository = tourRepository;
-            _tourRepository.Subscribe(this);
+            _tourService = tourService;
+            _tourService.Subscribe(this);
             _vehicleRepository = vehicleRepository;
             _vehicleRepository.Subscribe(this);
 
             _reservedToursRepository = new ReservedToursRepository();
 
-            Tours = new ObservableCollection<Tour>(tourRepository.GetAll());
+            Tours = new ObservableCollection<Tour>(_tourService.GetAll());
             TourReservation = new ObservableCollection<TourReservation>(_reservedToursRepository.GetAll());
         }
         private void UpdateTours(List<Tour> tours)
@@ -59,12 +60,12 @@ namespace SIMS_Booking.View
 
         public void Update()
         {
-            UpdateTours(_tourRepository.GetAll());
+            UpdateTours(_tourService.GetAll());
         }
 
         public int NextId()
         {
-            Tours = new ObservableCollection<Tour>(_tourRepository.GetAll());
+            Tours = new ObservableCollection<Tour>(_tourService.GetAll());
 
             if (Tours.Count < 1)
             {
