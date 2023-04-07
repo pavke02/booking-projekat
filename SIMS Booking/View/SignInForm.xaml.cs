@@ -23,7 +23,10 @@ namespace SIMS_Booking.View
         private readonly TourService _tourService;
 
 
+        private readonly VehicleService _vehicleService;
         private readonly VehicleRepository _vehicleRepository;
+        private readonly RidesRepository _ridesRepository;
+        private readonly FinishedRidesRepository _finishedRidesRepository;
         private readonly GuestReviewService _guestReviewService; 
         private readonly OwnerReviewService _ownerReviewService;
         private readonly PostponementService _postponementService;
@@ -74,7 +77,10 @@ namespace SIMS_Booking.View
             _reservationService = new ReservationService();
             _postponementService = new PostponementService();
 
+            _vehicleService = new VehicleService();
             _vehicleRepository = new VehicleRepository();
+            _ridesRepository = new RidesRepository();
+            _finishedRidesRepository = new FinishedRidesRepository();
             _guestReviewService = new GuestReviewService();
             _ownerReviewService = new OwnerReviewService();
             _tourPointRepository = new TourPointRepository(); // svi tourPointi
@@ -123,7 +129,7 @@ namespace SIMS_Booking.View
                             guest2View.Show();
                             break;
                         case Roles.Driver:
-                            DriverView driverView = new DriverView(user, _vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository);
+                            DriverView driverView = new DriverView(user, _ridesRepository, _finishedRidesRepository, _vehicleRepository, _vehicleService, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository);
                             driverView.Show();
                             break;
                         case Roles.Guide:

@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using SIMS_Booking.Enums;
 using System.Windows.Controls;
+using SIMS_Booking.Service;
 
 namespace SIMS_Booking.View
 {
@@ -18,6 +19,9 @@ namespace SIMS_Booking.View
         public Vehicle Vehicle { get; set; }
         public User User { get; set; }
 
+        private RidesRepository _ridesRepository;
+        private FinishedRidesRepository _finishedRidesRepository;
+        private VehicleService _vehicleService;
         private VehicleRepository _vehicleRepository;
         private CityCountryRepository _cityCountryRepository;
         private DriverLanguagesRepository _driverLanguagesRepository;
@@ -73,7 +77,7 @@ namespace SIMS_Booking.View
         }
 
 
-        public DriverView(User user, VehicleRepository vehicleRepository, DriverLanguagesRepository driverLanguagesRepository, DriverLocationsRepository driverLocationsRepository, CityCountryRepository cityCountryRepository)
+        public DriverView(User user, RidesRepository ridesRepository, FinishedRidesRepository finishedRidesRepository, VehicleRepository vehicleRepository, VehicleService vehicleService, DriverLanguagesRepository driverLanguagesRepository, DriverLocationsRepository driverLocationsRepository, CityCountryRepository cityCountryRepository)
         {
             InitializeComponent();
             DataContext = this;
@@ -82,6 +86,7 @@ namespace SIMS_Booking.View
 
             _cityCountryRepository = cityCountryRepository;
 
+            _vehicleService = vehicleService;
             _vehicleRepository = vehicleRepository;
             _vehicleRepository.Subscribe(this);
 
@@ -92,6 +97,10 @@ namespace SIMS_Booking.View
             Locations = new List<Location>();
 
             Vehicle = _vehicleRepository.GetVehicleByUserID(User.getID());
+
+            _ridesRepository = ridesRepository;
+            _finishedRidesRepository = finishedRidesRepository;
+
 
             Update();
 
@@ -160,6 +169,18 @@ namespace SIMS_Booking.View
         {
             DriverGalleryView galleryView = new DriverGalleryView(Vehicle);
             galleryView.Show();
+        }
+
+        private void ViewRides_Click(object sender, RoutedEventArgs e)
+        {
+            DriverRides driverRides = new DriverRides(User, _ridesRepository, _finishedRidesRepository);
+            driverRides.Show();
+        }
+
+        private void ViewStatsButton_Click(object sender, RoutedEventArgs e)
+        {
+            DriverStatsView driverStatsView = new DriverStatsView(_finishedRidesRepository);
+            driverStatsView.Show();
         }
     }
 }

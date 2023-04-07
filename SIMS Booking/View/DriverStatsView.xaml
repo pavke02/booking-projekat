@@ -1,0 +1,53 @@
+﻿<Window x:Class="SIMS_Booking.View.DriverStatsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SIMS_Booking.View"
+        mc:Ignorable="d"
+        Title="DriverStatsView" Height="450" Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem Header="2023">
+                <DataGrid Grid.Row="0" x:Name="stats2023Grid"
+                          ItemsSource="{Binding Path=MonthlyDriverStats2023, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Path=SelectedMonthlyDriverStats2023, UpdateSourceTrigger=PropertyChanged}"
+                          IsReadOnly="True" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Month" Binding="{Binding Month}" Width="180"/>
+                        <DataGridTextColumn Header="Number of rides" Binding="{Binding TotalRides}" Width="180"/>
+                        <DataGridTextColumn Header="Average ride time" Binding="{Binding AverageTime}" Width="180"/>
+                        <DataGridTextColumn Header="Average ride price" Binding="{Binding AveragePrice}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="2022">
+                <DataGrid Grid.Row="0" x:Name="stats2022Grid"
+                          ItemsSource="{Binding Path=MonthlyDriverStats2022, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Path=SelectedMonthlyDriverStats2022, UpdateSourceTrigger=PropertyChanged}"
+                          IsReadOnly="True" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Month" Binding="{Binding Month}" Width="180"/>
+                        <DataGridTextColumn Header="Number of rides" Binding="{Binding TotalRides}" Width="180"/>
+                        <DataGridTextColumn Header="Average ride time" Binding="{Binding AverageTime}" Width="180"/>
+                        <DataGridTextColumn Header="Average ride price" Binding="{Binding AveragePrice}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="2021">
+                <DataGrid Grid.Row="0" x:Name="stats2021Grid"
+                          ItemsSource="{Binding Path=MonthlyDriverStats2021, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Path=SelectedMonthlyDriverStats2021, UpdateSourceTrigger=PropertyChanged}"
+                          IsReadOnly="True" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Month" Binding="{Binding Month}" Width="180"/>
+                        <DataGridTextColumn Header="Number of rides" Binding="{Binding TotalRides}" Width="180"/>
+                        <DataGridTextColumn Header="Average ride time" Binding="{Binding AverageTime}" Width="180"/>
+                        <DataGridTextColumn Header="Average ride price" Binding="{Binding AveragePrice}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

@@ -52,7 +52,7 @@ namespace SIMS_Booking.View
 
             _postponementService = postponementService;
             NotificationTimer timer = new NotificationTimer(loggedUser, null, null, null, _postponementService);
-            _postponementService.Subscribe(this);
+            //_postponementService.Subscribe(this);
             UserPostponements = new ObservableCollection<Postponement>(_postponementService.GetPostponementsByUser(loggedUser.getID()));
 
             _ownerReviewService = ownerReviewService;
