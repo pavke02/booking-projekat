@@ -1,13 +1,9 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.TeamFoundation.TestManagement.WebApi;
 
 namespace SIMS_Booking.Service
 {
@@ -18,11 +14,6 @@ namespace SIMS_Booking.Service
         public PostponementService()
         {
             _repository = new PostponementRepository();
-        }
-
-        public List<Postponement> Load()
-        {
-            return _repository.Load();
         }
 
         public void Save(Postponement postponement)
@@ -85,11 +76,6 @@ namespace SIMS_Booking.Service
             }
         }
 
-        public void Subscribe(IObserver observer)
-        {
-            return _repository.GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
-        }
-
         public List<Postponement> GetReviewedPostponements()
         {
             List<Postponement> postponements = new List<Postponement>();
@@ -117,9 +103,11 @@ namespace SIMS_Booking.Service
                     _repository.Update(postponement);
                 }
             }
-
-
         }
 
+        public void Subscribe(IObserver observer)
+        {
+            _repository.Subscribe(observer);
+        }
     }
 }
