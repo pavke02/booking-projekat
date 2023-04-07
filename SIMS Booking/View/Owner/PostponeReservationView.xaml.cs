@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Service;
@@ -63,13 +64,28 @@ namespace SIMS_Booking.View.Owner
         private void AcceptPostponmentRequest(object sender, RoutedEventArgs e)
         {
             _reservationService.PostponeReservation(SelectedRequest.ReservationId, SelectedRequest.NewStartDate, SelectedRequest.NewEndDate);
-            _postponementService.ApprovePostponement(SelectedRequest.getID());
+            string comment = "";
+            PostponementStatus postponementStatus = PostponementStatus.Accepted;
+            _postponementService.ReviewPostponementRequest(SelectedRequest.getID(), comment, postponementStatus);
         }
 
         //ToDo
         private void DeclinePostponmentRequest(object sender, RoutedEventArgs e)
-        {
+        {  
+            MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to leave a comment?",
+                "Decline comment", MessageBoxButton.YesNo);
 
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                DeclinePostponementRequestView declinePostponementRequestView =
+                    new DeclinePostponementRequestView(_postponementService, SelectedRequest);
+                declinePostponementRequestView.ShowDialog();
+                return;
+            }
+
+            string comment = "";
+            PostponementStatus postponementStatus = PostponementStatus.Declined;
+            _postponementService.ReviewPostponementRequest(SelectedRequest.getID(), comment, postponementStatus);
         }
 
         public void UpdatePostponements(List<Postponement> postponements)
