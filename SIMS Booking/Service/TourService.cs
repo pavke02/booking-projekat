@@ -33,7 +33,7 @@ namespace SIMS_Booking.Service
         }
 
        
-        public void LoadCheckpoints(TourPointRepository tp)
+        public void LoadCheckpoints(TourPointService tp)
         {
             foreach (var tour in _repository.GetAll())
             {
@@ -59,6 +59,28 @@ namespace SIMS_Booking.Service
         {
            _repository.Save(tour);
         }
+        public bool ValidTimeOfTour()
+        {
+            foreach (var tour in _repository.GetAll())
+            {
+                foreach (var tour1 in _repository.GetAll())
+                {
+                    if (tour.TourTime.AddHours(tour.Time) > tour1.TourTime.AddHours(tour1.Time))
+                    {
+                        return false;
+                    }
+                }
+
+            }
+            return true;
+        }
+
+        public int CountCheckPoints(string text)
+        {
+            string[] checkpoints = text.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return checkpoints.Length;
+        }
+
 
     }
 }

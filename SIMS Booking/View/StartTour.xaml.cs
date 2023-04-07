@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
+using SIMS_Booking.Service;
 
 namespace SIMS_Booking.View
 {
@@ -45,8 +46,8 @@ namespace SIMS_Booking.View
         public ObservableCollection<TourPoint> Checkpoints { get; set; }
      
         public Tour SelectedTour { get; set; }
-        private ConfirmTourRepository gosti { get; set; }
-        private ConfirmTourRepository _confirmTourRepository;
+        private ConfirmTourService gosti { get; set; }
+        private ConfirmTourService _confirmTourService;
         private Tour _tour { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -56,14 +57,14 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public StartTour(Tour selectedTour , ConfirmTourRepository confirmTourRepository)
+        public StartTour(Tour selectedTour , ConfirmTourService confirmTourService)
         {
             InitializeComponent();
             DataContext = this;
             SelectedTour = selectedTour;
 
                         
-            _confirmTourRepository = confirmTourRepository;                              
+            _confirmTourService = confirmTourService;                              
             Checkpoints = new ObservableCollection<TourPoint>(SelectedTour.TourPoints);                     
 
         }
@@ -79,11 +80,11 @@ namespace SIMS_Booking.View
             {
                 Checkpoints[j].CheckedCheckBox = false;
             }
-            foreach(ConfirmTour confirmTour in _confirmTourRepository.GetAll())
+            foreach(ConfirmTour confirmTour in _confirmTourService.GetAll())
             {
                 if(confirmTour.IdTour == SelectedTour.getID())
                 {
-                    _confirmTourRepository.Delete(confirmTour);
+                    _confirmTourService.Delete(confirmTour);
                 }
             }
 
@@ -99,7 +100,7 @@ namespace SIMS_Booking.View
                 if ((Checkpoints[i].CheckedCheckBox) && (i != Checkpoints.Count-1))
                 {
                     
-                    ConfirmTourByGuest confirmTourByGuest = new ConfirmTourByGuest(_confirmTourRepository, SelectedTour);
+                    ConfirmTourByGuest confirmTourByGuest = new ConfirmTourByGuest(_confirmTourService, SelectedTour);
                     confirmTourByGuest.ShowDialog();
                                                                            
 

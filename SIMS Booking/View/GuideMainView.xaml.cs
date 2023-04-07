@@ -39,8 +39,8 @@ namespace SIMS_Booking.View
 
         private TourService _tourService;
         private ObservableCollection<Tour> _allToursRepository;
-        private TourPointRepository _tourPointRepository;
-        private ConfirmTourRepository _confirmTourRepository;
+        private TourPointService _tourPointService;
+        private ConfirmTourService _confirmTourService;
  
         public Tour SelectedTour { get; set; }
 
@@ -74,8 +74,8 @@ namespace SIMS_Booking.View
 
 
 
-        private string _tourTime;
-        public string TourTime
+        private TimeOnly _tourTime;
+        public TimeOnly TourTime
         {
             get { return _tourTime; }
             set 
@@ -271,7 +271,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public GuideMainView(TourService  tourService, ConfirmTourRepository confirmTourRepository, TourPointRepository tourPointRepository )
+        public GuideMainView(TourService  tourService, ConfirmTourService confirmTourService, TourPointService tourPointService )
         {
             InitializeComponent();
             DataContext = this;
@@ -281,15 +281,15 @@ namespace SIMS_Booking.View
             _tourService = tourService;
             _tourService.Subscribe(this);
 
-            _tourPointRepository = tourPointRepository;
-            _tourPointRepository.Subscribe(this);
+            _tourPointService = tourPointService;
+            _tourPointService.Subscribe(this);
 
-            _confirmTourRepository = confirmTourRepository;
+            _confirmTourService = confirmTourService;
             Cities = new List<string> { "Serbia,Novi Sad","Serbia,Ruma", "Serbia,Belgrade","Serbia, Nis","England,London","England,London EAST" };
 
             TodaysTours = new ObservableCollection<Tour>(_tourService.GetTodaysTours());
             AllTours = new ObservableCollection<Tour>(_tourService.GetAll());
-            AllCheckpoints = new ObservableCollection<TourPoint>(_tourPointRepository.GetAll());
+            AllCheckpoints = new ObservableCollection<TourPoint>(_tourPointService.GetAll());
             Checkpoints = new ObservableCollection<string>();
            
 
@@ -300,7 +300,7 @@ namespace SIMS_Booking.View
         {
             if(SelectedTour != null )
             {
-                StartTour startTour = new StartTour(SelectedTour, _confirmTourRepository);
+                StartTour startTour = new StartTour(SelectedTour, _confirmTourService);
                 startTour.ShowDialog();
             }
             
@@ -331,48 +331,50 @@ namespace SIMS_Booking.View
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
             string text = tourPointTb.Text;
-            int count = _tourRepository.CountCheckPoints(text);
+            int count = _tourService.CountCheckPoints(text);
 
             if (count < 2)
             {
                 MessageBox.Show("Unesite najmanje dva checkpointa!");
+
             }
-
-
-
-            List<string> imageURLs = new List<string>();
-            string[] values = ImageURLs.Split("\n");
-            foreach (string value in values)
-                imageURLs.Add(value);
-
-
-            List<int> TourPointIds = new List<int>();
-            List<TourPoint> TourPoints = new List<TourPoint>();
-
-            
-            List<string> tourPoinNames = TourPointArray.Split(",").ToList();
-            bool isFirst = true;
-            foreach (string tourPoinName in tourPoinNames)
+            else
             {
-                TourPoint tourPoint = new TourPoint(tourPoinName, isFirst);
-                isFirst = false;
-
-                _tourPointRepository.Save(tourPoint); // = tourPoint
-                TourPoints.Add(tourPoint);
-                TourPointIds.Add(tourPoint.getID());
 
 
+                List<string> imageURLs = new List<string>();
+                string[] values = ImageURLs.Split("\n");
+                foreach (string value in values)
+                    imageURLs.Add(value);
+
+
+                List<int> TourPointIds = new List<int>();
+                List<TourPoint> TourPoints = new List<TourPoint>();
+
+
+                List<string> tourPoinNames = TourPointArray.Split(",").ToList();
+                bool isFirst = true;
+                foreach (string tourPoinName in tourPoinNames)
+                {
+                    TourPoint tourPoint = new TourPoint(tourPoinName, isFirst);
+                    isFirst = false;
+
+                    _tourPointService.Save(tourPoint); // = tourPoint
+                    TourPoints.Add(tourPoint);
+                    TourPointIds.Add(tourPoint.getID());
+
+
+                }
+
+                string[] v = City.Split(",");
+                Location location = new Location(v[0], v[1]);
+
+
+
+
+                Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), StartTour, int.Parse(Times), imageURLs, TourPointIds, TourPoints, TourTime);
+                _tourService.Save(tour);
             }
-
-            string[] v = City.Split(",");
-            Location location = new Location(v[0], v[1]);
-
-
-
-
-            Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), StartTour, int.Parse(Times), imageURLs, TourPointIds, TourPoints);
-            _tourService.Save(tour);
-
 
 
 

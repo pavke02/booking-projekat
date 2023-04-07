@@ -33,8 +33,8 @@ namespace SIMS_Booking.View
         private readonly UsersAccommodationService _userAccommodationService;
         private readonly DriverLanguagesRepository _driverLanguagesRepository;
         private readonly DriverLocationsRepository _driverLocationsRepository;
-        private readonly TourPointRepository _tourPointRepository;
-        private readonly ConfirmTourRepository _confirmTourRepository;
+        private readonly TourPointService _tourPointService;
+        private readonly ConfirmTourService _confirmTourService;
 
 
         private string _username;
@@ -77,8 +77,8 @@ namespace SIMS_Booking.View
             _vehicleRepository = new VehicleRepository();
             _guestReviewService = new GuestReviewService();
             _ownerReviewService = new OwnerReviewService();
-            _tourPointRepository = new TourPointRepository(); // svi tourPointi
-            _confirmTourRepository = new ConfirmTourRepository();
+            _tourPointService = new TourPointService(); // svi tourPointi
+            _confirmTourService = new ConfirmTourService();
             _cancellationRepository = new CancellationRepository();
 
             _reservedAccommodationService = new ReservedAccommodationService();
@@ -96,7 +96,7 @@ namespace SIMS_Booking.View
             _driverLanguagesRepository.AddDriverLanguagesToVehicles(_vehicleRepository);
             _driverLocationsRepository.AddDriverLocationsToVehicles(_vehicleRepository);
             //_confirmTourRepository.loadGuests(_userService);
-            _tourService.LoadCheckpoints(_tourPointRepository);
+            _tourService.LoadCheckpoints(_tourPointService);
             //_tourCheckpointRepository.LoadCheckpointsInTour(_tourRepository, _tourPointRepository);
         }
 
@@ -127,7 +127,7 @@ namespace SIMS_Booking.View
                             driverView.Show();
                             break;
                         case Roles.Guide:
-                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourRepository, _tourPointRepository);
+                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService);
                             guideView.Show();
                             break;
                     }

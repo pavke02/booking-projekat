@@ -87,7 +87,7 @@ namespace SIMS_Booking.Service
 
         public void Subscribe(IObserver observer)
         {
-            return _repository.GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
+            _repository.Subscribe(observer);
         }
 
         public List<Postponement> GetReviewedPostponements()
