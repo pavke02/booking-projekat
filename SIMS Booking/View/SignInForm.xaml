@@ -24,7 +24,7 @@
                          Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"
                          HorizontalAlignment="Left"/>
 
-            <Button Click="SignIn" Content="LOGIN" FontSize="16" Padding="5" Width="200"
+            <Button Click="SignIn" Content="LOGIN" IsDefault="True" FontSize="16" Padding="5" Width="200"
                     Margin="0, 30, 0, 0">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">

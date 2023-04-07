@@ -9,25 +9,93 @@ using ToastNotifications.Position;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using System.Windows;
+using Microsoft.TeamFoundation.Common;
 using SIMS_Booking.Service;
 
 namespace SIMS_Booking.State
 {    
-    internal class Timer
+    internal class NotificationTimer
     {
         private DateTime _date;
         private DispatcherTimer _checkDateTimer;
 
         private ReservationService _reservationService;
         private GuestReviewService _guestReviewService;
+        private PostponementService _postponementService;
+        private CancellationRepository _cancellationRepository;
+        private User _user;
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
 
-        public Timer(ObservableCollection<Reservation> reservedAccommodations, ReservationService reservationService, GuestReviewService guestReviewService)
+
+        public NotificationTimer(User user, ObservableCollection<Reservation> reservedAccommodations = null, ReservationService reservationService = null, GuestReviewService guestReviewService = null, PostponementService postponementService = null, CancellationRepository cancellationRepository = null)
         {
             ReservedAccommodations = reservedAccommodations;
             _reservationService = reservationService;
             _guestReviewService = guestReviewService;
+            _postponementService = postponementService;
+            _cancellationRepository = cancellationRepository;
+            _user = user;
 
+            if (_user.Role == Enums.Roles.Owner)
+            {
+                ReviewNotifications();
+                CancellationNotifications();
+            }
+            else if (_user.Role == Enums.Roles.Guest1)
+                OwnerReviewedNotification();
+        }
+
+
+        ~NotificationTimer() { _checkDateTimer.Stop(); notifier.Dispose(); }
+
+        private void OwnerReviewedNotification()
+        {
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            timer.Tick += (sender, args) =>
+            {
+                if (!_postponementService.GetReviewedPostponements().IsNullOrEmpty())
+                {
+                    notifier.ShowInformation("Owner has reviewed your postponement requests");
+                    _postponementService.SetNotifiedPostpoments();
+                }
+
+                timer.Stop();
+            };
+            timer.Start();
+
+            _date = DateTime.Now;
+            _checkDateTimer = new DispatcherTimer();
+            _checkDateTimer.Tick += new EventHandler(CheckDate);
+            _checkDateTimer.Interval = new TimeSpan(0, 1, 0);
+            _checkDateTimer.Start();
+        }
+
+        public void CancellationNotifications()
+        {
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            timer.Tick += (sender, args) =>
+            {
+                if (!_cancellationRepository.GetAll().IsNullOrEmpty())
+                    notifier.ShowInformation("Your reservation has been canceled");
+                foreach (Reservation reservation in _cancellationRepository.GetAll().ToList())
+                {
+                    _cancellationRepository.Delete(reservation);
+                }
+
+                timer.Stop();
+            };
+            timer.Start();
+
+            _date = DateTime.Now;
+            _checkDateTimer = new DispatcherTimer();
+            _checkDateTimer.Tick += new EventHandler(CheckDate);
+            _checkDateTimer.Interval = new TimeSpan(0, 1, 0);
+            _checkDateTimer.Start();
+        }
+
+
+        public void ReviewNotifications()
+        {
             var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             timer.Tick += (sender, args) =>
             {
@@ -45,8 +113,6 @@ namespace SIMS_Booking.State
             _checkDateTimer.Interval = new TimeSpan(0, 1, 0);
             _checkDateTimer.Start();
         }
-
-        ~Timer() { _checkDateTimer.Stop(); notifier.Dispose(); }
 
         //Metoda koja proverava da li user idalje moze da se oceni naspram datuma. 
         //Metoda se poziva na svakih 1min za slucaj da se datum promeni u tom periodu

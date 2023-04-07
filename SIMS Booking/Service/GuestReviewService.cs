@@ -38,18 +38,7 @@ namespace SIMS_Booking.Service
         public List<GuestReview> GetReviewedReservations(int id)
         {
             return _repository.GetAll().Where(e => e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
-        }
-
-        public double CalculateRating(int id)
-        {
-            double ratingSum = 0;
-            foreach(GuestReview guestReview in GetReviewedReservations(id))
-            {
-                ratingSum += (double)guestReview.Tidiness + (double)guestReview.RuleFollowing;
-            }
-
-            return ratingSum/_repository.GetAll().Count();
-        }
+        }        
 
         public void Subscribe(IObserver observer)
         {

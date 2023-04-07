@@ -18,11 +18,16 @@ namespace SIMS_Booking.View
         private readonly UserService _userService;
         private readonly AccommodationService _accommodationService;
         private readonly CityCountryRepository _cityCountryRepository;   
-        private readonly ReservationService _rservationService;
+
+        private readonly ReservationService _reservationService;
         private readonly TourService _tourService;
+
+
         private readonly VehicleRepository _vehicleRepository;
         private readonly GuestReviewService _guestReviewService; 
         private readonly OwnerReviewService _ownerReviewService;
+        private readonly PostponementService _postponementService;
+        private readonly CancellationRepository _cancellationRepository;
         
         private readonly ReservedAccommodationService _reservedAccommodationService;
         private readonly UsersAccommodationService _userAccommodationService;
@@ -63,21 +68,27 @@ namespace SIMS_Booking.View
             _userService = new UserService();
             _accommodationService = new AccommodationService();
             _cityCountryRepository = new CityCountryRepository();   
-            _rservationService = new ReservationService();
+
             _tourService = new TourService(); // sve ture ali nemamo  tourPoint = null
+
+            _reservationService = new ReservationService();
+            _postponementService = new PostponementService();
+
             _vehicleRepository = new VehicleRepository();
             _guestReviewService = new GuestReviewService();
             _ownerReviewService = new OwnerReviewService();
             _tourPointRepository = new TourPointRepository(); // svi tourPointi
             _confirmTourRepository = new ConfirmTourRepository();
+            _cancellationRepository = new CancellationRepository();
 
             _reservedAccommodationService = new ReservedAccommodationService();
             _userAccommodationService = new UsersAccommodationService();
 
-            _reservedAccommodationService.LoadAccommodationsAndUsersInReservation(_userService, _accommodationService, _rservationService);
+            _reservedAccommodationService.LoadAccommodationsAndUsersInReservation(_userService, _accommodationService, _reservationService);
             _userAccommodationService.LoadUsersInAccommodation(_userService, _accommodationService);
-            _guestReviewService.LoadReservationInGuestReview(_rservationService);
-            _ownerReviewService.LoadReservationInOwnerReview(_rservationService);
+            _guestReviewService.LoadReservationInGuestReview(_reservationService);
+            _ownerReviewService.LoadReservationInOwnerReview(_reservationService);
+            _postponementService.LoadReservationInPostponement(_reservationService);
 
             _driverLanguagesRepository = new DriverLanguagesRepository();
             _driverLocationsRepository = new DriverLocationsRepository();
@@ -100,11 +111,11 @@ namespace SIMS_Booking.View
                     switch(user.Role)
                     {
                         case Roles.Owner:
-                            OwnerMainView ownerView = new OwnerMainView(_accommodationService, _cityCountryRepository, _rservationService, _guestReviewService, _userAccommodationService, _ownerReviewService, user);
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationService, _cityCountryRepository, _reservationService, _guestReviewService, _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationRepository);
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
-                            Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryRepository, _rservationService, _reservedAccommodationService ,user);
+                            Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryRepository, _reservationService, _reservedAccommodationService ,user, _postponementService, _cancellationRepository, _ownerReviewService);
                             guest1View.Show();
                             break;
                         case Roles.Guest2:

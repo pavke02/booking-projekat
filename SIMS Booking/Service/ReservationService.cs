@@ -35,13 +35,19 @@ namespace SIMS_Booking.Service
         public Reservation GetById(int id)
         {
             return _repository.GetById(id);
-        }        
+        }     
+        
+        public List<Reservation> GetByAccommodation(int id) 
+        {
+            return _repository.GetAll().Where(e => e.Accommodation.getID() == id).ToList();
+        }
 
         public ObservableCollection<Reservation> GetReservationsByUser(int userId)
         {
             ObservableCollection<Reservation> userReservations = new ObservableCollection<Reservation>();
             foreach (Reservation reservation in _repository.GetAll())
             {
+                
                 if (reservation.User.getID() == userId)
                     userReservations.Add(reservation);
             }                
@@ -68,9 +74,44 @@ namespace SIMS_Booking.Service
                 }
         }
 
+        public List<Reservation> GetAccommodationReservations(Accommodation selectedAccommodation)
+        {
+            List<Reservation> accommodationReservations = new List<Reservation>();
+
+            foreach (Reservation reservation in _repository.GetAll())
+            {
+
+                if (reservation.Accommodation.getID() == selectedAccommodation.getID())
+                {
+                    accommodationReservations.Add(reservation);
+                }
+            }
+
+            return accommodationReservations;
+        }
+
+        public void PostponeReservation(int reservationId, DateTime newStartDate, DateTime newEndDate)
+        {
+            Reservation reservation = GetById(reservationId);
+            reservation.StartDate = newStartDate;
+            reservation.EndDate = newEndDate;
+            _repository.Update(reservation);
+        }
+
         public void Subscribe(IObserver observer)
         {
             _repository.Subscribe(observer);
+        }
+
+        public void DeleteCancelledReservation(int id)
+        {
+            foreach (Reservation reservation in _repository.GetAll().ToList())
+            {
+                if (reservation.getID() == id)
+                {
+                    _repository.Delete(reservation);
+                }
+            }
         }
     }
 }

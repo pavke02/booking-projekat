@@ -38,6 +38,8 @@ namespace SIMS_Booking.View
         private GuestReviewService _guestReviewService;        
         private UsersAccommodationService _usersAccommodationService;
         private OwnerReviewService _ownerReviewService;
+        private PostponementService _postponementService;
+        private CancellationRepository _cancellationRepository;
 
         #region Property
         private string _accommodationName;
@@ -160,7 +162,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }                
 
-        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, User user)
+        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, PostponementService postponementService, User user, CancellationRepository cancellationRepository)
         {
             InitializeComponent();
             DataContext = this;            
@@ -190,17 +192,20 @@ namespace SIMS_Booking.View
             
             _usersAccommodationService = usersAccommodationService;
             _ownerReviewService = ownerReviewService;
+            _postponementService = postponementService;
+
+            _cancellationRepository = cancellationRepository;
 
             CalculateRating(_user.getID());
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
-            Timer timer = new Timer(ReservedAccommodations, _reservationService, _guestReviewService);   
+            NotificationTimer timer = new NotificationTimer(_user, ReservedAccommodations, _reservationService, _guestReviewService, null, _cancellationRepository);   
         }           
         
         private void CalculateRating(int id)
         {
-            double rating = _guestReviewService.CalculateRating(id);
+            double rating = _ownerReviewService.CalculateRating(id);
             ownerRatingTb.Text = Math.Round(rating, 2).ToString();
             if(rating > 9.5 && PastReservations.Count() > 50)
             {
@@ -271,7 +276,13 @@ namespace SIMS_Booking.View
         {
             OwmerReviewDetailsVeiw owmerReviewDetails = new OwmerReviewDetailsVeiw(_ownerReviewService, _user);
             owmerReviewDetails.ShowDialog();
-        }        
+        }
+
+        private void ViewPostponeRequests(object sender, RoutedEventArgs e)
+        {
+            PostponeReservationView postponeReservationView = new PostponeReservationView(_postponementService, _reservationService, _user);
+            postponeReservationView.ShowDialog();
+        }
 
         private void Reset(object sender, RoutedEventArgs e)
         {
@@ -296,9 +307,9 @@ namespace SIMS_Booking.View
         {
             if (SelectedReservation != null)            
                 if (DateTime.Now >= SelectedReservation.EndDate && (DateTime.Now - SelectedReservation.EndDate.Date).TotalDays <= 5)
-                    reviewGuestClick.IsEnabled = true;
+                    reviewGuestButton.IsEnabled = true;
                 else
-                    reviewGuestClick.IsEnabled = false;
+                    reviewGuestButton.IsEnabled = false;
         }
 
         private void IsShowable(object sender, SelectionChangedEventArgs e)

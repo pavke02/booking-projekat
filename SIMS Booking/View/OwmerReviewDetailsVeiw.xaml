@@ -12,12 +12,12 @@
                           ItemsSource="{Binding Path=OwnersReviews, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedReview, UpdateSourceTrigger=PropertyChanged}"
                           SelectionChanged="ShowReviewDetails"
-                          IsReadOnly="True" AutoGenerateColumns="False" FontSize="18">
+                          IsReadOnly="True" AutoGenerateColumns="False" FontSize="20">
                 <DataGrid.Columns >
                     <DataGridTextColumn Header="User" Binding="{Binding Reservation.User.Username}" Width="110"/>
-                    <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="240"/>
-                    <DataGridTextColumn Header="Stard Date" Binding="{Binding Reservation.StartDate, StringFormat=d}" Width="125"/>
-                    <DataGridTextColumn Header="End Date" Binding="{Binding Reservation.EndDate, StringFormat=d }" Width="125"/>
+                    <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="250"/>
+                    <DataGridTextColumn Header="Stard Date" Binding="{Binding Reservation.StartDate, StringFormat=d}" Width="120"/>
+                    <DataGridTextColumn Header="End Date" Binding="{Binding Reservation.EndDate, StringFormat=d }" Width="120"/>
                 </DataGrid.Columns>
             </DataGrid>
 
