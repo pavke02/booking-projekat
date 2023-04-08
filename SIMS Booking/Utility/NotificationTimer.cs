@@ -12,7 +12,7 @@ using System.Windows;
 using Microsoft.TeamFoundation.Common;
 using SIMS_Booking.Service;
 
-namespace SIMS_Booking.State
+namespace SIMS_Booking.Utility
 {    
     internal class NotificationTimer
     {

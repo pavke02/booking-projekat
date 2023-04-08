@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SIMS_Booking.Serializer;
-using SIMS_Booking.State;
+using SIMS_Booking.Utility;
 
 namespace SIMS_Booking.Model
 {

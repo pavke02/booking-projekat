@@ -1,29 +1,31 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.Model;
-using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
-using SIMS_Booking.Repository.RelationsRepository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
-using SIMS_Booking.State;
+using SIMS_Booking.Utility;
 
 namespace SIMS_Booking.View
 {
 
     public partial class Guest1MainView : Window, IObserver
-    {        
+    {
+
         public ObservableCollection<Accommodation> Accommodations { get; set; }        
         public ObservableCollection<Reservation> UserReservations { get; set; }
         public ObservableCollection<Postponement> UserPostponements { get; set; }
         public Accommodation SelectedAccommodation { get; set; }
         public Reservation SelectedReservation { get; set; }
-        public ObservableCollection<Accommodation> AccommodationsReorganized { get; set; }
         public User LoggedUser { get; set; }
 
         private readonly AccommodationService _accommodationService;
@@ -44,7 +46,7 @@ namespace SIMS_Booking.View
 
             _accommodationService = accommodationService;
             _accommodationService.Subscribe(this);
-            Accommodations = new ObservableCollection<Accommodation>(accommodationService.GetAll());
+            Accommodations = new ObservableCollection<Accommodation>(_accommodationService.SortBySuperOwner(_accommodationService.GetAll()));
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
@@ -61,7 +63,6 @@ namespace SIMS_Booking.View
             _cancellationRepository = cancellationRepository;
 
             _reservedAccommodationService = reservedAccommodationService;
-
         }
 
         private void AddFilters(object sender, RoutedEventArgs e)
@@ -105,7 +106,6 @@ namespace SIMS_Booking.View
                UserPostponements.Add(postponement);
            }
         }
-
 
         public void Update()
         {

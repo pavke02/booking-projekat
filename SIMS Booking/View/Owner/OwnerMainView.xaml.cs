@@ -15,7 +15,7 @@ using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
-using SIMS_Booking.State;
+using SIMS_Booking.Utility;
 
 namespace SIMS_Booking.View.Owner
 {
@@ -38,6 +38,7 @@ namespace SIMS_Booking.View.Owner
         private readonly UsersAccommodationService _usersAccommodationService;
         private readonly OwnerReviewService _ownerReviewService;
         private readonly PostponementService _postponementService;
+        private readonly UserService _userService;
 
         #region Property
         private string _accommodationName;
@@ -160,11 +161,12 @@ namespace SIMS_Booking.View.Owner
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }                
 
-        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, PostponementService postponementService, User user, CancellationRepository cancellationRepository)
+        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, PostponementService postponementService, User user, CancellationRepository cancellationRepository, UserService userService)
         {
             InitializeComponent();
             DataContext = this;            
 
+            _userService = userService;
             _user = user;
             usernameTb.Text = _user.Username;
             roleTb.Text = _user.Role.ToString();
@@ -202,15 +204,19 @@ namespace SIMS_Booking.View.Owner
         {
             double rating = _ownerReviewService.CalculateRating(id);
             ownerRatingTb.Text = Math.Round(rating, 2).ToString();
-            if(rating > 9.5 && PastReservations.Count() > 50)
+            if(rating > 5.5 && PastReservations.Count() > 3)
             {
                 regularCb.IsChecked = false;
                 superCb.IsChecked = true;
+                _user.IsSuperUser = true;
+                _userService.Update(_user);
             }                
             else
             {
                 superCb.IsChecked = false;
                 regularCb.IsChecked = true;
+                _user.IsSuperUser = false;
+                _userService.Update(_user);
             }                
         }
 
@@ -452,21 +458,7 @@ namespace SIMS_Booking.View.Owner
 
                 return true;
             }
-        }        
+        }
+        #endregion
     }
-    #endregion
-
-    class ColorConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-           //ToDo: Srediti da radi za promenu dana// Po mogucnosti staviti u poseban namespace
-           return DateTime.Now >= (DateTime)value && (DateTime.Now - (DateTime)value).TotalDays <= 5;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-           throw new NotImplementedException();
-        }
-    }    
 }
