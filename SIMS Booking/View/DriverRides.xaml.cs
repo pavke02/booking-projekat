@@ -72,22 +72,33 @@ namespace SIMS_Booking.View
         }
 
         private int remainingTime;
+        private TimeSpan timeDif;
 
         private void arrivedButton_Click(object sender, RoutedEventArgs e)
         {
-            remainingTime = 20 * 60;
-
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += Timer_Tick;
-
-            timer.Start();
-            arrivedButton.IsEnabled = false;
-            lateButton.IsEnabled = false;
-            startButton.IsEnabled = true;
-            cancelButton.IsEnabled = true;
 
             selectedRide = ridesGrid.SelectedItem as Rides;
+
+            timeDif = selectedRide.DateTime - DateTime.Now;
+
+            if (timeDif.TotalSeconds <= 300)
+            {
+                remainingTime = (int)(20 * 60 + timeDif.TotalSeconds);
+
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Tick += Timer_Tick;
+
+                timer.Start();
+                arrivedButton.IsEnabled = false;
+                lateButton.IsEnabled = false;
+                startButton.IsEnabled = true;
+                cancelButton.IsEnabled = true;
+            }
+            else
+            {
+                MessageBox.Show("You arrived too soon!");
+            }
         }
 
 
@@ -107,24 +118,36 @@ namespace SIMS_Booking.View
 
         private void lateButton_Click(object sender, RoutedEventArgs e)
         {
-
-            DriverLate driveLate = new DriverLate();
-            driveLate.ShowDialog();
-
-
-            remainingTime = 20 * 60 + 60 * driveLate.LateInMinutes;
-
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += Timer_Tick;
-
-            timer.Start();
-            arrivedButton.IsEnabled = false;
-            lateButton.IsEnabled = false;
-            startButton.IsEnabled = true;
-            cancelButton.IsEnabled = true;
-
             selectedRide = ridesGrid.SelectedItem as Rides;
+
+            timeDif = selectedRide.DateTime - DateTime.Now;
+
+            if (timeDif.TotalSeconds <= 300)
+            {
+
+                DriverLate driveLate = new DriverLate();
+                driveLate.ShowDialog();
+
+
+                remainingTime = (int)(20 * 60 + 60 * driveLate.LateInMinutes + timeDif.TotalSeconds);
+
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Tick += Timer_Tick;
+
+                timer.Start();
+                arrivedButton.IsEnabled = false;
+                lateButton.IsEnabled = false;
+                startButton.IsEnabled = true;
+                cancelButton.IsEnabled = true;
+            }
+            else
+            {
+                MessageBox.Show("You arrived too soon!");
+            }
+            
+
+            
         }
 
         private void ridesGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
