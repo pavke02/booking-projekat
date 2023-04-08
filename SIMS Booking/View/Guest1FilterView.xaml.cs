@@ -155,7 +155,7 @@ namespace SIMS_Booking.View
             {
                 if (window.GetType() == typeof(Guest1MainView))
                 {
-                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationService.Load();
+                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationService.SortBySuperOwner(_accommodationService.GetAll());
                 }
             }
         }
@@ -179,7 +179,7 @@ namespace SIMS_Booking.View
 
         private void ApplyFilters(object sender, RoutedEventArgs e)
         {
-            List<Accommodation> accommodationsFiltered = _accommodationService.Load();
+            List<Accommodation> accommodationsFiltered =new List<Accommodation>(_accommodationService.GetAll());
             int numberOfDeleted = 0;
 
             UpdateKindsState();
@@ -197,8 +197,7 @@ namespace SIMS_Booking.View
                 }
             }
 
-            UpdateAccommodationsDataGrid(accommodationsFiltered);
-
+            UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
         }
 
         private void UpdateKindsState()

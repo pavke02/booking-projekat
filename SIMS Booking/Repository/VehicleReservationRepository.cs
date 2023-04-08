@@ -1,8 +1,6 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Observer;
 using System;
-using System.Linq;
 
 namespace SIMS_Booking.Repository
 {

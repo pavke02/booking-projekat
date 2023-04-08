@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:converters="clr-namespace:SIMS_Booking.View"
-        xmlns:owner="clr-namespace:SIMS_Booking.View.Owner"
+        xmlns:owner="clr-namespace:SIMS_Booking.Utility"
         mc:Ignorable="d"
         Title="OwnerMainView" Height="600" Width="1300" FontSize="18">
 
@@ -269,7 +269,7 @@
                           SelectionChanged="IsReviewable"                          
                           IsReadOnly="True" AutoGenerateColumns="False">
                         <DataGrid.Resources>
-                            <owner:ColorConverter x:Key="ColorConverter"></owner:ColorConverter>
+                            <owner:GuestReviewColorConverter x:Key="ColorConverter"></owner:GuestReviewColorConverter>
                         </DataGrid.Resources>
                         <DataGrid.CellStyle>
                             <Style TargetType="{x:Type DataGridCell}">

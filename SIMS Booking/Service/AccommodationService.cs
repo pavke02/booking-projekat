@@ -40,6 +40,11 @@ namespace SIMS_Booking.Service
             return _repository.GetAll().Where(e => e.User.getID() == id).ToList();
         }
 
+        public List<Accommodation> SortBySuperOwner(List<Accommodation> accommodations)
+        {
+            return accommodations.OrderBy(x => !x.User.IsSuperUser).ToList();
+        }
+
         public void Subscribe(IObserver observer)
         {
             _repository.Subscribe(observer);

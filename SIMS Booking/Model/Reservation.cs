@@ -1,5 +1,5 @@
 using SIMS_Booking.Serializer;
-using SIMS_Booking.State;
+using SIMS_Booking.Utility;
 using System;
 
 namespace SIMS_Booking.Model

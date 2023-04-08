@@ -23,6 +23,11 @@ namespace SIMS_Booking.Service
             return _repository.GetById(id);
         }
 
+        public void Update(User user)
+        {
+            _repository.Update(user);
+        }
+
         public User GetByUsername(string username)
         {            
             return _repository.GetAll().FirstOrDefault(u => u.Username == username);

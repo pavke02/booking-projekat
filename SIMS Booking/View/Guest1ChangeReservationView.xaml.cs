@@ -1,28 +1,15 @@
-﻿using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Model;
+﻿using SIMS_Booking.Model;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using SIMS_Booking.Enums;
-using SIMS_Booking.Observer;
 
 namespace SIMS_Booking.View
 {
-    /// <summary>
-    /// Interaction logic for Guest1ChangeReservationView.xaml
-    /// </summary>
     public partial class Guest1ChangeReservationView : Window
     {
         private readonly Reservation _selectedReservation;
