@@ -121,7 +121,7 @@ namespace SIMS_Booking.View
             _accommodationService = accommodationService;
             _cityCountryRepository = cityCountryRepository; 
 
-            Accommodations = _accommodationService.Load();
+            Accommodations = new List<Accommodation>(_accommodationService.GetAll());
             Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
 
             AccommodationName = "";
