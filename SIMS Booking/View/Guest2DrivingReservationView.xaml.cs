@@ -21,20 +21,20 @@ namespace SIMS_Booking.View;
 public partial class Guest2DrivingReservationView : Window
 {
     public readonly Vehicle _selectedVehicle;
-    private readonly VehicleRepository _vehicleRepository;
+    private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
     public List<Location> Locations { get; set; }
     public List<DriverLocations> DrivingReservations { get; set; }
     public User LoggedUser { get; set; }
     public Address StartingAddress { get; set; }
     public Address EndingAddress { get; set; }
     public ReservationOfVehicle ReservationOfVehicle { get; set; }
-    public VehicleReservationRepository _vehicleReservationRespository;
+    public VehicleReservationCsvCrudRepository VehicleReservationCsvCrudRespository;
     private string searchLocation;
     public ObservableCollection<DriverLocations> drivers { get; set; }
     public DriverLocations selectedDriver { get; set; }
 
 
-    private DriverLocationsRepository _driverLocationsRespository;
+    private DriverLocationsCsvCrudRepository _driverLocationsCsvCrudRespository;
 
 
     public Guest2DrivingReservationView(Vehicle selectedVehicle, User loggedUser)
@@ -44,10 +44,10 @@ public partial class Guest2DrivingReservationView : Window
         DataContext = this;
         _selectedVehicle = selectedVehicle;
         selectedDriver = new DriverLocations();
-        _vehicleRepository = new VehicleRepository();
-        _driverLocationsRespository = new DriverLocationsRepository();
+        _vehicleCsvCrudRepository = new VehicleCsvCrudRepository();
+        _driverLocationsCsvCrudRespository = new DriverLocationsCsvCrudRepository();
         LoggedUser = loggedUser;
-        drivers = new ObservableCollection<DriverLocations>(_driverLocationsRespository.GetAll());
+        drivers = new ObservableCollection<DriverLocations>(_driverLocationsCsvCrudRespository.GetAll());
 
         var startingAddress = StartingAddress;
         var endingAddress = EndingAddress;
@@ -56,8 +56,8 @@ public partial class Guest2DrivingReservationView : Window
     private void Reserve(object sender, RoutedEventArgs e)
     {
         var reservedVehicle =
-            new ReservationOfVehicle(LoggedUser.getID(), _vehicleRepository.GetVehicleByUserID(selectedDriver.DriverId).getID(), DateTime.Parse(TimeofDepartureTextBox.Text), StartingAddressTextBox.Text);
-        _vehicleReservationRespository.Save(reservedVehicle);
+            new ReservationOfVehicle(LoggedUser.getID(), _vehicleCsvCrudRepository.GetVehicleByUserID(selectedDriver.DriverId).getID(), DateTime.Parse(TimeofDepartureTextBox.Text), StartingAddressTextBox.Text);
+        VehicleReservationCsvCrudRespository.Save(reservedVehicle);
         Close();
     }
 
@@ -76,7 +76,7 @@ public partial class Guest2DrivingReservationView : Window
     {
         get
         {
-            var result = _driverLocationsRespository.GetAll();
+            var result = _driverLocationsCsvCrudRespository.GetAll();
 
             if (!string.IsNullOrEmpty(searchLocation))
                 drivers = new ObservableCollection<DriverLocations>(result.Where(a =>
@@ -90,7 +90,7 @@ public partial class Guest2DrivingReservationView : Window
     public void UpdateDriverList()
     {
         drivers.Clear();
-        var result = _driverLocationsRespository.GetAll();
+        var result = _driverLocationsCsvCrudRespository.GetAll();
 
 
         if (!string.IsNullOrEmpty(searchLocation))

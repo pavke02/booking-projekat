@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
-using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Observer;
@@ -13,9 +11,6 @@ using SIMS_Booking.Service;
 
 namespace SIMS_Booking.View
 {
-    /// <summary>
-    /// Interaction logic for Guest2MainView.xaml
-    /// </summary>
     public partial class Guest2MainView : Window, IObserver
     {
         public ObservableCollection<Tour> Tours { get; set; }
@@ -28,14 +23,14 @@ namespace SIMS_Booking.View
         public ObservableCollection<TourReservation> TourReservation { get; set; }
 
 
-        private readonly ReservedToursRepository _reservedToursRepository;
+        private readonly ReservedToursCsvCrudRepository _reservedToursCsvCrudRepository;
         private readonly TourService _tourService;
-        private readonly VehicleRepository _vehicleRepository;
-        private readonly VehicleReservationRepository _vehicleReservationRepository;
-        private readonly DriverLocationsRepository _driverLocationsRepository;
+        private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
+        private readonly VehicleReservationCsvCrudRepository _vehicleReservationCsvCrudRepository;
+        private readonly DriverLocationsCsvCrudRepository _driverLocationsCsvCrudRepository;
         private readonly TourReservation tourReservation;
 
-        public Guest2MainView(TourService tourService, User loggedUser, VehicleRepository vehicleRepository)
+        public Guest2MainView(TourService tourService, User loggedUser, VehicleCsvCrudRepository vehicleCsvCrudRepository)
         {
             InitializeComponent();
             DataContext = this;
@@ -43,13 +38,13 @@ namespace SIMS_Booking.View
 
             _tourService = tourService;
             _tourService.Subscribe(this);
-            _vehicleRepository = vehicleRepository;
-            _vehicleRepository.Subscribe(this);
+            _vehicleCsvCrudRepository = vehicleCsvCrudRepository;
+            _vehicleCsvCrudRepository.Subscribe(this);
 
-            _reservedToursRepository = new ReservedToursRepository();
+            _reservedToursCsvCrudRepository = new ReservedToursCsvCrudRepository();
 
             Tours = new ObservableCollection<Tour>(_tourService.GetAll());
-            TourReservation = new ObservableCollection<TourReservation>(_reservedToursRepository.GetAll());
+            TourReservation = new ObservableCollection<TourReservation>(_reservedToursCsvCrudRepository.GetAll());
         }
         private void UpdateTours(List<Tour> tours)
         {

@@ -8,26 +8,26 @@ namespace SIMS_Booking.Service
 {
     public class OwnerReviewService
     {
-        private readonly OwnerReviewRepository _repository;
+        private readonly OwnerReviewCsvCrudRepository _csvCrudRepository;
 
         public OwnerReviewService()
         {
-            _repository = new OwnerReviewRepository();
+            _csvCrudRepository = new OwnerReviewCsvCrudRepository();
         }
 
         public void Save(OwnerReview ownerReview)
         {
-            _repository.Save(ownerReview);
+            _csvCrudRepository.Save(ownerReview);
         }
 
         public List<OwnerReview> GetByUserId(int id)
         {
-            return _repository.GetAll().Where(e => e.Reservation.User.getID() == id).ToList();
+            return _csvCrudRepository.GetAll().Where(e => e.Reservation.User.getID() == id).ToList();
         }
 
         public void LoadReservationInOwnerReview(ReservationService _reservationService)
         {
-            foreach (OwnerReview ownerReview in _repository.GetAll())
+            foreach (OwnerReview ownerReview in _csvCrudRepository.GetAll())
             {
                 ownerReview.Reservation = _reservationService.GetById(ownerReview.ReservationId);
             }
@@ -42,7 +42,7 @@ namespace SIMS_Booking.Service
 
         public List<OwnerReview> GetShowableReviews(int id)
         {
-            return _repository.GetAll().Where(e => e.Reservation.HasGuestReviewed && e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
+            return _csvCrudRepository.GetAll().Where(e => e.Reservation.HasGuestReviewed && e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
         }
 
         public double CalculateRating(int id)
@@ -61,7 +61,7 @@ namespace SIMS_Booking.Service
 
         public void Subscribe(IObserver observer)
         {
-            _repository.Subscribe(observer);
+            _csvCrudRepository.Subscribe(observer);
         }
     }
 }

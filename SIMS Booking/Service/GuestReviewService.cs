@@ -8,21 +8,21 @@ namespace SIMS_Booking.Service
 {
     public class GuestReviewService
     {
-        private readonly GuestReviewRepository _repository;
+        private readonly GuestReviewCsvCrudRepository _csvCrudRepository;
 
         public GuestReviewService()
         {
-            _repository = new GuestReviewRepository();
+            _csvCrudRepository = new GuestReviewCsvCrudRepository();
         }
 
         public void Save(GuestReview guestReview)
         {
-            _repository.Save(guestReview);
+            _csvCrudRepository.Save(guestReview);
         }
 
         public void LoadReservationInGuestReview(ReservationService _reservationService)
         {
-            foreach (GuestReview guestReview in _repository.GetAll())
+            foreach (GuestReview guestReview in _csvCrudRepository.GetAll())
             {
                 guestReview.Reservation = _reservationService.GetById(guestReview.ReservationId);
             }
@@ -37,12 +37,12 @@ namespace SIMS_Booking.Service
 
         public List<GuestReview> GetReviewedReservations(int id)
         {
-            return _repository.GetAll().Where(e => e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
+            return _csvCrudRepository.GetAll().Where(e => e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
         }        
 
         public void Subscribe(IObserver observer)
         {
-            _repository.Subscribe(observer);
+            _csvCrudRepository.Subscribe(observer);
         }
     }
 }

@@ -3,14 +3,14 @@ using SIMS_Booking.Model.Relations;
 
 namespace SIMS_Booking.Repository.RelationsRepository
 {
-    public class DriverLanguagesRepository : RelationsRepository<DriverLanguages>
+    public class DriverLanguagesCsvCrudRepository : RelationsCsvCrudRepository<DriverLanguages>
     {
-        public DriverLanguagesRepository() : base("../../../Resources/Data/driverlanguages.csv") { }
-        public void AddDriverLanguagesToVehicles(VehicleRepository vehicleRepository)
+        public DriverLanguagesCsvCrudRepository() : base("../../../Resources/Data/driverlanguages.csv") { }
+        public void AddDriverLanguagesToVehicles(VehicleCsvCrudRepository vehicleCsvCrudRepository)
         {
             foreach (DriverLanguages driverLanguages in _entityList)
             {
-                foreach (Vehicle vehicle in vehicleRepository.GetAll())
+                foreach (Vehicle vehicle in vehicleCsvCrudRepository.GetAll())
                 {
                     if (driverLanguages.DriverId == vehicle.getID())
                     {

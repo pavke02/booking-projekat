@@ -29,14 +29,14 @@ namespace SIMS_Booking.View
         public User LoggedUser { get; set; }
 
         private readonly AccommodationService _accommodationService;
-        private readonly CityCountryRepository _cityCountryRepository;
+        private readonly CityCountryCsvRepository _cityCountryCsvRepository;
         private readonly ReservationService _reservationService;
         private readonly ReservedAccommodationService _reservedAccommodationService;
         private readonly PostponementService _postponementService;
-        private readonly CancellationRepository _cancellationRepository;
+        private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
         private readonly OwnerReviewService _ownerReviewService;
 
-        public Guest1MainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationRepository cancellationRepository, OwnerReviewService ownerReviewService)
+        public Guest1MainView(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationCsvCrudRepository cancellationCsvCrudRepository, OwnerReviewService ownerReviewService)
         {
             InitializeComponent();
             DataContext = this;
@@ -59,15 +59,15 @@ namespace SIMS_Booking.View
 
             _ownerReviewService = ownerReviewService;
 
-            _cityCountryRepository = cityCountryRepository;
-            _cancellationRepository = cancellationRepository;
+            _cityCountryCsvRepository = cityCountryCsvRepository;
+            _cancellationCsvCrudRepository = cancellationCsvCrudRepository;
 
             _reservedAccommodationService = reservedAccommodationService;
         }
 
         private void AddFilters(object sender, RoutedEventArgs e)
         {
-            Guest1FilterView filterView = new Guest1FilterView(_accommodationService, _cityCountryRepository);
+            Guest1FilterView filterView = new Guest1FilterView(_accommodationService, _cityCountryCsvRepository);
             filterView.Show();
         }
 
@@ -129,7 +129,7 @@ namespace SIMS_Booking.View
                 {
                     _postponementService.DeletePostponementsByReservationId(reservation.getID());
                     _reservationService.DeleteCancelledReservation(reservation.getID());
-                    _cancellationRepository.Save(reservation);
+                    _cancellationCsvCrudRepository.Save(reservation);
                     newReservations.Remove(reservation);
                     UpdateUserReservations(newReservations);
                     UpdateUserPostponements(_postponementService.GetAll().ToList());

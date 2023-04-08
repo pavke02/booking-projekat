@@ -1,24 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SIMS_Booking.Observer;
+﻿using System.Collections.Generic;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
-using SIMS_Booking.View;
-using System.Net;
 
 namespace SIMS_Booking.Repository.RelationsRepository
 {
-    public class DriverLocationsRepository : RelationsRepository<DriverLocations>
+    public class DriverLocationsCsvCrudRepository : RelationsCsvCrudRepository<DriverLocations>
     {
-        public DriverLocationsRepository() : base("../../../Resources/Data/driverlocations.csv") { }
-        public void AddDriverLocationsToVehicles(VehicleRepository vehicleRepository)
+        public DriverLocationsCsvCrudRepository() : base("../../../Resources/Data/driverlocations.csv") { }
+        public void AddDriverLocationsToVehicles(VehicleCsvCrudRepository vehicleCsvCrudRepository)
         {
             foreach (DriverLocations driverLocations in _entityList)
             {
-                foreach (Vehicle vehicle in vehicleRepository.GetAll())
+                foreach (Vehicle vehicle in vehicleCsvCrudRepository.GetAll())
                 {
                     if (driverLocations.DriverId == vehicle.getID())
                     {

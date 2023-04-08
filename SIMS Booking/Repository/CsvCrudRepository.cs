@@ -1,5 +1,4 @@
-﻿using SIMS_Booking.Model;
-using SIMS_Booking.Observer;
+﻿using SIMS_Booking.Observer;
 using SIMS_Booking.Serializer;
 using SIMS_Booking.Utility;
 using System.Collections.Generic;
@@ -7,14 +6,14 @@ using System.Linq;
 
 namespace SIMS_Booking.Repository
 {
-    public class Repository<T> where T : ISerializable, IDable, new()
+    public class CsvCrudRepository<T> where T : ISerializable, IDable, new()
     {
         protected readonly string _filePath;
         protected readonly Serializer<T> _serializer;
         protected List<T> _entityList;
         protected List<IObserver> _observers;
 
-        public Repository(string filePath)
+        public CsvCrudRepository(string filePath)
         {
             _observers = new List<IObserver>();
             _serializer = new Serializer<T>();
