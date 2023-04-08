@@ -10,31 +10,31 @@ namespace SIMS_Booking.Service
 {
     public class PostponementService
     {
-        private readonly PostponementRepository _repository;
+        private readonly PostponementCsvCrudRepository _csvCrudRepository;
 
         public PostponementService()
         {
-            _repository = new PostponementRepository();
+            _csvCrudRepository = new PostponementCsvCrudRepository();
         }
 
         public void Save(Postponement postponement)
         {
-            _repository.Save(postponement);
+            _csvCrudRepository.Save(postponement);
         }
 
         public List<Postponement> GetAll()
         {
-            return _repository.GetAll();
+            return _csvCrudRepository.GetAll();
         }
 
         public Postponement GetById(int id)
         {
-            return _repository.GetById(id);
+            return _csvCrudRepository.GetById(id);
         }
 
         public List<Postponement> GetByUserId(int id)
         {
-            return _repository.GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
+            return _csvCrudRepository.GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
         }
 
         public void ReviewPostponementRequest(int id, string comment, PostponementStatus status)
@@ -42,7 +42,7 @@ namespace SIMS_Booking.Service
             Postponement postponement = GetById(id);
             postponement.Status = status;
             postponement.Comment = comment;
-            _repository.Update(postponement);
+            _csvCrudRepository.Update(postponement);
         }
 
         public void LoadReservationInPostponement(ReservationService reservationService)
@@ -56,7 +56,7 @@ namespace SIMS_Booking.Service
         public ObservableCollection<Postponement> GetPostponementsByUser(int userId)
         {
             ObservableCollection<Postponement> userReservations = new ObservableCollection<Postponement>();
-            foreach (Postponement postponement in _repository.GetAll())
+            foreach (Postponement postponement in _csvCrudRepository.GetAll())
             {
 
                 if (postponement.Reservation.User.getID() == userId)
@@ -68,11 +68,11 @@ namespace SIMS_Booking.Service
 
         public void DeletePostponementsByReservationId(int reservationId)
         {
-            foreach (Postponement postponement in _repository.GetAll().ToList())
+            foreach (Postponement postponement in _csvCrudRepository.GetAll().ToList())
             {
                 if (postponement.ReservationId == reservationId)
                 {
-                    _repository.Delete(postponement);
+                    _csvCrudRepository.Delete(postponement);
                 }
             }
         }
@@ -81,7 +81,7 @@ namespace SIMS_Booking.Service
         {
             List<Postponement> postponements = new List<Postponement>();
 
-            foreach (Postponement postponement in _repository.GetAll())
+            foreach (Postponement postponement in _csvCrudRepository.GetAll())
             {
                 if (postponement.Status != Enums.PostponementStatus.Pending && !postponement.IsNotified)
                 {
@@ -94,21 +94,21 @@ namespace SIMS_Booking.Service
 
         public void SetNotifiedPostpoments()
         {
-            List<Postponement> postponements = _repository.GetAll();
+            List<Postponement> postponements = _csvCrudRepository.GetAll();
 
-            foreach (Postponement postponement in _repository.GetAll().ToList())
+            foreach (Postponement postponement in _csvCrudRepository.GetAll().ToList())
             {
                 if (postponement.Status != Enums.PostponementStatus.Pending)
                 {
                     postponement.IsNotified = true;
-                    _repository.Update(postponement);
+                    _csvCrudRepository.Update(postponement);
                 }
             }
         }
 
         public void Subscribe(IObserver observer)
         {
-            _repository.Subscribe(observer);
+            _csvCrudRepository.Subscribe(observer);
         }
     }
 }

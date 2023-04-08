@@ -6,31 +6,31 @@ namespace SIMS_Booking.Service
 {
     public class UserService
     {
-        private readonly UserRepository _repository; 
+        private readonly UserCsvCrudRepository _csvCrudRepository; 
 
         public UserService()
         {
-            _repository = new UserRepository();
+            _csvCrudRepository = new UserCsvCrudRepository();
         }
 
         public void Save(User user)
         {
-            _repository.Save(user);
+            _csvCrudRepository.Save(user);
         }
 
         public User GetById(int id)
         {
-            return _repository.GetById(id);
+            return _csvCrudRepository.GetById(id);
         }
 
         public void Update(User user)
         {
-            _repository.Update(user);
+            _csvCrudRepository.Update(user);
         }
 
         public User GetByUsername(string username)
         {            
-            return _repository.GetAll().FirstOrDefault(u => u.Username == username);
+            return _csvCrudRepository.GetAll().FirstOrDefault(u => u.Username == username);
         }
     }
 }

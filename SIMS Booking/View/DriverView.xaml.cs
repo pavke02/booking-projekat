@@ -18,10 +18,10 @@ namespace SIMS_Booking.View
         public Vehicle Vehicle { get; set; }
         public User User { get; set; }
 
-        private VehicleRepository _vehicleRepository;
-        private CityCountryRepository _cityCountryRepository;
-        private DriverLanguagesRepository _driverLanguagesRepository;
-        private DriverLocationsRepository _driverLocationsRepository;
+        private VehicleCsvCrudRepository _vehicleCsvCrudRepository;
+        private CityCountryCsvRepository _cityCountryCsvRepository;
+        private DriverLanguagesCsvCrudRepository _driverLanguagesCsvCrudRepository;
+        private DriverLocationsCsvCrudRepository _driverLocationsCsvCrudRepository;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -73,25 +73,25 @@ namespace SIMS_Booking.View
         }
 
 
-        public DriverView(User user, VehicleRepository vehicleRepository, DriverLanguagesRepository driverLanguagesRepository, DriverLocationsRepository driverLocationsRepository, CityCountryRepository cityCountryRepository)
+        public DriverView(User user, VehicleCsvCrudRepository vehicleCsvCrudRepository, DriverLanguagesCsvCrudRepository driverLanguagesCsvCrudRepository, DriverLocationsCsvCrudRepository driverLocationsCsvCrudRepository, CityCountryCsvRepository cityCountryCsvRepository)
         {
             InitializeComponent();
             DataContext = this;
 
             User = user;
 
-            _cityCountryRepository = cityCountryRepository;
+            _cityCountryCsvRepository = cityCountryCsvRepository;
 
-            _vehicleRepository = vehicleRepository;
-            _vehicleRepository.Subscribe(this);
+            _vehicleCsvCrudRepository = vehicleCsvCrudRepository;
+            _vehicleCsvCrudRepository.Subscribe(this);
 
-            _driverLanguagesRepository = driverLanguagesRepository;
-            _driverLocationsRepository = driverLocationsRepository;
+            _driverLanguagesCsvCrudRepository = driverLanguagesCsvCrudRepository;
+            _driverLocationsCsvCrudRepository = driverLocationsCsvCrudRepository;
 
             Languages = new List<Language>();
             Locations = new List<Location>();
 
-            Vehicle = _vehicleRepository.GetVehicleByUserID(User.getID());
+            Vehicle = _vehicleCsvCrudRepository.GetVehicleByUserID(User.getID());
 
             Update();
 
@@ -119,13 +119,13 @@ namespace SIMS_Booking.View
 
         private void AddVehicle_Click(object sender, RoutedEventArgs e)
         {
-            DriverAddVehicle driverAddVehicle = new DriverAddVehicle(_vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository, User);
+            DriverAddVehicle driverAddVehicle = new DriverAddVehicle(_vehicleCsvCrudRepository, _driverLanguagesCsvCrudRepository, _driverLocationsCsvCrudRepository, _cityCountryCsvRepository, User);
             driverAddVehicle.Show();
         }
 
         public void Update()
         {
-            Vehicle = _vehicleRepository.GetVehicleByUserID(User.getID());
+            Vehicle = _vehicleCsvCrudRepository.GetVehicleByUserID(User.getID());
 
             if (Vehicle != null)
             {

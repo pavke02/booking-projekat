@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
-using SIMS_Booking.View;
 
 namespace SIMS_Booking.Repository
 {
-    public class ConfirmTourRepository : Repository<ConfirmTour>, ISubject
+    public class ConfirmTourCsvCrudRepository : CsvCrudRepository<ConfirmTour>, ISubject
     {
-        public ConfirmTourRepository() : base("../../../Resources/Data/confirmTours.csv") { }
+        public ConfirmTourCsvCrudRepository() : base("../../../Resources/Data/confirmTours.csv") { }
       
-        public void loadGuests (UserRepository userRepository)
+        public void loadGuests (UserCsvCrudRepository userCsvCrudRepository)
         {
             foreach(ConfirmTour tour in _entityList)
             {
-                tour.User = userRepository.GetById(tour.UserId);
+                tour.User = userCsvCrudRepository.GetById(tour.UserId);
             }
         }
 

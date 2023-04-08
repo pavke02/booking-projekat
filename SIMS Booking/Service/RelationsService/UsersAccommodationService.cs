@@ -6,21 +6,21 @@ namespace SIMS_Booking.Service.RelationsService
 {
     public class UsersAccommodationService
     {
-        private readonly UsersAccommodationRepository _repository;
+        private readonly UsersAccommodationCsvCrudRepository _csvCrudRepository;
 
         public UsersAccommodationService()
         {
-            _repository = new UsersAccommodationRepository();
+            _csvCrudRepository = new UsersAccommodationCsvCrudRepository();
         }
 
         public void Save(UsersAccommodation usersAccommodation)
         {
-            _repository.Save(usersAccommodation);
+            _csvCrudRepository.Save(usersAccommodation);
         }
 
         public void LoadUsersInAccommodation(UserService userService, AccommodationService accommodationService)
         {
-            foreach (UsersAccommodation usersAccommodation in _repository.GetAll())
+            foreach (UsersAccommodation usersAccommodation in _csvCrudRepository.GetAll())
             {
                 foreach (Accommodation accommodation in accommodationService.GetAll())
                 {

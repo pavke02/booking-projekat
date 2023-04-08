@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace SIMS_Booking.Repository.RelationsRepository
 {
-    public class ReservedToursRepository : RelationsRepository<TourReservation>
+    public class ReservedToursCsvCrudRepository : RelationsCsvCrudRepository<TourReservation>
     {
 
-        public ReservedToursRepository() : base("../../../Resources/Data/reservedTours.csv") { }
+        public ReservedToursCsvCrudRepository() : base("../../../Resources/Data/reservedTours.csv") { }
 
         public List<TourReservation> GetAll()
         {

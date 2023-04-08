@@ -39,8 +39,8 @@ namespace SIMS_Booking.View
 
         private TourService _tourService;
         private ObservableCollection<Tour> _allToursRepository;
-        private TourPointRepository _tourPointRepository;
-        private ConfirmTourRepository _confirmTourRepository;
+        private TourPointCsvCrudRepository _tourPointCsvCrudRepository;
+        private ConfirmTourCsvCrudRepository _confirmTourCsvCrudRepository;
  
         public Tour SelectedTour { get; set; }
 
@@ -257,7 +257,7 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public GuideMainView(TourService  tourService, ConfirmTourRepository confirmTourRepository, TourPointRepository tourPointRepository )
+        public GuideMainView(TourService  tourService, ConfirmTourCsvCrudRepository confirmTourCsvCrudRepository, TourPointCsvCrudRepository tourPointCsvCrudRepository )
         {
             InitializeComponent();
             DataContext = this;
@@ -267,15 +267,15 @@ namespace SIMS_Booking.View
             _tourService = tourService;
             _tourService.Subscribe(this);
 
-            _tourPointRepository = tourPointRepository;
-            _tourPointRepository.Subscribe(this);
+            _tourPointCsvCrudRepository = tourPointCsvCrudRepository;
+            _tourPointCsvCrudRepository.Subscribe(this);
 
-            _confirmTourRepository = confirmTourRepository;
+            _confirmTourCsvCrudRepository = confirmTourCsvCrudRepository;
             Cities = new List<string> { "Serbia,Novi Sad","Serbia,Ruma", "Serbia,Belgrade","Serbia, Nis","England,London","England,London EAST" };
 
             TodaysTours = new ObservableCollection<Tour>(_tourService.GetTodaysTours());
             AllTours = new ObservableCollection<Tour>(_tourService.GetAll());
-            AllCheckpoints = new ObservableCollection<TourPoint>(_tourPointRepository.GetAll());
+            AllCheckpoints = new ObservableCollection<TourPoint>(_tourPointCsvCrudRepository.GetAll());
             Checkpoints = new ObservableCollection<string>();
            
 
@@ -286,7 +286,7 @@ namespace SIMS_Booking.View
         {
             if(SelectedTour != null )
             {
-                StartTour startTour = new StartTour(SelectedTour, _confirmTourRepository);
+                StartTour startTour = new StartTour(SelectedTour, _confirmTourCsvCrudRepository);
                 startTour.ShowDialog();
             }
             
@@ -337,7 +337,7 @@ namespace SIMS_Booking.View
                 TourPoint tourPoint = new TourPoint(tourPoinName, isFirst);
                 isFirst = false;
 
-                _tourPointRepository.Save(tourPoint); // = tourPoint
+                _tourPointCsvCrudRepository.Save(tourPoint); // = tourPoint
                 TourPoints.Add(tourPoint);
                 TourPointIds.Add(tourPoint.getID());
 

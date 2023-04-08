@@ -161,7 +161,7 @@ namespace SIMS_Booking.View.Owner
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }                
 
-        public OwnerMainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, PostponementService postponementService, User user, CancellationRepository cancellationRepository, UserService userService)
+        public OwnerMainView(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, PostponementService postponementService, User user, CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService)
         {
             InitializeComponent();
             DataContext = this;            
@@ -187,7 +187,7 @@ namespace SIMS_Booking.View.Owner
             _guestReviewService.Subscribe(this);
             PastReservations = new ObservableCollection<GuestReview>(_guestReviewService.GetReviewedReservations(_user.getID()));
 
-            Countries = new Dictionary<string, List<string>>(cityCountryRepository.Load());
+            Countries = new Dictionary<string, List<string>>(cityCountryCsvRepository.Load());
             
             _usersAccommodationService = usersAccommodationService;
             _ownerReviewService = ownerReviewService;
@@ -197,7 +197,7 @@ namespace SIMS_Booking.View.Owner
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
-            NotificationTimer timer = new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationRepository);   
+            NotificationTimer timer = new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);   
         }           
         
         private void CalculateRating(int id)

@@ -4,10 +4,10 @@ using System;
 
 namespace SIMS_Booking.Repository
 {
-    public class VehicleReservationRepository : Repository<VehicleReservation>
+    public class VehicleReservationCsvCrudRepository : CsvCrudRepository<VehicleReservation>
     {
 
-        public VehicleReservationRepository() : base("../../../Resources/Data/vehiclereservation.csv") { }
+        public VehicleReservationCsvCrudRepository() : base("../../../Resources/Data/vehiclereservation.csv") { }
 
         internal void Save(ReservationOfVehicle reservedVehicle)
         {

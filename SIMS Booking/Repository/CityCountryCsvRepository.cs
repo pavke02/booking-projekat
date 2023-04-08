@@ -1,20 +1,14 @@
-﻿using SIMS_Booking.Serializer;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SIMS_Booking.Repository
 {
-    public class CityCountryRepository 
+    public class CityCountryCsvRepository 
     {
         private Dictionary<string, List<string>> countries;
         private readonly string path = "../../../Resources/Data/countryCiryDictionary.csv";
 
-        public CityCountryRepository() 
+        public CityCountryCsvRepository() 
         {
             countries = new Dictionary<string, List<string>>();
         }

@@ -14,23 +14,23 @@ namespace SIMS_Booking.View
         public ObservableCollection<User> GuestOnTour { get; set; }
 
 
-        private ConfirmTourRepository _confirmTourRepository;
-        private UserRepository _userRepository;
+        private ConfirmTourCsvCrudRepository _confirmTourCsvCrudRepository;
+        private UserCsvCrudRepository _userCsvCrudRepository;
         private Tour _tour;
 
         public User SelectedUser { get; set; }
 
 
-        public ConfirmTourByGuest(ConfirmTourRepository confirmTourRepository, Tour tour)
+        public ConfirmTourByGuest(ConfirmTourCsvCrudRepository confirmTourCsvCrudRepository, Tour tour)
         {
             InitializeComponent();
             DataContext = this;
 
-            _confirmTourRepository = confirmTourRepository;
-            _confirmTourRepository.Subscribe(this);
+            _confirmTourCsvCrudRepository = confirmTourCsvCrudRepository;
+            _confirmTourCsvCrudRepository.Subscribe(this);
             _tour = tour;
 
-            GuestOnTour = new ObservableCollection<User>(_confirmTourRepository.GetGuestOnTour(tour));
+            GuestOnTour = new ObservableCollection<User>(_confirmTourCsvCrudRepository.GetGuestOnTour(tour));
 
             
         }
@@ -45,7 +45,7 @@ namespace SIMS_Booking.View
             {
                 ConfirmTour temp = new ConfirmTour();
 
-                foreach (ConfirmTour confirmTour in _confirmTourRepository.GetAll())
+                foreach (ConfirmTour confirmTour in _confirmTourCsvCrudRepository.GetAll())
                 {
                     Trace.WriteLine(SelectedUser.getID());
                     if (confirmTour.IdTour == _tour.getID() && SelectedUser.getID() == confirmTour.UserId)
@@ -54,7 +54,7 @@ namespace SIMS_Booking.View
                     }
                 }
                 temp.IdCheckpoint = _tour.CurrentTourPoint;
-                _confirmTourRepository.Update(temp);
+                _confirmTourCsvCrudRepository.Update(temp);
 
             }
         }
@@ -68,7 +68,7 @@ namespace SIMS_Booking.View
 
         public void Update()
         {
-            UpdateConfirmGuests(_confirmTourRepository.GetGuestOnTour(_tour));
+            UpdateConfirmGuests(_confirmTourCsvCrudRepository.GetGuestOnTour(_tour));
         }
     }
 

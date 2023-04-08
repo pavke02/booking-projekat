@@ -18,24 +18,24 @@ namespace SIMS_Booking.View
     {
         private readonly UserService _userService;
         private readonly AccommodationService _accommodationService;
-        private readonly CityCountryRepository _cityCountryRepository;   
+        private readonly CityCountryCsvRepository _cityCountryCsvRepository;   
 
         private readonly ReservationService _reservationService;
         private readonly TourService _tourService;
 
 
-        private readonly VehicleRepository _vehicleRepository;
+        private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
         private readonly GuestReviewService _guestReviewService; 
         private readonly OwnerReviewService _ownerReviewService;
         private readonly PostponementService _postponementService;
-        private readonly CancellationRepository _cancellationRepository;
+        private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
         
         private readonly ReservedAccommodationService _reservedAccommodationService;
         private readonly UsersAccommodationService _userAccommodationService;
-        private readonly DriverLanguagesRepository _driverLanguagesRepository;
-        private readonly DriverLocationsRepository _driverLocationsRepository;
-        private readonly TourPointRepository _tourPointRepository;
-        private readonly ConfirmTourRepository _confirmTourRepository;
+        private readonly DriverLanguagesCsvCrudRepository _driverLanguagesCsvCrudRepository;
+        private readonly DriverLocationsCsvCrudRepository _driverLocationsCsvCrudRepository;
+        private readonly TourPointCsvCrudRepository _tourPointCsvCrudRepository;
+        private readonly ConfirmTourCsvCrudRepository _confirmTourCsvCrudRepository;
 
 
         private string _username;
@@ -68,19 +68,19 @@ namespace SIMS_Booking.View
 
             _userService = new UserService();
             _accommodationService = new AccommodationService();
-            _cityCountryRepository = new CityCountryRepository();   
+            _cityCountryCsvRepository = new CityCountryCsvRepository();   
 
             _tourService = new TourService(); // sve ture ali nemamo  tourPoint = null
 
             _reservationService = new ReservationService();
             _postponementService = new PostponementService();
 
-            _vehicleRepository = new VehicleRepository();
+            _vehicleCsvCrudRepository = new VehicleCsvCrudRepository();
             _guestReviewService = new GuestReviewService();
             _ownerReviewService = new OwnerReviewService();
-            _tourPointRepository = new TourPointRepository(); // svi tourPointi
-            _confirmTourRepository = new ConfirmTourRepository();
-            _cancellationRepository = new CancellationRepository();
+            _tourPointCsvCrudRepository = new TourPointCsvCrudRepository(); // svi tourPointi
+            _confirmTourCsvCrudRepository = new ConfirmTourCsvCrudRepository();
+            _cancellationCsvCrudRepository = new CancellationCsvCrudRepository();
 
             _reservedAccommodationService = new ReservedAccommodationService();
             _userAccommodationService = new UsersAccommodationService();
@@ -91,13 +91,13 @@ namespace SIMS_Booking.View
             _ownerReviewService.LoadReservationInOwnerReview(_reservationService);
             _postponementService.LoadReservationInPostponement(_reservationService);
 
-            _driverLanguagesRepository = new DriverLanguagesRepository();
-            _driverLocationsRepository = new DriverLocationsRepository();
+            _driverLanguagesCsvCrudRepository = new DriverLanguagesCsvCrudRepository();
+            _driverLocationsCsvCrudRepository = new DriverLocationsCsvCrudRepository();
 
-            _driverLanguagesRepository.AddDriverLanguagesToVehicles(_vehicleRepository);
-            _driverLocationsRepository.AddDriverLocationsToVehicles(_vehicleRepository);
+            _driverLanguagesCsvCrudRepository.AddDriverLanguagesToVehicles(_vehicleCsvCrudRepository);
+            _driverLocationsCsvCrudRepository.AddDriverLocationsToVehicles(_vehicleCsvCrudRepository);
             //_confirmTourRepository.loadGuests(_userService);
-            _tourService.LoadCheckpoints(_tourPointRepository);
+            _tourService.LoadCheckpoints(_tourPointCsvCrudRepository);
             //_tourCheckpointRepository.LoadCheckpointsInTour(_tourRepository, _tourPointRepository);
         }
 
@@ -112,23 +112,23 @@ namespace SIMS_Booking.View
                     switch(user.Role)
                     {
                         case Roles.Owner:
-                            OwnerMainView ownerView = new OwnerMainView(_accommodationService, _cityCountryRepository, _reservationService, _guestReviewService, _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationRepository, _userService);
+                            OwnerMainView ownerView = new OwnerMainView(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService, _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService);
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
-                            Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryRepository, _reservationService, _reservedAccommodationService ,user, _postponementService, _cancellationRepository, _ownerReviewService);
+                            Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository, _reservationService, _reservedAccommodationService ,user, _postponementService, _cancellationCsvCrudRepository, _ownerReviewService);
                             guest1View.Show();
                             break;
                         case Roles.Guest2:
-                            Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleRepository);
+                            Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleCsvCrudRepository);
                             guest2View.Show();
                             break;
                         case Roles.Driver:
-                            DriverView driverView = new DriverView(user, _vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository);
+                            DriverView driverView = new DriverView(user, _vehicleCsvCrudRepository, _driverLanguagesCsvCrudRepository, _driverLocationsCsvCrudRepository, _cityCountryCsvRepository);
                             driverView.Show();
                             break;
                         case Roles.Guide:
-                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourRepository, _tourPointRepository);
+                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourCsvCrudRepository, _tourPointCsvCrudRepository);
                             guideView.Show();
                             break;
                     }

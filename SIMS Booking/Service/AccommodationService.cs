@@ -8,36 +8,31 @@ namespace SIMS_Booking.Service
 {
     public class AccommodationService
     {
-        private readonly AccommodationRepository _repository;
+        private readonly AccommodationCsvCrudRepository _csvCrudRepository;
 
         public AccommodationService()
         {
-            _repository = new AccommodationRepository();
-        }
-
-        public List<Accommodation> Load()
-        {
-            return _repository.Load();
+            _csvCrudRepository = new AccommodationCsvCrudRepository();
         }
 
         public void Save(Accommodation accommodation)
         {
-            _repository.Save(accommodation);
+            _csvCrudRepository.Save(accommodation);
         }
 
         public List<Accommodation> GetAll()
         {
-            return _repository.GetAll();
+            return _csvCrudRepository.GetAll();
         }
 
         public Accommodation GetById(int id) 
         {
-            return _repository.GetById(id);
+            return _csvCrudRepository.GetById(id);
         }        
 
         public List<Accommodation> GetByUserId(int id)
         {
-            return _repository.GetAll().Where(e => e.User.getID() == id).ToList();
+            return _csvCrudRepository.GetAll().Where(e => e.User.getID() == id).ToList();
         }
 
         public List<Accommodation> SortBySuperOwner(List<Accommodation> accommodations)
@@ -47,7 +42,7 @@ namespace SIMS_Booking.Service
 
         public void Subscribe(IObserver observer)
         {
-            _repository.Subscribe(observer);
+            _csvCrudRepository.Subscribe(observer);
         }
     }
 }
