@@ -1,6 +1,5 @@
-﻿using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Serializer;
-using SIMS_Booking.State;
+﻿using SIMS_Booking.Serializer;
+using SIMS_Booking.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace SIMS_Booking.Model
 {
     public class FinishedRide : ISerializable, IDable
     {
-        private int ID { get; set; }
+        private int ID;
         public Rides Ride { get; set; }
         public string Price { get; set; }
         public string Time { get; set; }
@@ -33,15 +32,11 @@ namespace SIMS_Booking.Model
 
         public void FromCSV(string[] values)
         {
-            //Ride.DriverID = Convert.ToInt32(values[1]);
             ID = Convert.ToInt32(values[0]);
             Location rideLocation = new Location();
             rideLocation.Country = values[3];
             rideLocation.City = values[4];
             Ride = new Rides(Convert.ToInt32(values[1]), values[2], rideLocation, Convert.ToDateTime(values[5]));
-            //Ride.Street = values[2];
-            //Ride.Location = new Location(values[3], values[4]);
-            //Ride.DateTime = Convert.ToDateTime(values[5]);
             Price = values[6];
             Time = values[7];
         }
