@@ -6,6 +6,7 @@ using System.Windows;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
+using SIMS_Booking.Service;
 
 namespace SIMS_Booking.View
 {
@@ -15,7 +16,7 @@ namespace SIMS_Booking.View
 
 
         private ConfirmTourCsvCrudRepository _confirmTourCsvCrudRepository;
-        private UserCsvCrudRepository _userCsvCrudRepository;
+        private UserService _userService;
         private Tour _tour;
 
         public User SelectedUser { get; set; }

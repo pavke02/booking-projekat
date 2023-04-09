@@ -1,6 +1,5 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
-using SIMS_Booking.Repository;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,31 +9,40 @@ namespace SIMS_Booking.Service
 {
     public class PostponementService
     {
-        private readonly PostponementCsvCrudRepository _csvCrudRepository;
+        private readonly CrudService<Postponement> _crudService;
 
         public PostponementService()
         {
-            _csvCrudRepository = new PostponementCsvCrudRepository();
+            _crudService = new CrudService<Postponement>("../../../Resources/Data/postponements.csv");
         }
+
+        #region Crud
 
         public void Save(Postponement postponement)
         {
-            _csvCrudRepository.Save(postponement);
+            _crudService.Save(postponement);
         }
 
         public List<Postponement> GetAll()
         {
-            return _csvCrudRepository.GetAll();
+            return _crudService.GetAll();
         }
 
         public Postponement GetById(int id)
         {
-            return _csvCrudRepository.GetById(id);
+            return _crudService.GetById(id);
         }
+
+        public void Subscribe(IObserver observer)
+        {
+            _crudService.Subscribe(observer);
+        }
+
+        #endregion
 
         public List<Postponement> GetByUserId(int id)
         {
-            return _csvCrudRepository.GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
+            return _crudService.GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
         }
 
         public void ReviewPostponementRequest(int id, string comment, PostponementStatus status)
@@ -42,7 +50,7 @@ namespace SIMS_Booking.Service
             Postponement postponement = GetById(id);
             postponement.Status = status;
             postponement.Comment = comment;
-            _csvCrudRepository.Update(postponement);
+            _crudService.Update(postponement);
         }
 
         public void LoadReservationInPostponement(ReservationService reservationService)
@@ -56,7 +64,7 @@ namespace SIMS_Booking.Service
         public ObservableCollection<Postponement> GetPostponementsByUser(int userId)
         {
             ObservableCollection<Postponement> userReservations = new ObservableCollection<Postponement>();
-            foreach (Postponement postponement in _csvCrudRepository.GetAll())
+            foreach (Postponement postponement in _crudService.GetAll())
             {
 
                 if (postponement.Reservation.User.getID() == userId)
@@ -68,11 +76,11 @@ namespace SIMS_Booking.Service
 
         public void DeletePostponementsByReservationId(int reservationId)
         {
-            foreach (Postponement postponement in _csvCrudRepository.GetAll().ToList())
+            foreach (Postponement postponement in _crudService.GetAll().ToList())
             {
                 if (postponement.ReservationId == reservationId)
                 {
-                    _csvCrudRepository.Delete(postponement);
+                    _crudService.Delete(postponement);
                 }
             }
         }
@@ -81,7 +89,7 @@ namespace SIMS_Booking.Service
         {
             List<Postponement> postponements = new List<Postponement>();
 
-            foreach (Postponement postponement in _csvCrudRepository.GetAll())
+            foreach (Postponement postponement in _crudService.GetAll())
             {
                 if (postponement.Status != Enums.PostponementStatus.Pending && !postponement.IsNotified)
                 {
@@ -94,21 +102,14 @@ namespace SIMS_Booking.Service
 
         public void SetNotifiedPostpoments()
         {
-            List<Postponement> postponements = _csvCrudRepository.GetAll();
-
-            foreach (Postponement postponement in _csvCrudRepository.GetAll().ToList())
+            foreach (Postponement postponement in _crudService.GetAll().ToList())
             {
                 if (postponement.Status != Enums.PostponementStatus.Pending)
                 {
                     postponement.IsNotified = true;
-                    _csvCrudRepository.Update(postponement);
+                    _crudService.Update(postponement);
                 }
             }
-        }
-
-        public void Subscribe(IObserver observer)
-        {
-            _csvCrudRepository.Subscribe(observer);
         }
     }
 }

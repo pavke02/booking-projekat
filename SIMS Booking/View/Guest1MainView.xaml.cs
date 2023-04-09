@@ -53,7 +53,7 @@ namespace SIMS_Booking.View
             UserReservations = new ObservableCollection<Reservation>(_reservationService.GetReservationsByUser(loggedUser.getID()));
 
             _postponementService = postponementService;
-            NotificationTimer timer = new NotificationTimer(loggedUser, _postponementService);
+            NotificationTimer timer = new NotificationTimer(LoggedUser, _postponementService);
             _postponementService.Subscribe(this);
             UserPostponements = new ObservableCollection<Postponement>(_postponementService.GetPostponementsByUser(loggedUser.getID()));
 
@@ -63,6 +63,7 @@ namespace SIMS_Booking.View
             _cancellationCsvCrudRepository = cancellationCsvCrudRepository;
 
             _reservedAccommodationService = reservedAccommodationService;
+
         }
 
         private void AddFilters(object sender, RoutedEventArgs e)
