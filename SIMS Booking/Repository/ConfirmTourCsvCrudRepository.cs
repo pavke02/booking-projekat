@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
+using SIMS_Booking.Service;
 
 namespace SIMS_Booking.Repository
 {
@@ -8,11 +9,11 @@ namespace SIMS_Booking.Repository
     {
         public ConfirmTourCsvCrudRepository() : base("../../../Resources/Data/confirmTours.csv") { }
       
-        public void loadGuests (UserCsvCrudRepository userCsvCrudRepository)
+        public void loadGuests (UserService userService)
         {
             foreach(ConfirmTour tour in _entityList)
             {
-                tour.User = userCsvCrudRepository.GetById(tour.UserId);
+                tour.User = userService.GetById(tour.UserId);
             }
         }
 

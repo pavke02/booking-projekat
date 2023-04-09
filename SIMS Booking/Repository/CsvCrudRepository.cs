@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SIMS_Booking.Repository
 {
-    public class CsvCrudRepository<T> where T : ISerializable, IDable, new()
+    public class CsvCrudRepository<T> : ISubject where T : ISerializable, IDable, new()
     {
         protected readonly string _filePath;
         protected readonly Serializer<T> _serializer;

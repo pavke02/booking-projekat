@@ -1,6 +1,5 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
-using SIMS_Booking.Repository;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,41 +7,45 @@ namespace SIMS_Booking.Service
 {
     public class AccommodationService
     {
-        private readonly AccommodationCsvCrudRepository _csvCrudRepository;
+        private readonly CrudService<Accommodation> _crudService;
 
         public AccommodationService()
         {
-            _csvCrudRepository = new AccommodationCsvCrudRepository();
+            _crudService = new CrudService<Accommodation>("../../../Resources/Data/accommodations.csv");
         }
+
+        #region Crud
 
         public void Save(Accommodation accommodation)
         {
-            _csvCrudRepository.Save(accommodation);
+            _crudService.Save(accommodation);
         }
 
         public List<Accommodation> GetAll()
         {
-            return _csvCrudRepository.GetAll();
+            return _crudService.GetAll();
         }
 
-        public Accommodation GetById(int id) 
+        public Accommodation GetById(int id)
         {
-            return _csvCrudRepository.GetById(id);
-        }        
+            return _crudService.GetById(id);
+        }
+
+        public void Subscribe(IObserver observer)
+        {
+            _crudService.Subscribe(observer);
+        }
+
+        #endregion
 
         public List<Accommodation> GetByUserId(int id)
         {
-            return _csvCrudRepository.GetAll().Where(e => e.User.getID() == id).ToList();
+            return _crudService.GetAll().Where(e => e.User.getID() == id).ToList();
         }
 
         public List<Accommodation> SortBySuperOwner(List<Accommodation> accommodations)
         {
             return accommodations.OrderBy(x => !x.User.IsSuperUser).ToList();
-        }
-
-        public void Subscribe(IObserver observer)
-        {
-            _csvCrudRepository.Subscribe(observer);
         }
     }
 }

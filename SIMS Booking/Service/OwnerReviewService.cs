@@ -1,6 +1,5 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
-using SIMS_Booking.Repository;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,26 +7,35 @@ namespace SIMS_Booking.Service
 {
     public class OwnerReviewService
     {
-        private readonly OwnerReviewCsvCrudRepository _csvCrudRepository;
+        private readonly CrudService<OwnerReview> _crudService;
 
         public OwnerReviewService()
         {
-            _csvCrudRepository = new OwnerReviewCsvCrudRepository();
+            _crudService = new CrudService<OwnerReview>("../../../Resources/Data/ownerReviews.csv");
         }
+
+        #region Crud
 
         public void Save(OwnerReview ownerReview)
         {
-            _csvCrudRepository.Save(ownerReview);
+            _crudService.Save(ownerReview);
         }
+
+        public void Subscribe(IObserver observer)
+        {
+            _crudService.Subscribe(observer);
+        }
+
+        #endregion
 
         public List<OwnerReview> GetByUserId(int id)
         {
-            return _csvCrudRepository.GetAll().Where(e => e.Reservation.User.getID() == id).ToList();
+            return _crudService.GetAll().Where(e => e.Reservation.User.getID() == id).ToList();
         }
 
         public void LoadReservationInOwnerReview(ReservationService _reservationService)
         {
-            foreach (OwnerReview ownerReview in _csvCrudRepository.GetAll())
+            foreach (OwnerReview ownerReview in _crudService.GetAll())
             {
                 ownerReview.Reservation = _reservationService.GetById(ownerReview.ReservationId);
             }
@@ -42,7 +50,7 @@ namespace SIMS_Booking.Service
 
         public List<OwnerReview> GetShowableReviews(int id)
         {
-            return _csvCrudRepository.GetAll().Where(e => e.Reservation.HasGuestReviewed && e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
+            return _crudService.GetAll().Where(e => e.Reservation.HasGuestReviewed && e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
         }
 
         public double CalculateRating(int id)
@@ -57,11 +65,6 @@ namespace SIMS_Booking.Service
             }
 
             return ratingSum / numberOfGuestReviews;
-        }
-
-        public void Subscribe(IObserver observer)
-        {
-            _csvCrudRepository.Subscribe(observer);
         }
     }
 }
