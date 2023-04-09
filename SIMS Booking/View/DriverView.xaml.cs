@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using SIMS_Booking.Enums;
 using System.Windows.Controls;
+using SIMS_Booking.Service;
 
 namespace SIMS_Booking.View
 {
@@ -18,6 +19,10 @@ namespace SIMS_Booking.View
         public Vehicle Vehicle { get; set; }
         public User User { get; set; }
 
+
+        private RidesRepository _ridesRepository;
+        private FinishedRidesRepository _finishedRidesRepository;
+        private VehicleService _vehicleService;
         private VehicleCsvCrudRepository _vehicleCsvCrudRepository;
         private CityCountryCsvRepository _cityCountryCsvRepository;
         private DriverLanguagesCsvCrudRepository _driverLanguagesCsvCrudRepository;
@@ -73,7 +78,9 @@ namespace SIMS_Booking.View
         }
 
 
-        public DriverView(User user, VehicleCsvCrudRepository vehicleCsvCrudRepository, DriverLanguagesCsvCrudRepository driverLanguagesCsvCrudRepository, DriverLocationsCsvCrudRepository driverLocationsCsvCrudRepository, CityCountryCsvRepository cityCountryCsvRepository)
+
+        public DriverView(User user, RidesRepository ridesRepository, FinishedRidesRepository finishedRidesRepository, VehicleCsvCrudRepository vehicleCsvCrudRepository, VehicleService vehicleService, DriverLanguagesCsvCrudRepository driverLanguagesCsvCrudRepository, DriverLocationsCsvCrudRepository driverLocationsCsvCrudRepository, CityCountryCsvRepository cityCountryCsvRepository)
+
         {
             InitializeComponent();
             DataContext = this;
@@ -82,8 +89,12 @@ namespace SIMS_Booking.View
 
             _cityCountryCsvRepository = cityCountryCsvRepository;
 
+
+            _vehicleService = vehicleService;
+
             _vehicleCsvCrudRepository = vehicleCsvCrudRepository;
             _vehicleCsvCrudRepository.Subscribe(this);
+
 
             _driverLanguagesCsvCrudRepository = driverLanguagesCsvCrudRepository;
             _driverLocationsCsvCrudRepository = driverLocationsCsvCrudRepository;
@@ -92,6 +103,10 @@ namespace SIMS_Booking.View
             Locations = new List<Location>();
 
             Vehicle = _vehicleCsvCrudRepository.GetVehicleByUserID(User.getID());
+
+            _ridesRepository = ridesRepository;
+            _finishedRidesRepository = finishedRidesRepository;
+
 
             Update();
 
@@ -160,6 +175,18 @@ namespace SIMS_Booking.View
         {
             DriverGalleryView galleryView = new DriverGalleryView(Vehicle);
             galleryView.Show();
+        }
+
+        private void ViewRides_Click(object sender, RoutedEventArgs e)
+        {
+            DriverRides driverRides = new DriverRides(User, _ridesRepository, _finishedRidesRepository);
+            driverRides.Show();
+        }
+
+        private void ViewStatsButton_Click(object sender, RoutedEventArgs e)
+        {
+            DriverStatsView driverStatsView = new DriverStatsView(_finishedRidesRepository);
+            driverStatsView.Show();
         }
     }
 }
