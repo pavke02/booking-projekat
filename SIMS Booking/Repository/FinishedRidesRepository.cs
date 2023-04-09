@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SIMS_Booking.Repository
 {
-    public class FinishedRidesRepository : Repository<FinishedRide>, ISubject
+    public class FinishedRidesRepository : CsvCrudRepository<FinishedRide>, ISubject
     {
         public FinishedRidesRepository() : base("../../../Resources/Data/finishedRides.csv") { }
     }

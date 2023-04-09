@@ -11,11 +11,11 @@ namespace SIMS_Booking.Service
 {
     public class VehicleService
     {
-        private readonly VehicleRepository _repository;
+        private readonly VehicleCsvCrudRepository _repository;
 
         public VehicleService()
         {
-            _repository = new VehicleRepository();
+            _repository = new VehicleCsvCrudRepository();
         }
 
         public List<Vehicle> Load()

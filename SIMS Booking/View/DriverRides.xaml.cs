@@ -1,7 +1,5 @@
 ﻿using SIMS_Booking.Model;
-using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Repository;
-using SIMS_Booking.Repository.RelationsRepository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
