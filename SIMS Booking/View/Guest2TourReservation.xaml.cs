@@ -13,9 +13,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Xml.Linq;
 using SIMS_Booking.Model.Relations;
 
 namespace SIMS_Booking.View
@@ -28,7 +25,7 @@ namespace SIMS_Booking.View
 
         private readonly Tour _selectedTour;
         public User LoggedUser { get; set; }
-        private ReservedToursRepository _reservedToursRepository;
+        private ReservedToursCsvCrudRepository _reservedToursCsvCrudRepository;
         public TourReservation _tourReservation;
         public List<Reservation> Reservations { get; set; }
         public List<Reservation> TourReservations { get; set; }
@@ -42,7 +39,7 @@ namespace SIMS_Booking.View
         {
             InitializeComponent();
 
-            _reservedToursRepository = new ReservedToursRepository();
+            _reservedToursCsvCrudRepository = new ReservedToursCsvCrudRepository();
 
             LoggedUser = loggedUser;
             _selectedTour = selectedTour;
@@ -53,7 +50,7 @@ namespace SIMS_Booking.View
             BoxLanguage.Text = selectedTour.Language.ToString();
             BoxMaxGuests.Text = selectedTour.MaxGuests.ToString();
             BoxTime.Text = selectedTour.Time.ToString();
-            AvailableNumber.Text = (selectedTour.MaxGuests - _reservedToursRepository.GetNumberOfGuestsForTour(selectedTour.getID())).ToString();
+            AvailableNumber.Text = (selectedTour.MaxGuests - _reservedToursCsvCrudRepository.GetNumberOfGuestsForTour(selectedTour.getID())).ToString();
 
 
             BoxName.IsReadOnly = true;
@@ -74,9 +71,9 @@ namespace SIMS_Booking.View
                 MessageBox.Show("Please enter the number of guests.");
 
             }
-            else if (_selectedTour.MaxGuests < Convert.ToInt32(NumberOfGuests.Text) + _reservedToursRepository.GetNumberOfGuestsForTour(_selectedTour.getID()))
+            else if (_selectedTour.MaxGuests < Convert.ToInt32(NumberOfGuests.Text) + _reservedToursCsvCrudRepository.GetNumberOfGuestsForTour(_selectedTour.getID()))
             {
-                MessageBox.Show($"Number of guests cannot be more than the maximum number of guests for this tour ({_selectedTour.MaxGuests - _reservedToursRepository.GetNumberOfGuestsForTour(_selectedTour.getID())} guests).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Number of guests cannot be more than the maximum number of guests for this tour ({_selectedTour.MaxGuests - _reservedToursCsvCrudRepository.GetNumberOfGuestsForTour(_selectedTour.getID())} guests).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             else if (_selectedTour.MaxGuests >= Convert.ToInt32(NumberOfGuests.Text))
@@ -87,8 +84,8 @@ namespace SIMS_Booking.View
 
 
                 TourReservation tourReservation = new TourReservation(LoggedUser.getID(), _selectedTour.getID(), Convert.ToInt32(NumberOfGuests.Text));
-                _reservedToursRepository.Save(tourReservation);
-                AvailableNumber.Text = (_selectedTour.MaxGuests - _reservedToursRepository.GetNumberOfGuestsForTour(_selectedTour.getID())).ToString();
+                _reservedToursCsvCrudRepository.Save(tourReservation);
+                AvailableNumber.Text = (_selectedTour.MaxGuests - _reservedToursCsvCrudRepository.GetNumberOfGuestsForTour(_selectedTour.getID())).ToString();
 
                 MessageBox.Show($"You reserved for ({Convert.ToInt32(NumberOfGuests.Text)} guests)");
             }          

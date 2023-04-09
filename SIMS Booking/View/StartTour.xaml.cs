@@ -1,21 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
@@ -45,8 +32,8 @@ namespace SIMS_Booking.View
         public ObservableCollection<TourPoint> Checkpoints { get; set; }
      
         public Tour SelectedTour { get; set; }
-        private ConfirmTourRepository gosti { get; set; }
-        private ConfirmTourRepository _confirmTourRepository;
+        private ConfirmTourCsvCrudRepository gosti { get; set; }
+        private ConfirmTourCsvCrudRepository _confirmTourCsvCrudRepository;
         private Tour _tour { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -56,13 +43,13 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public StartTour(Tour selectedTour , ConfirmTourRepository confirmTourRepository)
+        public StartTour(Tour selectedTour , ConfirmTourCsvCrudRepository confirmTourCsvCrudRepository)
         {
             InitializeComponent();
             DataContext = this;
             SelectedTour = selectedTour;
             
-            _confirmTourRepository = confirmTourRepository;          
+            _confirmTourCsvCrudRepository = confirmTourCsvCrudRepository;          
           
             Checkpoints = new ObservableCollection<TourPoint>(SelectedTour.TourPoints);
         }
@@ -78,11 +65,11 @@ namespace SIMS_Booking.View
             {
                 Checkpoints[j].CheckedCheckBox = false;
             }
-            foreach(ConfirmTour confirmTour in _confirmTourRepository.GetAll())
+            foreach(ConfirmTour confirmTour in _confirmTourCsvCrudRepository.GetAll())
             {
                 if(confirmTour.IdTour == SelectedTour.getID())
                 {
-                    _confirmTourRepository.Delete(confirmTour);
+                    _confirmTourCsvCrudRepository.Delete(confirmTour);
                 }
             }
 
@@ -100,7 +87,7 @@ namespace SIMS_Booking.View
                 if ((Checkpoints[i].CheckedCheckBox) && (i != Checkpoints.Count-1))
                 {
                     
-                    ConfirmTourByGuest confirmTourByGuest = new ConfirmTourByGuest(_confirmTourRepository, SelectedTour);
+                    ConfirmTourByGuest confirmTourByGuest = new ConfirmTourByGuest(_confirmTourCsvCrudRepository, SelectedTour);
                     confirmTourByGuest.ShowDialog();
                                                                            
 

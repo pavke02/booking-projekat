@@ -11,18 +11,18 @@ namespace SIMS_Booking.Service
 {
     public class TourService
     {
-        private readonly TourRepository _repository;
+        private readonly TourCsvCrudRepository _csvCrudRepository;
 
         public TourService()
         {
-            _repository = new TourRepository();
+            _csvCrudRepository = new TourCsvCrudRepository();
         }
 
 
         public List<Tour> GetTodaysTours()
         {
             List<Tour> todaysTours = new List<Tour>();
-            foreach (Tour tour in _repository.GetAll())
+            foreach (Tour tour in _csvCrudRepository.GetAll())
             {
                 if (DateTime.Today == tour.StartTour)
                 {
@@ -33,9 +33,9 @@ namespace SIMS_Booking.Service
         }
 
        
-        public void LoadCheckpoints(TourPointRepository tp)
+        public void LoadCheckpoints(TourPointCsvCrudRepository tp)
         {
-            foreach (var tour in _repository.GetAll())
+            foreach (var tour in _csvCrudRepository.GetAll())
             {
                 foreach (var tourPointId in tour.TourPointIds)
                 {
@@ -46,19 +46,18 @@ namespace SIMS_Booking.Service
 
         public void Subscribe(IObserver observer)
         {
-            _repository.Subscribe(observer);
+            _csvCrudRepository.Subscribe(observer);
         }
 
 
         public List<Tour> GetAll()
         {
-            return _repository.GetAll();
+            return _csvCrudRepository.GetAll();
         }
 
         public void Save(Tour tour)
         {
-           _repository.Save(tour);
+           _csvCrudRepository.Save(tour);
         }
-
     }
 }

@@ -1,26 +1,25 @@
 ﻿using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Model;
-using SIMS_Booking.Repository.RelationsRepository;
 
 namespace SIMS_Booking.Service.RelationsService
 {
     public class UsersAccommodationService
     {
-        private readonly UsersAccommodationRepository _repository;
+        private readonly RelationsCrudService<UsersAccommodation> _crudService;
 
         public UsersAccommodationService()
         {
-            _repository = new UsersAccommodationRepository();
+            _crudService = new RelationsCrudService<UsersAccommodation>("../../../Resources/Data/usersAccommodation.csv");
         }
 
         public void Save(UsersAccommodation usersAccommodation)
         {
-            _repository.Save(usersAccommodation);
+            _crudService.Save(usersAccommodation);
         }
 
         public void LoadUsersInAccommodation(UserService userService, AccommodationService accommodationService)
         {
-            foreach (UsersAccommodation usersAccommodation in _repository.GetAll())
+            foreach (UsersAccommodation usersAccommodation in _crudService.GetAll())
             {
                 foreach (Accommodation accommodation in accommodationService.GetAll())
                 {

@@ -1,31 +1,39 @@
 ﻿using SIMS_Booking.Model;
-using SIMS_Booking.Repository;
 using System.Linq;
 
 namespace SIMS_Booking.Service
 {
     public class UserService
     {
-        private readonly UserRepository _repository; 
+        private readonly CrudService<User> _crudService; 
 
         public UserService()
         {
-            _repository = new UserRepository();
+            _crudService = new CrudService<User>("../../../Resources/Data/users.csv");
         }
+
+        #region Crud
 
         public void Save(User user)
         {
-            _repository.Save(user);
+            _crudService.Save(user);
         }
 
         public User GetById(int id)
         {
-            return _repository.GetById(id);
+            return _crudService.GetById(id);
         }
+
+        public void Update(User user)
+        {
+            _crudService.Update(user);
+        }
+
+        #endregion
 
         public User GetByUsername(string username)
         {            
-            return _repository.GetAll().FirstOrDefault(u => u.Username == username);
+            return _crudService.GetAll().FirstOrDefault(u => u.Username == username);
         }
     }
 }

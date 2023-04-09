@@ -71,7 +71,7 @@ namespace SIMS_Booking.View
 
             Roles role = FindRole();
             
-            User user = new User(Username, txtPassword.Password, role);
+            User user = new User(Username, txtPassword.Password, role, false);
             _userService.Save(user);
             SignInForm signInForm = new SignInForm();
             signInForm.Show();
