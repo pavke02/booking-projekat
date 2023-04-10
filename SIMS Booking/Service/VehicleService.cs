@@ -1,11 +1,7 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SIMS_Booking.Service
 {
@@ -16,11 +12,6 @@ namespace SIMS_Booking.Service
         public VehicleService()
         {
             _repository = new VehicleCsvCrudRepository();
-        }
-
-        public List<Vehicle> Load()
-        {
-            return _repository.Load();
         }
 
         public void Save(Vehicle vehicle)
