@@ -12,6 +12,7 @@ using SIMS_Booking.Enums;
 using System.Windows.Controls;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
+using System;
 
 namespace SIMS_Booking.View
 {
@@ -102,6 +103,7 @@ namespace SIMS_Booking.View
             Update();
         }
 
+
         public string LocationsToString(List<Location> locations)
         {
             string AllLocations = "";
@@ -175,7 +177,7 @@ namespace SIMS_Booking.View
 
         private void ViewRides_Click(object sender, RoutedEventArgs e)
         {
-            DriverRides driverRides = new DriverRides(User, _ridesService, _finishedRidesService);
+            DriverRides driverRides = new DriverRides(User, _ridesService, _finishedRidesService, _vehicleService);
             driverRides.Show();
         }
 

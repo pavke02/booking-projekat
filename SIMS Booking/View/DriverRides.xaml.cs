@@ -33,6 +33,7 @@ namespace SIMS_Booking.View
 
         private RidesService _ridesService;
         private FinishedRidesService _finishedRidesService;
+        private VehicleService _vehicleService;
         public User User { get; set; }
 
         public static ObservableCollection<Rides> Rides { get; set; }
@@ -46,25 +47,38 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public DriverRides(User user, RidesService ridesService, FinishedRidesService finishedRidesService)
+        public DriverRides(User user, RidesService ridesService, FinishedRidesService finishedRidesService, VehicleService vehicleService)
         {
             InitializeComponent();
             DataContext = this;
 
             _ridesService = ridesService;
             _finishedRidesService = finishedRidesService;
+            _vehicleService = vehicleService;
+
             User = user;
+
+            Vehicle vehicle = _vehicleService.GetVehicleByUserID(user.getID());
 
             Rides = new ObservableCollection<Rides>(_ridesService.GetAll());
             ActiveRides = new List<Rides>();
 
             foreach (Rides ride in Rides)
             {
-                if(ride.DriverID == User.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now)
+                bool onLocation = false;
+                foreach(Location location in vehicle.Locations)
+                {
+                    if(location.City == ride.Location.City && location.Country == ride.Location.Country)
+                    {
+                        onLocation = true;
+                    }
+                }
+                if((ride.DriverID == User.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now) || (ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now && ride.Fast == true && onLocation == true))
                 {
                     ActiveRides.Add(ride);
                 }
             }
+            
         }
 
         private int remainingTime;
@@ -199,6 +213,9 @@ namespace SIMS_Booking.View
             _ridesService.Delete(selectedRide);
             _finishedRidesService.Save(selectedFinishedRide);
 
+            startButton.IsEnabled = false;
+            cancelButton.IsEnabled = false;
+            stopButton.Visibility = Visibility.Hidden;
         }
     }
 }
