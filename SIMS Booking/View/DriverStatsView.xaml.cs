@@ -1,5 +1,6 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
+using SIMS_Booking.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,31 +24,34 @@ namespace SIMS_Booking.View
         public List<MonthlyDriverStats> MonthlyDriverStats2023 { get; set; }
         public List<MonthlyDriverStats> MonthlyDriverStats2022 { get; set; }
         public List<MonthlyDriverStats> MonthlyDriverStats2021 { get; set; }
+        public User User;
 
-        private FinishedRidesRepository _finishedRidesRepository;
+        private FinishedRidesService _finishedRidesService;
 
         public List<FinishedRide> FinishedRides { get; set; }
 
-        public DriverStatsView(FinishedRidesRepository finishedRidesRepository)
+        public DriverStatsView(FinishedRidesService finishedRidesService, User user)
         {
             InitializeComponent();
             DataContext = this;
+
+            User = user;
 
             MonthlyDriverStats2023 = new List<MonthlyDriverStats>();
             MonthlyDriverStats2022 = new List<MonthlyDriverStats>();
             MonthlyDriverStats2021 = new List<MonthlyDriverStats>();
 
-            _finishedRidesRepository = finishedRidesRepository;
+            _finishedRidesService = finishedRidesService;
 
             GenerateEmptyList(MonthlyDriverStats2021);
             GenerateEmptyList(MonthlyDriverStats2022);
             GenerateEmptyList(MonthlyDriverStats2023);
 
             FinishedRides = new List<FinishedRide>();
-            FinishedRides = _finishedRidesRepository.GetAll();
+            int id = User.getID();
+            FinishedRides = _finishedRidesService.GetAll().Where(e => e.Ride.DriverID == id).ToList();
 
             SortStats(MonthlyDriverStats2023, MonthlyDriverStats2022, MonthlyDriverStats2021);
-
         }
 
         public void GenerateEmptyList(List<MonthlyDriverStats> monthlyDriverStats) 

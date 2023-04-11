@@ -23,6 +23,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model.Relations;
+using SIMS_Booking.Service;
+using SIMS_Booking.Service.RelationsService;
 
 namespace SIMS_Booking.View
 {
@@ -31,24 +33,25 @@ namespace SIMS_Booking.View
     /// </summary>
     public partial class DriverAddVehicle : Window
     {
-        private VehicleCsvCrudRepository _vehicleCsvCrudRepository;
-        private DriverLanguagesCsvCrudRepository _driverLanguagesCsvCrudRepository;
-        private DriverLocationsCsvCrudRepository _driverLocationsCsvCrudRepository;
+        private VehicleService _vehicleService;
+        private DriverLanguagesService _driverLanguagesService;
+        private DriverLocationsService _driverLocationsService;
         private CityCountryCsvRepository _cityCountryCsvRepository;
         public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> AllLanguages { get; set; }
         public User User { get; set; }
 
-        public DriverAddVehicle(VehicleCsvCrudRepository vehicleCsvCrudRepository, DriverLanguagesCsvCrudRepository driverLanguagesCsvCrudRepository, DriverLocationsCsvCrudRepository driverLocationsCsvCrudRepository, CityCountryCsvRepository cityCountryCsvRepository, User user)
+        public DriverAddVehicle(VehicleService vehicleService, DriverLanguagesService driverLanguagesService, DriverLocationsService driverLocationsService, CityCountryCsvRepository cityCountryCsvRepository, User user)
         {
             InitializeComponent();
             DataContext = this;
 
             User = user;
 
-            _vehicleCsvCrudRepository = vehicleCsvCrudRepository;
-            _driverLanguagesCsvCrudRepository = driverLanguagesCsvCrudRepository;
-            _driverLocationsCsvCrudRepository = driverLocationsCsvCrudRepository;
+            _vehicleService = vehicleService;
+            _driverLocationsService = driverLocationsService;
+            _driverLanguagesService = driverLanguagesService;
+
             _cityCountryCsvRepository = cityCountryCsvRepository;
             Countries = new Dictionary<string, List<string>>(_cityCountryCsvRepository.Load());
 
@@ -112,21 +115,24 @@ namespace SIMS_Booking.View
             ReadImageURLs(imageurls);
 
             Vehicle vehicle = new Vehicle(locations, int.Parse(maxGuests.Text), languages, imageurls, User);
-            _vehicleCsvCrudRepository.Save(vehicle);
+            _vehicleService.Save(vehicle);
 
             foreach (Language language in languages)
             {
                 DriverLanguages driverLanguages = new DriverLanguages(vehicle.getID(), language);
-                _driverLanguagesCsvCrudRepository.Save(driverLanguages);
+                _driverLanguagesService.Save(driverLanguages);
             }
 
             foreach (Location location in locations)
             {
                 DriverLocations driverLocations = new DriverLocations(vehicle.getID(), location);
-                _driverLocationsCsvCrudRepository.Save(driverLocations);
+                _driverLocationsService.Save(driverLocations);
             }
 
             MessageBox.Show("Vehicle published successfully!");
+
+            _driverLocationsService.AddDriverLocationsToVehicles(_vehicleService);
+            _driverLanguagesService.AddDriverLanguagesToVehicles(_vehicleService);
 
             Close();
         }

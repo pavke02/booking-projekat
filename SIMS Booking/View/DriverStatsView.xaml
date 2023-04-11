@@ -16,8 +16,8 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Month" Binding="{Binding Month}" Width="180"/>
                         <DataGridTextColumn Header="Number of rides" Binding="{Binding TotalRides}" Width="180"/>
-                        <DataGridTextColumn Header="Average ride time" Binding="{Binding AverageTime}" Width="180"/>
-                        <DataGridTextColumn Header="Average ride price" Binding="{Binding AveragePrice}" Width="*"/>
+                        <DataGridTextColumn Header="Average ride time (in seconds)" Binding="{Binding AverageTime}" Width="200"/>
+                        <DataGridTextColumn Header="Average ride price (in RSD)" Binding="{Binding AveragePrice}" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
