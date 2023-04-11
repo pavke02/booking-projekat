@@ -44,7 +44,7 @@ namespace SIMS_Booking.Model
             Password = values[2];
             Role = (Roles)Enum.Parse(typeof(Roles), values[3]);
             IsSuperUser = bool.Parse(values[4]);
-            Age = int.Parse(values[4]);
+            Age = int.Parse(values[5]);
         }
 
         public string[] ToCSV()
