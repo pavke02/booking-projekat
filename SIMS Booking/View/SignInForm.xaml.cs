@@ -9,7 +9,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
-
+using System.Windows.Controls;
 
 namespace SIMS_Booking.View
 {
@@ -21,6 +21,7 @@ namespace SIMS_Booking.View
 
         private readonly ReservationService _reservationService;
         private readonly TourService _tourService;
+        private readonly TextBox _textBox;
 
 
         private readonly VehicleRepository _vehicleRepository;
@@ -74,6 +75,8 @@ namespace SIMS_Booking.View
             _reservationService = new ReservationService();
             _postponementService = new PostponementService();
 
+            _textBox = new TextBox();
+
             _vehicleRepository = new VehicleRepository();
             _guestReviewService = new GuestReviewService();
             _ownerReviewService = new OwnerReviewService();
@@ -95,9 +98,9 @@ namespace SIMS_Booking.View
 
             _driverLanguagesRepository.AddDriverLanguagesToVehicles(_vehicleRepository);
             _driverLocationsRepository.AddDriverLocationsToVehicles(_vehicleRepository);
-            //_confirmTourRepository.loadGuests(_userService);
+            _confirmTourService.loadGuests(_userService);
             _tourService.LoadCheckpoints(_tourPointService);
-            //_tourCheckpointRepository.LoadCheckpointsInTour(_tourRepository, _tourPointRepository);
+           
         }
 
         #region SignIn
@@ -127,7 +130,7 @@ namespace SIMS_Booking.View
                             driverView.Show();
                             break;
                         case Roles.Guide:
-                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService);
+                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService,_textBox);
                             guideView.Show();
                             break;
                     }

@@ -18,6 +18,11 @@ namespace SIMS_Booking.Service
             _repository = new TourRepository();
         }
 
+        public void Delete(Tour entity)
+        {
+            _repository.Delete(entity);
+
+        }
 
         public List<Tour> GetTodaysTours()
         {

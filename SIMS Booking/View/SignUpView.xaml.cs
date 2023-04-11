@@ -27,6 +27,37 @@ namespace SIMS_Booking.View
                     _username = value;
                     OnPropertyChanged();
                 }
+        
+            }
+        }
+
+
+        private int _age;
+        public int Age
+        {
+            get => _age;
+            set
+            {
+                if (value != _age)
+                {
+                    _age = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _description;
+        public string Description
+        {
+            get => _description;
+            set
+            {
+                if (value != _description)
+                {
+                    _description = value;
+                    OnPropertyChanged();
+                }
+
             }
         }
 
@@ -71,7 +102,7 @@ namespace SIMS_Booking.View
 
             Roles role = FindRole();
             
-            User user = new User(Username, txtPassword.Password, role);
+            User user = new User(Username, txtPassword.Password, role,Age,Description);
             _userService.Save(user);
             SignInForm signInForm = new SignInForm();
             signInForm.Show();

@@ -80,7 +80,7 @@ namespace SIMS_Booking.View
             {
                 Checkpoints[j].CheckedCheckBox = false;
             }
-            foreach(ConfirmTour confirmTour in _confirmTourService.GetAll())
+            foreach(ConfirmTour confirmTour in _confirmTourService.GetAll().ToList())
             {
                 if(confirmTour.IdTour == SelectedTour.getID())
                 {
@@ -93,41 +93,45 @@ namespace SIMS_Booking.View
 
               
         private void Button_Click1(object sender, RoutedEventArgs e)
-        {           
+        {
 
-            for( int i = 0; i < Checkpoints.Count; i++ )
+
+
+            for (int i = 0; i < Checkpoints.Count; i++)
             {
-                if ((Checkpoints[i].CheckedCheckBox) && (i != Checkpoints.Count-1))
+                if ((Checkpoints[i].CheckedCheckBox) && (i != Checkpoints.Count - 1))
                 {
-                    
-                    ConfirmTourByGuest confirmTourByGuest = new ConfirmTourByGuest(_confirmTourService, SelectedTour);
-                    confirmTourByGuest.ShowDialog();
-                                                                           
+
+                    //ConfirmTourByGuest confirmTourByGuest = new ConfirmTourByGuest(_confirmTourService, SelectedTour);
+                    //confirmTourByGuest.ShowDialog();
+
+                    ConfirmByGuest cf = new ConfirmByGuest(_confirmTourService,SelectedTour);
+                    cf.Show();
 
                     Checkpoints[i].CheckedCheckBox = false;
                     Checkpoints[i + 1].CheckedCheckBox = true;
                     SelectedTour.CurrentTourPoint = i + 1;
-                    OnPropertyChanged();                                                           
-                    
-                    break;
-                } 
+                    OnPropertyChanged();
 
-                if(i == Checkpoints.Count-1)
+                    break;
+                }
+
+                if (i == Checkpoints.Count - 1)
                 {
-                    
+
                     Window.GetWindow(this).Close();
                     Checkpoints[0].CheckedCheckBox = true;
                     SelectedTour.CurrentTourPoint = 0;
-                    for ( int j = 1; j < Checkpoints.Count; j++ )
+                    for (int j = 1; j < Checkpoints.Count; j++)
                     {
                         Checkpoints[j].CheckedCheckBox = false;
                     }
                 }
 
             }
-            
 
-         }
+
+        }
 
         public void Update()
         {

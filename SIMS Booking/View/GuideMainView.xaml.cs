@@ -37,11 +37,14 @@ namespace SIMS_Booking.View
         public Tour Tour1 { get; set; }
         public TourPoint dataTourPoint { get; set; }
 
+        private TextBox _textBox;
         private TourService _tourService;
         private ObservableCollection<Tour> _allToursRepository;
         private TourPointService _tourPointService;
         private ConfirmTourService _confirmTourService;
- 
+        private ConfirmTour _confirmTour;
+        private UserService _userService;
+
         public Tour SelectedTour { get; set; }
 
         private string tourPointName;
@@ -271,12 +274,13 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public GuideMainView(TourService  tourService, ConfirmTourService confirmTourService, TourPointService tourPointService )
+        public GuideMainView(TourService  tourService, ConfirmTourService confirmTourService, TourPointService tourPointService,TextBox textBox )
         {
             InitializeComponent();
             DataContext = this;
             Tour = new Tour();
             Tour1 = new Tour();
+            _textBox = textBox;
 
             _tourService = tourService;
             _tourService.Subscribe(this);
@@ -303,10 +307,7 @@ namespace SIMS_Booking.View
                 StartTour startTour = new StartTour(SelectedTour, _confirmTourService);
                 startTour.ShowDialog();
             }
-            
-
-
-           
+  
         }
 
         private void UpdateTour(List<Tour> tours , List<Tour> todaysTours)
@@ -371,8 +372,8 @@ namespace SIMS_Booking.View
 
 
 
-
-                Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), StartTour, int.Parse(Times), imageURLs, TourPointIds, TourPoints, TourTime);
+                DateTime time = new DateTime(StartTour.Year,StartTour.Month,StartTour.Day,TourTime.Hour,TourTime.Minute,TourTime.Second);
+                Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), time, int.Parse(Times), imageURLs, TourPointIds, TourPoints, TourTime);
                 _tourService.Save(tour);
             }
 
@@ -404,6 +405,41 @@ namespace SIMS_Booking.View
                     imageTb.Text = imageTb.Text + "\n" + filePath;
                     ImageURLs = imageTb.Text;
                 }
+            }
+        }
+
+        private void Statistika(object sender, RoutedEventArgs e)
+        {
+            if (SelectedTour != null)
+            {
+
+                // Trace.WriteLine(_confirmTourService.NumberOfGuestsByAgesBetween18and50(_userService, SelectedTour));
+                Trace.WriteLine(_confirmTourService.PercentageByVaucer( SelectedTour));
+                Trace.WriteLine(_confirmTourService.PercentageWithoutVaucer(SelectedTour));
+
+               
+                string poruka = string.Format("Sa vaucerom: {0}\nBez vaucera: {1}", _confirmTourService.PercentageByVaucer(SelectedTour), _confirmTourService.PercentageWithoutVaucer(SelectedTour));
+
+                // Prikaz poruke korisniku
+                MessageBox.Show(poruka, "Informacije o statistici");
+                
+            }
+            else
+            {
+            GuideStatistics guideStatistics = new GuideStatistics(_confirmTourService,_tourService,_textBox,_userService,_confirmTour);
+            guideStatistics.Show();
+
+
+
+            }
+        }
+
+        private void Otkazi_Turu(object sender, RoutedEventArgs e)
+        {
+            if (SelectedTour != null &&  _confirmTourService.AddVaucer(SelectedTour, SelectedTour.TourTime, _confirmTour) == true)
+            {
+                _tourService.Delete(SelectedTour);
+                
             }
         }
     }
