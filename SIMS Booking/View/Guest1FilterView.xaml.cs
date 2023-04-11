@@ -179,7 +179,7 @@ namespace SIMS_Booking.View
 
         private void ApplyFilters(object sender, RoutedEventArgs e)
         {
-            List<Accommodation> accommodationsFiltered =new List<Accommodation>(_accommodationService.GetAll());
+            List<Accommodation> accommodationsFiltered = new List<Accommodation>(_accommodationService.GetAll());
             int numberOfDeleted = 0;
 
             UpdateKindsState();

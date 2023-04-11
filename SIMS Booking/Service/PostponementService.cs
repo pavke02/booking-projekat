@@ -42,7 +42,7 @@ namespace SIMS_Booking.Service
 
         public List<Postponement> GetByUserId(int id)
         {
-            return _crudService.GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
+            return GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
         }
 
         public void ReviewPostponementRequest(int id, string comment, PostponementStatus status)
@@ -64,7 +64,7 @@ namespace SIMS_Booking.Service
         public ObservableCollection<Postponement> GetPostponementsByUser(int userId)
         {
             ObservableCollection<Postponement> userReservations = new ObservableCollection<Postponement>();
-            foreach (Postponement postponement in _crudService.GetAll())
+            foreach (Postponement postponement in GetAll())
             {
 
                 if (postponement.Reservation.User.getID() == userId)
@@ -76,7 +76,7 @@ namespace SIMS_Booking.Service
 
         public void DeletePostponementsByReservationId(int reservationId)
         {
-            foreach (Postponement postponement in _crudService.GetAll().ToList())
+            foreach (Postponement postponement in GetAll().ToList())
             {
                 if (postponement.ReservationId == reservationId)
                 {
@@ -89,7 +89,7 @@ namespace SIMS_Booking.Service
         {
             List<Postponement> postponements = new List<Postponement>();
 
-            foreach (Postponement postponement in _crudService.GetAll())
+            foreach (Postponement postponement in GetAll())
             {
                 if (postponement.Status != Enums.PostponementStatus.Pending && !postponement.IsNotified)
                 {
@@ -102,7 +102,7 @@ namespace SIMS_Booking.Service
 
         public void SetNotifiedPostpoments()
         {
-            foreach (Postponement postponement in _crudService.GetAll().ToList())
+            foreach (Postponement postponement in GetAll().ToList())
             {
                 if (postponement.Status != Enums.PostponementStatus.Pending)
                 {
