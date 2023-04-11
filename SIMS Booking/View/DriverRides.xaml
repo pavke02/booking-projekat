@@ -19,10 +19,11 @@
                           SelectedItem="{Binding Path=SelectedRide, UpdateSourceTrigger=PropertyChanged}"
                           IsReadOnly="True" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Street" Binding="{Binding Street}" Width="180"/>
-                    <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="180"/>
-                    <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="180"/>
+                    <DataGridTextColumn Header="Street" Binding="{Binding Street}" Width="*"/>
+                    <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="*"/>
+                    <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="*"/>
                     <DataGridTextColumn Header="Date" Binding="{Binding DateTime}" Width="*"/>
+                    <DataGridTextColumn Header="Is fast" Binding="{Binding Fast}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

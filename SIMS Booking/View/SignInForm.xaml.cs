@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using SIMS_Booking.View.Owner;
-
+using System;
 
 namespace SIMS_Booking.View
 {
@@ -131,6 +131,7 @@ namespace SIMS_Booking.View
                         case Roles.Driver:
                             DriverView driverView = new DriverView(user, _ridesService, _finishedRidesService, _vehicleService, _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository);
                             driverView.Show();
+                            CheckFastRides(user);
                             break;
                         case Roles.Guide:
                             GuideMainView guideView = new GuideMainView(_tourService, _confirmTourCsvCrudRepository, _tourPointCsvCrudRepository);
@@ -157,5 +158,18 @@ namespace SIMS_Booking.View
             signUpView.Show();
             Close();
         }
+
+        public void CheckFastRides(User user)
+        {
+            foreach (Rides ride in _ridesService.GetAll())
+            {
+                if (ride.DriverID == user.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now && ride.Fast == true)
+                {
+                    MessageBox.Show("You have new fast ride(s)!");
+                    break;
+                }
+            }
+        }
+
     }
 }
