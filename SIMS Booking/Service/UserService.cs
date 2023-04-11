@@ -1,4 +1,5 @@
 ﻿using SIMS_Booking.Model;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SIMS_Booking.Service
@@ -34,6 +35,11 @@ namespace SIMS_Booking.Service
         public User GetByUsername(string username)
         {            
             return _crudService.GetAll().FirstOrDefault(u => u.Username == username);
+        }
+
+        public List<User> GetAll()
+        {
+            return _crudService.GetAll();
         }
     }
 }

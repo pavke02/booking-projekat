@@ -18,6 +18,11 @@ namespace SIMS_Booking.Service
             _csvCrudRepository = new TourCsvCrudRepository();
         }
 
+        public void Delete(Tour entity)
+        {
+            _csvCrudRepository.Delete(entity);
+
+        }
 
         public List<Tour> GetTodaysTours()
         {
@@ -32,8 +37,8 @@ namespace SIMS_Booking.Service
             return todaysTours;
         }
 
-       
-        public void LoadCheckpoints(TourPointCsvCrudRepository tp)
+        
+        public void LoadCheckpoints(TourPointService tp)
         {
             foreach (var tour in _csvCrudRepository.GetAll())
             {
@@ -58,6 +63,28 @@ namespace SIMS_Booking.Service
         public void Save(Tour tour)
         {
            _csvCrudRepository.Save(tour);
+        }
+
+        public bool ValidTimeOfTour()
+        {
+            foreach (var tour in _csvCrudRepository.GetAll())
+            {
+                foreach (var tour1 in _csvCrudRepository.GetAll())
+                {
+                    if (tour.TourTime.AddHours(tour.Time) > tour1.TourTime.AddHours(tour1.Time))
+                    {
+                        return false;
+                    }
+                }
+
+            }
+            return true;
+        }
+
+        public int CountCheckPoints(string text)
+        {
+            string[] checkpoints = text.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return checkpoints.Length;
         }
     }
 }
