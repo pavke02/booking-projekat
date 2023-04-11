@@ -39,6 +39,10 @@ namespace SIMS_Booking.View
 
 
         private string _username;
+        private TourReview _tourReview;
+        private Tour _tour;
+        private TourReviewService _tourReviewService;
+
         public string Username
         {
             get => _username;
@@ -71,6 +75,7 @@ namespace SIMS_Booking.View
             _cityCountryRepository = new CityCountryRepository();   
 
             _tourService = new TourService(); // sve ture ali nemamo  tourPoint = null
+            _tourReviewService = new TourReviewService();
 
             _reservationService = new ReservationService();
             _postponementService = new PostponementService();
@@ -100,6 +105,9 @@ namespace SIMS_Booking.View
             _driverLocationsRepository.AddDriverLocationsToVehicles(_vehicleRepository);
             _confirmTourService.loadGuests(_userService);
             _tourService.LoadCheckpoints(_tourPointService);
+            _tourReviewService.loadusers(_userService,_confirmTourService);
+            _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService);
+            
            
         }
 
@@ -130,7 +138,7 @@ namespace SIMS_Booking.View
                             driverView.Show();
                             break;
                         case Roles.Guide:
-                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService,_textBox);
+                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService,_textBox,_userService,_tourReview,_tour,_tourReviewService);
                             guideView.Show();
                             break;
                     }

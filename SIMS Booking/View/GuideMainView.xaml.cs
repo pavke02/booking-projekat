@@ -31,6 +31,11 @@ namespace SIMS_Booking.View
         public ObservableCollection<Tour> AllTours { get; set; }
         public ObservableCollection<TourPoint> AllCheckpoints { get; set; }
         public ObservableCollection <String> Checkpoints{ get; set; }
+        public TourReview _tourReview { get; set; }
+
+        private Tour _tour { get; set; }
+        private TourReviewService _tourReviewService { get; set; }
+
         public List<string> Cities { get; set; }
 
         public Tour Tour { get; set; }
@@ -274,19 +279,23 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public GuideMainView(TourService  tourService, ConfirmTourService confirmTourService, TourPointService tourPointService,TextBox textBox )
+        public GuideMainView(TourService  tourService, ConfirmTourService confirmTourService, TourPointService tourPointService,TextBox textBox,UserService userService,TourReview tourReview,Tour tour,TourReviewService tourReviewService )
         {
             InitializeComponent();
             DataContext = this;
             Tour = new Tour();
             Tour1 = new Tour();
             _textBox = textBox;
+            _tourReview = tourReview;
+            _tour = tour;
+            _tourReviewService = tourReviewService;
 
             _tourService = tourService;
             _tourService.Subscribe(this);
 
             _tourPointService = tourPointService;
             _tourPointService.Subscribe(this);
+            _userService = userService;
 
             _confirmTourService = confirmTourService;
             Cities = new List<string> { "Serbia,Novi Sad","Serbia,Ruma", "Serbia,Belgrade","Serbia, Nis","England,London","England,London EAST" };
@@ -413,7 +422,7 @@ namespace SIMS_Booking.View
             if (SelectedTour != null)
             {
 
-                // Trace.WriteLine(_confirmTourService.NumberOfGuestsByAgesBetween18and50(_userService, SelectedTour));
+                Trace.WriteLine(_confirmTourService.NumberOfGuestsByAgesBetween18and50(_userService, SelectedTour));
                 Trace.WriteLine(_confirmTourService.PercentageByVaucer( SelectedTour));
                 Trace.WriteLine(_confirmTourService.PercentageWithoutVaucer(SelectedTour));
 
@@ -440,6 +449,15 @@ namespace SIMS_Booking.View
             {
                 _tourService.Delete(SelectedTour);
                 
+            }
+        }
+
+        private void Ocene_Recenzije(object sender, RoutedEventArgs e)
+        {
+            if(SelectedTour!=null)
+            {
+                TourReviewView tourReviewView = new TourReviewView(_tourReview,_tourReviewService,SelectedTour,_confirmTourService,_tourReview);
+                tourReviewView.Show();
             }
         }
     }

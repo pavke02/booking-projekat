@@ -64,7 +64,10 @@ namespace SIMS_Booking.Service
                 tour.User = userService.GetById(tour.UserId);
             }
         }
-
+        public ConfirmTour GetById(int id)
+        {
+            return _repository.GetById(id);
+        }
 
         public List<User> GetGuestOnTour(Tour selectedTour)
         {
@@ -295,10 +298,8 @@ namespace SIMS_Booking.Service
                     brojLjudi++;
 
                     if (confirmTour.Vaucer > 0)
-                    {
-                        saVaucerom++;
-                    }
-
+                     saVaucerom++;
+    
                 }
             }
             Trace.WriteLine(string.Format("{0:P}",1- saVaucerom / brojLjudi));
@@ -310,7 +311,24 @@ namespace SIMS_Booking.Service
 
         }
 
+        //public List<int> allCheckPoints(TourReviewService tourReviewService)
+        //{
+        //    List<int> listCP = new List<int>();
+        //    foreach(ConfirmTour confirmTour in _repository.GetAll())
+        //    {
+        //        foreach(TourReview tourReview in tourReviewService.GetAll())
+        //        {
+        //            if(confirmTour.IdTour == tourReview.TourId && confirmTour.UserId == tourReview.UserId)
+        //            {
+        //                listCP.Add(confirmTour.IdCheckpoint);
+        //            }
+        //        }
+        //    }
+        //    return listCP;
 
+        //}
+
+        
 
 
 
