@@ -23,12 +23,12 @@ namespace SIMS_Booking.View
         private readonly ReservationService _reservationService;
         private readonly TourService _tourService;
 
-
-
-        private readonly VehicleService _vehicleService;
-        private readonly RidesRepository _ridesRepository;
-        private readonly FinishedRidesRepository _finishedRidesRepository;
         private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
+        private readonly VehicleService _vehicleService;
+        private readonly DriverLanguagesService _driverLanguagesService;
+        private readonly DriverLocationsService _driverLocationsService;
+        private readonly RidesService _ridesService;
+        private readonly FinishedRidesService _finishedRidesService;
 
         private readonly GuestReviewService _guestReviewService; 
         private readonly OwnerReviewService _ownerReviewService;
@@ -37,8 +37,6 @@ namespace SIMS_Booking.View
         
         private readonly ReservedAccommodationService _reservedAccommodationService;
         private readonly UsersAccommodationService _userAccommodationService;
-        private readonly DriverLanguagesCsvCrudRepository _driverLanguagesCsvCrudRepository;
-        private readonly DriverLocationsCsvCrudRepository _driverLocationsCsvCrudRepository;
         private readonly TourPointCsvCrudRepository _tourPointCsvCrudRepository;
         private readonly ConfirmTourCsvCrudRepository _confirmTourCsvCrudRepository;
 
@@ -81,9 +79,10 @@ namespace SIMS_Booking.View
             _postponementService = new PostponementService();
 
             _vehicleService = new VehicleService();
-            _vehicleCsvCrudRepository = new VehicleCsvCrudRepository();
-            _ridesRepository = new RidesRepository();
-            _finishedRidesRepository = new FinishedRidesRepository();
+            _driverLanguagesService = new DriverLanguagesService();
+            _driverLocationsService = new DriverLocationsService();
+            _ridesService = new RidesService();
+            _finishedRidesService = new FinishedRidesService();
 
             _guestReviewService = new GuestReviewService();
             _ownerReviewService = new OwnerReviewService();
@@ -100,11 +99,8 @@ namespace SIMS_Booking.View
             _ownerReviewService.LoadReservationInOwnerReview(_reservationService);
             _postponementService.LoadReservationInPostponement(_reservationService);
 
-            _driverLanguagesCsvCrudRepository = new DriverLanguagesCsvCrudRepository();
-            _driverLocationsCsvCrudRepository = new DriverLocationsCsvCrudRepository();
-
-            _driverLanguagesCsvCrudRepository.AddDriverLanguagesToVehicles(_vehicleCsvCrudRepository);
-            _driverLocationsCsvCrudRepository.AddDriverLocationsToVehicles(_vehicleCsvCrudRepository);
+            _driverLanguagesService.AddDriverLanguagesToVehicles(_vehicleService);
+            _driverLocationsService.AddDriverLocationsToVehicles(_vehicleService);
             //_confirmTourRepository.loadGuests(_userService);
             _tourService.LoadCheckpoints(_tourPointCsvCrudRepository);
             //_tourCheckpointRepository.LoadCheckpointsInTour(_tourRepository, _tourPointRepository);
@@ -133,7 +129,7 @@ namespace SIMS_Booking.View
                             guest2View.Show();
                             break;
                         case Roles.Driver:
-                            DriverView driverView = new DriverView(user, _ridesRepository, _finishedRidesRepository, _vehicleCsvCrudRepository, _vehicleService, _driverLanguagesCsvCrudRepository, _driverLocationsCsvCrudRepository, _cityCountryCsvRepository);
+                            DriverView driverView = new DriverView(user, _ridesService, _finishedRidesService, _vehicleService, _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository);
                             driverView.Show();
                             break;
                         case Roles.Guide:
