@@ -6,7 +6,7 @@ namespace SIMS_Booking.Repository
     public class CityCountryCsvRepository 
     {
         private Dictionary<string, List<string>> countries;
-        private readonly string path = "../../../Resources/Data/countryCiryDictionary.csv";
+        private readonly string path = "../../../Resources/Data/countryCityDictionary.csv";
 
         public CityCountryCsvRepository() 
         {
