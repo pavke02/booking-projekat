@@ -1,10 +1,11 @@
 ﻿using SIMS_Booking.Observer;
 using SIMS_Booking.Serializer;
+using SIMS_Booking.Utility;
 using System.Collections.Generic;
 
 namespace SIMS_Booking.Repository.RelationsRepository
 {
-    public class RelationsCsvCrudRepository<T> where T : ISerializable, new()
+    public class RelationsCsvCrudRepository<T> where T : ISerializable, IDable, new()
     {
         protected readonly string _filePath;
         protected readonly Serializer<T> _serializer;
@@ -34,5 +35,37 @@ namespace SIMS_Booking.Repository.RelationsRepository
         {
             return _entityList;
         }
+
+        public T? Update(T entity)
+        {
+            T? current = _entityList.Find(c => c.getID() == entity.getID());
+            if (current == null) return default(T);
+            int index = _entityList.IndexOf(current);
+            _entityList.Remove(current);
+            _entityList.Insert(index, entity);       // keep ascending order of ids in file 
+            _serializer.ToCSV(_filePath, _entityList);
+            NotifyObservers();
+            return entity;
+        }
+
+        public void Subscribe(IObserver observer)
+        {
+            _observers.Add(observer);
+        }
+
+        public void Unsubscribe(IObserver observer)
+        {
+            _observers.Remove(observer);
+        }
+
+        public void NotifyObservers()
+        {
+            foreach (var observer in _observers)
+            {
+                observer.Update();
+            }
+        }
+
+
     }
 }

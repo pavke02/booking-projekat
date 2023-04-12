@@ -22,6 +22,7 @@ namespace SIMS_Booking.View
 
         private readonly ReservationService _reservationService;
         private readonly TourService _tourService;
+        private readonly ReservedTourService _reservedTourService;
 
 
 
@@ -32,6 +33,7 @@ namespace SIMS_Booking.View
 
         private readonly GuestReviewService _guestReviewService; 
         private readonly OwnerReviewService _ownerReviewService;
+        private readonly GuideReviewService _guideReviewService;
         private readonly PostponementService _postponementService;
         private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
         
@@ -76,6 +78,7 @@ namespace SIMS_Booking.View
             _cityCountryCsvRepository = new CityCountryCsvRepository();   
 
             _tourService = new TourService(); // sve ture ali nemamo  tourPoint = null
+            _reservedTourService = new ReservedTourService();
 
             _reservationService = new ReservationService();
             _postponementService = new PostponementService();
@@ -87,6 +90,7 @@ namespace SIMS_Booking.View
 
             _guestReviewService = new GuestReviewService();
             _ownerReviewService = new OwnerReviewService();
+            _guideReviewService = new GuideReviewService();
             _tourPointCsvCrudRepository = new TourPointCsvCrudRepository(); // svi tourPointi
             _confirmTourCsvCrudRepository = new ConfirmTourCsvCrudRepository();
             _cancellationCsvCrudRepository = new CancellationCsvCrudRepository();
@@ -129,7 +133,7 @@ namespace SIMS_Booking.View
                             guest1View.Show();
                             break;
                         case Roles.Guest2:
-                            Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleCsvCrudRepository);
+                            Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleService, _guideReviewService, _reservedTourService);
                             guest2View.Show();
                             break;
                         case Roles.Driver:

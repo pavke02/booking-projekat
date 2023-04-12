@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
@@ -8,6 +9,7 @@ using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
 using SIMS_Booking.Service;
+using SIMS_Booking.Service.RelationsService;
 
 namespace SIMS_Booking.View
 {
@@ -16,21 +18,29 @@ namespace SIMS_Booking.View
         public ObservableCollection<Tour> Tours { get; set; }
         public Tour SelectedTour { get; set; }
         public Vehicle SelectedVehicle { get; set; }
+        public Voucher SelectedVoucher { get; set; }
         public User LoggedUser { get; set; }
         public int searchGuestNumber;
         public DriverLocations driverLocations { get; set; }
+        public TourReservation SelectedTourReservation { get; set; }
 
         public ObservableCollection<TourReservation> TourReservation { get; set; }
 
+        private readonly TourService _tourService;
+        private readonly VehicleService _vehicleService;
+        private readonly ReservedTourService _reservedTourService;
+        private readonly GuideReviewService _guideReviewService;
+        private readonly VoucherService _voucherService;
+
 
         private readonly ReservedToursCsvCrudRepository _reservedToursCsvCrudRepository;
-        private readonly TourService _tourService;
         private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
         private readonly VehicleReservationCsvCrudRepository _vehicleReservationCsvCrudRepository;
         private readonly DriverLocationsCsvCrudRepository _driverLocationsCsvCrudRepository;
         private readonly TourReservation tourReservation;
 
-        public Guest2MainView(TourService tourService, User loggedUser, VehicleCsvCrudRepository vehicleCsvCrudRepository)
+        /*VehicleCsvCrudRepository vehicleCsvCrudRepository*/
+        public Guest2MainView(TourService tourService, User loggedUser,VehicleService vehicleService, GuideReviewService guideReviewService, ReservedTourService reservedTourService)
         {
             InitializeComponent();
             DataContext = this;
@@ -38,13 +48,25 @@ namespace SIMS_Booking.View
 
             _tourService = tourService;
             _tourService.Subscribe(this);
-            _vehicleCsvCrudRepository = vehicleCsvCrudRepository;
-            _vehicleCsvCrudRepository.Subscribe(this);
+            
 
-            _reservedToursCsvCrudRepository = new ReservedToursCsvCrudRepository();
+            _vehicleService = vehicleService;
+            _vehicleService.Subscribe(this);
+
+
+            
+            _reservedTourService = new ReservedTourService();
+
 
             Tours = new ObservableCollection<Tour>(_tourService.GetAll());
-            TourReservation = new ObservableCollection<TourReservation>(_reservedToursCsvCrudRepository.GetAll());
+
+            TourReservation = new ObservableCollection<TourReservation>(_reservedTourService.GetAll());
+
+            _guideReviewService = guideReviewService;
+            _reservedTourService = reservedTourService;
+
+
+
         }
         private void UpdateTours(List<Tour> tours)
         {
@@ -79,6 +101,15 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private void Review_Tour(object sender, RoutedEventArgs e)
+        {
+            Guest2GuideReviewView reviewView =
+                new Guest2GuideReviewView(_guideReviewService,_reservedTourService,SelectedTourReservation);
+
+            reviewView.Show();
+          
+        }
+
         private void Reserve_Taxi(object sender, RoutedEventArgs e)
         {
             Guest2DrivingReservationView reservationView =
@@ -93,7 +124,7 @@ namespace SIMS_Booking.View
 
             if (SelectedTour != null)
             {
-                //SelectedTour.Name,SelectedTour.Location,SelectedTour.Description,SelectedTour.Language, SelectedTour.MaxGuests,SelectedTour.Time, LoggedUser
+                
                 Guest2TourReservation reservation = new Guest2TourReservation(SelectedTour, LoggedUser);
                 reservation.ShowDialog();
             }
@@ -101,6 +132,15 @@ namespace SIMS_Booking.View
             {
                 MessageBox.Show("Please select the tour!");
             }
+
+        }
+
+        private void QuickTaxi_Click(object sender, RoutedEventArgs e)
+        {
+
+            Guest2FindingTaxiFast guest2FindingTaxiFast = new Guest2FindingTaxiFast(LoggedUser);
+            guest2FindingTaxiFast.Show();
+
 
         }
     }
