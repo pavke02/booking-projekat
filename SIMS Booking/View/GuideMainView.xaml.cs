@@ -411,14 +411,8 @@ namespace SIMS_Booking.View
             if (SelectedTour != null)
             {
 
-                Trace.WriteLine(_confirmTourService.NumberOfGuestsByAgesBetween18and50(_userService, SelectedTour));
-                Trace.WriteLine(_confirmTourService.PercentageByVaucer( SelectedTour));
-                Trace.WriteLine(_confirmTourService.PercentageWithoutVaucer(SelectedTour));
+                string poruka = string.Format("Sa vaucerom: {0}\nBez vaucera: {1}\nIspod 18 godina: {2}\nIzmedju 18 i 50 godina: {3}\nIznad 50 godina: {4}", _confirmTourService.PercentageByVaucer(SelectedTour), _confirmTourService.PercentageWithoutVaucer(SelectedTour), _confirmTourService.NumberOfGuesteByAgesUnder18(_userService, SelectedTour), _confirmTourService.NumberOfGuestsByAgesBetween18and50(_userService, SelectedTour), _confirmTourService.NumberOfGuestByAgesUp50(_userService, SelectedTour));
 
-               
-                string poruka = string.Format("Sa vaucerom: {0}\nBez vaucera: {1}", _confirmTourService.PercentageByVaucer(SelectedTour), _confirmTourService.PercentageWithoutVaucer(SelectedTour));
-
-                // Prikaz poruke korisniku
                 MessageBox.Show(poruka, "Informacije o statistici");
                 
             }
@@ -426,8 +420,6 @@ namespace SIMS_Booking.View
             {
             GuideStatistics guideStatistics = new GuideStatistics(_confirmTourService,_tourService,_textBox,_userService,_confirmTour);
             guideStatistics.Show();
-
-
 
             }
         }
