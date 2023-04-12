@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
+using SIMS_Booking.Service;
 
 namespace SIMS_Booking.View
 {
@@ -32,8 +34,7 @@ namespace SIMS_Booking.View
         public ObservableCollection<TourPoint> Checkpoints { get; set; }
      
         public Tour SelectedTour { get; set; }
-        private ConfirmTourCsvCrudRepository gosti { get; set; }
-        private ConfirmTourCsvCrudRepository _confirmTourCsvCrudRepository;
+        private ConfirmTourService _confirmTourService;
         private Tour _tour { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -43,36 +44,31 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public StartTour(Tour selectedTour , ConfirmTourCsvCrudRepository confirmTourCsvCrudRepository)
+        public StartTour(Tour selectedTour , ConfirmTourService confirmTourService)
         {
             InitializeComponent();
             DataContext = this;
             SelectedTour = selectedTour;
-            
-            _confirmTourCsvCrudRepository = confirmTourCsvCrudRepository;          
-          
+
+            _confirmTourService = confirmTourService;                              
             Checkpoints = new ObservableCollection<TourPoint>(SelectedTour.TourPoints);
         }
-            
         
-
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
-
             Checkpoints[0].CheckedCheckBox = true;
             SelectedTour.CurrentTourPoint = 0;
             for (int j = 1; j < Checkpoints.Count; j++)
             {
                 Checkpoints[j].CheckedCheckBox = false;
             }
-            foreach(ConfirmTour confirmTour in _confirmTourCsvCrudRepository.GetAll())
+            foreach(ConfirmTour confirmTour in _confirmTourService.GetAll().ToList())
             {
                 if(confirmTour.IdTour == SelectedTour.getID())
                 {
-                    _confirmTourCsvCrudRepository.Delete(confirmTour);
+                    _confirmTourService.Delete(confirmTour);
                 }
             }
-
 
             Window.GetWindow(this).Close();
         }
@@ -80,50 +76,38 @@ namespace SIMS_Booking.View
               
         private void Button_Click1(object sender, RoutedEventArgs e)
         {
-            
-
-            for( int i = 0; i < Checkpoints.Count; i++ )
+            for (int i = 0; i < Checkpoints.Count; i++)
             {
-                if ((Checkpoints[i].CheckedCheckBox) && (i != Checkpoints.Count-1))
+                if ((Checkpoints[i].CheckedCheckBox) && (i != Checkpoints.Count - 1))
                 {
-                    
-                    ConfirmTourByGuest confirmTourByGuest = new ConfirmTourByGuest(_confirmTourCsvCrudRepository, SelectedTour);
-                    confirmTourByGuest.ShowDialog();
-                                                                           
+                    ConfirmByGuest cf = new ConfirmByGuest(_confirmTourService,SelectedTour);
+                    cf.Show();
 
                     Checkpoints[i].CheckedCheckBox = false;
                     Checkpoints[i + 1].CheckedCheckBox = true;
                     SelectedTour.CurrentTourPoint = i + 1;
-                    OnPropertyChanged();                                                           
-                    
-                    break;
-                } 
+                    OnPropertyChanged();
 
-                if(i == Checkpoints.Count-1)
+                    break;
+                }
+
+                if (i == Checkpoints.Count - 1)
                 {
-                    
                     Window.GetWindow(this).Close();
                     Checkpoints[0].CheckedCheckBox = true;
                     SelectedTour.CurrentTourPoint = 0;
-                    for ( int j = 1; j < Checkpoints.Count; j++ )
+                    for (int j = 1; j < Checkpoints.Count; j++)
                     {
                         Checkpoints[j].CheckedCheckBox = false;
                     }
                 }
-
             }
-            
-
-         }
+        }
 
         public void Update()
         {
             throw new NotImplementedException();
         }
     }
-
-   
-        
-      
 }
 

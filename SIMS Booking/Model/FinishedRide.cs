@@ -17,7 +17,7 @@ namespace SIMS_Booking.Model
 
         public FinishedRide() { }
 
-        public FinishedRide(Rides ride, string price, string time)
+        public FinishedRide(int driverID, Rides ride, string price, string time)
         {
             Ride = ride;
             Price = price;
@@ -26,7 +26,7 @@ namespace SIMS_Booking.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { ID.ToString(), Ride.DriverID.ToString(), Ride.Street, Ride.Location.Country, Ride.Location.City, Ride.DateTime.ToString(), Price, Time };
+            string[] csvValues = { ID.ToString(), Ride.DriverID.ToString(), Ride.Street, Ride.Location.Country, Ride.Location.City, Ride.DateTime.ToString(), Ride.Fast.ToString(), Price, Time };
             return csvValues;
         }
 
@@ -34,11 +34,11 @@ namespace SIMS_Booking.Model
         {
             ID = Convert.ToInt32(values[0]);
             Location rideLocation = new Location();
-            rideLocation.Country = values[3];
-            rideLocation.City = values[4];
-            Ride = new Rides(Convert.ToInt32(values[1]), values[2], rideLocation, Convert.ToDateTime(values[5]));
-            Price = values[6];
-            Time = values[7];
+            rideLocation.Country = values[4];
+            rideLocation.City = values[5];
+            Ride = new Rides(Convert.ToInt32(values[1]), values[2], rideLocation, Convert.ToDateTime(values[5]), Convert.ToBoolean(values[6]));
+            Price = values[7];
+            Time = values[8];
         }
 
         public int getID()

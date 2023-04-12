@@ -14,15 +14,17 @@ namespace SIMS_Booking.Model
         public string Password { get; set; }
         public Roles Role { get; set; }
         public bool IsSuperUser { get; set; }
+        public int Age { get; set; }
 
         public User() { }
 
-        public User(string username, string password, Roles role, bool isSuperUser)
+        public User(string username, string password, Roles role, bool isSuperUser, int years)
         {
             Username = username;
             Password = password;
             Role = role;
             IsSuperUser = isSuperUser;
+            Age = years;
         }
 
         public int getID()
@@ -42,11 +44,12 @@ namespace SIMS_Booking.Model
             Password = values[2];
             Role = (Roles)Enum.Parse(typeof(Roles), values[3]);
             IsSuperUser = bool.Parse(values[4]);
+            Age = int.Parse(values[5]);
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { ID.ToString(), Username, Password, Role.ToString(), IsSuperUser.ToString() };
+            string[] csvValues = { ID.ToString(), Username, Password, Role.ToString(), IsSuperUser.ToString(), Age.ToString() };
             return csvValues;
         }                
     }

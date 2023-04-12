@@ -96,6 +96,12 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
+        <TextBox Grid.Row="0" Margin="508,300,578,461" 
+            Text="{Binding TourTime, UpdateSourceTrigger=LostFocus}"
+            x:Name="tourTime"/>
+        <Button Content="Statistika!" Click="Statistika" Margin="293,0,775,754" />
+        <Button Content="OTKAZI TURU" Click="Otkazi_Turu" Margin="432,1,636,753" />
+        <Button Content="Ocene / recenzije" Click="Ocene_Recenzije" Margin="580,1,488,753" />
 
 
 

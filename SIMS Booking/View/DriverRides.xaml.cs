@@ -1,5 +1,6 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
+using SIMS_Booking.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,8 +31,9 @@ namespace SIMS_Booking.View
 
         public Rides selectedRide;
 
-        private RidesRepository _ridesRepository;
-        private FinishedRidesRepository _finishedRidesRepository;
+        private RidesService _ridesService;
+        private FinishedRidesService _finishedRidesService;
+        private VehicleService _vehicleService;
         public User User { get; set; }
 
         public static ObservableCollection<Rides> Rides { get; set; }
@@ -45,28 +47,38 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public DriverRides(User user, RidesRepository ridesRepository, FinishedRidesRepository finishedRidesRepository)
+        public DriverRides(User user, RidesService ridesService, FinishedRidesService finishedRidesService, VehicleService vehicleService)
         {
             InitializeComponent();
             DataContext = this;
 
-            _ridesRepository = ridesRepository;
-            _finishedRidesRepository = finishedRidesRepository;
+            _ridesService = ridesService;
+            _finishedRidesService = finishedRidesService;
+            _vehicleService = vehicleService;
+
             User = user;
 
-            Rides = new ObservableCollection<Rides>(_ridesRepository.GetAll());
+            Vehicle vehicle = _vehicleService.GetVehicleByUserID(user.getID());
+
+            Rides = new ObservableCollection<Rides>(_ridesService.GetAll());
             ActiveRides = new List<Rides>();
 
             foreach (Rides ride in Rides)
             {
-                if(ride.DriverID == User.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now)
+                bool onLocation = false;
+                foreach(Location location in vehicle.Locations)
+                {
+                    if(location.City == ride.Location.City && location.Country == ride.Location.Country)
+                    {
+                        onLocation = true;
+                    }
+                }
+                if((ride.DriverID == User.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now) || (ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now && ride.Fast == true && onLocation == true))
                 {
                     ActiveRides.Add(ride);
                 }
             }
-
             
-
         }
 
         private int remainingTime;
@@ -122,10 +134,8 @@ namespace SIMS_Booking.View
 
             if (timeDif.TotalSeconds <= 300)
             {
-
                 DriverLate driveLate = new DriverLate();
                 driveLate.ShowDialog();
-
 
                 remainingTime = (int)(20 * 60 + 60 * driveLate.LateInMinutes + timeDif.TotalSeconds);
 
@@ -143,9 +153,6 @@ namespace SIMS_Booking.View
             {
                 MessageBox.Show("You arrived too soon!");
             }
-            
-
-            
         }
 
         private void ridesGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -156,14 +163,12 @@ namespace SIMS_Booking.View
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
-
             timer2 = new DispatcherTimer();
             timer2.Interval = TimeSpan.FromSeconds(1);
             timer2.Tick += Timer2_Tick;
             timer2.Start();
 
             StartingPriceLabel.Content = startingPrice.ToString() + " RSD";
-
             StopwatchLabel.Content = "00:00:00";
 
             stopButton.Visibility = Visibility.Visible;
@@ -205,9 +210,12 @@ namespace SIMS_Booking.View
             ActiveRides.Remove(selectedRide);
             ridesGrid.Items.Refresh();
 
-            _ridesRepository.Delete(selectedRide);
-            _finishedRidesRepository.Save(selectedFinishedRide);
+            _ridesService.Delete(selectedRide);
+            _finishedRidesService.Save(selectedFinishedRide);
 
+            startButton.IsEnabled = false;
+            cancelButton.IsEnabled = false;
+            stopButton.Visibility = Visibility.Hidden;
         }
     }
 }

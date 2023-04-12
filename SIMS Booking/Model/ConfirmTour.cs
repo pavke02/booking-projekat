@@ -11,6 +11,7 @@ namespace SIMS_Booking.Model
         public int IdCheckpoint { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        public int Vaucer { get; set; } = 0;
 
         public ConfirmTour() { }
 
@@ -24,7 +25,7 @@ namespace SIMS_Booking.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(),UserId.ToString() ,IdTour.ToString(), IdCheckpoint.ToString() };
+            string[] csvValues = { Id.ToString(),UserId.ToString() ,IdTour.ToString(), IdCheckpoint.ToString(), Vaucer.ToString() };
 
             return csvValues;
         }
@@ -36,6 +37,7 @@ namespace SIMS_Booking.Model
             UserId = int.Parse(values[1]);
             IdTour = int.Parse(values[2]);
             IdCheckpoint = int.Parse(values[3]);
+            Vaucer = int.Parse(values[4]);
         }
 
         public int getID()

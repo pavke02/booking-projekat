@@ -1,46 +1,53 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SIMS_Booking.Service
 {
     public class VehicleService
     {
-        private readonly VehicleCsvCrudRepository _repository;
+        private readonly CrudService<Vehicle> _crudService;
 
         public VehicleService()
         {
-            _repository = new VehicleCsvCrudRepository();
+            _crudService = new CrudService<Vehicle>("../../../Resources/Data/vehicles.csv");
         }
 
-        public List<Vehicle> Load()
-        {
-            return _repository.Load();
-        }
+        #region Crud 
 
         public void Save(Vehicle vehicle)
         {
-            _repository.Save(vehicle);
+            _crudService.Save(vehicle);
         }
 
         public List<Vehicle> GetAll()
         {
-            return _repository.GetAll();
+            return _crudService.GetAll();
         }
 
         public Vehicle GetById(int id)
         {
-            return _repository.GetById(id);
+            return _crudService.GetById(id);
         }
 
         public void Subscribe(IObserver observer)
         {
-            _repository.Subscribe(observer);
+            _crudService.Subscribe(observer);
+        }
+
+        #endregion
+
+        public Vehicle GetVehicleByUserID(int id)
+        {
+            foreach(Vehicle vehicle in _crudService.GetAll())
+            {
+                if(vehicle.UserID == id)
+                {
+                    return vehicle;
+                }
+            }
+            return null;
         }
     }
 }

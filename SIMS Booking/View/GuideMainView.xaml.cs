@@ -3,20 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
@@ -31,17 +21,26 @@ namespace SIMS_Booking.View
         public ObservableCollection<Tour> AllTours { get; set; }
         public ObservableCollection<TourPoint> AllCheckpoints { get; set; }
         public ObservableCollection <String> Checkpoints{ get; set; }
+        public TourReview _tourReview { get; set; }
+
+        private Tour _tour { get; set; }
+        private TourReviewService _tourReviewService { get; set; }
+
         public List<string> Cities { get; set; }
 
         public Tour Tour { get; set; }
         public Tour Tour1 { get; set; }
         public TourPoint dataTourPoint { get; set; }
 
+        private TextBox _textBox;
         private TourService _tourService;
         private ObservableCollection<Tour> _allToursRepository;
-        private TourPointCsvCrudRepository _tourPointCsvCrudRepository;
-        private ConfirmTourCsvCrudRepository _confirmTourCsvCrudRepository;
- 
+
+        private TourPointService _tourPointService;
+        private ConfirmTourService _confirmTourService;
+        private ConfirmTour _confirmTour;
+        private UserService _userService;
+
         public Tour SelectedTour { get; set; }
 
         private string tourPointName;
@@ -74,11 +73,25 @@ namespace SIMS_Booking.View
 
 
 
+        private TimeOnly _tourTime;
+        public TimeOnly TourTime
+        {
+            get { return _tourTime; }
+            set 
+            {
+                if (value != _tourTime)
+                {
+                    _tourTime = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private string tourName;
         public string TourName
         {
             get { return tourName; }
-            set 
+            set
             {
                 if (value != tourName)
                 {
@@ -257,28 +270,32 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public GuideMainView(TourService  tourService, ConfirmTourCsvCrudRepository confirmTourCsvCrudRepository, TourPointCsvCrudRepository tourPointCsvCrudRepository )
+        public GuideMainView(TourService  tourService, ConfirmTourService confirmTourService, TourPointService tourPointService,TextBox textBox,UserService userService,TourReview tourReview,Tour tour,TourReviewService tourReviewService )
         {
             InitializeComponent();
             DataContext = this;
             Tour = new Tour();
             Tour1 = new Tour();
+            _textBox = textBox;
+            _tourReview = tourReview;
+            _tour = tour;
+            _tourReviewService = tourReviewService;
 
             _tourService = tourService;
             _tourService.Subscribe(this);
 
-            _tourPointCsvCrudRepository = tourPointCsvCrudRepository;
-            _tourPointCsvCrudRepository.Subscribe(this);
+            _tourPointService = tourPointService;
+            _tourPointService.Subscribe(this);
+            _userService = userService;
 
-            _confirmTourCsvCrudRepository = confirmTourCsvCrudRepository;
+            _confirmTourService = confirmTourService;
+
             Cities = new List<string> { "Serbia,Novi Sad","Serbia,Ruma", "Serbia,Belgrade","Serbia, Nis","England,London","England,London EAST" };
 
             TodaysTours = new ObservableCollection<Tour>(_tourService.GetTodaysTours());
             AllTours = new ObservableCollection<Tour>(_tourService.GetAll());
-            AllCheckpoints = new ObservableCollection<TourPoint>(_tourPointCsvCrudRepository.GetAll());
+            AllCheckpoints = new ObservableCollection<TourPoint>(_tourPointService.GetAll());
             Checkpoints = new ObservableCollection<string>();
-           
-
         }
 
         
@@ -286,13 +303,10 @@ namespace SIMS_Booking.View
         {
             if(SelectedTour != null )
             {
-                StartTour startTour = new StartTour(SelectedTour, _confirmTourCsvCrudRepository);
+                StartTour startTour = new StartTour(SelectedTour, _confirmTourService);
                 startTour.ShowDialog();
             }
-            
-
-
-           
+  
         }
 
         private void UpdateTour(List<Tour> tours , List<Tour> todaysTours)
@@ -316,41 +330,50 @@ namespace SIMS_Booking.View
 
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
+            string text = tourPointTb.Text;
+            int count = _tourService.CountCheckPoints(text);
 
-
-           
-
-            List<string> imageURLs = new List<string>();
-            string[] values = ImageURLs.Split("\n");
-            foreach (string value in values)
-                imageURLs.Add(value);
-
-
-            List<int> TourPointIds = new List<int>();
-            List<TourPoint> TourPoints = new List<TourPoint>();
-
-            
-            List<string> tourPoinNames = TourPointArray.Split(",").ToList();
-            bool isFirst = true;
-            foreach (string tourPoinName in tourPoinNames)
+            if (count < 2)
             {
-                TourPoint tourPoint = new TourPoint(tourPoinName, isFirst);
-                isFirst = false;
-
-                _tourPointCsvCrudRepository.Save(tourPoint); // = tourPoint
-                TourPoints.Add(tourPoint);
-                TourPointIds.Add(tourPoint.getID());
-
-
+                MessageBox.Show("Unesite najmanje dva checkpointa!");
             }
-
-            string[] v = City.Split(",");
-            Location location = new Location(v[0], v[1]);
-
+            else
+            {
 
 
-            Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), StartTour, int.Parse(Times), imageURLs, TourPointIds, TourPoints);
-            _tourService.Save(tour);
+                List<string> imageURLs = new List<string>();
+                string[] values = ImageURLs.Split("\n");
+                foreach (string value in values)
+                    imageURLs.Add(value);
+
+
+                List<int> TourPointIds = new List<int>();
+                List<TourPoint> TourPoints = new List<TourPoint>();
+
+
+                List<string> tourPoinNames = TourPointArray.Split(",").ToList();
+                bool isFirst = true;
+                foreach (string tourPoinName in tourPoinNames)
+                {
+                    TourPoint tourPoint = new TourPoint(tourPoinName, isFirst);
+                    isFirst = false;
+
+                    _tourPointService.Save(tourPoint); // = tourPoint
+                    TourPoints.Add(tourPoint);
+                    TourPointIds.Add(tourPoint.getID());
+
+
+                }
+
+                string[] v = City.Split(",");
+                Location location = new Location(v[0], v[1]);
+
+
+
+                DateTime time = new DateTime(StartTour.Year,StartTour.Month,StartTour.Day,TourTime.Hour,TourTime.Minute,TourTime.Second);
+                Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), time, int.Parse(Times), imageURLs, TourPointIds, TourPoints, TourTime);
+                _tourService.Save(tour);
+            }
 
 
 
@@ -380,6 +403,50 @@ namespace SIMS_Booking.View
                     imageTb.Text = imageTb.Text + "\n" + filePath;
                     ImageURLs = imageTb.Text;
                 }
+            }
+        }
+
+        private void Statistika(object sender, RoutedEventArgs e)
+        {
+            if (SelectedTour != null)
+            {
+
+                Trace.WriteLine(_confirmTourService.NumberOfGuestsByAgesBetween18and50(_userService, SelectedTour));
+                Trace.WriteLine(_confirmTourService.PercentageByVaucer( SelectedTour));
+                Trace.WriteLine(_confirmTourService.PercentageWithoutVaucer(SelectedTour));
+
+               
+                string poruka = string.Format("Sa vaucerom: {0}\nBez vaucera: {1}", _confirmTourService.PercentageByVaucer(SelectedTour), _confirmTourService.PercentageWithoutVaucer(SelectedTour));
+
+                // Prikaz poruke korisniku
+                MessageBox.Show(poruka, "Informacije o statistici");
+                
+            }
+            else
+            {
+            GuideStatistics guideStatistics = new GuideStatistics(_confirmTourService,_tourService,_textBox,_userService,_confirmTour);
+            guideStatistics.Show();
+
+
+
+            }
+        }
+
+        private void Otkazi_Turu(object sender, RoutedEventArgs e)
+        {
+            if (SelectedTour != null &&  _confirmTourService.AddVaucer(SelectedTour, SelectedTour.TourTime, _confirmTour) == true)
+            {
+                _tourService.Delete(SelectedTour);
+                
+            }
+        }
+
+        private void Ocene_Recenzije(object sender, RoutedEventArgs e)
+        {
+            if(SelectedTour!=null)
+            {
+                TourReviewView tourReviewView = new TourReviewView(_tourReview,_tourReviewService,SelectedTour,_confirmTourService,_tourReview);
+                tourReviewView.Show();
             }
         }
     }

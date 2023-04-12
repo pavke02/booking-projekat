@@ -1,7 +1,6 @@
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
-using SIMS_Booking.Repository.RelationsRepository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
 using System.ComponentModel;
@@ -10,7 +9,8 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using SIMS_Booking.View.Owner;
-
+using System;
+using System.Windows.Controls;
 
 namespace SIMS_Booking.View
 {
@@ -18,10 +18,10 @@ namespace SIMS_Booking.View
     {
         private readonly UserService _userService;
         private readonly AccommodationService _accommodationService;
-        private readonly CityCountryCsvRepository _cityCountryCsvRepository;   
-
+        private readonly CityCountryCsvRepository _cityCountryCsvRepository;
         private readonly ReservationService _reservationService;
         private readonly TourService _tourService;
+
         private readonly ReservedTourService _reservedTourService;
 
 
@@ -29,23 +29,30 @@ namespace SIMS_Booking.View
         private readonly VehicleService _vehicleService;
         private readonly RidesRepository _ridesRepository;
         private readonly FinishedRidesRepository _finishedRidesRepository;
-        private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
 
+        private readonly TextBox _textBox;
+
+        private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
+        private readonly VehicleService _vehicleService;
+        private readonly DriverLanguagesService _driverLanguagesService;
+        private readonly DriverLocationsService _driverLocationsService;
+        private readonly RidesService _ridesService;
+        private readonly FinishedRidesService _finishedRidesService;
         private readonly GuestReviewService _guestReviewService; 
         private readonly OwnerReviewService _ownerReviewService;
         private readonly GuideReviewService _guideReviewService;
         private readonly PostponementService _postponementService;
         private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
-        
         private readonly ReservedAccommodationService _reservedAccommodationService;
         private readonly UsersAccommodationService _userAccommodationService;
-        private readonly DriverLanguagesCsvCrudRepository _driverLanguagesCsvCrudRepository;
-        private readonly DriverLocationsCsvCrudRepository _driverLocationsCsvCrudRepository;
-        private readonly TourPointCsvCrudRepository _tourPointCsvCrudRepository;
-        private readonly ConfirmTourCsvCrudRepository _confirmTourCsvCrudRepository;
-
+        private readonly TourPointService _tourPointService;
+        private readonly ConfirmTourService _confirmTourService;
 
         private string _username;
+        private TourReview _tourReview;
+        private Tour _tour;
+        private TourReviewService _tourReviewService;
+
         public string Username
         {
             get => _username;
@@ -75,26 +82,33 @@ namespace SIMS_Booking.View
 
             _userService = new UserService();
             _accommodationService = new AccommodationService();
-            _cityCountryCsvRepository = new CityCountryCsvRepository();   
-
+            _cityCountryCsvRepository = new CityCountryCsvRepository();
             _tourService = new TourService(); // sve ture ali nemamo  tourPoint = null
+
             _reservedTourService = new ReservedTourService();
+
+
+            _tourReviewService = new TourReviewService();
 
             _reservationService = new ReservationService();
             _postponementService = new PostponementService();
-
             _vehicleService = new VehicleService();
-            _vehicleCsvCrudRepository = new VehicleCsvCrudRepository();
-            _ridesRepository = new RidesRepository();
-            _finishedRidesRepository = new FinishedRidesRepository();
-
+            _driverLanguagesService = new DriverLanguagesService();
+            _driverLocationsService = new DriverLocationsService();
+            _ridesService = new RidesService();
+            _finishedRidesService = new FinishedRidesService();
             _guestReviewService = new GuestReviewService();
             _ownerReviewService = new OwnerReviewService();
+
             _guideReviewService = new GuideReviewService();
             _tourPointCsvCrudRepository = new TourPointCsvCrudRepository(); // svi tourPointi
             _confirmTourCsvCrudRepository = new ConfirmTourCsvCrudRepository();
             _cancellationCsvCrudRepository = new CancellationCsvCrudRepository();
-
+            _textBox = new TextBox();
+            _guestReviewService = new GuestReviewService();
+            _ownerReviewService = new OwnerReviewService();
+            _tourPointService = new TourPointService(); // svi tourPointi
+            _confirmTourService = new ConfirmTourService();
             _reservedAccommodationService = new ReservedAccommodationService();
             _userAccommodationService = new UsersAccommodationService();
 
@@ -103,15 +117,12 @@ namespace SIMS_Booking.View
             _guestReviewService.LoadReservationInGuestReview(_reservationService);
             _ownerReviewService.LoadReservationInOwnerReview(_reservationService);
             _postponementService.LoadReservationInPostponement(_reservationService);
-
-            _driverLanguagesCsvCrudRepository = new DriverLanguagesCsvCrudRepository();
-            _driverLocationsCsvCrudRepository = new DriverLocationsCsvCrudRepository();
-
-            _driverLanguagesCsvCrudRepository.AddDriverLanguagesToVehicles(_vehicleCsvCrudRepository);
-            _driverLocationsCsvCrudRepository.AddDriverLocationsToVehicles(_vehicleCsvCrudRepository);
-            //_confirmTourRepository.loadGuests(_userService);
-            _tourService.LoadCheckpoints(_tourPointCsvCrudRepository);
-            //_tourCheckpointRepository.LoadCheckpointsInTour(_tourRepository, _tourPointRepository);
+            _driverLanguagesService.AddDriverLanguagesToVehicles(_vehicleService);
+            _driverLocationsService.AddDriverLocationsToVehicles(_vehicleService);
+            _confirmTourService.loadGuests(_userService);
+            _tourService.LoadCheckpoints(_tourPointService);
+            _tourReviewService.loadusers(_userService,_confirmTourService);
+            _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService);
         }
 
         #region SignIn
@@ -137,11 +148,12 @@ namespace SIMS_Booking.View
                             guest2View.Show();
                             break;
                         case Roles.Driver:
-                            DriverView driverView = new DriverView(user, _ridesRepository, _finishedRidesRepository, _vehicleCsvCrudRepository, _vehicleService, _driverLanguagesCsvCrudRepository, _driverLocationsCsvCrudRepository, _cityCountryCsvRepository);
+                            DriverView driverView = new DriverView(user, _ridesService, _finishedRidesService, _vehicleService, _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository);
                             driverView.Show();
+                            CheckFastRides(user);
                             break;
                         case Roles.Guide:
-                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourCsvCrudRepository, _tourPointCsvCrudRepository);
+                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService,_textBox,_userService,_tourReview,_tour,_tourReviewService);
                             guideView.Show();
                             break;
                     }
@@ -165,5 +177,18 @@ namespace SIMS_Booking.View
             signUpView.Show();
             Close();
         }
+
+        public void CheckFastRides(User user)
+        {
+            foreach (Rides ride in _ridesService.GetAll())
+            {
+                if (ride.DriverID == user.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now && ride.Fast == true)
+                {
+                    MessageBox.Show("You have new fast ride(s)!");
+                    break;
+                }
+            }
+        }
+
     }
 }
