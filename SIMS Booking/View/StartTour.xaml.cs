@@ -42,9 +42,7 @@ namespace SIMS_Booking.View
             }
         }
 
-
         public ObservableCollection<TourPoint> Checkpoints { get; set; }
-     
         public Tour SelectedTour { get; set; }
         private ConfirmTourService gosti { get; set; }
         private ConfirmTourService _confirmTourService;
@@ -68,44 +66,19 @@ namespace SIMS_Booking.View
             Checkpoints = new ObservableCollection<TourPoint>(SelectedTour.TourPoints);                     
 
         }
-            
-        
-
-        private void Button_Click2(object sender, RoutedEventArgs e)
+     
+        public void Update()
         {
-
-            Checkpoints[0].CheckedCheckBox = true;
-            SelectedTour.CurrentTourPoint = 0;
-            for (int j = 1; j < Checkpoints.Count; j++)
-            {
-                Checkpoints[j].CheckedCheckBox = false;
-            }
-            foreach(ConfirmTour confirmTour in _confirmTourService.GetAll().ToList())
-            {
-                if(confirmTour.IdTour == SelectedTour.getID())
-                {
-                    _confirmTourService.Delete(confirmTour);
-                }
-            }
-
-            Window.GetWindow(this).Close();
+            throw new NotImplementedException();
         }
 
-              
-        private void Button_Click1(object sender, RoutedEventArgs e)
+        private void NextCheckPoint(object sender, RoutedEventArgs e)
         {
-
-
-
             for (int i = 0; i < Checkpoints.Count; i++)
             {
                 if ((Checkpoints[i].CheckedCheckBox) && (i != Checkpoints.Count - 1))
-                {
-
-                    //ConfirmTourByGuest confirmTourByGuest = new ConfirmTourByGuest(_confirmTourService, SelectedTour);
-                    //confirmTourByGuest.ShowDialog();
-
-                    ConfirmByGuest cf = new ConfirmByGuest(_confirmTourService,SelectedTour);
+                {                   
+                    ConfirmByGuest cf = new ConfirmByGuest(_confirmTourService, SelectedTour);
                     cf.Show();
 
                     Checkpoints[i].CheckedCheckBox = false;
@@ -129,13 +102,25 @@ namespace SIMS_Booking.View
                 }
 
             }
-
-
         }
 
-        public void Update()
+        private void EmergencyStopTour(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            Checkpoints[0].CheckedCheckBox = true;
+            SelectedTour.CurrentTourPoint = 0;
+            for (int j = 1; j < Checkpoints.Count; j++)
+            {
+                Checkpoints[j].CheckedCheckBox = false;
+            }
+            foreach (ConfirmTour confirmTour in _confirmTourService.GetAll().ToList())
+            {
+                if (confirmTour.IdTour == SelectedTour.getID())
+                {
+                    _confirmTourService.Delete(confirmTour);
+                }
+            }
+
+            Window.GetWindow(this).Close();
         }
     }
 

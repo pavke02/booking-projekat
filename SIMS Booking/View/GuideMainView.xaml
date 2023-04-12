@@ -13,7 +13,7 @@
         Height="37" 
         HorizontalAlignment="Left" 
         VerticalAlignment="Top" 
-        Click="Button_Click" Margin="1,-1,0,0" />
+        Click="StartingTour" Margin="1,-1,0,0" />
 
 
 
@@ -80,7 +80,7 @@
                                  Name="Language"/>
 
 
-        <Button Content="DODAJ TURU!" Click="Button_Click2" Margin="162,-2,906,756" />
+        <Button Content="DODAJ TURU!" Click="AddTour" Margin="162,-2,906,756" />
         <Button Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
                                 Height="41" Width="120" Margin="500,379,0,0"
                                 Content="Add Image" Click="AddImage"></Button>

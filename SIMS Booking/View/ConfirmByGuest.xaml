@@ -15,7 +15,7 @@
 
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Content="Dosao je na turu" Width="100" Height="30" Click="Button_Click"  />
+            <Button Content="Dosao je na turu" Width="100" Height="30" Click="ComeOnTour"  />
 
         </Grid>
 
