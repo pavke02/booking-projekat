@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SIMS_Booking.View"
+        xmlns:local="clr-namespace:SIMS_Booking.View" xmlns:model="clr-namespace:SIMS_Booking.Model" d:DataContext="{d:DesignInstance Type=model:TourPoint}"
         mc:Ignorable="d"
         Title="Guest2TourReservation" Height="450" Width="800">
     <Grid>
@@ -15,7 +15,7 @@
 
         <TextBox x:Name="BoxName" HorizontalAlignment="Left" Margin="154,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="BoxLocation" HorizontalAlignment="Left" Margin="154,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="BoxDescription" HorizontalAlignment="Left" Margin="400,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="217" Height="115"/>
+        <TextBox x:Name="BoxDescription" HorizontalAlignment="Left" Margin="460,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="146" Height="73"/>
         <TextBox x:Name="BoxLanguage" HorizontalAlignment="Left" Margin="154,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="BoxMaxGuests" HorizontalAlignment="Left" Margin="154,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="BoxTime" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="154,230,0,0"/>
@@ -26,9 +26,28 @@
         <Label Content="Maximum Guests:" HorizontalAlignment="Left" Margin="24,190,0,0" VerticalAlignment="Top"/>
         <Label Content="Time:" HorizontalAlignment="Left" Margin="24,230,0,0" VerticalAlignment="Top"/>
         <Label Content="Tour informations:" HorizontalAlignment="Left" Margin="24,21,0,0" VerticalAlignment="Top"/>
-        <Label Content="Description:" HorizontalAlignment="Left" Margin="350,47,0,0" VerticalAlignment="Top"/>
+        <Label Content="Description:" HorizontalAlignment="Left" Margin="351,29,0,0" VerticalAlignment="Top"/>
         <Label Content="AvailableNumber:" HorizontalAlignment="Left" Margin="24,271,0,0" VerticalAlignment="Top"/>
         <TextBox Name="NumberOfGuests" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="400,323,0,0"/>
         <TextBox Name="AvailableNumber" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="154,275,0,0"/>
+
+
+        <TabControl x:Name="TabC" Width="400" Height="200" Margin="387,103,13,171">
+            <TabItem Header="Vouchers">
+                <DataGrid
+                    Name="DataGridVouchers"
+                    ItemsSource="{Binding Path=Vouchers, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedVoucher, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True" Height="177" Margin="0,0,60,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name"  Binding="{Binding Name}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Expiration date(months)"  Binding="{Binding ExpirationTime}" Width="150"></DataGridTextColumn>
+                        
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+
+
     </Grid>
 </Window>

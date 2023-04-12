@@ -19,7 +19,7 @@ namespace SIMS_Booking.View
         public List<string> TypesCollection { get; set; }
         public List<Accommodation> Accommodations { get; set; }
         private AccommodationService _accommodationService { get; set; }
-        private CityCountryRepository _cityCountryRepository;
+        private CityCountryCsvRepository _cityCountryCsvRepository;
 
         private string _accommodationName;
         public string AccommodationName
@@ -113,16 +113,16 @@ namespace SIMS_Booking.View
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
          
-        public Guest1FilterView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository)
+        public Guest1FilterView(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository)
         {
             InitializeComponent();
             DataContext = this;
 
             _accommodationService = accommodationService;
-            _cityCountryRepository = cityCountryRepository; 
+            _cityCountryCsvRepository = cityCountryCsvRepository; 
 
-            Accommodations = _accommodationService.Load();
-            Countries = new Dictionary<string, List<string>>(_cityCountryRepository.Load());
+            Accommodations = new List<Accommodation>(_accommodationService.GetAll());
+            Countries = new Dictionary<string, List<string>>(_cityCountryCsvRepository.Load());
 
             AccommodationName = "";
 
@@ -155,7 +155,7 @@ namespace SIMS_Booking.View
             {
                 if (window.GetType() == typeof(Guest1MainView))
                 {
-                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationService.Load();
+                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationService.SortBySuperOwner(_accommodationService.GetAll());
                 }
             }
         }
@@ -179,7 +179,7 @@ namespace SIMS_Booking.View
 
         private void ApplyFilters(object sender, RoutedEventArgs e)
         {
-            List<Accommodation> accommodationsFiltered = _accommodationService.Load();
+            List<Accommodation> accommodationsFiltered = new List<Accommodation>(_accommodationService.GetAll());
             int numberOfDeleted = 0;
 
             UpdateKindsState();
@@ -197,8 +197,7 @@ namespace SIMS_Booking.View
                 }
             }
 
-            UpdateAccommodationsDataGrid(accommodationsFiltered);
-
+            UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
         }
 
         private void UpdateKindsState()

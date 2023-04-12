@@ -10,6 +10,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using SIMS_Booking.Enums;
 using System.Windows.Controls;
+using SIMS_Booking.Service;
+using SIMS_Booking.Service.RelationsService;
+using System;
 
 namespace SIMS_Booking.View
 {
@@ -18,10 +21,12 @@ namespace SIMS_Booking.View
         public Vehicle Vehicle { get; set; }
         public User User { get; set; }
 
-        private VehicleRepository _vehicleRepository;
-        private CityCountryRepository _cityCountryRepository;
-        private DriverLanguagesRepository _driverLanguagesRepository;
-        private DriverLocationsRepository _driverLocationsRepository;
+        private VehicleService _vehicleService;
+        private RidesService _ridesService;
+        private FinishedRidesService _finishedRidesService;
+        private DriverLocationsService _driverLocationsService;
+        private DriverLanguagesService _driverLanguagesService;
+        private CityCountryCsvRepository _cityCountryCsvRepository;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -73,29 +78,31 @@ namespace SIMS_Booking.View
         }
 
 
-        public DriverView(User user, VehicleRepository vehicleRepository, DriverLanguagesRepository driverLanguagesRepository, DriverLocationsRepository driverLocationsRepository, CityCountryRepository cityCountryRepository)
+
+        public DriverView(User user, RidesService ridesService, FinishedRidesService finishedRidesService, VehicleService vehicleService, DriverLanguagesService driverLanguagesService, DriverLocationsService driverLocationsService, CityCountryCsvRepository cityCountryCsvRepository)
         {
             InitializeComponent();
             DataContext = this;
 
             User = user;
 
-            _cityCountryRepository = cityCountryRepository;
+            _cityCountryCsvRepository = cityCountryCsvRepository;
 
-            _vehicleRepository = vehicleRepository;
-            _vehicleRepository.Subscribe(this);
-
-            _driverLanguagesRepository = driverLanguagesRepository;
-            _driverLocationsRepository = driverLocationsRepository;
+            _vehicleService = vehicleService;
+            _driverLocationsService = driverLocationsService;
+            _driverLanguagesService = driverLanguagesService;
 
             Languages = new List<Language>();
             Locations = new List<Location>();
 
-            Vehicle = _vehicleRepository.GetVehicleByUserID(User.getID());
+            Vehicle = _vehicleService.GetVehicleByUserID(User.getID());
+
+            _ridesService = ridesService;
+            _finishedRidesService = finishedRidesService;
 
             Update();
-
         }
+
 
         public string LocationsToString(List<Location> locations)
         {
@@ -119,13 +126,15 @@ namespace SIMS_Booking.View
 
         private void AddVehicle_Click(object sender, RoutedEventArgs e)
         {
-            DriverAddVehicle driverAddVehicle = new DriverAddVehicle(_vehicleRepository, _driverLanguagesRepository, _driverLocationsRepository, _cityCountryRepository, User);
+            DriverAddVehicle driverAddVehicle = new DriverAddVehicle(_vehicleService, _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository, User);
             driverAddVehicle.Show();
+            Update();
         }
 
         public void Update()
         {
-            Vehicle = _vehicleRepository.GetVehicleByUserID(User.getID());
+
+            Vehicle = _vehicleService.GetVehicleByUserID(User.getID());
 
             if (Vehicle != null)
             {
@@ -148,11 +157,15 @@ namespace SIMS_Booking.View
             {
                 AddVehicle.IsEnabled = true;
                 DriverGallery.IsEnabled = false;
+                ViewStatsButton.IsEnabled = false;
+                ViewRides.IsEnabled = false;
             }
             else
             {
                 AddVehicle.IsEnabled = false;
                 DriverGallery.IsEnabled = true;
+                ViewStatsButton.IsEnabled = true;
+                ViewRides.IsEnabled = true;
             }
         }
 
@@ -160,6 +173,18 @@ namespace SIMS_Booking.View
         {
             DriverGalleryView galleryView = new DriverGalleryView(Vehicle);
             galleryView.Show();
+        }
+
+        private void ViewRides_Click(object sender, RoutedEventArgs e)
+        {
+            DriverRides driverRides = new DriverRides(User, _ridesService, _finishedRidesService, _vehicleService);
+            driverRides.Show();
+        }
+
+        private void ViewStatsButton_Click(object sender, RoutedEventArgs e)
+        {
+            DriverStatsView driverStatsView = new DriverStatsView(_finishedRidesService, User);
+            driverStatsView.Show();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using SIMS_Booking.Serializer;
 using SIMS_Booking.Enums;
-using SIMS_Booking.State;
+using SIMS_Booking.Utility;
 
 namespace SIMS_Booking.Model
 {
@@ -13,18 +13,18 @@ namespace SIMS_Booking.Model
         public string Username { get; set; }
         public string Password { get; set; }
         public Roles Role { get; set; }
+        public bool IsSuperUser { get; set; }
         public int Age { get; set; }
-        public string DescriptionTour { get; set; }
 
         public User() { }
 
-        public User(string username, string password, Roles role, int years, string descriptionTour)
+        public User(string username, string password, Roles role, bool isSuperUser, int years)
         {
             Username = username;
             Password = password;
             Role = role;
+            IsSuperUser = isSuperUser;
             Age = years;
-            DescriptionTour = descriptionTour;
         }
 
         public int getID()
@@ -43,13 +43,13 @@ namespace SIMS_Booking.Model
             Username = values[1];
             Password = values[2];
             Role = (Roles)Enum.Parse(typeof(Roles), values[3]);
-            Age = int.Parse(values[4]);
-            DescriptionTour = values[5];
+            IsSuperUser = bool.Parse(values[4]);
+            Age = int.Parse(values[5]);
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { ID.ToString(), Username, Password, Role.ToString(),Age.ToString(),DescriptionTour };
+            string[] csvValues = { ID.ToString(), Username, Password, Role.ToString(), IsSuperUser.ToString(), Age.ToString() };
             return csvValues;
         }                
     }

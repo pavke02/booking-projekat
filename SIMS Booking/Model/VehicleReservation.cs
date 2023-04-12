@@ -1,13 +1,7 @@
 ﻿using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Serializer;
-using SIMS_Booking.State;
+using SIMS_Booking.Utility;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SIMS_Booking.Model
 {
@@ -16,7 +10,7 @@ namespace SIMS_Booking.Model
         private int ID;
         public Address StartingAddress { get; set; }
         public Address EndingAddress { get; set; }
-        public String TimeOfDeparture { get; set; }
+        public string TimeOfDeparture { get; set; }
 
   
         public int getID()

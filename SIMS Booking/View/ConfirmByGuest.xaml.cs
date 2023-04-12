@@ -1,19 +1,8 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
@@ -26,11 +15,12 @@ namespace SIMS_Booking.View
     {
         public ObservableCollection<User> GuestOnTour { get; set; }
         public ObservableCollection<int> NumberOfGuestsOnTour { get; set; }
+        private UserService _userService;
         private ConfirmTourService _confirmTourService;
-        private UserRepository _userRepository;
         private Tour _tour;
         public event PropertyChangedEventHandler? PropertyChanged;
         public User SelectedUser { get; set; }
+
 
         public ConfirmByGuest(ConfirmTourService confirmTourService, Tour tour)
         {
@@ -40,7 +30,6 @@ namespace SIMS_Booking.View
             _confirmTourService.Subscribe(this);
             _tour = tour;
             GuestOnTour = new ObservableCollection<User>(_confirmTourService.GetGuestOnTour(tour));
-
         }
 
 
@@ -68,6 +57,7 @@ namespace SIMS_Booking.View
                         temp = confirmTour;
 
                 }
+
                 temp.IdCheckpoint = _tour.CurrentTourPoint;
                 _confirmTourService.Update(temp);
             }

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Serializer;
 using SIMS_Booking.Enums;
+using SIMS_Booking.Utility;
 
 namespace SIMS_Booking.Model.Relations
 {
-    public class DriverLanguages : ISerializable
+    public class DriverLanguages : ISerializable, IDable
     {
         public int DriverId { get; set; }
         public Language Language { get; set; }
@@ -32,6 +33,16 @@ namespace SIMS_Booking.Model.Relations
         {
             DriverId = int.Parse(values[0]);
             Language = (Language)Enum.Parse(typeof(Language), values[1]);
+        }
+
+        public int getID()
+        {
+            return DriverId;
+        }
+
+        public void setID(int id)
+        {
+            DriverId = id;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Serializer;
-using SIMS_Booking.State;
+using SIMS_Booking.Utility;
 
 namespace SIMS_Booking.Model
 {

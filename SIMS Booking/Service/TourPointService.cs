@@ -11,11 +11,11 @@ namespace SIMS_Booking.Service
 {
     public class TourPointService
     {
-        private readonly TourPointRepository _repository;
+        private readonly TourPointCsvCrudRepository _repository;
 
         public TourPointService()
         {
-            _repository = new TourPointRepository();
+            _repository = new TourPointCsvCrudRepository();
         }
 
         public void Subscribe(IObserver observer)

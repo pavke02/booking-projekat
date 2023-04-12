@@ -1,22 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
@@ -45,6 +35,7 @@ namespace SIMS_Booking.View
         private TextBox _textBox;
         private TourService _tourService;
         private ObservableCollection<Tour> _allToursRepository;
+
         private TourPointService _tourPointService;
         private ConfirmTourService _confirmTourService;
         private ConfirmTour _confirmTour;
@@ -276,27 +267,20 @@ namespace SIMS_Booking.View
             _tourReview = tourReview;
             _tour = tour;
             _tourReviewService = tourReviewService;
-
             _tourService = tourService;
             _tourService.Subscribe(this);
-
             _tourPointService = tourPointService;
             _tourPointService.Subscribe(this);
             _userService = userService;
-
             _confirmTourService = confirmTourService;
-            Cities = new List<string> { "Serbia,Novi Sad", "Serbia,Ruma", "Serbia,Belgrade", "Serbia, Nis", "England,London", "England,London EAST" };
+            
+            Cities = new List<string> { "Serbia,Novi Sad","Serbia,Ruma", "Serbia,Belgrade","Serbia, Nis","England,London","England,London EAST" };
 
             TodaysTours = new ObservableCollection<Tour>(_tourService.GetTodaysTours());
             AllTours = new ObservableCollection<Tour>(_tourService.GetAll());
             AllCheckpoints = new ObservableCollection<TourPoint>(_tourPointService.GetAll());
             Checkpoints = new ObservableCollection<string>();
-
-
         }
-
-
-
 
         private void UpdateTour(List<Tour> tours, List<Tour> todaysTours)
         {
@@ -311,8 +295,10 @@ namespace SIMS_Booking.View
 
         public void Update()
         {
-            UpdateTour(_tourService.GetAll(), _tourService.GetTodaysTours());
+            UpdateTour(_tourService.GetAll(), _tourService.GetTodaysTours());       
         }
+
+     
 
         private void AddImage(object sender, RoutedEventArgs e)
         {
@@ -402,19 +388,14 @@ namespace SIMS_Booking.View
                     TourPoints.Add(tourPoint);
                     TourPointIds.Add(tourPoint.getID());
                 }
-
+                
                 string[] v = City.Split(",");
                 Location location = new Location(v[0], v[1]);
-
 
                 DateTime time = new DateTime(StartTour.Year, StartTour.Month, StartTour.Day, TourTime.Hour, TourTime.Minute, TourTime.Second);
                 Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), time, int.Parse(Times), imageURLs, TourPointIds, TourPoints, TourTime);
                 _tourService.Save(tour);
             }
-
-
-
-
         }
     }
 }

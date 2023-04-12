@@ -1,40 +1,42 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.Model;
-using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
-using SIMS_Booking.Repository.RelationsRepository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
-using SIMS_Booking.State;
+using SIMS_Booking.Utility;
 
 namespace SIMS_Booking.View
 {
 
     public partial class Guest1MainView : Window, IObserver
-    {        
+    {
+
         public ObservableCollection<Accommodation> Accommodations { get; set; }        
         public ObservableCollection<Reservation> UserReservations { get; set; }
         public ObservableCollection<Postponement> UserPostponements { get; set; }
         public Accommodation SelectedAccommodation { get; set; }
         public Reservation SelectedReservation { get; set; }
-        public ObservableCollection<Accommodation> AccommodationsReorganized { get; set; }
         public User LoggedUser { get; set; }
 
         private readonly AccommodationService _accommodationService;
-        private readonly CityCountryRepository _cityCountryRepository;
-        private ReservationService _reservationService;
-        private ReservedAccommodationService _reservedAccommodationService;
-        private PostponementService _postponementService;
-        private CancellationRepository _cancellationRepository;
-        private OwnerReviewService _ownerReviewService;
+        private readonly CityCountryCsvRepository _cityCountryCsvRepository;
+        private readonly ReservationService _reservationService;
+        private readonly ReservedAccommodationService _reservedAccommodationService;
+        private readonly PostponementService _postponementService;
+        private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
+        private readonly OwnerReviewService _ownerReviewService;
 
-        public Guest1MainView(AccommodationService accommodationService, CityCountryRepository cityCountryRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationRepository cancellationRepository, OwnerReviewService ownerReviewService)
+        public Guest1MainView(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationCsvCrudRepository cancellationCsvCrudRepository, OwnerReviewService ownerReviewService)
         {
             InitializeComponent();
             DataContext = this;
@@ -44,21 +46,21 @@ namespace SIMS_Booking.View
 
             _accommodationService = accommodationService;
             _accommodationService.Subscribe(this);
-            Accommodations = new ObservableCollection<Accommodation>(accommodationService.GetAll());
+            Accommodations = new ObservableCollection<Accommodation>(_accommodationService.SortBySuperOwner(_accommodationService.GetAll()));
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
             UserReservations = new ObservableCollection<Reservation>(_reservationService.GetReservationsByUser(loggedUser.getID()));
 
             _postponementService = postponementService;
-            NotificationTimer timer = new NotificationTimer(loggedUser, null, null, null, _postponementService);
+            NotificationTimer timer = new NotificationTimer(LoggedUser, _postponementService);
             _postponementService.Subscribe(this);
             UserPostponements = new ObservableCollection<Postponement>(_postponementService.GetPostponementsByUser(loggedUser.getID()));
 
             _ownerReviewService = ownerReviewService;
 
-            _cityCountryRepository = cityCountryRepository;
-            _cancellationRepository = cancellationRepository;
+            _cityCountryCsvRepository = cityCountryCsvRepository;
+            _cancellationCsvCrudRepository = cancellationCsvCrudRepository;
 
             _reservedAccommodationService = reservedAccommodationService;
 
@@ -66,7 +68,7 @@ namespace SIMS_Booking.View
 
         private void AddFilters(object sender, RoutedEventArgs e)
         {
-            Guest1FilterView filterView = new Guest1FilterView(_accommodationService, _cityCountryRepository);
+            Guest1FilterView filterView = new Guest1FilterView(_accommodationService, _cityCountryCsvRepository);
             filterView.Show();
         }
 
@@ -106,7 +108,6 @@ namespace SIMS_Booking.View
            }
         }
 
-
         public void Update()
         {
             UpdateAccommodations(_accommodationService.GetAll());
@@ -129,15 +130,13 @@ namespace SIMS_Booking.View
                 {
                     _postponementService.DeletePostponementsByReservationId(reservation.getID());
                     _reservationService.DeleteCancelledReservation(reservation.getID());
-                    _cancellationRepository.Save(reservation);
+                    _cancellationCsvCrudRepository.Save(reservation);
                     newReservations.Remove(reservation);
                     UpdateUserReservations(newReservations);
                     UpdateUserPostponements(_postponementService.GetAll().ToList());
                     return;
                 }
             }
-
-
         }
 
         private void ChangeReservation(object sender, RoutedEventArgs e)
@@ -179,16 +178,16 @@ namespace SIMS_Booking.View
 
         private void DisableReview(object sender, SelectionChangedEventArgs e)
         {
-           
-                if (DateTime.Today - SelectedReservation.EndDate > TimeSpan.FromDays(5) || DateTime.Today - SelectedReservation.EndDate < TimeSpan.FromDays(0))
-                {
-                    ReviewButton.IsEnabled = false;
-                }
-                else
-                {
-                    ReviewButton.IsEnabled = true;
-                }
-            
+            if (SelectedReservation == null) return;
+
+            if (DateTime.Today - SelectedReservation.EndDate > TimeSpan.FromDays(5) || DateTime.Today - SelectedReservation.EndDate < TimeSpan.FromDays(0))
+            {
+                ReviewButton.IsEnabled = false;
+            }
+            else
+            {
+                ReviewButton.IsEnabled = true;
+            }
         }
     }
 }

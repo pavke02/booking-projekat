@@ -8,7 +8,7 @@ using SIMS_Booking.Observer;
 
 namespace SIMS_Booking.Repository
 {
-    public class TourReviewRepository : Repository<TourReview>, ISubject
+    public class TourReviewRepository : CsvCrudRepository<TourReview>, ISubject
     {
         public TourReviewRepository() : base("../../../Resources/Data/tourReview.csv") { }
     }

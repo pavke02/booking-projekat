@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
@@ -14,17 +11,14 @@ namespace SIMS_Booking.Service
     public class ConfirmTourService
     {
 
-        private readonly ConfirmTourRepository _repository;
+        private readonly ConfirmTourCsvCrudRepository _repository;
         public int godina { get; set; }
         public TimeOnly vreme { get; set; }
         public ConfirmTour ConfirmTour { get; set; }
 
-
-
         public ConfirmTourService()
         {
-            _repository = new ConfirmTourRepository();
-
+            _repository = new ConfirmTourCsvCrudRepository();
         }
 
         public void Subscribe(IObserver observer)
