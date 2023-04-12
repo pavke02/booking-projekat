@@ -10,7 +10,7 @@ namespace SIMS_Booking.Model
         private int ID;
         public Address StartingAddress { get; set; }
         public Address EndingAddress { get; set; }
-        public String TimeOfDeparture { get; set; }
+        public string TimeOfDeparture { get; set; }
 
   
         public int getID()

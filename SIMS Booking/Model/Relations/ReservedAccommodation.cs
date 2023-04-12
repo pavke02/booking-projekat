@@ -1,8 +1,9 @@
 ﻿using SIMS_Booking.Serializer;
+using SIMS_Booking.Utility;
 
 namespace SIMS_Booking.Model.Relations
 {
-    public class ReservedAccommodation : ISerializable
+    public class ReservedAccommodation : ISerializable, IDable
     {
         public int UserId { get; set; }
         public int AccommodationId { get; set; }
@@ -29,6 +30,16 @@ namespace SIMS_Booking.Model.Relations
 
             string[] csvValues = { UserId.ToString(), AccommodationId.ToString(), ReservationId.ToString() };
             return csvValues;
+        }
+
+        public int getID()
+        {
+            return UserId;
+        }
+
+        public void setID(int id)
+        {
+            UserId = id;
         }
     }
 }

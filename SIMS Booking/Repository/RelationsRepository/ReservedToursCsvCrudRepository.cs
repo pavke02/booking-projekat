@@ -15,6 +15,7 @@ namespace SIMS_Booking.Repository.RelationsRepository
             return _entityList;
         }
 
+        
         public int GetNumberOfGuestsForTour(int tourId)
         {
             int numberOfGuests = 0;
