@@ -33,7 +33,7 @@ namespace SIMS_Booking.View
         private readonly TextBox _textBox;
 
         private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
-        private readonly VehicleService _vehicleService;
+        
         private readonly DriverLanguagesService _driverLanguagesService;
         private readonly DriverLocationsService _driverLocationsService;
         private readonly RidesService _ridesService;
@@ -101,8 +101,8 @@ namespace SIMS_Booking.View
             _ownerReviewService = new OwnerReviewService();
 
             _guideReviewService = new GuideReviewService();
-            _tourPointCsvCrudRepository = new TourPointCsvCrudRepository(); // svi tourPointi
-            _confirmTourCsvCrudRepository = new ConfirmTourCsvCrudRepository();
+            //_tourPointCsvCrudRepository = new TourPointCsvCrudRepository(); // svi tourPointi
+            //_confirmTourCsvCrudRepository = new ConfirmTourCsvCrudRepository();
             _cancellationCsvCrudRepository = new CancellationCsvCrudRepository();
             _textBox = new TextBox();
             _guestReviewService = new GuestReviewService();
