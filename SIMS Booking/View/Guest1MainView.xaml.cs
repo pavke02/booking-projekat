@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
@@ -20,6 +21,10 @@ namespace SIMS_Booking.View
 
     public partial class Guest1MainView : Window, IObserver
     {
+
+        public Dictionary<string, List<string>> Countries { get; set; }
+        public List<string> TypesCollection { get; set; }
+        public List<Accommodation> AccommodationsFiltered { get; set; }
 
         public ObservableCollection<Accommodation> Accommodations { get; set; }        
         public ObservableCollection<Reservation> UserReservations { get; set; }
@@ -36,17 +41,112 @@ namespace SIMS_Booking.View
         private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
         private readonly OwnerReviewService _ownerReviewService;
 
+        #region Properties
+        private string _accommodationName;
+        public string AccommodationName
+        {
+            get => _accommodationName;
+            set
+            {
+                if (value != _accommodationName)
+                {
+                    _accommodationName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _city;
+        public string City
+        {
+            get => _city;
+            set
+            {
+                if (value != _city)
+                {
+                    _city = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private KeyValuePair<string, List<string>> _country;
+        public KeyValuePair<string, List<string>> Country
+        {
+            get => _country;
+            set
+            {
+                if (value.Key != _country.Key)
+                {
+                    _country = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private List<AccommodationType> _kinds;
+
+        public List<AccommodationType> Kinds
+        {
+            get => _kinds;
+            set
+            {
+                if (value != _kinds)
+                {
+                    _kinds = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _maxGuests;
+        public string MaxGuests
+        {
+            get => _maxGuests;
+            set
+            {
+                if (value != _maxGuests)
+                {
+                    _maxGuests = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _minReservationDays;
+        public string MinReservationDays
+        {
+            get => _minReservationDays;
+            set
+            {
+                if (value != _minReservationDays)
+                {
+                    _minReservationDays = value;
+                    OnPropertyChanged();
+                    
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+        #endregion
+
         public Guest1MainView(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationCsvCrudRepository cancellationCsvCrudRepository, OwnerReviewService ownerReviewService)
         {
-            InitializeComponent();
-            DataContext = this;
-            DataGridAccommodations.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
 
             LoggedUser = loggedUser;
 
             _accommodationService = accommodationService;
             _accommodationService.Subscribe(this);
-            Accommodations = new ObservableCollection<Accommodation>(_accommodationService.SortBySuperOwner(_accommodationService.GetAll()));
+            //Accommodations = new ObservableCollection<Accommodation>(_accommodationService.SortBySuperOwner(_accommodationService.GetAll()));
+            Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetAll());
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
@@ -64,12 +164,22 @@ namespace SIMS_Booking.View
 
             _reservedAccommodationService = reservedAccommodationService;
 
-        }
+            AccommodationsFiltered = new List<Accommodation>(_accommodationService.GetAll());
+            Countries = new Dictionary<string, List<string>>(_cityCountryCsvRepository.Load());
 
-        private void AddFilters(object sender, RoutedEventArgs e)
-        {
-            Guest1FilterView filterView = new Guest1FilterView(_accommodationService, _cityCountryCsvRepository);
-            filterView.Show();
+            InitializeComponent();
+            DataContext = this;
+            DataGridAccommodations.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+
+            AccommodationName = "";
+
+            TypesCollection = new List<string>
+            {
+                "Apartment",
+                "House",
+                "Cottage"
+            };
+
         }
 
         private void Reserve(object sender, RoutedEventArgs e)
@@ -149,25 +259,27 @@ namespace SIMS_Booking.View
 
         private void TabChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (TabC.SelectedIndex == 1)
+            CollapseAll();
+
+            if (TabC.SelectedIndex == 0)
             {
-                ReserveButton.IsEnabled = false;
-                ViewGalleryButton.IsEnabled = false;
-                AddFiltersButton.IsEnabled = false;
+                FiltersGrid.Visibility = Visibility.Visible;
+                AccommodationsButtonsGrid.Visibility = Visibility.Visible;
             }
-            else if(TabC.SelectedIndex == 0 && DataGridAccommodations.SelectedIndex == -1)
+            else if (TabC.SelectedIndex == 1)
             {
-                ReserveButton.IsEnabled = false;
-                ViewGalleryButton.IsEnabled = false;
-                AddFiltersButton.IsEnabled = true;
-            }
-            else
-            {
-                ReserveButton.IsEnabled = true;
-                ViewGalleryButton.IsEnabled = true;
-                AddFiltersButton.IsEnabled = true;
+                ReservationsPanel.Visibility = Visibility.Visible;
             }
         }
+
+        private void CollapseAll()
+        {
+            ReservationsPanel.Visibility = Visibility.Collapsed;
+            FiltersGrid.Visibility = Visibility.Collapsed;
+            AccommodationsButtonsGrid.Visibility = Visibility.Collapsed;
+        }
+
+
 
 
         private void ReviewReservation(object sender, RoutedEventArgs e)
@@ -176,9 +288,18 @@ namespace SIMS_Booking.View
             reviewView.Show();
         }
 
-        private void DisableReview(object sender, SelectionChangedEventArgs e)
+        private void ReservationChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SelectedReservation == null) return;
+            if (SelectedReservation == null)
+            {
+                ReviewButton.IsEnabled = false;
+                CancelReservationButton.IsEnabled = false;
+                ChangeReservationButton.IsEnabled = false;
+                return;
+            }
+
+            CancelReservationButton.IsEnabled = true;
+            ChangeReservationButton.IsEnabled = true;
 
             if (DateTime.Today - SelectedReservation.EndDate > TimeSpan.FromDays(5) || DateTime.Today - SelectedReservation.EndDate < TimeSpan.FromDays(0))
             {
@@ -188,6 +309,213 @@ namespace SIMS_Booking.View
             {
                 ReviewButton.IsEnabled = true;
             }
+        }
+
+        private void ChangeCities(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            cityCb.Items.Clear();
+            if (countryCb.SelectedIndex != -1)
+            {
+                foreach (string city in Countries.ElementAt(countryCb.SelectedIndex).Value)
+                {
+                    cityCb.Items.Add(city).ToString();
+                }
+            }
+
+            List<Accommodation> accommodationsFiltered = new List<Accommodation>(_accommodationService.GetAll());
+            int numberOfDeleted = 0;
+
+            UpdateKindsState();
+
+            foreach (Accommodation accommodation in Accommodations)
+            {
+                bool fitsFilter = (accommodation.Name.ToLower().Contains(AccommodationName.ToLower()) || AccommodationName == "") && (Country.Key == accommodation.Location.Country || countryCb.SelectedIndex == -1)
+                    && (accommodation.Location.City == City || cityCb.SelectedIndex == -1) && Kinds.Contains(accommodation.Type) && (accommodation.MaxGuests >= Convert.ToInt32(MaxGuests) || MaxGuests == null)
+                    && (accommodation.MinReservationDays <= Convert.ToInt32(MinReservationDays) || MinReservationDays == null);
+
+                if (!fitsFilter)
+                {
+                    accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
+                    numberOfDeleted++;
+                }
+            }
+
+            //UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
+            UpdateAccommodationsDataGrid(accommodationsFiltered);
+
+        }
+
+        private void Reset(object sender, RoutedEventArgs e)
+        {
+            ClearFilterFields();
+
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(Guest1MainView))
+                {
+                    // ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationService.SortBySuperOwner(_accommodationService.GetAll());
+                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationService.GetAll();
+                }
+            }
+        }
+
+        private void ClearFilterFields()
+        {
+            nameTb.Clear();
+            AccommodationName = "";
+            countryCb.SelectedItem = null;
+            Country = new KeyValuePair<string, List<string>>();
+            cityCb.SelectedItem = null;
+            City = "";
+            HouseCheckBox.IsChecked = true;
+            ApartmentCheckBox.IsChecked = true;
+            CottageCheckBox.IsChecked = true;
+            MaxGuests = "0";
+            maxGuestsTb.Clear();
+            MinReservationDays = "10";
+            minReservationDaysTb.Clear();
+        }
+
+        private void ApplyFilters(object sender, TextChangedEventArgs textChangedEventArgs)
+        {
+            List<Accommodation> accommodationsFiltered = new List<Accommodation>(_accommodationService.GetAll());
+            int numberOfDeleted = 0;
+
+            if (AccommodationName == null)
+                AccommodationName = "";
+
+            UpdateKindsState();
+            if (MaxGuests == "")
+            {
+                MaxGuests = "0";
+            }
+
+            if (MinReservationDays == "")
+            {
+                MinReservationDays = "10";
+            }
+
+            foreach (Accommodation accommodation in Accommodations)
+            {
+                bool fitsFilter = (accommodation.Name.ToLower().Contains(AccommodationName.ToLower()) || AccommodationName == "") && (Country.Key == accommodation.Location.Country || countryCb.SelectedIndex == -1)
+                    && (accommodation.Location.City == City || cityCb.SelectedIndex == -1) && Kinds.Contains(accommodation.Type) && (accommodation.MaxGuests >= Convert.ToInt32(MaxGuests) || MaxGuests == null)
+                    && (accommodation.MinReservationDays <= Convert.ToInt32(MinReservationDays) || MinReservationDays == null);
+
+                if (!fitsFilter)
+                {
+                    accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
+                    numberOfDeleted++;
+                }
+            }
+
+            //UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
+            UpdateAccommodationsDataGrid(accommodationsFiltered);
+        }
+
+        private void ApplyCityChange(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        {
+            List<Accommodation> accommodationsFiltered = new List<Accommodation>(_accommodationService.GetAll());
+            int numberOfDeleted = 0;
+
+            UpdateKindsState();
+
+            if (AccommodationName == null)
+                AccommodationName = "";
+
+            if (MaxGuests == "")
+            {
+                MaxGuests = "0";
+            }
+
+            if (MinReservationDays == "")
+            {
+                MinReservationDays = "10";
+            }
+
+            foreach (Accommodation accommodation in Accommodations)
+            {
+                bool fitsFilter = (accommodation.Name.ToLower().Contains(AccommodationName.ToLower()) || AccommodationName == "") && (Country.Key == accommodation.Location.Country || countryCb.SelectedIndex == -1)
+                    && (accommodation.Location.City == City || cityCb.SelectedIndex == -1) && Kinds.Contains(accommodation.Type) && (accommodation.MaxGuests >= Convert.ToInt32(MaxGuests) || MaxGuests == null)
+                    && (accommodation.MinReservationDays <= Convert.ToInt32(MinReservationDays) || MinReservationDays == null);
+
+                if (!fitsFilter)
+                {
+                    accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
+                    numberOfDeleted++;
+                }
+            }
+
+            //UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
+            UpdateAccommodationsDataGrid(accommodationsFiltered);
+        }
+
+        private void UpdateKindsState()
+        {
+            Kinds = new List<AccommodationType>();
+            Kinds.Clear();  
+            if (HouseCheckBox.IsChecked == true || HouseCheckBox == null)
+                Kinds.Add(AccommodationType.House);
+            if (ApartmentCheckBox != null)
+            {
+                if (ApartmentCheckBox.IsChecked == true)
+                    Kinds.Add(AccommodationType.Apartment);
+            }
+
+            if (CottageCheckBox != null)
+            {
+                if (CottageCheckBox.IsChecked == true || CottageCheckBox == null)
+                    Kinds.Add(AccommodationType.Cottage);
+            }
+            
+
+        }
+
+        private void UpdateAccommodationsDataGrid(List<Accommodation> accommodationsFiltered)
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(Guest1MainView))
+                {
+                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = accommodationsFiltered;
+
+                }
+            }
+        }
+
+        private void CheckBoxChanged(object sender, RoutedEventArgs e)
+        {
+            List<Accommodation> accommodationsFiltered = new List<Accommodation>(_accommodationService.GetAll());
+            int numberOfDeleted = 0;
+
+            UpdateKindsState();
+            if (AccommodationName == null)
+                AccommodationName = "";
+
+            if (MaxGuests == "")
+            {
+                MaxGuests = "0";
+            }
+
+            if (MinReservationDays == "")
+            {
+                MinReservationDays = "10";
+            }
+
+            foreach (Accommodation accommodation in Accommodations)
+            {
+                bool fitsFilter = (accommodation.Name.ToLower().Contains(AccommodationName.ToLower()) || AccommodationName == "") && (Country.Key == accommodation.Location.Country || countryCb.SelectedIndex == -1)
+                    && (accommodation.Location.City == City || cityCb.SelectedIndex == -1) && Kinds.Contains(accommodation.Type) && (accommodation.MaxGuests >= Convert.ToInt32(MaxGuests) || MaxGuests == null)
+                    && (accommodation.MinReservationDays <= Convert.ToInt32(MinReservationDays) || MinReservationDays == null);
+
+                if (!fitsFilter)
+                {
+                    accommodationsFiltered.RemoveAt(Accommodations.IndexOf(accommodation) - numberOfDeleted);
+                    numberOfDeleted++;
+                }
+            }
+
+            //UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
+            UpdateAccommodationsDataGrid(accommodationsFiltered);
         }
     }
 }
