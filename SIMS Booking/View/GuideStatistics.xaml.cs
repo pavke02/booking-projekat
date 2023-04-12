@@ -82,9 +82,6 @@ namespace SIMS_Booking.View
 
             Visitor = confirmTourService.MostVisitedTour(tourService).Name;
             txtNajposecenijaTura.Text = Visitor;
-
-
-
         }
 
 
@@ -99,11 +96,8 @@ namespace SIMS_Booking.View
             throw new NotImplementedException();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void MostVisitedTourForInputYear(object sender, RoutedEventArgs e)
         {
-        
-           
-
             int godina;
             bool uspesnoOcitavanje = int.TryParse(txtGodina.Text, out godina);
 
@@ -112,12 +106,7 @@ namespace SIMS_Booking.View
                 txtNajposecenijaTura.Text = "Greška: unesite validnu godinu.";
                 return;
             }
-
             txtNajposecenijaTura.Text = _confirmTourService.MostVisitedTourByYear(_tourService, godina).Name;
-
-
-              
-
         }
     }
 }
