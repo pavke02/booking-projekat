@@ -37,6 +37,8 @@ public partial class Guest2DrivingReservationView : Window
     private DriverLocationsCsvCrudRepository _driverLocationsCsvCrudRespository;
 
 
+
+
     public Guest2DrivingReservationView(Vehicle selectedVehicle, User loggedUser)
     {
         InitializeComponent();
@@ -44,6 +46,7 @@ public partial class Guest2DrivingReservationView : Window
         DataContext = this;
         _selectedVehicle = selectedVehicle;
         selectedDriver = new DriverLocations();
+        VehicleReservationCsvCrudRespository = new VehicleReservationCsvCrudRepository();  
         _vehicleCsvCrudRepository = new VehicleCsvCrudRepository();
         _driverLocationsCsvCrudRespository = new DriverLocationsCsvCrudRepository();
         LoggedUser = loggedUser;
@@ -56,7 +59,7 @@ public partial class Guest2DrivingReservationView : Window
     private void Reserve(object sender, RoutedEventArgs e)
     {
         var reservedVehicle =
-            new ReservationOfVehicle(LoggedUser.getID(), _vehicleCsvCrudRepository.GetVehicleByUserID(selectedDriver.DriverId).getID(), DateTime.Parse(TimeofDepartureTextBox.Text), StartingAddressTextBox.Text);
+            new ReservationOfVehicle(LoggedUser.getID(), _vehicleCsvCrudRepository.GetVehicleByUserID(selectedDriver.DriverId).getID(), TimeofDepartureTextBox.Text, new Address(StartingAddressTextBox.Text, selectedDriver.Location), new Address (FinalAddressTextBox.Text, selectedDriver.Location)); 
         VehicleReservationCsvCrudRespository.Save(reservedVehicle);
         Close();
     }

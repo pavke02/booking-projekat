@@ -24,7 +24,7 @@
              x:Name="txtGodina" />
 
         <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
-            Content="Osveži" Click="Button_Click" />
+            Content="Pronadji najposecinijju turu u zadatoj godini" Click="MostVisitedTourForInputYear" />
 
         <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,10,5,5"
                TextWrapping="Wrap" Text="Najposećenija tura:" />

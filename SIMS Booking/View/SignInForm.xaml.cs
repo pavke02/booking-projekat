@@ -21,15 +21,26 @@ namespace SIMS_Booking.View
         private readonly CityCountryCsvRepository _cityCountryCsvRepository;
         private readonly ReservationService _reservationService;
         private readonly TourService _tourService;
-        private readonly TextBox _textBox;
-        private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
+
+        private readonly ReservedTourService _reservedTourService;
+
+
+
         private readonly VehicleService _vehicleService;
+        private readonly RidesRepository _ridesRepository;
+        private readonly FinishedRidesRepository _finishedRidesRepository;
+
+        private readonly TextBox _textBox;
+
+        private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
+        
         private readonly DriverLanguagesService _driverLanguagesService;
         private readonly DriverLocationsService _driverLocationsService;
         private readonly RidesService _ridesService;
         private readonly FinishedRidesService _finishedRidesService;
         private readonly GuestReviewService _guestReviewService; 
         private readonly OwnerReviewService _ownerReviewService;
+        private readonly GuideReviewService _guideReviewService;
         private readonly PostponementService _postponementService;
         private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
         private readonly ReservedAccommodationService _reservedAccommodationService;
@@ -73,7 +84,12 @@ namespace SIMS_Booking.View
             _accommodationService = new AccommodationService();
             _cityCountryCsvRepository = new CityCountryCsvRepository();
             _tourService = new TourService(); // sve ture ali nemamo  tourPoint = null
+
+            _reservedTourService = new ReservedTourService();
+
+
             _tourReviewService = new TourReviewService();
+
             _reservationService = new ReservationService();
             _postponementService = new PostponementService();
             _vehicleService = new VehicleService();
@@ -83,6 +99,10 @@ namespace SIMS_Booking.View
             _finishedRidesService = new FinishedRidesService();
             _guestReviewService = new GuestReviewService();
             _ownerReviewService = new OwnerReviewService();
+
+            _guideReviewService = new GuideReviewService();
+            //_tourPointCsvCrudRepository = new TourPointCsvCrudRepository(); // svi tourPointi
+            //_confirmTourCsvCrudRepository = new ConfirmTourCsvCrudRepository();
             _cancellationCsvCrudRepository = new CancellationCsvCrudRepository();
             _textBox = new TextBox();
             _guestReviewService = new GuestReviewService();
@@ -124,7 +144,7 @@ namespace SIMS_Booking.View
                             guest1View.Show();
                             break;
                         case Roles.Guest2:
-                            Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleCsvCrudRepository);
+                            Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleService, _guideReviewService, _reservedTourService);
                             guest2View.Show();
                             break;
                         case Roles.Driver:

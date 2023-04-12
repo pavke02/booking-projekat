@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Serializer;
+using SIMS_Booking.Utility;
 
 namespace SIMS_Booking.Model.Relations
 {
-    public class DriverLocations : ISerializable
+    public class DriverLocations : ISerializable, IDable
     {
         public int DriverId { get; set; }
         public Location Location { get; set; }
@@ -31,6 +32,16 @@ namespace SIMS_Booking.Model.Relations
         {
             DriverId = int.Parse(values[0]);
             Location = new Location(values[1], values[2]);
+        }
+
+        public int getID()
+        {
+            return DriverId;
+        }
+
+        public void setID(int id)
+        {
+            DriverId=id;
         }
     }
 }

@@ -36,6 +36,7 @@
                 <DataGrid
                     Name="DataGridReservedTours"
                     ItemsSource="{Binding Path=TourReservation, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path = SelectedTourReservation}"
                     AutoGenerateColumns="False" IsReadOnly="True" Height="320" Margin="0,0,106,0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="User ID" Binding="{Binding UserId}" Width="170"></DataGridTextColumn>
@@ -52,6 +53,8 @@
 
         <Button Content="Reserve Taxi" HorizontalAlignment="Left" Height="50" Margin="43,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="100" Click="Reserve_Taxi"/>
         <Button Content="Reserve Tour" HorizontalAlignment="Left" Height="50" Margin="203,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="100" Click="Reserve_Tour"/>
+        <Button Content="Review reservation" HorizontalAlignment="Left" Height="50" Margin="363,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="109" Click="Review_Tour"/>
+        <Button Content="Reserve quick taxi" HorizontalAlignment="Left" Height="50" Margin="523,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="109" Click="QuickTaxi_Click" />
 
 
 

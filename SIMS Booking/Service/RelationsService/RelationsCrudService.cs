@@ -1,11 +1,14 @@
-﻿using SIMS_Booking.Repository;
+﻿using SIMS_Booking.Model.Relations;
+using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
 using SIMS_Booking.Serializer;
+using SIMS_Booking.Utility;
+using System;
 using System.Collections.Generic;
 
 namespace SIMS_Booking.Service.RelationsService
 {
-    internal class RelationsCrudService<T> where T: ISerializable, new()
+    internal class RelationsCrudService<T> where T: ISerializable,IDable, new()
     {
         private readonly RelationsCsvCrudRepository<T> _relationsCsvCrudRepository;
 
@@ -23,6 +26,10 @@ namespace SIMS_Booking.Service.RelationsService
         {
             return _relationsCsvCrudRepository.GetAll();
         }
+
+
+
+
 
     }
 }
