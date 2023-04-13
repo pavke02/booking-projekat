@@ -1,0 +1,120 @@
+﻿<Window x:Class="SIMS_Booking.UI.View.Guest1MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SIMS_Booking.View"
+        xmlns:colorConverter="clr-namespace:SIMS_Booking.Utility.ColorConverter"
+        mc:Ignorable="d"
+        Title="Guest1MainView" Height="520" Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TabControl x:Name="TabC" Width="900" Height="350" Grid.Row="2" SelectionChanged="TabChanged">
+            <TabItem Header="Accommodations" Height="50" FontSize="20" Padding="5 ">
+                <DataGrid
+                    FontSize="14"
+                    Name="DataGridAccommodations"
+                    ItemsSource="{Binding Path=Accommodations, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedAccommodation, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True"
+                    Width="900" Height="320">
+                    <DataGrid.Resources>
+                        <colorConverter:SuperOwnerColorConverter x:Key="ColorConverter"></colorConverter:SuperOwnerColorConverter>
+                    </DataGrid.Resources>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding User.IsSuperUser, Converter={StaticResource ColorConverter}}" Value="True">
+                                    <Setter Property="Background" Value="DeepSkyBlue"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="170"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Type" Binding="{Binding Type}" Width="100"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="120"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Min reservation (days)" Binding="{Binding MinReservationDays}" Width="160"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Cancellation period (days)" Binding="{Binding CancellationPeriod}" Width="200"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Your Reservations" Height="50" FontSize="20" Padding="5 ">
+                <DataGrid
+                    FontSize="14"
+                    Name="DataGridReservations"
+                    ItemsSource="{Binding Path=UserReservations, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedReservation, UpdateSourceTrigger=PropertyChanged}"
+                    SelectionChanged="DisableReview"
+                    AutoGenerateColumns="False" IsReadOnly="True"
+                    Width="900" Height="320">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Accommodation ID" Binding="{Binding Accommodation.Name}" Width="170"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "End Date" Binding="{Binding EndDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Your Postponements" Height="50" FontSize="20" Padding="5 ">
+                <DataGrid
+                    FontSize="14"
+                    Name="DataGridPostponements"
+                    ItemsSource="{Binding Path=UserPostponements, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedPostponement, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True"
+                    Width="900" Height="320">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="170"></DataGridTextColumn>
+                        <DataGridTextColumn Header="New Start Date" Binding="{Binding NewStartDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "New End Date" Binding="{Binding NewEndDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Status" Binding="{Binding Status}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Comment" Binding="{Binding Comment}" Width="150"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel  Grid.Row="3" Orientation="Horizontal" Margin="50, 0, 50, 0" Height="40">
+            <Button x:Name="AddFiltersButton" Content="Add Filters" Padding="5, 0, 5, 0" Margin="0, 0, 10, 0 " Click="AddFilters">
+
+            </Button>
+            <Button x:Name="ReserveButton" Content="Reserve" Padding="5, 0, 5, 0" Margin="0,0,10,0" Click="Reserve">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="IsEnabled" Value="True" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedItem, ElementName=DataGridAccommodations}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="ViewGalleryButton" Content="View Gallery" Padding="5, 0, 5, 0" Margin="0, 0, 10, 0 " Click="OpenGallery">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="IsEnabled" Value="True" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedItem, ElementName=DataGridAccommodations}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="CanclesReservationButton" Content="Cancel Reservation" Padding="5, 0, 5, 0" Click="CancelReservation" Margin="0,0,10,0">
+            </Button>
+            <Button x:Name="ChangeReservationButton" Content="Change Reservation" Padding="5, 0, 5, 0" Click="ChangeReservation"/>
+            <Button x:Name="ReviewButton" Content="Review Reservation" Padding="5, 0, 5, 0" Click="ReviewReservation" Margin="10,0,0,0"/>
+
+        </StackPanel>
+
+    </Grid>
+</Window>

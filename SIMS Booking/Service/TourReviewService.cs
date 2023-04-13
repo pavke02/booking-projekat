@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using SIMS_Booking.Model;
 using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
@@ -11,31 +7,21 @@ namespace SIMS_Booking.Service
 {
     public class TourReviewService
     {
-        private readonly TourReviewRepository _repository;
+        private readonly CrudService<TourReview> _crudService;
 
         public TourReviewService()
         {
-            _repository = new TourReviewRepository();
+            _crudService = new CrudService<TourReview>("../../../Resources/Data/tourReview.csv");
         }
 
         public void Subscribe(IObserver observer)
         {
-            _repository.Subscribe(observer);
+            _crudService.Subscribe(observer);
         }
 
         public List<TourReview> GetAll()
         {
-            return _repository.GetAll();
-        }
-
-        public void Save(TourReview tour)
-        {
-            _repository.Save(tour);
-        }
-
-        public TourReview GetById(int id)
-        {
-            return _repository.GetById(id);
+            return _crudService.GetAll();
         }
 
         public void loadusers(UserService userservice,ConfirmTourService confirmTourService)
@@ -60,7 +46,7 @@ namespace SIMS_Booking.Service
 
             foreach (ConfirmTour confirmTour in confirmTourService.GetAll())
             {
-                foreach (TourReview tourReview in _repository.GetAll())
+                foreach (TourReview tourReview in _crudService.GetAll())
                 {
                     if (tourReview.ConfirmTourId == confirmTour.Id)
                     {
@@ -68,13 +54,14 @@ namespace SIMS_Booking.Service
                     }
                 }
             }
+
             return reviewsOfTour;
         }
 
         public void updateIsValidReview(TourReview tourReview)
         {
             tourReview.IsValid = true;
-            _repository.Update(tourReview);
+            _crudService.Update(tourReview);
         }
 
     }

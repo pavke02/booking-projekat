@@ -1,17 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using SIMS_Booking.UI.ViewModel;
+using SIMS_Booking.Utility.Stores;
 
 namespace SIMS_Booking
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            NavigationStore navigationStore = new NavigationStore();
+
+            navigationStore.CurrentViewModel = new SignInViewModel(navigationStore);
+
+            MainWindow = new MainWindow()
+            {
+                DataContext = new MainViewModel(navigationStore)
+            };
+            MainWindow.Show();
+            base.OnStartup(e);
+        }
     }
 }
