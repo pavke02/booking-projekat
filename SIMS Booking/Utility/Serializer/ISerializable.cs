@@ -1,5 +1,4 @@
-﻿
-namespace SIMS_Booking.Serializer
+﻿namespace SIMS_Booking.Utility.Serializer
 {
     public interface ISerializable
     {

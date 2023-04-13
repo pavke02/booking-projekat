@@ -1,6 +1,6 @@
-﻿using SIMS_Booking.Observer;
-using SIMS_Booking.Serializer;
-using SIMS_Booking.Utility;
+﻿using SIMS_Booking.Utility;
+using SIMS_Booking.Utility.Observer;
+using SIMS_Booking.Utility.Serializer;
 using System.Collections.Generic;
 using System.Linq;
 

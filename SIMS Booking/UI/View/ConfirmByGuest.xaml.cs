@@ -4,12 +4,12 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using SIMS_Booking.Model;
-using SIMS_Booking.Observer;
 using SIMS_Booking.Service;
+using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.UI.View
 {
-   
+
     public partial class ConfirmByGuest : Window, IObserver, INotifyPropertyChanged
     {
         public ObservableCollection<User> GuestOnTour { get; set; }

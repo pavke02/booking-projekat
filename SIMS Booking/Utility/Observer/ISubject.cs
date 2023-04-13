@@ -1,5 +1,4 @@
-﻿
-namespace SIMS_Booking.Observer
+﻿namespace SIMS_Booking.Utility.Observer
 {
     public interface ISubject
     {

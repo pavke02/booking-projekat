@@ -5,11 +5,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.Model;
-using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.Utility;
+using SIMS_Booking.Utility.Observer;
 using SIMS_Booking.View;
 
 namespace SIMS_Booking.UI.View

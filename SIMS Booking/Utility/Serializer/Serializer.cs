@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace SIMS_Booking.Serializer
+namespace SIMS_Booking.Utility.Serializer
 {
     public class Serializer<T> where T : ISerializable, new()
     {
@@ -42,7 +42,7 @@ namespace SIMS_Booking.Serializer
             catch (FileNotFoundException e)
             {
                 Console.WriteLine(e.Message);
-                File.CreateText(fileName).Close();                
+                File.CreateText(fileName).Close();
                 return objects;
             }
         }

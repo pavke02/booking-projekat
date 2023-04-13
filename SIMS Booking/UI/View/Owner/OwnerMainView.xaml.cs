@@ -9,11 +9,11 @@ using System.Windows.Controls;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.Utility;
+using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.UI.View.Owner
 {

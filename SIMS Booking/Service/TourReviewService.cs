@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SIMS_Booking.Model;
-using SIMS_Booking.Observer;
 using SIMS_Booking.Repository;
+using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.Service
 {
