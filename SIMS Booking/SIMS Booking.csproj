@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Resources\Images\add.png" />
+    <None Remove="Resources\Images\guest1_128.png" />
     <None Remove="Resources\Images\owner.png" />
     <None Remove="Resources\Images\remove.png" />
   </ItemGroup>
@@ -33,6 +34,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.TeamFoundationServer.ExtendedClient" Version="16.170.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\guest1_128.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

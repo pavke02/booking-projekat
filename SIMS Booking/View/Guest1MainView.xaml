@@ -9,17 +9,31 @@
         Title="Guest1MainView" Height="768" Width="1024">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
             <RowDefinition ></RowDefinition>
             <RowDefinition Height="250"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <Grid Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBox Name="UserTb" Grid.Column="0" Grid.Row="1" FontSize="25" FontWeight="Bold" Padding="0" BorderThickness="0" VerticalContentAlignment="Center" Margin="0, 5, 0, 0">Pera, Guest</TextBox>
+            <Button Click="LogOut"  Grid.Row="0" Grid.Column="0" Height="30" FontSize="18">Log Out</Button>
+            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width = "85" Margin="10,0,5,0" Source = "/Resources/Images\guest1_128.png" Height="85" Stretch="UniformToFill" VerticalAlignment="Bottom"/>
+        </Grid>
+
         <TabControl x:Name="TabC" Width="1000" Height="400" Grid.Row="2" SelectionChanged="TabChanged">
-            <TabItem Header="Accommodations" Height="50" FontSize="20" Padding="5 ">
+            <TabItem Name="AccommodationsTab" Header="Accommodations" Height="50" FontSize="20" Padding="5 " VerticalAlignment="Bottom">
                 <DataGrid
-                    FontSize="14"
+                    FontSize="16"
                     Name="DataGridAccommodations"
                     ItemsSource="{Binding Path=Accommodations, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding Path=SelectedAccommodation, UpdateSourceTrigger=PropertyChanged}"
@@ -38,17 +52,17 @@
                         </Style>
                     </DataGrid.CellStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="170"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="150"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Type" Binding="{Binding Type}" Width="100"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="120"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Min reservation (days)" Binding="{Binding MinReservationDays}" Width="160"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Cancellation period (days)" Binding="{Binding CancellationPeriod}" Width="200"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="150" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Type" Binding="{Binding Type}" Width="130" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="120" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Min reservation (days)" Binding="{Binding MinReservationDays}" Width="200" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Cancellation period (days)" Binding="{Binding CancellationPeriod}" Width="200" FontSize="18"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
 
             </TabItem>
-            <TabItem Header="Your Reservations" Height="50" FontSize="20" Padding="5 " HorizontalAlignment="Left" Margin="-2,-1,0,1" Width="170">
+            <TabItem Name="ReservationsTab" Header="Your Reservations" Margin="0" VerticalAlignment="Bottom" Height="50" FontSize="20" Padding="5 " HorizontalAlignment="Left" Width="170">
                 <DataGrid
                     FontSize="14"
                     Name="DataGridReservations"
@@ -64,7 +78,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            <TabItem Header="Your Postponements" Height="50" FontSize="20" Padding="5 ">
+            <TabItem Name="PostponementsTab" Margin="0" Header="Your Postponements" VerticalAlignment="Bottom" Height="50" FontSize="20" Padding="5 ">
                 <DataGrid
                     FontSize="14"
                     Name="DataGridPostponements"
@@ -142,10 +156,11 @@
                 <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Reset Filters"  FontSize="20" Click="Reset" Padding="5" Width="385" VerticalAlignment="Center" Margin="5, 0, 10, 0"
             />
             </Grid>
-            <Grid Name="AccommodationsButtonsGrid" Height="100" Width="600" VerticalAlignment="Top">
+            <Grid Name="AccommodationsButtonsGrid" Height="240" Width="600" VerticalAlignment="Top">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"></RowDefinition>
                     <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -179,8 +194,9 @@
                 <Button Grid.Row="0" Grid.Column="2" FontSize="20" IsEnabled="False"  Padding="5, 0, 5, 0" Margin="10,0, 0,10">Open Forum</Button>
                 <Button Grid.Row="1" Grid.Column="0" FontSize="20" IsEnabled="False" Padding="5, 0, 5, 0" Margin="0,0,10, 10">Generate PDF</Button>
                 <Button Grid.Row="1" Grid.Column="1" FontSize="20" Grid.ColumnSpan="2" IsEnabled="False"  Padding="5, 0, 5, 0" Margin="5,0,0, 10">Wherever / Whenever</Button>
+                <Button Grid.Row="2" Grid.Column="2" FontSize="20" IsEnabled="False" Height="40" Width="190" VerticalAlignment="Bottom" Padding="5, 0, 5, 0" >Start Demo</Button>
             </Grid>
-            
+
         </StackPanel>
 
     </Grid>

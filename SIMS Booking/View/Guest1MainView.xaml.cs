@@ -180,6 +180,11 @@ namespace SIMS_Booking.View
                 "Cottage"
             };
 
+            if (!loggedUser.IsSuperUser)
+                UserTb.Text = LoggedUser.Username + ", Guest";
+            else
+                UserTb.Text = LoggedUser.Username + ", Super Guest";
+
         }
 
         private void Reserve(object sender, RoutedEventArgs e)
@@ -259,21 +264,30 @@ namespace SIMS_Booking.View
 
         private void TabChanged(object sender, SelectionChangedEventArgs e)
         {
-            CollapseAll();
+            ResetAllTabs();
 
             if (TabC.SelectedIndex == 0)
             {
                 FiltersGrid.Visibility = Visibility.Visible;
                 AccommodationsButtonsGrid.Visibility = Visibility.Visible;
+                AccommodationsTab.Height += 10;
             }
             else if (TabC.SelectedIndex == 1)
             {
                 ReservationsPanel.Visibility = Visibility.Visible;
+                ReservationsTab.Height += 10;
+            }
+            else
+            {
+                PostponementsTab.Height += 10;
             }
         }
 
-        private void CollapseAll()
+        private void ResetAllTabs()
         {
+            AccommodationsTab.Height = 50;
+            ReservationsTab.Height = 50;
+            PostponementsTab.Height = 50;
             ReservationsPanel.Visibility = Visibility.Collapsed;
             FiltersGrid.Visibility = Visibility.Collapsed;
             AccommodationsButtonsGrid.Visibility = Visibility.Collapsed;
@@ -516,6 +530,25 @@ namespace SIMS_Booking.View
 
             //UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
             UpdateAccommodationsDataGrid(accommodationsFiltered);
+        }
+
+        private void CloseAllWindowsButSignIn()
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() != typeof(SignInForm))
+                {
+                    window.Close();
+                }
+            }
+
+        }
+
+        private void LogOut(object sender, RoutedEventArgs e)
+        {
+            SignInForm signIn = new SignInForm();
+            signIn.Show();
+            CloseAllWindowsButSignIn();
         }
     }
 }
