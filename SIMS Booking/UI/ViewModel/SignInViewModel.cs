@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Utility.Commands;
 using SIMS_Booking.Utility.Stores;
 
@@ -22,7 +23,8 @@ namespace SIMS_Booking.UI.ViewModel
         }
         public SignInViewModel(NavigationStore navigationStore)
         {
-            NavigateToSignUpCommand = new NavigateCommand<SignUpViewModel>(navigationStore, () => new SignUpViewModel(navigationStore));
+            NavigateToSignUpCommand = new NavigateCommand<SignUpViewModel>(new NavigationService<SignUpViewModel>
+                (navigationStore, () => new SignUpViewModel(navigationStore)));
         }
     }
 }

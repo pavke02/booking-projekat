@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SIMS_Booking"
         xmlns:view1="clr-namespace:SIMS_Booking.UI.View"
         xmlns:viewModel1="clr-namespace:SIMS_Booking.UI.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" SizeToContent="WidthAndHeight">
+        Title="MainWindow" SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen">
 
     <ContentControl Content="{Binding CurrentViewModel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
         <ContentControl.Resources>
