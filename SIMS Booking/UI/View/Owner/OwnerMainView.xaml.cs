@@ -17,7 +17,7 @@ using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.UI.View.Owner
 {
-    public partial class OwnerMainView : Window, IObserver, INotifyPropertyChanged, IDataErrorInfo
+    public partial class OwnerMainView : UserControl, IObserver, INotifyPropertyChanged, IDataErrorInfo
     {        
         public Dictionary<string, List<string>> Countries { get; set; }
         public List<string> TypesCollection { get; set; }
@@ -157,12 +157,17 @@ namespace SIMS_Booking.UI.View.Owner
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }                
+        }
+
+        public OwnerMainView()
+        {
+            InitializeComponent();
+        }
 
         public OwnerMainView(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, PostponementService postponementService, User user, CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService)
         {
             InitializeComponent();
-            DataContext = this;            
+            //DataContext = this;            
 
             _userService = userService;
             _user = user;

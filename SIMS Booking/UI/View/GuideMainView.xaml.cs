@@ -29,11 +29,9 @@ namespace SIMS_Booking.UI.View
 
         public Tour Tour { get; set; }
         public Tour Tour1 { get; set; }
-        public TourPoint dataTourPoint { get; set; }
 
         private TextBox _textBox;
         private TourService _tourService;
-        private ObservableCollection<Tour> _allToursRepository;
 
         private TourPointService _tourPointService;
         private ConfirmTourService _confirmTourService;

@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:view1="clr-namespace:SIMS_Booking.UI.View"
         xmlns:viewModel1="clr-namespace:SIMS_Booking.UI.ViewModel"
+        xmlns:owner="clr-namespace:SIMS_Booking.UI.View.Owner"
         mc:Ignorable="d"
         Title="MainWindow" SizeToContent="WidthAndHeight"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterOwner">
 
     <ContentControl Content="{Binding CurrentViewModel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
         <ContentControl.Resources>
@@ -16,6 +17,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModel1:SignUpViewModel }">
                 <view1:SignUpView></view1:SignUpView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel1:OwnerMainViewModel }">
+                <owner:OwnerMainView></owner:OwnerMainView>
             </DataTemplate>
         </ContentControl.Resources>
     </ContentControl>
