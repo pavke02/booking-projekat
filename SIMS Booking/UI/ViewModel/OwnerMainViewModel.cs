@@ -6,26 +6,17 @@ using SIMS_Booking.Utility.Stores;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SIMS_Booking.Utility;
-using System.Linq;
 using System.ComponentModel;
 using SIMS_Booking.Utility.Observer;
-using Microsoft.VisualStudio.Services.Profile;
-using SIMS_Booking.Enums;
+using System.Linq;
+using System.Windows.Input;
+using SIMS_Booking.Utility.Commands.OwnerCommands;
+using System;
 
 namespace SIMS_Booking.UI.ViewModel
 {
     public class OwnerMainViewModel : ViewModelBase, IObserver, IDataErrorInfo
     {
-        public Dictionary<string, List<string>> Countries { get; set; }
-        public List<string> TypesCollection { get; set; }
-        public ObservableCollection<Accommodation> Accommodations { get; set; }
-        public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
-        public ObservableCollection<GuestReview> PastReservations { get; set; }
-
-        public Reservation SelectedReservation { get; set; }
-        public GuestReview SelectedReview { get; set; }
-
-        private readonly User _user;
 
         private readonly AccommodationService _accommodationService;
         private readonly ReservationService _reservationService;
@@ -35,7 +26,135 @@ namespace SIMS_Booking.UI.ViewModel
         private readonly PostponementService _postponementService;
         private readonly UserService _userService;
 
-        #region Property
+        private readonly User _user;
+
+        public ICommand PublishCommand { get; }
+        public ICommand ResetCommand { get; }
+        public ICommand AddImageCommand { get; }      
+        public ICommand ClearURLsCommand { get; }
+
+        #region Property                
+        public Dictionary<string, List<string>> Countries { get; set; }
+        public ObservableCollection<string> Cities { get; set; }
+        public List<string> TypesCollection { get; set; }
+        public ObservableCollection<Accommodation> Accommodations { get; set; }
+        public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
+        public ObservableCollection<GuestReview> PastReservations { get; set; }
+        public Reservation SelectedReservation { get; set; }
+        public GuestReview SelectedReview { get; set; }        
+
+        private string _url;
+        public string Url
+        {
+            get => _url;
+            set
+            {
+                if (value != _url)
+                {
+                    _url = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _ownerRating;
+        public string OwnerRating
+        {
+            get => _ownerRating;
+            set
+            {
+                if (value != _ownerRating)
+                {
+                    _ownerRating = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _regularSelected;
+        public bool RegularSelected
+        {
+            get { return _regularSelected; }
+            set
+            {
+                if (value != _regularSelected)
+                {
+                    _regularSelected = value;
+                    OnPropertyChanged();
+                }                
+            }
+        }
+
+        private bool _superSelected;
+        public bool SuperSelected
+        {
+            get { return _superSelected; }
+            set
+            {
+                if (value != _superSelected)
+                {
+                    _superSelected = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _username;
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                if (value != _username)
+                {
+                    _username = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _role;
+        public string Role
+        {
+            get => _role;
+            set
+            {
+                if (value != _role)
+                {
+                    _role = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _accommodationNumber;
+        public string AccommodationNumber
+        {
+            get => _accommodationNumber;
+            set
+            {
+                if (value != _accommodationNumber)
+                {
+                    _accommodationNumber = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _reservationNumber;
+        public string ReservationNumber
+        {
+            get => _reservationNumber;
+            set
+            {
+                if (value != _reservationNumber)
+                {
+                    _reservationNumber = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private string _accommodationName;
         public string AccommodationName
         {
@@ -74,6 +193,7 @@ namespace SIMS_Booking.UI.ViewModel
                 {
                     _country = value;
                     OnPropertyChanged();
+                    FillCityCb();
                 }
             }
         }
@@ -155,86 +275,123 @@ namespace SIMS_Booking.UI.ViewModel
             CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService,
             NavigationStore navigationStore)
         {
-            _userService = userService;
             _user = user;
-            //usernameTb.Text = _user.Username;
-            //roleTb.Text = _user.Role.ToString();
+
+            _userService = userService;
+            Username = _user.Username;
+            Role = _user.Role.ToString();
 
             _accommodationService = accommodationService;
             _accommodationService.Subscribe(this);
             Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetByUserId(_user.getID()));
 
-            //accommodationNumberTb.Text = Accommodations.Count().ToString();
+            AccommodationNumber = Accommodations.Count().ToString();
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
             ReservedAccommodations = new ObservableCollection<Reservation>(_reservationService.GetUnreviewedReservations(_user.getID()));
 
-            //reservationNumberTb.Text = ReservedAccommodations.Count().ToString();
+            ReservationNumber = ReservedAccommodations.Count().ToString();
 
             _guestReviewService = guestReviewService;
             _guestReviewService.Subscribe(this);
             PastReservations = new ObservableCollection<GuestReview>(_guestReviewService.GetReviewedReservations(_user.getID()));
 
             Countries = new Dictionary<string, List<string>>(cityCountryCsvRepository.Load());
+            Cities = new ObservableCollection<string>();
 
             _usersAccommodationService = usersAccommodationService;
             _ownerReviewService = ownerReviewService;
             _postponementService = postponementService;
 
-            //CalculateRating(_user.getID());
-
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
+
+            #region Commands
+            PublishCommand = new PublishAccommodationCommand(this, _accommodationService, _usersAccommodationService, _user);
+            ResetCommand = new ResetCommand(this);
+            AddImageCommand = new AddImageCommand(this);
+            ClearURLsCommand = new ClearURLsCommand(this);
+            #endregion
+
+            CalculateRating(_user.getID());
 
             NotificationTimer timer = new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);
         }
 
-        public void Update()
+        //ToDo: Resiti na bolji nacin: jokicev metod
+        private void FillCityCb()
         {
-            throw new System.NotImplementedException();
+            Cities.Clear();
+
+            if (Country.Key != null)
+            {
+                foreach (string city in Countries[Country.Key].ToList())
+                    Cities.Add(city);
+            }
         }
 
-        //#region Update
-        //private void UpdateAccommodations(List<Accommodation> accommodations)
-        //{
-        //    Accommodations.Clear();
-        //    foreach (var accommodation in accommodations)
-        //        Accommodations.Add(accommodation);
-        //}
+        //ToDo: Ne racunati neocenjene
+        private void CalculateRating(int id)
+        {
+            double rating = _ownerReviewService.CalculateRating(id);
+            OwnerRating = Math.Round(rating, 2).ToString();
+            if (rating > 5.5 && PastReservations.Count() > 3)
+            {
+                RegularSelected = false;
+                SuperSelected = true;
+                _user.IsSuperUser = true;
+                _userService.Update(_user);
+            }
+            else
+            {
+                SuperSelected = false;
+                RegularSelected = true;
+                _user.IsSuperUser = false;
+                _userService.Update(_user);
+            }
+        }
 
-        //private void UpdateReservedAccommodations(List<Reservation> reservations)
-        //{
-        //    ReservedAccommodations.Clear();
-        //    foreach (var reservation in reservations)
-        //        ReservedAccommodations.Add(reservation);
-        //}
+        #region Update
+        private void UpdateAccommodations(List<Accommodation> accommodations)
+        {
+            Accommodations.Clear();
+            foreach (var accommodation in accommodations)
+                Accommodations.Add(accommodation);
+        }
 
-        //private void UpdatePastReservations(List<GuestReview> guestReviews)
-        //{
-        //    PastReservations.Clear();
-        //    foreach (var guestReview in guestReviews)
-        //        PastReservations.Add(guestReview);
-        //}
+        private void UpdateReservedAccommodations(List<Reservation> reservations)
+        {
+            ReservedAccommodations.Clear();
+            foreach (var reservation in reservations)
+                ReservedAccommodations.Add(reservation);
+        }
 
-        //private void UpdateNumberOfRegisterdAccommodations()
-        //{
-        //    accommodationNumberTb.Text = Accommodations.Count().ToString();
-        //}
+        private void UpdatePastReservations(List<GuestReview> guestreviews)
+        {
+            PastReservations.Clear();
+            foreach (var guestreview in guestreviews)
+                PastReservations.Add(guestreview);
+        }
 
-        //private void UpdateNumberOfReservedAccommodations()
-        //{
-        //    reservationNumberTb.Text = ReservedAccommodations.Count().ToString();
-        //}
+        private void UpdateNumberOfRegisterdAccommodations()
+        {
+            AccommodationNumber = Accommodations.Count().ToString();
+        }
 
-        //public void Update()
-        //{
-        //    UpdateAccommodations(_accommodationService.GetByUserId(_user.getID()));
-        //    UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.getID()));
-        //    UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.getID()));
-        //    UpdateNumberOfRegisterdAccommodations();
-        //    UpdateNumberOfReservedAccommodations();
-        //}
-        //#endregion
+        private void UpdateNumberOfReservedAccommodations()
+        {
+            ReservationNumber = ReservedAccommodations.Count().ToString();
+        }
+
+        public void Update()
+        {
+            UpdateAccommodations(_accommodationService.GetByUserId(_user.getID()));
+            UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.getID()));
+            UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.getID()));
+            UpdateNumberOfRegisterdAccommodations();
+            UpdateNumberOfReservedAccommodations();
+        }
+        #endregion
 
         #region Validation
         public string Error { get { return null; } }
@@ -295,23 +452,7 @@ namespace SIMS_Booking.UI.ViewModel
                 OnPropertyChanged("ErrorCollection");
                 return result;
             }
-        }
-
-        private readonly string[] validatedProperties = { "AccommodationName", "MaxGuests", "MinReservationDays", "CancelationPeriod", "ImageURLs", "City", "Country", "AccommodationType" };
-
-        public bool IsValid
-        {
-            get
-            {
-                foreach (var property in validatedProperties)
-                {
-                    if (this[property] != null)
-                        return false;
-                }
-
-                return true;
-            }
-        }
+        }        
         #endregion
     }
 }

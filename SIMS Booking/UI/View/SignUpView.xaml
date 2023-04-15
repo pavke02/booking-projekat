@@ -18,7 +18,8 @@
             <WrapPanel>
                 <Button Margin="10 10 170 0" Background="Transparent" BorderBrush="Transparent"
                         Command="{Binding NavigateBackCommand}">
-                    <Image Height="30" Width="30" Source="../../Resources/Images/arrow.png"/>
+                    <Image Height="30" Width="30" 
+                           Source="../../Resources/Images/arrow.png"/>
                 </Button>
                 <TextBlock Text="SignUp" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
                            Margin="0 10 0 0"></TextBlock>
