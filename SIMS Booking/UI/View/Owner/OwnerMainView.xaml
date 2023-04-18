@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:colorConverter="clr-namespace:SIMS_Booking.Utility.ColorConverter"
-             mc:Ignorable="d"
+        xmlns:converters="clr-namespace:SIMS_Booking.Utility.Converters"
+        mc:Ignorable="d"
         Height="600" Width="1300" FontSize="18">
     <Grid>
         <TabControl TabStripPlacement="Left">
@@ -218,7 +218,8 @@
                                     Margin="40, 5 0, 0" Name="urlTb" 
                                     Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                                 <Button Background="Transparent" BorderBrush="Transparent" Margin="10, 5, 20, 0"
-                                        Name="addURLButton" Command="{Binding AddImageCommand}">
+                                        Name="addURLButton" Command="{Binding AddImageCommand}"
+                                        Visibility="{Binding ButtCancel, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">
                                     <Image Source="/Resources/Images/add.png" Height="30" Width="30"/>
                                 </Button>
                             </WrapPanel>
@@ -267,7 +268,7 @@
                           SelectionChanged="IsReviewable"                          
                           IsReadOnly="True" AutoGenerateColumns="False">
                         <DataGrid.Resources>
-                            <colorConverter:GuestReviewColorConverter x:Key="ColorConverter"></colorConverter:GuestReviewColorConverter>
+                            <converters:GuestReviewColorConverter x:Key="ColorConverter"></converters:GuestReviewColorConverter>
                         </DataGrid.Resources>
                         <DataGrid.CellStyle>
                             <Style TargetType="{x:Type DataGridCell}">

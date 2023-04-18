@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SIMS_Booking.View"
+        xmlns:components="clr-namespace:SIMS_Booking.Utility.Components"
+        xmlns:converters="clr-namespace:SIMS_Booking.Utility.Converters"
         mc:Ignorable="d" Height="450" Width="500">
 
     <UserControl.Resources>
@@ -12,6 +14,8 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Margin" Value="5, 10, 0, 0"/>
         </Style>
+
+        <converters:RoleConverter x:Key="RoleConverterKey"/>
     </UserControl.Resources>
     <Grid>
         <StackPanel>
@@ -29,36 +33,52 @@
                     <Label FontSize="20" Margin="20, 20, 0, 0">Username:</Label>
                     <TextBox Text="{Binding Path=Username, ValidatesOnDataErrors=True, 
                              UpdateSourceTrigger=PropertyChanged}"                        
-                     TextChanged="TextBoxCheck"
-                     Height="30" Width="280" 
+                             Height="30" Width="280" 
                      Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"
-                     HorizontalAlignment="Left">
+                     HorizontalAlignment="Left" BorderThickness="0 0 0 2">
                         <TextBox.ToolTip>
                             <TextBlock Text="{Binding ErrorCollection[Username]}"/>
                         </TextBox.ToolTip>
                     </TextBox>
 
                     <Label FontSize="20" Margin="20, 20, 0, 0">Password:</Label>
-                    <PasswordBox Name="txtPassword" Height="30" Width="280" 
-                         Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"/>
+                    <components:BindablePasswordBox Height="30" Width="280" Margin="25 0 0 0" 
+                        Padding="0 5 0 0" FontSize="16"
+                        HorizontalAlignment="Left" 
+                        Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
                     <Label FontSize="20" Margin="20, 20, 0, 0">Confrim Password:</Label>
-                    <PasswordBox Name="txtConfirmPassword" Height="30" Width="280"
-                         Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"
-                         HorizontalAlignment="Left"/>
-                    <Label Name="passwordValidationLb" FontSize="10" Foreground="Red" Margin="20, 0, 0, 0" Visibility="Hidden">Passwords must be the same</Label>
+                    <components:BindablePasswordBox Height="30" Width="280" Margin="25 0 0 0" 
+                        Padding="0 5 0 0" FontSize="16"
+                        HorizontalAlignment="Left" 
+                        Password="{Binding ConfirmPassword, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <Label Name="passwordValidationLb" FontSize="10" Foreground="Red" Margin="20, 0, 0, 0" 
+                           Visibility="{Binding ErrorText, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">Passwords must be the same</Label>
                 </StackPanel>
 
-                <StackPanel Margin="60, 60, 0, 0">
-                    <RadioButton x:Name="ownerRb" Content="Owner" IsChecked="True"></RadioButton>
-                    <RadioButton x:Name="guest1Rb" Content="Guest1"></RadioButton>
-                    <RadioButton x:Name="guest2Rb" Content="Guest2"></RadioButton>
-                    <RadioButton x:Name="driverRb" Content="Driver"></RadioButton>
-                    <RadioButton x:Name="guideRb" Content="Guide"></RadioButton>
+                <StackPanel Margin="60, 45, 0, 0">
+                    <RadioButton x:Name="ownerRb" Content="Owner" 
+                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Owner}"></RadioButton>
+                    <RadioButton x:Name="guest1Rb" Content="Guest1" 
+                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guest1}"></RadioButton>
+                    <RadioButton x:Name="guest2Rb" Content="Guest2" 
+                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guest2}"></RadioButton>
+                    <RadioButton x:Name="driverRb" Content="Driver" 
+                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Driver}"></RadioButton>
+                    <RadioButton x:Name="guideRb" Content="Guide" 
+                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guide}"></RadioButton>
+                    <TextBox Margin="0 10 0 0" Padding="0 5 0 0" Height="30" 
+                             BorderThickness="0 0 0 2"
+                             Text="{Binding Age, ValidatesOnDataErrors=True, 
+                             UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.ToolTip>
+                            <TextBlock Text="{Binding ErrorCollection[Age]}"/>
+                        </TextBox.ToolTip>
+                    </TextBox>
                 </StackPanel>
             </WrapPanel>
-            <Button Click="SignUp" Content="SIGNUP" FontSize="16" Padding="5" Width="200"
-                    Margin="0, 30, 0, 0" Name="signUpButton" IsEnabled="False">
+            <Button Command="{Binding SignUpCommand}" Content="SIGNUP" FontSize="16" Padding="5" Width="200"
+                    Margin="0, 30, 0, 0" Name="signUpButton">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="7"/>

@@ -28,13 +28,16 @@ namespace SIMS_Booking.Utility.Commands.OwnerCommands
 
         public override bool CanExecute(object? parameter)
         {
-            return !string.IsNullOrEmpty(_viewModel.Url) && !string.IsNullOrWhiteSpace(_viewModel.Url) && Uri.IsWellFormedUriString(_viewModel.Url, UriKind.Absolute) && base.CanExecute(parameter);
+            return Uri.IsWellFormedUriString(_viewModel.Url, UriKind.Absolute) && base.CanExecute(parameter);
         }
 
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(OwnerMainViewModel.Url))
+            {
+                _viewModel.ButtCancel = Uri.IsWellFormedUriString(_viewModel.Url, UriKind.Absolute);
                 OnCanExecuteChanged();
+            }
         }
     }
 }

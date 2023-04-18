@@ -124,7 +124,7 @@ namespace SIMS_Booking.UI.ViewModel
 
             _navigationStore = navigationStore;
             NavigateToSignUpCommand = new NavigateCommand<SignUpViewModel>(new NavigationService<SignUpViewModel>
-                (_navigationStore, () => new SignUpViewModel(_navigationStore)));
+                (_navigationStore, () => new SignUpViewModel(_navigationStore, _userService)));
         }
 
         [RelayCommand]

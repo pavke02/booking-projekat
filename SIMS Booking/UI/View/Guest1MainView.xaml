@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SIMS_Booking.View"
-        xmlns:colorConverter="clr-namespace:SIMS_Booking.Utility.ColorConverter"
+        xmlns:colorConverter="clr-namespace:SIMS_Booking.Utility.Converters"
         mc:Ignorable="d"
         Title="Guest1MainView" Height="520" Width="1000">
     <Grid>

@@ -41,7 +41,21 @@ namespace SIMS_Booking.UI.ViewModel
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
         public Reservation SelectedReservation { get; set; }
-        public GuestReview SelectedReview { get; set; }        
+        public GuestReview SelectedReview { get; set; }
+
+        private bool _buttCancel;
+        public bool ButtCancel
+        {
+            get => _buttCancel; 
+            set
+            {
+                if (value != _buttCancel)
+                {
+                    _buttCancel = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private string _url;
         public string Url
