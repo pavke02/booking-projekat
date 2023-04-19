@@ -3,24 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:view1="clr-namespace:SIMS_Booking.UI.View"
-        xmlns:viewModel1="clr-namespace:SIMS_Booking.UI.ViewModel"
+        xmlns:view="clr-namespace:SIMS_Booking.UI.View"
+        xmlns:viewModel="clr-namespace:SIMS_Booking.UI.ViewModel"
         xmlns:owner="clr-namespace:SIMS_Booking.UI.View.Owner"
+        xmlns:viewModelOwner="clr-namespace:SIMS_Booking.UI.ViewModel.Owner"
+        xmlns:modalControl="clr-namespace:ModalControl;assembly=ModalControl"
         mc:Ignorable="d"
         Title="MainWindow" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
 
-    <ContentControl Content="{Binding CurrentViewModel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-        <ContentControl.Resources>
-            <DataTemplate DataType="{x:Type viewModel1:SignInViewModel }">
-                <view1:SignInView></view1:SignInView>
+    <Grid>
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type viewModel:SignInViewModel }">
+                <view:SignInView></view:SignInView>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModel1:SignUpViewModel }">
-                <view1:SignUpView></view1:SignUpView>
+            <DataTemplate DataType="{x:Type viewModel:SignUpViewModel }">
+                <view:SignUpView></view:SignUpView>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModel1:OwnerMainViewModel }">
+            <DataTemplate DataType="{x:Type viewModelOwner:OwnerMainViewModel }">
                 <owner:OwnerMainView></owner:OwnerMainView>
             </DataTemplate>
-        </ContentControl.Resources>
-    </ContentControl>
+            <DataTemplate DataType="{x:Type viewModelOwner:GuestReviewViewModel }">
+                <owner:GuestReviewView></owner:GuestReviewView>
+            </DataTemplate>
+        </Grid.Resources>
+
+        <modalControl:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">
+            <ContentControl Content="{Binding CurrentModalViewModel}"/>
+        </modalControl:Modal>
+
+        <ContentControl Content="{Binding CurrentViewModel}"/>
+    </Grid>
 </Window>

@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel;
-using System;
 using System.Windows;
-using Microsoft.VisualStudio.Services.Users;
+using SIMS_Booking.Model;
 using SIMS_Booking.Service;
 using SIMS_Booking.UI.ViewModel;
-using User = SIMS_Booking.Model.User;
 
 namespace SIMS_Booking.Utility.Commands
 {

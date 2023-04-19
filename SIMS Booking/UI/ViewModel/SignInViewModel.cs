@@ -7,12 +7,11 @@ using SIMS_Booking.Repository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
-using SIMS_Booking.UI.View.Owner;
 using SIMS_Booking.UI.View;
 using SIMS_Booking.Utility.Commands;
 using SIMS_Booking.Utility.Stores;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SIMS_Booking.UI.ViewModel.Owner;
 
 
 namespace SIMS_Booking.UI.ViewModel
@@ -48,6 +47,7 @@ namespace SIMS_Booking.UI.ViewModel
         private Tour _tour;
 
         private readonly NavigationStore _navigationStore;
+        private readonly ModalNavigationStore _modalNavigationStore;
 
         public ICommand NavigateToSignUpCommand { get; }
 
@@ -79,7 +79,7 @@ namespace SIMS_Booking.UI.ViewModel
             }
         }
 
-        public SignInViewModel(NavigationStore navigationStore)
+        public SignInViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
             #region ServiceInitializaton
             _userService = new UserService();
@@ -123,10 +123,18 @@ namespace SIMS_Booking.UI.ViewModel
             #endregion
 
             _navigationStore = navigationStore;
-            NavigateToSignUpCommand = new NavigateCommand<SignUpViewModel>(new NavigationService<SignUpViewModel>
-                (_navigationStore, () => new SignUpViewModel(_navigationStore, _userService)));
+            _modalNavigationStore = modalNavigationStore;
+
+            NavigateToSignUpCommand = new NavigateCommand(CreateSignUpNavigationService(modalNavigationStore));
         }
 
+        private INavigationService CreateSignUpNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new NavigationService<SignUpViewModel>
+                (_navigationStore, () => new SignUpViewModel(_navigationStore, modalNavigationStore, _userService));
+        }
+
+        #region SignIn
         [RelayCommand]
         public void SignIn()
         {
@@ -138,8 +146,9 @@ namespace SIMS_Booking.UI.ViewModel
                     switch (user.Role)
                     {
                         case Roles.Owner:
-                            _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService, 
-                                _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _navigationStore);
+                            //Question: da li postoji bolji nacin(ovaj je izuzetno glup, zaobilazi celu strukturu)
+                            _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
+                                _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _navigationStore, _modalNavigationStore);
                             break;
                         case Roles.Guest1:
                             Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository,
@@ -174,6 +183,7 @@ namespace SIMS_Booking.UI.ViewModel
             {
                 MessageBox.Show("Wrong username!");
             }
-        }
+        } 
+        #endregion
     } 
 }

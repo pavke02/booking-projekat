@@ -252,7 +252,6 @@
                         <Button Grid.Column="0" Content="Publish" Command="{Binding PublishCommand}" 
                                 Name="publishButton" 
                                 Height="40" Width="200" Margin="0, 0, 0, 0">
-                            
                         </Button>
                         <Button Grid.Column="1" Content="Reset" Command="{Binding ResetCommand}"
                                 Height="40" Width="200" Margin="50, 0, 0, 0">
@@ -297,9 +296,8 @@
                                 </Style>
                             </Button.Resources>
                         </Button>
-                        <Button Name="reviewGuestButton" Content="Review Guest" Click="RateGuest"
-                            Width="150" Height="40" Margin="0, 30, 0, 0"
-                            IsEnabled="false">
+                        <Button Name="reviewGuestButton" Content="Review Guest" Command="{Binding NavigateToGuestReviewCommand}"
+                            Width="150" Height="40" Margin="0, 30, 0, 0">
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="10"/>

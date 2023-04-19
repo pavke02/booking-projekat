@@ -12,8 +12,10 @@ using System.Linq;
 using System.Windows.Input;
 using SIMS_Booking.Utility.Commands.OwnerCommands;
 using System;
+using SIMS_Booking.Service.NavigationService;
+using SIMS_Booking.Utility.Commands;
 
-namespace SIMS_Booking.UI.ViewModel
+namespace SIMS_Booking.UI.ViewModel.Owner
 {
     public class OwnerMainViewModel : ViewModelBase, IObserver, IDataErrorInfo
     {
@@ -30,8 +32,9 @@ namespace SIMS_Booking.UI.ViewModel
 
         public ICommand PublishCommand { get; }
         public ICommand ResetCommand { get; }
-        public ICommand AddImageCommand { get; }      
+        public ICommand AddImageCommand { get; }
         public ICommand ClearURLsCommand { get; }
+        public ICommand NavigateToGuestReviewCommand { get; }
 
         #region Property                
         public Dictionary<string, List<string>> Countries { get; set; }
@@ -40,13 +43,27 @@ namespace SIMS_Booking.UI.ViewModel
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
-        public Reservation SelectedReservation { get; set; }
         public GuestReview SelectedReview { get; set; }
+
+        private Reservation _selectedReservation;
+
+        public Reservation SelectedReservation
+        {
+            get => _selectedReservation;
+            set
+            {
+                if (value != _selectedReservation)
+                {
+                    _selectedReservation = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private bool _buttCancel;
         public bool ButtCancel
         {
-            get => _buttCancel; 
+            get => _buttCancel;
             set
             {
                 if (value != _buttCancel)
@@ -95,7 +112,7 @@ namespace SIMS_Booking.UI.ViewModel
                 {
                     _regularSelected = value;
                     OnPropertyChanged();
-                }                
+                }
             }
         }
 
@@ -283,11 +300,11 @@ namespace SIMS_Booking.UI.ViewModel
         }
         #endregion
 
-        public OwnerMainViewModel(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, 
-            ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService, 
-            OwnerReviewService ownerReviewService, PostponementService postponementService, User user, 
+        public OwnerMainViewModel(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository,
+            ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
+            OwnerReviewService ownerReviewService, PostponementService postponementService, User user,
             CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService,
-            NavigationStore navigationStore)
+            NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
             _user = user;
 
@@ -325,6 +342,7 @@ namespace SIMS_Booking.UI.ViewModel
             ResetCommand = new ResetCommand(this);
             AddImageCommand = new AddImageCommand(this);
             ClearURLsCommand = new ClearURLsCommand(this);
+            NavigateToGuestReviewCommand = new NavigateCommand(CreateGuestReviewNavigationService(modalNavigationStore), this, () => SelectedReservation != null);
             #endregion
 
             CalculateRating(_user.getID());
@@ -344,7 +362,7 @@ namespace SIMS_Booking.UI.ViewModel
             }
         }
 
-        //ToDo: Ne racunati neocenjene
+        //ToDo: Ne racunati neocenjene smestaje
         private void CalculateRating(int id)
         {
             double rating = _ownerReviewService.CalculateRating(id);
@@ -363,6 +381,13 @@ namespace SIMS_Booking.UI.ViewModel
                 _user.IsSuperUser = false;
                 _userService.Update(_user);
             }
+        }
+
+        private INavigationService CreateGuestReviewNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<GuestReviewViewModel>
+                (modalNavigationStore, () => new GuestReviewViewModel(_guestReviewService, _reservationService, 
+                    SelectedReservation, modalNavigationStore));
         }
 
         #region Update
@@ -466,7 +491,7 @@ namespace SIMS_Booking.UI.ViewModel
                 OnPropertyChanged("ErrorCollection");
                 return result;
             }
-        }        
+        }
         #endregion
     }
 }

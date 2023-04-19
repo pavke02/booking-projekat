@@ -3,11 +3,11 @@ using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
-using SIMS_Booking.UI.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.ComponentModel;
+using SIMS_Booking.UI.ViewModel.Owner;
 
 namespace SIMS_Booking.Utility.Commands.OwnerCommands
 {

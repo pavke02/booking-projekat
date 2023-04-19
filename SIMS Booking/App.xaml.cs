@@ -9,12 +9,13 @@ namespace SIMS_Booking
         protected override void OnStartup(StartupEventArgs e)
         {
             NavigationStore navigationStore = new NavigationStore();
+            ModalNavigationStore modalNavigationStore = new ModalNavigationStore();
 
-            navigationStore.CurrentViewModel = new SignInViewModel(navigationStore);
+            navigationStore.CurrentViewModel = new SignInViewModel(navigationStore, modalNavigationStore);
 
             MainWindow = new MainWindow()
             {
-                DataContext = new MainViewModel(navigationStore)
+                DataContext = new MainViewModel(navigationStore, modalNavigationStore)
             };
             MainWindow.Show();
             base.OnStartup(e);

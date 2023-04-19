@@ -1,4 +1,4 @@
-﻿using SIMS_Booking.UI.ViewModel;
+﻿using SIMS_Booking.UI.ViewModel.Owner;
 
 namespace SIMS_Booking.Utility.Commands.OwnerCommands
 {

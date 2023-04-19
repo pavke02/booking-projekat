@@ -111,13 +111,18 @@ namespace SIMS_Booking.UI.ViewModel
         #endregion
 
 
-        public SignUpViewModel(NavigationStore navigationStore, UserService userService)
+        public SignUpViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore, UserService userService)
         {
             _userService = userService;
 
             SignUpCommand = new SignUpCommand(this, _userService);
-            NavigateBackCommand = new NavigateCommand<SignInViewModel>(new NavigationService<SignInViewModel>
-                (navigationStore, () => new SignInViewModel(navigationStore)));
+            NavigateBackCommand = new NavigateCommand(CreateSignInNavigationService(navigationStore, modalNavigationStore));
+        }
+
+        private static INavigationService CreateSignInNavigationService(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
+        {
+            return new NavigationService<SignInViewModel>
+                (navigationStore, () => new SignInViewModel(navigationStore, modalNavigationStore));
         }
 
         #region Validation

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.Model;
@@ -34,37 +31,9 @@ namespace SIMS_Booking.UI.View.Owner
         public OwnerMainView()
         {
             InitializeComponent();
-        }    
-        
-        //ToDo: ne racunati neocenjene smestaje
-        private void CalculateRating(int id)
-        {
-            double rating = _ownerReviewService.CalculateRating(id);
-            ownerRatingTb.Text = Math.Round(rating, 2).ToString();
-            if(rating > 5.5 && PastReservations.Count() > 3)
-            {
-                regularCb.IsChecked = false;
-                superCb.IsChecked = true;
-                _user.IsSuperUser = true;
-                _userService.Update(_user);
-            }                
-            else
-            {
-                superCb.IsChecked = false;
-                regularCb.IsChecked = true;
-                _user.IsSuperUser = false;
-                _userService.Update(_user);
-            }                
         }
 
         #region Buttons
-        private void RateGuest(object sender, RoutedEventArgs e)
-        {
-            GuestReviewView guestReviewView = new GuestReviewView(_guestReviewService, _reservationService, _reservationService.GetById(SelectedReservation.getID()));
-            guestReviewView.ShowDialog();
-            CalculateRating(_user.getID());
-        }
-
         private void ShowReview(object sender, RoutedEventArgs e)
         {
             GuestReviewDetailsView detailsView = new GuestReviewDetailsView(SelectedReview);
