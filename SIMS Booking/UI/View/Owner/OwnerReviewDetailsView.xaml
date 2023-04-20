@@ -29,8 +29,8 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <StackPanel Width="470" Height="440" Name="details"
-                        Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">
+                <StackPanel Width="470" Height="440"
+                            Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">
                     <Grid Margin="20 0 0 0" Width="455" HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150"></ColumnDefinition>
