@@ -117,5 +117,20 @@ namespace SIMS_Booking.Service
                 }
             }
         }
+
+        public bool isSuperGuest(User user)
+        {
+            int reservationCounter = 0;
+            foreach (Reservation reservation in _crudService.GetAll())
+            {
+                if (reservation.User == user && DateTime.Today - reservation.EndDate < TimeSpan.FromDays(365))
+                    reservationCounter++;
+            }
+
+            if (reservationCounter >= 5)
+                return true;
+            return false;
+
+        }
     }
 }

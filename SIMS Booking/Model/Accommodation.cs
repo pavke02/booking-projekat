@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SIMS_Booking.Model
 {
-    public class Accommodation : ISerializable, IDable
+    public class   Accommodation : ISerializable, IDable
     {
         private int ID;
         public string Name { get; set; }

@@ -13,6 +13,7 @@
     <None Remove="Resources\Images\guest1_128.png" />
     <None Remove="Resources\Images\owner.png" />
     <None Remove="Resources\Images\remove.png" />
+    <None Remove="Resources\Images\trash-can.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +39,9 @@
 
   <ItemGroup>
     <Resource Include="Resources\Images\guest1_128.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\trash-can.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

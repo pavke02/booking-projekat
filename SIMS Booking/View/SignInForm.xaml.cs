@@ -140,7 +140,7 @@ namespace SIMS_Booking.View
                             ownerView.Show();
                             break;
                         case Roles.Guest1:
-                            Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository, _reservationService, _reservedAccommodationService ,user, _postponementService, _cancellationCsvCrudRepository, _ownerReviewService);
+                            Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository, _reservationService, _reservedAccommodationService ,user, _postponementService, _cancellationCsvCrudRepository, _ownerReviewService, _guestReviewService);
                             guest1View.Show();
                             break;
                         case Roles.Guest2:

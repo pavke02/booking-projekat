@@ -47,5 +47,6 @@ namespace SIMS_Booking.Service
         {
             return _crudService.GetAll().Where(e => e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
         }
+
     }
 }
