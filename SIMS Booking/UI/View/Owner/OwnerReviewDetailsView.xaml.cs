@@ -2,9 +2,9 @@
 
 namespace SIMS_Booking.UI.View.Owner
 {
-    public partial class GuestReviewDetailsView : UserControl
+    public partial class OwnerReviewDetailsView : UserControl
     {
-        public GuestReviewDetailsView()
+        public OwnerReviewDetailsView()
         {
             InitializeComponent();
         }

@@ -1,23 +1,54 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using SIMS_Booking.Model;
+﻿using SIMS_Booking.Model;
 using SIMS_Booking.Service;
+using System.Collections.ObjectModel;
 using SIMS_Booking.Utility.Observer;
+using System.Collections.Generic;
+using System.Windows.Input;
+using SIMS_Booking.Utility.Stores;
+using SIMS_Booking.Service.NavigationService;
+using SIMS_Booking.Utility.Commands.NavigateCommands;
 
-namespace SIMS_Booking.UI.View.Owner
+namespace SIMS_Booking.UI.ViewModel.Owner
 {
-    public partial class OwmerReviewDetailsVeiw : Window, IObserver, INotifyPropertyChanged
+    public class OwnerReviewDetailsViewModel : ViewModelBase, IObserver
     {
+        public ICommand NavigateBackCommand { get; }
+
+        #region Property
         public ObservableCollection<OwnerReview> OwnersReviews { get; set; }
-        public OwnerReview SelectedReview { get; set; }
 
         private OwnerReviewService _ownerReviewService;
         private User _user;
 
-        #region Property
+        private OwnerReview _selectedReview;
+        public OwnerReview SelectedReview
+        {
+            get => _selectedReview;
+            set
+            {
+                if (value != _selectedReview)
+                {
+                    _selectedReview = value;
+                    OnPropertyChanged();
+                    ShowReview();
+                }
+            }
+        }
+
+        private bool _isVisible;
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                if (value != _isVisible)
+                {
+                    _isVisible = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private int _tidiness;
         public int Tidiness
         {
@@ -46,8 +77,7 @@ namespace SIMS_Booking.UI.View.Owner
             }
         }
 
-        private string _comment;        
-
+        private string _comment;
         public string Comment
         {
             get => _comment;
@@ -62,31 +92,28 @@ namespace SIMS_Booking.UI.View.Owner
         }
         #endregion
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public OwnerReviewDetailsViewModel(ModalNavigationStore modalNavigationStore, OwnerReviewService ownerReviewService, User user)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public OwmerReviewDetailsVeiw(OwnerReviewService ownerReviewService, User user)
-        {
-            InitializeComponent();
-            DataContext = this;
-
             _user = user;
 
             _ownerReviewService = ownerReviewService;
             _ownerReviewService.Subscribe(this);
             OwnersReviews = new ObservableCollection<OwnerReview>(_ownerReviewService.GetShowableReviews(_user.getID()));
+            NavigateBackCommand =
+                new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
         }
 
-        private void ShowReviewDetails(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void ShowReview()
         {
-            details.Visibility = Visibility.Visible;
+            IsVisible = true;
             Tidiness = SelectedReview.Tidiness;
             OwnersCorrectness = SelectedReview.OwnersCorrectness;
             Comment = SelectedReview.Comment;
+        }
+
+        private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new CloseModalNavigationService(modalNavigationStore);
         }
 
         #region Update

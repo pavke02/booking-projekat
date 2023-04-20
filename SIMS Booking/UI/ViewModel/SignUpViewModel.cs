@@ -6,6 +6,7 @@ using SIMS_Booking.Service;
 using System.Collections.Generic;
 using System.ComponentModel;
 using SIMS_Booking.Enums;
+using SIMS_Booking.Utility.Commands.NavigateCommands;
 
 namespace SIMS_Booking.UI.ViewModel
 {

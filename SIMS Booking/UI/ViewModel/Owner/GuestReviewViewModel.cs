@@ -1,8 +1,8 @@
 ﻿using System.Windows.Input;
-using Microsoft.VisualStudio.Services.Account;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
+using SIMS_Booking.Utility.Commands.NavigateCommands;
 using SIMS_Booking.Utility.Commands.OwnerCommands;
 using SIMS_Booking.Utility.Stores;
 
@@ -95,7 +95,14 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             _reservationService = reservationService;
 
             SubmitReviewCommand =
-                new SubmitReviewCommand(this, _guestReviewService, _reservationService, _reservation, modalNavigationStore);
+                new SubmitReviewCommand(CreateCloseModalNavigationService(modalNavigationStore),this, _guestReviewService, _reservationService, _reservation);
+            NavigateBackCommand =
+                new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
+        }
+
+        private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new CloseModalNavigationService(modalNavigationStore);
         }
 
         #region Validation

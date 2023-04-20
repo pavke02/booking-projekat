@@ -13,13 +13,12 @@ using System.Windows.Input;
 using SIMS_Booking.Utility.Commands.OwnerCommands;
 using System;
 using SIMS_Booking.Service.NavigationService;
-using SIMS_Booking.Utility.Commands;
+using SIMS_Booking.Utility.Commands.NavigateCommands;
 
 namespace SIMS_Booking.UI.ViewModel.Owner
 {
     public class OwnerMainViewModel : ViewModelBase, IObserver, IDataErrorInfo
     {
-
         private readonly AccommodationService _accommodationService;
         private readonly ReservationService _reservationService;
         private readonly GuestReviewService _guestReviewService;
@@ -35,6 +34,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand AddImageCommand { get; }
         public ICommand ClearURLsCommand { get; }
         public ICommand NavigateToGuestReviewCommand { get; }
+        public ICommand NavigateToGuestReviewDetailsCommand { get; }
+        public ICommand NavigateToOwnerReviewDetailsCommand { get; }
 
         #region Property                
         public Dictionary<string, List<string>> Countries { get; set; }
@@ -43,10 +44,22 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
-        public GuestReview SelectedReview { get; set; }
+
+        private GuestReview _selectedReview;
+        public GuestReview SelectedReview
+        {
+            get => _selectedReview;
+            set
+            {
+                if (value != _selectedReview)
+                {
+                    _selectedReview = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private Reservation _selectedReservation;
-
         public Reservation SelectedReservation
         {
             get => _selectedReservation;
@@ -342,7 +355,14 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             ResetCommand = new ResetCommand(this);
             AddImageCommand = new AddImageCommand(this);
             ClearURLsCommand = new ClearURLsCommand(this);
-            NavigateToGuestReviewCommand = new NavigateCommand(CreateGuestReviewNavigationService(modalNavigationStore), this, () => SelectedReservation != null);
+
+            NavigateToGuestReviewCommand = 
+                new NavigateCommand(CreateGuestReviewNavigationService(modalNavigationStore), this, () => SelectedReservation != null && 
+                    DateTime.Now >= SelectedReservation.EndDate && (DateTime.Now - SelectedReservation.EndDate.Date).TotalDays <= 5);
+            NavigateToGuestReviewDetailsCommand =
+                new NavigateCommand(CreateGuestReviewDetailsNavigationService(modalNavigationStore), this, () => SelectedReview != null);
+            NavigateToOwnerReviewDetailsCommand =
+                new NavigateCommand(CreateOwnerReviewDetailsNavigationService(modalNavigationStore));
             #endregion
 
             CalculateRating(_user.getID());
@@ -383,12 +403,26 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             }
         }
 
+        #region CreateNavigationServices
         private INavigationService CreateGuestReviewNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<GuestReviewViewModel>
-                (modalNavigationStore, () => new GuestReviewViewModel(_guestReviewService, _reservationService, 
+                (modalNavigationStore, () => new GuestReviewViewModel(_guestReviewService, _reservationService,
                     SelectedReservation, modalNavigationStore));
         }
+
+        private INavigationService CreateGuestReviewDetailsNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<GuestReviewDetailsViewModel>
+                (modalNavigationStore, () => new GuestReviewDetailsViewModel(SelectedReview, modalNavigationStore));
+        }
+
+        private INavigationService CreateOwnerReviewDetailsNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<OwnerReviewDetailsViewModel>
+                (modalNavigationStore, () => new OwnerReviewDetailsViewModel(modalNavigationStore, _ownerReviewService, _user));
+        }
+        #endregion
 
         #region Update
         private void UpdateAccommodations(List<Accommodation> accommodations)

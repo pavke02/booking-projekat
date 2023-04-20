@@ -26,6 +26,12 @@
             <DataTemplate DataType="{x:Type viewModelOwner:GuestReviewViewModel }">
                 <owner:GuestReviewView></owner:GuestReviewView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:GuestReviewDetailsViewModel }">
+                <owner:GuestReviewDetailsView></owner:GuestReviewDetailsView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:OwnerReviewDetailsViewModel }">
+                <owner:OwnerReviewDetailsView></owner:OwnerReviewDetailsView>
+            </DataTemplate>
         </Grid.Resources>
 
         <modalControl:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">

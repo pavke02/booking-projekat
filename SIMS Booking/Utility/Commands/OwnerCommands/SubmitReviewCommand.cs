@@ -1,8 +1,7 @@
-﻿using System;
-using SIMS_Booking.Model;
+﻿using SIMS_Booking.Model;
 using SIMS_Booking.Service;
+using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.UI.ViewModel.Owner;
-using SIMS_Booking.Utility.Stores;
 
 namespace SIMS_Booking.Utility.Commands.OwnerCommands
 {
@@ -12,13 +11,13 @@ namespace SIMS_Booking.Utility.Commands.OwnerCommands
         private readonly GuestReviewService _guestReviewService;
         private readonly ReservationService _reservationService;
         private readonly Reservation _reservation;
-        private readonly ModalNavigationStore _modalNavigationStore;
+        private readonly INavigationService _closeModalNavigationService;
 
-        public SubmitReviewCommand(GuestReviewViewModel viewModel, GuestReviewService guestReviewService,
-            ReservationService reservationService, Reservation reservation, ModalNavigationStore modalNavigationStore)
+        public SubmitReviewCommand(INavigationService closeModalNavigationService, GuestReviewViewModel viewModel, GuestReviewService guestReviewService,
+            ReservationService reservationService, Reservation reservation)
         {
             _viewModel = viewModel;
-            _modalNavigationStore = modalNavigationStore;
+            _closeModalNavigationService = closeModalNavigationService;
 
             _guestReviewService = guestReviewService;
             _reservationService = reservationService;
@@ -33,7 +32,7 @@ namespace SIMS_Booking.Utility.Commands.OwnerCommands
             _guestReviewService.SubmitReview(_viewModel.Tidiness, _viewModel.RuleFollowing, _viewModel.Comment, _reservation);
             _reservationService.Update(_reservation);
 
-            _modalNavigationStore.Close();
+            _closeModalNavigationService.Navigate();
         }
     }
 }

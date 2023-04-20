@@ -8,10 +8,10 @@ using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.View;
-using SIMS_Booking.Utility.Commands;
 using SIMS_Booking.Utility.Stores;
 using CommunityToolkit.Mvvm.Input;
 using SIMS_Booking.UI.ViewModel.Owner;
+using SIMS_Booking.Utility.Commands.NavigateCommands;
 
 
 namespace SIMS_Booking.UI.ViewModel

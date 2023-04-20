@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
-        Height="480" Width="400">
+        Height="480" Width="400"
+        BorderBrush="MediumSpringGreen"
+        BorderThickness="1">
     <Grid>
         <StackPanel>
-            <WrapPanel>
+            <WrapPanel Margin="0 0 0 20" Background="MediumSpringGreen">
                 <Button Margin="10 10 70 0" Background="Transparent" BorderBrush="Transparent"
                         Command="{Binding NavigateBackCommand}">
                     <Image Height="30" Width="30" 
@@ -56,8 +58,12 @@
 
                 <Button Content="Submit Review" Width="100" Height="40" 
                         Margin="0 40 0 0" HorizontalAlignment="Center"
-                        Command="{Binding SubmitReviewCommand}"
-                        Name="submitButton">
+                        Command="{Binding SubmitReviewCommand}">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
                 </Button>
             </StackPanel>
         </StackPanel>

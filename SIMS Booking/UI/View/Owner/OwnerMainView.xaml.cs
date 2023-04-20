@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.Model;
@@ -34,38 +32,10 @@ namespace SIMS_Booking.UI.View.Owner
         }
 
         #region Buttons
-        private void ShowReview(object sender, RoutedEventArgs e)
-        {
-            GuestReviewDetailsView detailsView = new GuestReviewDetailsView(SelectedReview);
-            detailsView.ShowDialog();
-        }
-
-        private void ShowOwnersReviews(object sender, RoutedEventArgs e)
-        {
-            OwmerReviewDetailsVeiw owmerReviewDetails = new OwmerReviewDetailsVeiw(_ownerReviewService, _user);
-            owmerReviewDetails.ShowDialog();
-        }
-
         private void ViewPostponeRequests(object sender, RoutedEventArgs e)
         {
             PostponeReservationView postponeReservationView = new PostponeReservationView(_postponementService, _reservationService, _user);
             postponeReservationView.ShowDialog();
-        }
-        #endregion
-
-        #region ButtonValidations
-        private void IsReviewable(object sender, SelectionChangedEventArgs e)
-        {
-            if (SelectedReservation != null)            
-                if (DateTime.Now >= SelectedReservation.EndDate && (DateTime.Now - SelectedReservation.EndDate.Date).TotalDays <= 5)
-                    reviewGuestButton.IsEnabled = true;
-                else
-                    reviewGuestButton.IsEnabled = false;
-        }
-
-        private void IsShowable(object sender, SelectionChangedEventArgs e)
-        {
-            reviewDetails.IsEnabled = SelectedReview != null;            
         }
         #endregion
     }
