@@ -1,6 +1,6 @@
 ﻿using SIMS_Booking.UI.ViewModel.Owner;
 
-namespace SIMS_Booking.Utility.Commands.OwnerCommands
+namespace SIMS_Booking.Commands.OwnerCommands
 {
     class ResetCommand : CommandBase
     {

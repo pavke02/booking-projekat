@@ -1,6 +1,6 @@
 ﻿using SIMS_Booking.Utility.Stores;
 
-namespace SIMS_Booking.UI.ViewModel
+namespace SIMS_Booking.UI.ViewModel.Startup
 {
     public class MainViewModel : ViewModelBase
     {

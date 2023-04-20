@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace SIMS_Booking.Utility.Commands
+namespace SIMS_Booking.Commands
 {
     public abstract class CommandBase : ICommand
     {

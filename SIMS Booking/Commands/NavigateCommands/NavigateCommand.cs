@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using SIMS_Booking.Service.NavigationService;
-using SIMS_Booking.UI.ViewModel;
 using SIMS_Booking.UI.ViewModel.Owner;
+using SIMS_Booking.UI.ViewModel.Startup;
 
-namespace SIMS_Booking.Utility.Commands.NavigateCommands
+namespace SIMS_Booking.Commands.NavigateCommands
 {
     public class NavigateCommand : CommandBase
     {

@@ -1,4 +1,4 @@
-﻿using SIMS_Booking.UI.ViewModel;
+﻿using SIMS_Booking.UI.ViewModel.Startup;
 using System;
 
 namespace SIMS_Booking.Utility.Stores

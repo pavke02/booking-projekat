@@ -1,7 +1,7 @@
 ﻿using SIMS_Booking.UI.ViewModel.Owner;
 using System;
 
-namespace SIMS_Booking.Utility.Commands.OwnerCommands
+namespace SIMS_Booking.Commands.OwnerCommands
 {
     internal class ClearURLsCommand : CommandBase
     {

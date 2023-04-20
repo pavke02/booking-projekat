@@ -1,4 +1,4 @@
-﻿using SIMS_Booking.Utility.Commands;
+﻿using SIMS_Booking.Commands;
 using SIMS_Booking.Utility.Stores;
 using System.Windows.Input;
 using SIMS_Booking.Service.NavigationService;
@@ -6,9 +6,9 @@ using SIMS_Booking.Service;
 using System.Collections.Generic;
 using System.ComponentModel;
 using SIMS_Booking.Enums;
-using SIMS_Booking.Utility.Commands.NavigateCommands;
+using SIMS_Booking.Commands.NavigateCommands;
 
-namespace SIMS_Booking.UI.ViewModel
+namespace SIMS_Booking.UI.ViewModel.Startup
 {
     public class SignUpViewModel : ViewModelBase, IDataErrorInfo
     {
@@ -158,7 +158,7 @@ namespace SIMS_Booking.UI.ViewModel
                 OnPropertyChanged("ErrorCollection");
                 return result;
             }
-        } 
+        }
         #endregion
     }
 }

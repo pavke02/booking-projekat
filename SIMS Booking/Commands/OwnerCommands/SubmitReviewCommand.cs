@@ -3,7 +3,7 @@ using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.UI.ViewModel.Owner;
 
-namespace SIMS_Booking.Utility.Commands.OwnerCommands
+namespace SIMS_Booking.Commands.OwnerCommands
 {
     public class SubmitReviewCommand : CommandBase
     {
@@ -28,7 +28,7 @@ namespace SIMS_Booking.Utility.Commands.OwnerCommands
         {
             _viewModel.ErrorText = string.IsNullOrEmpty(_viewModel.Comment);
             if (_viewModel.ErrorText) return;
-            
+
             _guestReviewService.SubmitReview(_viewModel.Tidiness, _viewModel.RuleFollowing, _viewModel.Comment, _reservation);
             _reservationService.Update(_reservation);
 

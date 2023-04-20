@@ -4,33 +4,39 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:view="clr-namespace:SIMS_Booking.UI.View"
-        xmlns:viewModel="clr-namespace:SIMS_Booking.UI.ViewModel"
-        xmlns:owner="clr-namespace:SIMS_Booking.UI.View.Owner"
+        xmlns:viewOwner="clr-namespace:SIMS_Booking.UI.View.Owner"
         xmlns:viewModelOwner="clr-namespace:SIMS_Booking.UI.ViewModel.Owner"
         xmlns:modalControl="clr-namespace:ModalControl;assembly=ModalControl"
+        xmlns:startup="clr-namespace:SIMS_Booking.UI.ViewModel.Startup"
         mc:Ignorable="d"
         Title="MainWindow" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
 
     <Grid>
         <Grid.Resources>
-            <DataTemplate DataType="{x:Type viewModel:SignInViewModel }">
+            <DataTemplate DataType="{x:Type startup:SignInViewModel }">
                 <view:SignInView></view:SignInView>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModel:SignUpViewModel }">
+            <DataTemplate DataType="{x:Type startup:SignUpViewModel }">
                 <view:SignUpView></view:SignUpView>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelOwner:OwnerMainViewModel }">
-                <owner:OwnerMainView></owner:OwnerMainView>
+                <viewOwner:OwnerMainView></viewOwner:OwnerMainView>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelOwner:GuestReviewViewModel }">
-                <owner:GuestReviewView></owner:GuestReviewView>
+                <viewOwner:GuestReviewView></viewOwner:GuestReviewView>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelOwner:GuestReviewDetailsViewModel }">
-                <owner:GuestReviewDetailsView></owner:GuestReviewDetailsView>
+                <viewOwner:GuestReviewDetailsView></viewOwner:GuestReviewDetailsView>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelOwner:OwnerReviewDetailsViewModel }">
-                <owner:OwnerReviewDetailsView></owner:OwnerReviewDetailsView>
+                <viewOwner:OwnerReviewDetailsView></viewOwner:OwnerReviewDetailsView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:PostponeReservationViewModel }">
+                <viewOwner:PostponeReservationView></viewOwner:PostponeReservationView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:DeclinePostponementRequestViewModel }">
+                <viewOwner:DeclinePostponementRequestView></viewOwner:DeclinePostponementRequestView>
             </DataTemplate>
         </Grid.Resources>
 

@@ -11,10 +11,9 @@ using SIMS_Booking.UI.View;
 using SIMS_Booking.Utility.Stores;
 using CommunityToolkit.Mvvm.Input;
 using SIMS_Booking.UI.ViewModel.Owner;
-using SIMS_Booking.Utility.Commands.NavigateCommands;
+using SIMS_Booking.Commands.NavigateCommands;
 
-
-namespace SIMS_Booking.UI.ViewModel
+namespace SIMS_Booking.UI.ViewModel.Startup
 {
     public partial class SignInViewModel : ViewModelBase
     {

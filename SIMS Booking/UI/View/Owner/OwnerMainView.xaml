@@ -8,7 +8,7 @@
         Height="580" Width="1300" FontSize="18">
     <Grid>
         <TabControl TabStripPlacement="Left">
-            <TabItem Name="profileTab" Header="Profile" Height="60">
+            <TabItem Header="Profile" Height="60">
                 <WrapPanel>
                     <Grid>
                         <Rectangle Height="400" Width="345" Stroke="Black" StrokeThickness="2"></Rectangle>
@@ -23,27 +23,27 @@
                                 <Rectangle RadiusX="20" RadiusY="20" Width="300" Height="60" Stroke="Black"
                                        Margin="0, 10, 0, 0"></Rectangle>
                                 <TextBlock Text="Username:" Foreground="DarkGray" Margin="40, 15, 0, 0"></TextBlock>
-                                <TextBlock x:Name="usernameTb" Foreground="Black" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBlock Foreground="Black" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                                            FontWeight="Bold" Margin="80, 40, 0, 0"></TextBlock>
                             </Grid>
                             <Grid>
                                 <Rectangle RadiusX="20" RadiusY="20" Width="300" Height="60" Stroke="Black"
                                        Margin="0, 10, 0, 0"></Rectangle>
                                 <TextBlock Text="Role:" Foreground="DarkGray" Margin="40, 15, 0, 0"></TextBlock>
-                                <TextBlock x:Name="roleTb" Foreground="Black" Text="{Binding Role, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBlock Foreground="Black" Text="{Binding Role, UpdateSourceTrigger=PropertyChanged}"
                                            FontWeight="Bold" Margin="80, 40, 0, 0"></TextBlock>
                             </Grid>
                             <WrapPanel Height="90" Margin="0, 5, 0, 0">
-                                <Button x:Name="signOutButton" Content="Sign Out" Width="120" Height="40" 
-                                         Margin="20, 30, 0, 0">
+                                <Button Content="Sign Out" Width="120" Height="40" 
+                                        Margin="20, 30, 0, 0">
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>
                                         </Style>
                                     </Button.Resources>
                                 </Button>
-                                <Button x:Name="switchUserButton" Content="Switch User" Width="120" Height="40" 
-                                          Margin="60, 30, 0, 0">
+                                <Button Content="Switch User" Width="120" Height="40" 
+                                        Margin="60, 30, 0, 0">
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>
@@ -59,17 +59,17 @@
                         <StackPanel>
                             <WrapPanel>
                                 <TextBlock Text="Number of registerd accommodations:" Margin="20, 20, 0, 0"></TextBlock>
-                                <TextBlock x:Name="accommodationNumberTb" Text="{Binding AccommodationNumber, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBlock Text="{Binding AccommodationNumber, UpdateSourceTrigger=PropertyChanged}"
                                            Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
                             </WrapPanel>
                             <WrapPanel>
                                 <TextBlock Text="Number of reserved accommodations:" Margin="20, 20, 0, 0"></TextBlock>
-                                <TextBlock x:Name="reservationNumberTb" Text="{Binding ReservationNumber, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBlock Text="{Binding ReservationNumber, UpdateSourceTrigger=PropertyChanged}"
                                            Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
                             </WrapPanel>
                             <WrapPanel>
                                 <TextBlock Text="Owner rating:" Margin="20, 20, 0, 0"></TextBlock>
-                                <TextBlock x:Name="ownerRatingTb" Text="{Binding OwnerRating, UpdateSourceTrigger=PropertyChanged}"
+                                <TextBlock Text="{Binding OwnerRating, UpdateSourceTrigger=PropertyChanged}"
                                            Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
                             </WrapPanel>
                             <WrapPanel>
@@ -84,10 +84,9 @@
                                 <StackPanel Margin="230, 0, 0, 0" Width="250">
                                     <TextBlock Text="Owners licence:" Margin="0 ,25, 0, 0" HorizontalAlignment="Center"></TextBlock>
                                     <WrapPanel HorizontalAlignment="Center">
-                                        <CheckBox Name="regularCb" Margin="0 ,20, 0, 0" IsEnabled="False" Content="Regular" 
+                                        <CheckBox Margin="0 ,20, 0, 0" IsEnabled="False" Content="Regular" 
                                                   VerticalContentAlignment="Center" IsChecked="{Binding RegularSelected}"></CheckBox>
-
-                                        <CheckBox Name="superCb" Margin="20 ,20, 0, 0" Content="Super-Owner" IsEnabled="False" 
+                                        <CheckBox Margin="20 ,20, 0, 0" Content="Super-Owner" IsEnabled="False" 
                                                   VerticalContentAlignment="Center" IsChecked="{Binding SuperSelected}"></CheckBox>
                                     </WrapPanel>
                                 </StackPanel>
@@ -96,9 +95,8 @@
                     </Grid>
                 </WrapPanel>
             </TabItem>
-            <TabItem Name="accommodationsOverviewTab" Header="Your Accommodations" Height="60">
-                <DataGrid x:Name="accommodationsGrid" 
-                          ItemsSource="{Binding Path=Accommodations, UpdateSourceTrigger=PropertyChanged}"
+            <TabItem Header="Your Accommodations" Height="60">
+                <DataGrid ItemsSource="{Binding Path=Accommodations, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedAccommodation, UpdateSourceTrigger=PropertyChanged}"
                           IsReadOnly="True" AutoGenerateColumns="False">
                     <DataGrid.Columns>
@@ -109,7 +107,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            <TabItem Name="publishTab" Header="Publish Accommodation" Height="60">
+            <TabItem Header="Publish Accommodation" Height="60">
                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid Margin="0, 20, 0, 0">
                         <Grid.RowDefinitions>
@@ -126,8 +124,7 @@
                         <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="75, 20, 0, 0">Name</Label>
                         <TextBox Grid.Column="1" Grid.Row="0" Height="30" Width="180" Margin="0, 20, 0, 0" 
                                  VerticalContentAlignment="Center"
-                                 Text="{Binding Path=AccommodationName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"                                                                  
-                                 Name="accommodationNameTb">
+                                 Text="{Binding Path=AccommodationName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.ToolTip>
                                 <TextBlock Text="{Binding ErrorCollection[AccommodationName]}"/>
                             </TextBox.ToolTip>
@@ -136,8 +133,7 @@
                         <Label Grid.Column="2" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Country</Label>
                         <ComboBox Grid.Column="3" Grid.Row="0" Height="30" Width="180" Margin="0, 20, 0, 0"  
                                   ItemsSource="{Binding Countries, Mode=TwoWay}" DisplayMemberPath="Key"
-                                  SelectedItem="{Binding Country, ValidatesOnDataErrors=True}"                                                                    
-                                  x:Name="countryCb">
+                                  SelectedItem="{Binding Country, ValidatesOnDataErrors=True}">
                             <ComboBox.ToolTip>
                                 <TextBlock Text="{Binding ErrorCollection[Countries]}"/>
                             </ComboBox.ToolTip>
@@ -155,8 +151,7 @@
 
                         <Label Grid.Column="2" Grid.Row="1" Height="40" Margin="20, 20, 0, 0">Type</Label>
                         <ComboBox Grid.Column="3"  Grid.Row="1" Height="30" Width="180" Margin="0, 20, 0, 0" 
-                                  ItemsSource="{Binding TypesCollection}" SelectedItem="{Binding AccommodationType, ValidatesOnDataErrors=True}"                                                                     
-                                  x:Name="typeCb">
+                                  ItemsSource="{Binding TypesCollection}" SelectedItem="{Binding AccommodationType, ValidatesOnDataErrors=True}">
                             <ComboBox.ToolTip>
                                 <TextBlock Text="{Binding ErrorCollection[AccommodationType]}"/>
                             </ComboBox.ToolTip>
@@ -176,8 +171,7 @@
                         <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Maximum number of guests</Label>
                         <TextBox Grid.Column="1" Grid.Row="0" Height="30" Margin="0, 20, 0, 0"
                                  VerticalContentAlignment="Center"
-                                 Text="{Binding Path=MaxGuests, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"                                                                  
-                                 Name="maxGuestsTb">
+                                 Text="{Binding Path=MaxGuests, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.ToolTip>
                                 <TextBlock Text="{Binding ErrorCollection[MaxGuests]}"/>
                             </TextBox.ToolTip>
@@ -186,8 +180,7 @@
                         <Label Grid.Column="0" Grid.Row="1" Height="40" Margin="20, 20, 0, 0">Minimum reservation(in days)</Label>
                         <TextBox Grid.Column="1" Grid.Row="1" Height="30" Margin="0, 20, 0, 0"
                                  VerticalContentAlignment="Center"
-                                 Text="{Binding Path=MinReservationDays, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"                                 
-                                 Name="minReservationDaysTb">
+                                 Text="{Binding Path=MinReservationDays, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.ToolTip>
                                 <TextBlock Text="{Binding ErrorCollection[MinReservationDays]}"/>
                             </TextBox.ToolTip>
@@ -196,8 +189,7 @@
                         <Label Grid.Column="0" Grid.Row="2" Height="40" Margin="20, 20, 0, 0">Cancelation period(in days)</Label>
                         <TextBox Grid.Column="1" Grid.Row="2" Height="30" Margin="0, 20, 0, 0"
                                  VerticalContentAlignment="Center"
-                                 Text="{Binding Path=CancelationPeriod, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"                                 
-                                 Name="cancelationPeriodTb">
+                                 Text="{Binding Path=CancelationPeriod, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.ToolTip>
                                 <TextBlock Text="{Binding ErrorCollection[CancelationPeriod]}"/>
                             </TextBox.ToolTip>
@@ -218,7 +210,7 @@
                                     Margin="40, 5 0, 0" Name="urlTb" 
                                     Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                                 <Button Background="Transparent" BorderBrush="Transparent" Margin="10, 5, 20, 0"
-                                        Name="addURLButton" Command="{Binding AddImageCommand}"
+                                        Command="{Binding AddImageCommand}"
                                         Visibility="{Binding ButtCancel, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">
                                     <Image Source="/Resources/Images/add.png" Height="30" Width="30"/>
                                 </Button>
@@ -227,13 +219,13 @@
                         <WrapPanel Grid.Column="1" Width="650">
                             <TextBox Grid.Column="2" Height="150" Width="525" Margin="40, 20, 0, 0"                                                                  
                                  Text="{Binding Path=ImageURLs, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                                         
-                                 IsEnabled="False" Name="imageTb" TextWrapping="Wrap" AcceptsReturn="True">
+                                 IsEnabled="False" TextWrapping="Wrap" AcceptsReturn="True">
                                 <TextBox.ToolTip>
                                     <TextBlock Text="{Binding ErrorCollection[ImageURLs]}"/>
                                 </TextBox.ToolTip>
                             </TextBox>
                             <Button Background="Transparent" BorderBrush="Transparent" Margin="10, 20, 0, 0"
-                                Name="clerURLs" Height="30" Width="30" Command="{Binding ClearURLsCommand}">
+                                   Height="30" Width="30" Command="{Binding ClearURLsCommand}">
                                 <Image Source="/Resources/Images/remove.png" Height="30" Width="30"/>
                             </Button>
                         </WrapPanel>
@@ -251,7 +243,7 @@
 
                         <Button Grid.Column="0" Content="Publish" Command="{Binding PublishCommand}" 
                                 Name="publishButton" 
-                                Height="40" Width="200" Margin="0, 20, 0, 0">
+                                Height="40" Width="200" Margin="0, 30, 0, 0">
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="10"/>
@@ -259,7 +251,7 @@
                             </Button.Resources>
                         </Button>
                         <Button Grid.Column="1" Content="Reset" Command="{Binding ResetCommand}"
-                                Height="40" Width="200" Margin="50, 20, 0, 0">
+                                Height="40" Width="200" Margin="50, 30, 0, 0">
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="10"/>
@@ -269,9 +261,9 @@
                     </Grid>
                 </WrapPanel>
             </TabItem>
-            <TabItem Name="reservedAccommodationsTab" Header="Reserved Accommodations" Height="60">
+            <TabItem Header="Reserved Accommodations" Height="60">
                 <StackPanel>
-                    <DataGrid x:Name="reservedAccommodationGrid" Height="480" VerticalAlignment="Top"
+                    <DataGrid Height="480" VerticalAlignment="Top"
                           ItemsSource="{Binding Path=ReservedAccommodations, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedReservation, UpdateSourceTrigger=PropertyChanged}"                                                                                                                                                                                      
                           IsReadOnly="True" AutoGenerateColumns="False">
@@ -297,16 +289,16 @@
                     </DataGrid>
 
                     <WrapPanel Height="100">
-                        <Button Name="postponeRequestButton" Content="Postpone Requests" Click="ViewPostponeRequests"
-                            Width="160" Height="40" Margin="680, 30, 20, 0">
+                        <Button Content="Postpone Requests" Command="{Binding NavigateToPostponeRequestsCommand}"
+                            Width="160" Height="40" Margin="680, 40, 20, 0">
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="10"/>
                                 </Style>
                             </Button.Resources>
                         </Button>
-                        <Button Name="reviewGuestButton" Content="Review Guest" Command="{Binding NavigateToGuestReviewCommand}"
-                            Width="150" Height="40" Margin="0, 30, 0, 0">
+                        <Button Content="Review Guest" Command="{Binding NavigateToGuestReviewCommand}"
+                            Width="150" Height="40" Margin="0, 40, 0, 0">
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="10"/>
@@ -316,9 +308,9 @@
                     </WrapPanel>
                 </StackPanel>
             </TabItem>
-            <TabItem Name="pastReservationsTab" Header="Reservation History" Height="60">
+            <TabItem Header="Reservation History" Height="60">
                 <StackPanel>
-                    <DataGrid x:Name="pastReservationGrid" Height="480" VerticalAlignment="Top"
+                    <DataGrid Height="480" VerticalAlignment="Top"
                           ItemsSource="{Binding Path=PastReservations, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedReview, UpdateSourceTrigger=PropertyChanged}"
                           IsReadOnly="True" AutoGenerateColumns="False">
@@ -331,7 +323,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Button Name="reviewDetails" Content="Show Review" Command="{Binding NavigateToGuestReviewDetailsCommand}"
+                    <Button Content="Show Review" Command="{Binding NavigateToGuestReviewDetailsCommand}"
                             Width="150" Height="40" Margin="0, 30, 50, 0" HorizontalAlignment="Right">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">

@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" Height="483" Width="1100"
-             BorderThickness="1" BorderBrush="MediumSpringGreen">
+             BorderThickness="1" BorderBrush="DeepSkyBlue">
     <Grid>
         <StackPanel>
-            <WrapPanel Background="MediumSpringGreen" Width="1100">
+            <WrapPanel Background="DeepSkyBlue" Width="1100">
                 <Button Margin="10 0 350 0" Background="Transparent" BorderBrush="Transparent"
                         Command="{Binding NavigateBackCommand}">
                     <Image Height="30" Width="30" 

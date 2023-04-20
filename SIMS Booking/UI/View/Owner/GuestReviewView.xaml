@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
         Height="480" Width="400"
-        BorderBrush="MediumSpringGreen"
+        BorderBrush="DeepSkyBlue"
         BorderThickness="1">
     <Grid>
         <StackPanel>
-            <WrapPanel Margin="0 0 0 20" Background="MediumSpringGreen">
+            <WrapPanel Margin="0 0 0 20" Background="DeepSkyBlue">
                 <Button Margin="10 10 70 0" Background="Transparent" BorderBrush="Transparent"
                         Command="{Binding NavigateBackCommand}">
                     <Image Height="30" Width="30" 

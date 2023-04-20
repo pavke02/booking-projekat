@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Security.Policy;
 
-namespace SIMS_Booking.Utility.Commands.OwnerCommands
+namespace SIMS_Booking.Commands.OwnerCommands
 {
     internal class AddImageCommand : CommandBase
     {

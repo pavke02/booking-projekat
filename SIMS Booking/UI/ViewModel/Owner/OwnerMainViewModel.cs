@@ -10,10 +10,11 @@ using System.ComponentModel;
 using SIMS_Booking.Utility.Observer;
 using System.Linq;
 using System.Windows.Input;
-using SIMS_Booking.Utility.Commands.OwnerCommands;
+using SIMS_Booking.Commands.OwnerCommands;
 using System;
 using SIMS_Booking.Service.NavigationService;
-using SIMS_Booking.Utility.Commands.NavigateCommands;
+using SIMS_Booking.Commands.NavigateCommands;
+using SIMS_Booking.UI.ViewModel.Startup;
 
 namespace SIMS_Booking.UI.ViewModel.Owner
 {
@@ -36,6 +37,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand NavigateToGuestReviewCommand { get; }
         public ICommand NavigateToGuestReviewDetailsCommand { get; }
         public ICommand NavigateToOwnerReviewDetailsCommand { get; }
+        public ICommand NavigateToPostponeRequestsCommand { get; }
 
         #region Property                
         public Dictionary<string, List<string>> Countries { get; set; }
@@ -363,6 +365,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 new NavigateCommand(CreateGuestReviewDetailsNavigationService(modalNavigationStore), this, () => SelectedReview != null);
             NavigateToOwnerReviewDetailsCommand =
                 new NavigateCommand(CreateOwnerReviewDetailsNavigationService(modalNavigationStore));
+            NavigateToPostponeRequestsCommand =
+                new NavigateCommand(CreatePostponeRequestsNavigationService(modalNavigationStore));
             #endregion
 
             CalculateRating(_user.getID());
@@ -421,6 +425,13 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         {
             return new ModalNavigationService<OwnerReviewDetailsViewModel>
                 (modalNavigationStore, () => new OwnerReviewDetailsViewModel(modalNavigationStore, _ownerReviewService, _user));
+        }
+
+        private INavigationService CreatePostponeRequestsNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<PostponeReservationViewModel>
+                (modalNavigationStore, () => new PostponeReservationViewModel(modalNavigationStore, _postponementService, 
+                    _reservationService, _user));
         }
         #endregion
 

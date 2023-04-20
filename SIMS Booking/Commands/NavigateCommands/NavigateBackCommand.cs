@@ -1,7 +1,7 @@
 ﻿using SIMS_Booking.Service.NavigationService;
 using System;
 
-namespace SIMS_Booking.Utility.Commands.NavigateCommands
+namespace SIMS_Booking.Commands.NavigateCommands
 {
     public class NavigateBackCommand : CommandBase
     {

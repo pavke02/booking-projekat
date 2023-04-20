@@ -1,7 +1,8 @@
 ﻿using System.Windows.Input;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service.NavigationService;
-using SIMS_Booking.Utility.Commands.NavigateCommands;
+using SIMS_Booking.UI.ViewModel.Startup;
+using SIMS_Booking.Commands.NavigateCommands;
 using SIMS_Booking.Utility.Stores;
 
 namespace SIMS_Booking.UI.ViewModel.Owner

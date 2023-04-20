@@ -2,9 +2,9 @@
 using System.Windows;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service;
-using SIMS_Booking.UI.ViewModel;
+using SIMS_Booking.UI.ViewModel.Startup;
 
-namespace SIMS_Booking.Utility.Commands
+namespace SIMS_Booking.Commands
 {
     public class SignUpCommand : CommandBase
     {
@@ -31,14 +31,14 @@ namespace SIMS_Booking.Utility.Commands
 
         public override bool CanExecute(object? parameter)
         {
-            return !string.IsNullOrEmpty(_viewModel.Username) && !(_viewModel.Username.Length < 4) && 
+            return !string.IsNullOrEmpty(_viewModel.Username) && !(_viewModel.Username.Length < 4) &&
                    !string.IsNullOrEmpty(_viewModel.Password) && _userService.GetByUsername(_viewModel.Username) == null &&
                    !string.IsNullOrEmpty(_viewModel.Age) && uint.TryParse(_viewModel.Age, out _) && !(uint.Parse(_viewModel.Age) < 1);
         }
 
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(SignUpViewModel.Username) || e.PropertyName == nameof(SignUpViewModel.Password) || 
+            if (e.PropertyName == nameof(SignUpViewModel.Username) || e.PropertyName == nameof(SignUpViewModel.Password) ||
                 e.PropertyName == nameof(SignUpViewModel.Age))
             {
                 OnCanExecuteChanged();

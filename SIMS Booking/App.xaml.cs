@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using SIMS_Booking.UI.ViewModel;
+using SIMS_Booking.UI.ViewModel.Startup;
 using SIMS_Booking.Utility.Stores;
 
 namespace SIMS_Booking

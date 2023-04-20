@@ -4,17 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" Height="480" Width="955"
-        BorderThickness="1" BorderBrush="MediumSpringGreen">
+        BorderThickness="1" BorderBrush="DeepSkyBlue">
     <Grid>
         <StackPanel>
-            <WrapPanel Background="MediumSpringGreen" Width="955">
+            <WrapPanel Background="DeepSkyBlue" Width="955">
                 <Button Margin="10 0 350 0" Background="Transparent" BorderBrush="Transparent"
                         Command="{Binding NavigateBackCommand}">
                     <Image Height="30" Width="30" 
                            Source="../../../Resources/Images/arrow.png"/>
                 </Button>
                 <Label HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
-                           Margin="0 10 0 0">GuestReview</Label>
+                           Margin="0 10 0 0">Guest Review</Label>
             </WrapPanel>
             <WrapPanel>
                 <Grid Margin="30 50 0 0">
