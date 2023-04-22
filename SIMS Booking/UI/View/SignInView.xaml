@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SIMS_Booking.View"
         xmlns:components="clr-namespace:SIMS_Booking.Utility.Components"
-        mc:Ignorable="d" Height="380" Width="350"
-        BorderThickness="1" BorderBrush="MediumSpringGreen">
+        mc:Ignorable="d" Height="380" Width="350">
     <Grid>
         <StackPanel>
             <TextBlock Text="Login" FontSize="30" FontWeight="Bold"
