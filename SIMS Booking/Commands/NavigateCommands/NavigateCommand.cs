@@ -12,6 +12,9 @@ namespace SIMS_Booking.Commands.NavigateCommands
         private readonly ViewModelBase _viewModel;
         private readonly Func<bool> _condition;
 
+        //ToDo: promeniti naziv condition
+        //ToDO: Refaktorisati fajlove
+        //ToDo: napraviti naslednika navigateCommand with disable condition
         public NavigateCommand(INavigationService navigationService, ViewModelBase viewModel = null, Func<bool> condition = null)
         {
             _viewModel = viewModel;
