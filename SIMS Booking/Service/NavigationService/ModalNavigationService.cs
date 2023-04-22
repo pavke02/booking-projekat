@@ -1,6 +1,6 @@
-﻿using SIMS_Booking.Utility.Stores;
+﻿using SIMS_Booking.UI.Utility;
+using SIMS_Booking.Utility.Stores;
 using System;
-using SIMS_Booking.UI.ViewModel.Startup;
 
 namespace SIMS_Booking.Service.NavigationService
 {

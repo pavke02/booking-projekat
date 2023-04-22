@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace SIMS_Booking.UI.ViewModel.Startup
+namespace SIMS_Booking.UI.Utility
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

@@ -1,20 +1,20 @@
-﻿using SIMS_Booking.Model;
+﻿using SIMS_Booking.Commands.NavigateCommands;
+using SIMS_Booking.Commands.OwnerCommands;
+using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
-using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.Service;
+using SIMS_Booking.Service.NavigationService;
+using SIMS_Booking.Service.RelationsService;
+using SIMS_Booking.UI.Utility;
+using SIMS_Booking.Utility;
+using SIMS_Booking.Utility.Observer;
 using SIMS_Booking.Utility.Stores;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using SIMS_Booking.Utility;
 using System.ComponentModel;
-using SIMS_Booking.Utility.Observer;
 using System.Linq;
 using System.Windows.Input;
-using SIMS_Booking.Commands.OwnerCommands;
-using System;
-using SIMS_Booking.Service.NavigationService;
-using SIMS_Booking.Commands.NavigateCommands;
-using SIMS_Booking.UI.ViewModel.Startup;
 
 namespace SIMS_Booking.UI.ViewModel.Owner
 {

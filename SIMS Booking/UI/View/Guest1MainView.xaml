@@ -1,10 +1,9 @@
 ﻿<Window x:Class="SIMS_Booking.UI.View.Guest1MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SIMS_Booking.View"
-        xmlns:colorConverter="clr-namespace:SIMS_Booking.Utility.Converters"
+        xmlns:colorConverters="clr-namespace:SIMS_Booking.UI.Utility.ColorConverters"
         mc:Ignorable="d"
         Title="Guest1MainView" Height="520" Width="1000">
     <Grid>
@@ -25,7 +24,7 @@
                     AutoGenerateColumns="False" IsReadOnly="True"
                     Width="900" Height="320">
                     <DataGrid.Resources>
-                        <colorConverter:SuperOwnerColorConverter x:Key="ColorConverter"></colorConverter:SuperOwnerColorConverter>
+                        <colorConverters:SuperOwnerColorConverter x:Key="ColorConverter"></colorConverters:SuperOwnerColorConverter>
                     </DataGrid.Resources>
                     <DataGrid.CellStyle>
                         <Style TargetType="{x:Type DataGridCell}">

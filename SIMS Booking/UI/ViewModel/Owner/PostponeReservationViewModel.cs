@@ -3,7 +3,7 @@ using SIMS_Booking.Commands.OwnerCommands;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
-using SIMS_Booking.UI.ViewModel.Startup;
+using SIMS_Booking.UI.Utility;
 using SIMS_Booking.Utility.Observer;
 using SIMS_Booking.Utility.Stores;
 using System.Collections.Generic;

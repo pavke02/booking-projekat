@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace SIMS_Booking.Utility.Converters
+namespace SIMS_Booking.UI.Utility.ColorConverters
 {
     public class RoleConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ((string)parameter == value as string);
+            return (string)parameter == value as string;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

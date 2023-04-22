@@ -1,17 +1,18 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.Input;
+using SIMS_Booking.Commands.NavigateCommands;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
+using SIMS_Booking.UI.Utility;
 using SIMS_Booking.UI.View;
-using SIMS_Booking.Utility.Stores;
-using CommunityToolkit.Mvvm.Input;
 using SIMS_Booking.UI.ViewModel.Owner;
-using SIMS_Booking.Commands.NavigateCommands;
+using SIMS_Booking.Utility.Stores;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SIMS_Booking.UI.ViewModel.Startup
 {
