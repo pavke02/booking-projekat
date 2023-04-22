@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:view="clr-namespace:SIMS_Booking.UI.View"
         xmlns:viewOwner="clr-namespace:SIMS_Booking.UI.View.Owner"
         xmlns:viewModelOwner="clr-namespace:SIMS_Booking.UI.ViewModel.Owner"
         xmlns:modalControl="clr-namespace:ModalControl;assembly=ModalControl"
         xmlns:startup="clr-namespace:SIMS_Booking.UI.ViewModel.Startup"
+        xmlns:startup1="clr-namespace:SIMS_Booking.UI.View.Startup"
         mc:Ignorable="d"
         Title="MainWindow" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
@@ -15,10 +15,10 @@
     <Grid>
         <Grid.Resources>
             <DataTemplate DataType="{x:Type startup:SignInViewModel }">
-                <view:SignInView></view:SignInView>
+                <startup1:SignInView></startup1:SignInView>
             </DataTemplate>
             <DataTemplate DataType="{x:Type startup:SignUpViewModel }">
-                <view:SignUpView></view:SignUpView>
+                <startup1:SignUpView></startup1:SignUpView>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelOwner:OwnerMainViewModel }">
                 <viewOwner:OwnerMainView></viewOwner:OwnerMainView>

@@ -1,9 +1,8 @@
-﻿<UserControl x:Class="SIMS_Booking.UI.View.SignInView"
+﻿<UserControl x:Class="SIMS_Booking.UI.View.Startup.SignInView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SIMS_Booking.View"
         xmlns:components="clr-namespace:SIMS_Booking.Utility.Components"
         mc:Ignorable="d" Height="380" Width="350">
     <Grid>
