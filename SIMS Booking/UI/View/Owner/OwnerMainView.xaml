@@ -11,11 +11,20 @@
             <TabItem Header="Profile" Height="60">
                 <WrapPanel>
                     <Grid>
-                        <Rectangle Height="400" Width="345" Stroke="Black" StrokeThickness="2"></Rectangle>
+                        <Rectangle Height="400" Width="345" Stroke="Black" StrokeThickness="2"
+                                   RadiusX="20" RadiusY="20" >
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="AliceBlue" />
+                            </Rectangle.Fill>
+                        </Rectangle>
                         <StackPanel>
                             <Grid>
                                 <Rectangle RadiusX="100" RadiusY="100" Height="160" Width="200" Stroke="Black" 
-                                       VerticalAlignment="Top" Margin="0, 5, 0, 0"></Rectangle>
+                                       VerticalAlignment="Top" Margin="0, 5, 0, 0">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="PowderBlue" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
                                 <Image Source="/Resources/Images/owner.png" Height="140" Width="150"
                                        Margin="0, 5, 0, 15"></Image>
                             </Grid>
@@ -54,11 +63,15 @@
                         </StackPanel>
                     </Grid>
                     <Grid>
-                        <Rectangle Width="703.5" Height="244" Stroke="Black" StrokeThickness="2"
-                                   VerticalAlignment="Top"></Rectangle>
+                        <Rectangle Width="719" Height="244" Stroke="Black" StrokeThickness="2"
+                                   VerticalAlignment="Top" RadiusX="20" RadiusY="20">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="AliceBlue" />
+                            </Rectangle.Fill>
+                        </Rectangle>
                         <StackPanel>
                             <WrapPanel>
-                                <TextBlock Text="Number of registerd accommodations:" Margin="20, 20, 0, 0"></TextBlock>
+                                <TextBlock Text="Number of registered accommodations:" Margin="20, 20, 0, 0"></TextBlock>
                                 <TextBlock Text="{Binding AccommodationNumber, UpdateSourceTrigger=PropertyChanged}"
                                            Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
                             </WrapPanel>
@@ -73,16 +86,18 @@
                                            Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
                             </WrapPanel>
                             <WrapPanel>
-                                <Button Content="Show User Reviews" Width="180" Height="50" Margin="30, 30, 0, 0"
-                                        Command="{Binding NavigateToOwnerReviewDetailsCommand}">
+                                <Button Width="180" Height="70" Margin="30, 30, 0, 0"
+                                        Command="{Binding NavigateToOwnerReviewDetailsCommand}"
+                                        Background="Transparent" BorderThickness="0">
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>
                                         </Style>
                                     </Button.Resources>
+                                    <Image Source="/Resources/Images/review.png" Height="60" Width="60"/>
                                 </Button>
                                 <StackPanel Margin="230, 0, 0, 0" Width="250">
-                                    <TextBlock Text="Owners licence:" Margin="0 ,25, 0, 0" HorizontalAlignment="Center"></TextBlock>
+                                    <TextBlock Text="Owners license:" Margin="0 ,25, 0, 0" HorizontalAlignment="Center"></TextBlock>
                                     <WrapPanel HorizontalAlignment="Center">
                                         <CheckBox Margin="0 ,20, 0, 0" IsEnabled="False" Content="Regular" 
                                                   VerticalContentAlignment="Center" IsChecked="{Binding RegularSelected}"></CheckBox>
