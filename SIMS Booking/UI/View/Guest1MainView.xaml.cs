@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.Enums;
@@ -529,23 +531,25 @@ namespace SIMS_Booking.UI.View
             UpdateAccommodationsDataGrid(accommodationsFiltered);
         }
 
+        //Gagi: ovo je samo zakomentarisano, jer je dodata logika za navigaciju, te vise ne moze da se napravi nova instanca SignInForme
+        //Takodje SignInForm se sada zove SignInView(zbog imena SignInViewModel)
         private void CloseAllWindowsButSignIn()
         {
-            foreach (Window window in Application.Current.Windows)
-            {
-                if (window.GetType() != typeof(SignInForm))
-                {
-                    window.Close();
-                }
-            }
+            // foreach (Window window in Application.Current.Windows)
+            // {
+            //     if (window.GetType() != typeof(SignInForm))
+            //     {
+            //         window.Close();
+            //     }
+            // }
 
         }
 
         private void LogOut(object sender, RoutedEventArgs e)
         {
-            SignInForm signIn = new SignInForm();
-            signIn.Show();
-            CloseAllWindowsButSignIn();
+            // SignInForm signIn = new SignInForm();
+            // signIn.Show();
+            // CloseAllWindowsButSignIn();
         }
     }
 }
