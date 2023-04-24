@@ -1,8 +1,8 @@
 ﻿using SIMS_Booking.Repository;
 using SIMS_Booking.Utility;
-using SIMS_Booking.Serializer;
 using System.Collections.Generic;
-using SIMS_Booking.Observer;
+using SIMS_Booking.Utility.Serializer;
+using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.Service
 {

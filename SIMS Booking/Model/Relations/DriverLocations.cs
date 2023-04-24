@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SIMS_Booking.Observer;
-using SIMS_Booking.Serializer;
-using SIMS_Booking.Utility;
+﻿using SIMS_Booking.Utility;
+using SIMS_Booking.Utility.Serializer;
 
 namespace SIMS_Booking.Model.Relations
 {

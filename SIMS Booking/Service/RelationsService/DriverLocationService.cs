@@ -1,10 +1,4 @@
-﻿using SIMS_Booking.Model;
-using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Observer;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using SIMS_Booking.Model.Relations;
 using System.Linq;
 
 namespace SIMS_Booking.Service.RelationsService

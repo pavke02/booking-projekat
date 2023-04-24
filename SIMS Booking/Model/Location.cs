@@ -1,11 +1,4 @@
-﻿using SIMS_Booking.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SIMS_Booking.Model
+﻿namespace SIMS_Booking.Model
 {
     public class Location
     {

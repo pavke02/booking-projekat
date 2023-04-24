@@ -1,5 +1,5 @@
-﻿using SIMS_Booking.Serializer;
-using SIMS_Booking.Utility;
+﻿using SIMS_Booking.Utility;
+using SIMS_Booking.Utility.Serializer;
 
 namespace SIMS_Booking.Model.Relations
 {

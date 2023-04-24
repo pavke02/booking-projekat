@@ -1,0 +1,202 @@
+﻿<Window x:Class="SIMS_Booking.UI.View.Guest1MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:colorConverters="clr-namespace:SIMS_Booking.UI.Utility.ColorConverters"
+        mc:Ignorable="d"
+        Title="Guest1MainView" Height="768" Width="1024">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0"></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
+            <RowDefinition ></RowDefinition>
+            <RowDefinition Height="250"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBox Name="UserTb" Grid.Column="0" Grid.Row="1" FontSize="25" FontWeight="Bold" Padding="0" BorderThickness="0" VerticalContentAlignment="Center" Margin="0, 5, 0, 0">Pera, Guest</TextBox>
+            <Button Click="LogOut"  Grid.Row="0" Grid.Column="0" Height="30" FontSize="18">Log Out</Button>
+            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width = "85" Margin="10,0,5,0" Source = "/Resources/Images\guest1_128.png" Height="85" Stretch="UniformToFill" VerticalAlignment="Bottom"/>
+        </Grid>
+
+        <TabControl x:Name="TabC" Width="1000" Height="400" Grid.Row="2" SelectionChanged="TabChanged">
+            <TabItem Name="AccommodationsTab" Header="Accommodations" Height="50" FontSize="20" Padding="5 " VerticalAlignment="Bottom">
+                <DataGrid
+                    FontSize="16"
+                    Name="DataGridAccommodations"
+                    ItemsSource="{Binding Path=Accommodations, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedAccommodation, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True"
+                    Width="1000" Height="360">
+                    <DataGrid.Resources>
+                        <colorConverters:SuperOwnerColorConverter x:Key="ColorConverter"></colorConverters:SuperOwnerColorConverter>
+                    </DataGrid.Resources>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding User.IsSuperUser, Converter={StaticResource ColorConverter}}" Value="True">
+                                    <Setter Property="Background" Value="DeepSkyBlue"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="150" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Type" Binding="{Binding Type}" Width="130" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="120" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Min reservation (days)" Binding="{Binding MinReservationDays}" Width="200" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Cancellation period (days)" Binding="{Binding CancellationPeriod}" Width="200" FontSize="18"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </TabItem>
+            <TabItem Name="ReservationsTab" Header="Your Reservations" Margin="0" VerticalAlignment="Bottom" Height="50" FontSize="20" Padding="5 " HorizontalAlignment="Left" Width="170">
+                <DataGrid
+                    FontSize="14"
+                    Name="DataGridReservations"
+                    ItemsSource="{Binding Path=UserReservations, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedReservation, UpdateSourceTrigger=PropertyChanged}"
+                    SelectionChanged="ReservationChanged"
+                    AutoGenerateColumns="False" IsReadOnly="True"
+                    Width="1000" Height="360">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Accommodation ID" Binding="{Binding Accommodation.Name}" Width="170"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "End Date" Binding="{Binding EndDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Name="PostponementsTab" Margin="0" Header="Your Postponements" VerticalAlignment="Bottom" Height="50" FontSize="20" Padding="5 ">
+                <DataGrid
+                    FontSize="14"
+                    Name="DataGridPostponements"
+                    ItemsSource="{Binding Path=UserPostponements, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedPostponement, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True"
+                    Width="1000" Height="360">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="170"></DataGridTextColumn>
+                        <DataGridTextColumn Header="New Start Date" Binding="{Binding NewStartDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "New End Date" Binding="{Binding NewEndDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Status" Binding="{Binding Status}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Comment" Binding="{Binding Comment}" Width="150"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="3" Grid.Column="0" Width="1000" Orientation="Horizontal">
+            <StackPanel  Name="ReservationsPanel" Visibility="Collapsed" Orientation="Horizontal" Height="40" VerticalAlignment="Top">
+                <Button x:Name="CancelReservationButton" Width="200" FontSize="20" IsEnabled="False" Content="Cancel Reservation" Padding="5, 0, 5, 0" Click="CancelReservation" Margin="0,0,10,0"></Button>
+                <Button x:Name="ChangeReservationButton" Width="200" FontSize="20" IsEnabled="False" Content="Change Reservation" Padding="5, 0, 5, 0" Click="ChangeReservation"/>
+                <Button x:Name="ReviewButton"  Width="200" FontSize="20" IsEnabled="False" Content="Review Reservation" Padding="5, 0, 5, 0" Click="ReviewReservation" Margin="10,0,10,0"/>
+                <Button Width="200" FontSize="20" IsEnabled="False">Owner Review</Button>
+            </StackPanel>
+            <Grid Name="FiltersGrid" Width="400" Height="240" HorizontalAlignment="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Row="0" Grid.Column="0">
+                    <Label Height="18" Margin="5, 0, 0, 0" Padding="0">Name</Label>
+                    <TextBox Name ="nameTb" Text="{Binding Path=AccommodationName, UpdateSourceTrigger=PropertyChanged}" TextChanged="ApplyFilters"  Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="5, 0, 10, 10" Padding="5, 0, 5, 0"></TextBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="0">
+                    <Label Height="18" Margin="5, 0, 0, 0" Padding="0">Country</Label>
+                    <ComboBox x:Name="countryCb"
+                          Height="30" Margin="5, 0, 10, 10" VerticalContentAlignment="Center"  ItemsSource="{Binding Countries}" DisplayMemberPath="Key" SelectionChanged="ChangeCities" SelectedItem="{Binding Country}">
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Grid.Column="0">
+                    <Label Height="18" Margin="5, 0, 0, 0" Padding="0">City</Label>
+                    <ComboBox x:Name="cityCb" 
+                          Height="30" Margin="5, 0, 10, 10" SelectionChanged="ApplyCityChange" VerticalContentAlignment="Center" SelectedItem="{Binding City}">
+                    </ComboBox>
+                </StackPanel>
+
+                <Button Grid.Column="0" Grid.Row="3" x:Name="ApplyFiltersButton" Padding="5" Width="185" Content="Apply Filters" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5, 0, 10, 0"
+            />
+
+                <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="10 0 0 0">
+                    <CheckBox Name="HouseCheckBox" Checked="CheckBoxChanged" Unchecked="CheckBoxChanged" IsChecked="True" Margin="0 2 0 2">House</CheckBox>
+                    <CheckBox Name="ApartmentCheckBox" Checked="CheckBoxChanged" Unchecked="CheckBoxChanged" IsChecked="True" Margin="0 2 0 2">Apartment</CheckBox>
+                    <CheckBox Name="CottageCheckBox" Checked="CheckBoxChanged" Unchecked="CheckBoxChanged" IsChecked="True" Margin="0 2 0 2">Cottage</CheckBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <Label Height="18" Margin="5, 0, 0, 0" Padding="0">Max Guests</Label>
+                    <TextBox Name="maxGuestsTb" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}" TextChanged="ApplyFilters"  Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="5, 0, 10, 10" Padding="5, 0, 5, 0"></TextBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Grid.Column="1">
+                    <Label Height="18" Margin="5, 0, 0, 0" Padding="0">Min reservation days</Label>
+                    <TextBox Name="minReservationDaysTb" Text="{Binding Path=MinReservationDays, UpdateSourceTrigger=PropertyChanged}" TextChanged="ApplyFilters"  Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="5, 0, 10, 10" Padding="5, 0, 5, 0"></TextBox>
+                </StackPanel>
+
+                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Reset Filters"  FontSize="20" Click="Reset" Padding="5" Width="385" VerticalAlignment="Center" Margin="5, 0, 10, 0"
+            />
+            </Grid>
+            <Grid Name="AccommodationsButtonsGrid" Height="240" Width="600" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Row="0" Grid.Column="0" FontSize="20" x:Name="ReserveButton" Content="Reserve" Padding="0, 0, 10, 0" Margin="0,0,10, 10" Click="Reserve">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="IsEnabled" Value="True" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedItem, ElementName=DataGridAccommodations}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Grid.Row="0" Grid.Column="1" FontSize="20" x:Name="ViewGalleryButton" Content="View Gallery" Padding="5, 0, 5, 0" Margin="5, 0, 5, 10 " Click="OpenGallery">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="IsEnabled" Value="True" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedItem, ElementName=DataGridAccommodations}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Grid.Row="0" Grid.Column="2" FontSize="20" IsEnabled="False"  Padding="5, 0, 5, 0" Margin="10,0, 0,10">Open Forum</Button>
+                <Button Grid.Row="1" Grid.Column="0" FontSize="20" IsEnabled="False" Padding="5, 0, 5, 0" Margin="0,0,10, 10">Generate PDF</Button>
+                <Button Grid.Row="1" Grid.Column="1" FontSize="20" Grid.ColumnSpan="2" IsEnabled="False"  Padding="5, 0, 5, 0" Margin="5,0,0, 10">Wherever / Whenever</Button>
+                <Button Grid.Row="2" Grid.Column="2" FontSize="20" IsEnabled="False" Height="40" Width="190" VerticalAlignment="Bottom" Padding="5, 0, 5, 0" >Start Demo</Button>
+            </Grid>
+
+        </StackPanel>
+
+    </Grid>
+</Window>

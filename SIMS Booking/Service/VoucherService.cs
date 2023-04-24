@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SIMS_Booking.Model;
-using SIMS_Booking.Observer;
-using SIMS_Booking.Repository;
+using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.Service
 {
     public class VoucherService
     {
-
         private readonly CrudService<Voucher> _crudService;
 
         public VoucherService()
@@ -59,7 +54,5 @@ namespace SIMS_Booking.Service
         }
 
         #endregion
-
-
     }
 }

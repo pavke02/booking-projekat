@@ -1,5 +1,5 @@
 ﻿using SIMS_Booking.Model;
-using SIMS_Booking.Observer;
+using SIMS_Booking.Utility.Observer;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -1,5 +1,5 @@
-﻿using SIMS_Booking.Serializer;
-using SIMS_Booking.Utility;
+﻿using SIMS_Booking.Utility;
+using SIMS_Booking.Utility.Serializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;

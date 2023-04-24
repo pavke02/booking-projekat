@@ -1,33 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SIMS_Booking.Model;
-using SIMS_Booking.Observer;
-using SIMS_Booking.Repository;
+using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.Service
 {
     public class TourService
     {
-        private readonly TourCsvCrudRepository _csvCrudRepository;
+        private readonly CrudService<Tour> _crudService;
 
         public TourService()
         {
-            _csvCrudRepository = new TourCsvCrudRepository();
+            _crudService = new CrudService<Tour>("../../../Resources/Data/guides.csv");
         }
 
         public void Delete(Tour entity)
         {
-            _csvCrudRepository.Delete(entity);
-
+            _crudService.Delete(entity);
         }
 
         public List<Tour> GetTodaysTours()
         {
             List<Tour> todaysTours = new List<Tour>();
-            foreach (Tour tour in _csvCrudRepository.GetAll())
+            foreach (Tour tour in _crudService.GetAll())
             {
                 if (DateTime.Today == tour.StartTour)
                 {
@@ -40,7 +35,7 @@ namespace SIMS_Booking.Service
         
         public void LoadCheckpoints(TourPointService tp)
         {
-            foreach (var tour in _csvCrudRepository.GetAll())
+            foreach (var tour in _crudService.GetAll())
             {
                 foreach (var tourPointId in tour.TourPointIds)
                 {
@@ -51,25 +46,24 @@ namespace SIMS_Booking.Service
 
         public void Subscribe(IObserver observer)
         {
-            _csvCrudRepository.Subscribe(observer);
+            _crudService.Subscribe(observer);
         }
-
 
         public List<Tour> GetAll()
         {
-            return _csvCrudRepository.GetAll();
+            return _crudService.GetAll();
         }
 
         public void Save(Tour tour)
         {
-           _csvCrudRepository.Save(tour);
+           _crudService.Save(tour);
         }
 
         public bool ValidTimeOfTour()
         {
-            foreach (var tour in _csvCrudRepository.GetAll())
+            foreach (var tour in _crudService.GetAll())
             {
-                foreach (var tour1 in _csvCrudRepository.GetAll())
+                foreach (var tour1 in _crudService.GetAll())
                 {
                     if (tour.TourTime.AddHours(tour.Time) > tour1.TourTime.AddHours(tour1.Time))
                     {
