@@ -375,6 +375,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         //ToDo: Resiti na bolji nacin: jokicev metod
+        //ToDo: BUG
         private void FillCityCb()
         {
             Cities.Clear();
