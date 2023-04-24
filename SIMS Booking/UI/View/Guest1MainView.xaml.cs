@@ -531,7 +531,7 @@ namespace SIMS_Booking.UI.View
             UpdateAccommodationsDataGrid(accommodationsFiltered);
         }
 
-        //Gagi: ovo je samo zakomentarisano, jer je dodata logika za navigaciju, te vise ne moze da se napravi nova instanca SignInForme
+        //Gagi: ovo je samo zakomentarisano, jer je dodata logika za navigaciju, te vise ne moze da se koristi ShowWindow i Close
         //Takodje SignInForm se sada zove SignInView(zbog imena SignInViewModel)
         private void CloseAllWindowsButSignIn()
         {
