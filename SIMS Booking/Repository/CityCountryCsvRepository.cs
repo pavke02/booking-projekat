@@ -5,12 +5,12 @@ namespace SIMS_Booking.Repository
 {
     public class CityCountryCsvRepository 
     {
-        private Dictionary<string, List<string>> countries;
+        private Dictionary<string, List<string>> _countries;
         private readonly string path = "../../../Resources/Data/countryCityDictionary.csv";
 
         public CityCountryCsvRepository() 
         {
-            countries = new Dictionary<string, List<string>>();
+            _countries = new Dictionary<string, List<string>>();
         }
 
         public Dictionary<string, List<string>> Load()
@@ -24,18 +24,18 @@ namespace SIMS_Booking.Repository
                     string key = values[0];
                     for (int i = 1; i < values.Length; i++)
                     {
-                        if (countries.ContainsKey(key))
+                        if (_countries.ContainsKey(key))
                         {
-                            countries[key].Add(values[i]);                            
+                            _countries[key].Add(values[i]);                            
                         }
                         else
                         {
-                            countries[key] = new List<string>() { values[i] };                            
+                            _countries[key] = new List<string>() { values[i] };                            
                         }
                     }
                 }
 
-                return countries;
+                return _countries;
             }
         }
     }
