@@ -10,7 +10,8 @@
         xmlns:startup1="clr-namespace:SIMS_Booking.UI.View.Startup"
         mc:Ignorable="d"
         Title="MainWindow" SizeToContent="WidthAndHeight"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner" Background="#272537"
+        Foreground="White">
 
     <Grid>
         <Grid.Resources>

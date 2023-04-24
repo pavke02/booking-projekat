@@ -11,8 +11,7 @@ namespace SIMS_Booking.Commands.NavigateCommands
         private readonly INavigationService _navigationService;
         private readonly ViewModelBase _viewModel;
         private readonly Func<bool> _canExecuteCondition;
-
-        //ToDO: Refaktorisati fajlove
+      
         //ToDo: napraviti naslednika navigateCommand sa disable condition
         public NavigateCommand(INavigationService navigationService)
         {
