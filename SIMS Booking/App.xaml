@@ -9,10 +9,6 @@
             </ResourceDictionary.MergedDictionaries>
             <ControlTemplate x:Key="ValidationTemplate" />
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-            
-            <Style TargetType="Label">
-                <Setter Property="Foreground" Value="White"/>
-            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:colorConverters="clr-namespace:SIMS_Booking.UI.Utility.ColorConverters"
              xmlns:components="clr-namespace:SIMS_Booking.Utility.Components"
-             mc:Ignorable="d" Height="450" Width="500">
+             mc:Ignorable="d" Height="450" Width="500"
+             Background="#222222">
 
     <UserControl.Resources>
         <Style TargetType="RadioButton">
@@ -14,25 +15,34 @@
             <Setter Property="Margin" Value="5, 10, 0, 0"/>
         </Style>
 
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
         <colorConverters:RoleConverter x:Key="RoleConverterKey"/>
     </UserControl.Resources>
     <Grid>
         <StackPanel>
             <WrapPanel>
-                <Button Margin="10 10 170 0" Background="Transparent" BorderBrush="Transparent"
+                <Button Margin="10 10 150 0" Background="Transparent" 
+                        BorderBrush="Transparent"
                         Command="{Binding NavigateBackCommand}">
                     <Image Height="30" Width="30" 
-                           Source="../../Resources/Images/arrow.png"/>
+                           Source="../../../Resources/Images/arrow.png"/>
                 </Button>
-                <TextBlock Text="SignUp" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
-                           Margin="0 10 0 0"></TextBlock>
+                <Label FontSize="30" FontWeight="Bold"
+                       Margin="0 10 0 0">Sign Up</Label>
             </WrapPanel>
             <WrapPanel Margin="0, 0, 0, 0">
                 <StackPanel>
                     <Label FontSize="20" Margin="20, 20, 0, 0">Username:</Label>
                     <TextBox Text="{Binding Path=Username, ValidatesOnDataErrors=True, 
                              UpdateSourceTrigger=PropertyChanged}"                        
-                             Height="30" Width="280" 
+                             Height="30" Width="280" Background="#222222"
                      Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"
                      HorizontalAlignment="Left" BorderThickness="0 0 0 2">
                         <TextBox.ToolTip>
@@ -56,19 +66,19 @@
                 </StackPanel>
 
                 <StackPanel Margin="60, 45, 0, 0">
-                    <RadioButton x:Name="ownerRb" Content="Owner" 
+                    <RadioButton x:Name="ownerRb" Content="Owner" Foreground="White"
                                  IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Owner}"></RadioButton>
-                    <RadioButton x:Name="guest1Rb" Content="Guest1" 
+                    <RadioButton x:Name="guest1Rb" Content="Guest1" Foreground="White" 
                                  IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guest1}"></RadioButton>
-                    <RadioButton x:Name="guest2Rb" Content="Guest2" 
+                    <RadioButton x:Name="guest2Rb" Content="Guest2" Foreground="White"
                                  IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guest2}"></RadioButton>
-                    <RadioButton x:Name="driverRb" Content="Driver" 
+                    <RadioButton x:Name="driverRb" Content="Driver" Foreground="White"
                                  IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Driver}"></RadioButton>
-                    <RadioButton x:Name="guideRb" Content="Guide" 
+                    <RadioButton x:Name="guideRb" Content="Guide" Foreground="White"
                                  IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guide}"></RadioButton>
                     <Label HorizontalAlignment="Center" FontSize="20" Margin="0 20 0 0">Age:</Label>
                     <TextBox Margin="0 5 0 0" Padding="0 5 0 0" Height="25" 
-                             BorderThickness="0 0 0 2"
+                             BorderThickness="0 0 0 2" Background="#222222"
                              Text="{Binding Age, ValidatesOnDataErrors=True, 
                              UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.ToolTip>
@@ -78,7 +88,7 @@
                 </StackPanel>
             </WrapPanel>
             <Button Command="{Binding SignUpCommand}" Content="SIGNUP" FontSize="16" Padding="5" Width="200"
-                    Margin="0, 30, 0, 0" Name="signUpButton">
+                    Margin="0, 30, 0, 0" Name="signUpButton" Background="DeepSkyBlue">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="7"/>

@@ -4,20 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" Height="495" Width="1120"
-        BorderThickness="1" BorderBrush="DeepSkyBlue">
+        BorderThickness="1" BorderBrush="#FF6C3DD8"
+        Background="#222222">
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <StackPanel>
-            <WrapPanel Background="DeepSkyBlue" >
+            <WrapPanel Background="#FF6C3DD8" >
                 <Button Margin="10 0 350 0" Background="Transparent" BorderBrush="Transparent"
                         Command="{Binding NavigateBackCommand}">
                     <Image Height="30" Width="30" 
                            Source="../../../Resources/Images/arrow.png"/>
                 </Button>
                 <Label HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
-                       Margin="0 10 0 0">Postponement Requests</Label>
+                       Margin="0 10 0 0" Foreground="White">Postponement Requests</Label>
             </WrapPanel>
             <WrapPanel>
-                <DataGrid Height="435" Width="730" VerticalAlignment="Top" HorizontalAlignment="Left"
+                <DataGrid Height="435" Width="730" VerticalAlignment="Top" HorizontalAlignment="Left" Background="#434242"
+                      Foreground="White"  
                       ItemsSource="{Binding Path=PostponementRequests, UpdateSourceTrigger=PropertyChanged}"
                       SelectedItem="{Binding Path=SelectedRequest, UpdateSourceTrigger=PropertyChanged}"
                       IsReadOnly="True" AutoGenerateColumns="False" FontSize="20">
@@ -28,6 +37,14 @@
                         <DataGridTextColumn Header="End Date" Binding="{Binding Reservation.EndDate, StringFormat=d }" Width="120"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding Status }" Width="120"/>
                     </DataGrid.Columns>
+                    <DataGrid.RowBackground>
+                        <SolidColorBrush Color="#434242"></SolidColorBrush>
+                    </DataGrid.RowBackground>
+                    <DataGrid.Resources>
+                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Background" Value="#434242" />
+                        </Style>
+                    </DataGrid.Resources>
                 </DataGrid>
 
                 <StackPanel Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}"

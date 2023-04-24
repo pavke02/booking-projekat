@@ -28,7 +28,6 @@ namespace SIMS_Booking.Commands.OwnerCommands
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
 
-
         public override bool CanExecute(object? parameter)
         {
             return !string.IsNullOrEmpty(_viewModel.AccommodationName) && !string.IsNullOrEmpty(_viewModel.MaxGuests) && int.TryParse(_viewModel.MaxGuests, out _) &&

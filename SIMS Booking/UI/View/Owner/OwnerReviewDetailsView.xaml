@@ -4,29 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" Height="483" Width="1100"
-             BorderThickness="1" BorderBrush="DeepSkyBlue">
+             BorderThickness="1" BorderBrush="#FF6C3DD8"
+             Background="#222222">
+
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <StackPanel>
-            <WrapPanel Background="DeepSkyBlue" Width="1100">
+            <WrapPanel Background="#FF6C3DD8" Width="1100">
                 <Button Margin="10 0 350 0" Background="Transparent" BorderBrush="Transparent"
                         Command="{Binding NavigateBackCommand}">
                     <Image Height="30" Width="30" 
                            Source="../../../Resources/Images/arrow.png"/>
                 </Button>
                 <TextBlock Text="Owner Review Details" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
-                           Margin="0 10 0 0"></TextBlock>
+                           Margin="0 10 0 0" Foreground="White"></TextBlock>
             </WrapPanel>
             <WrapPanel>
                 <DataGrid Height="430" Width="610" VerticalAlignment="Top" HorizontalAlignment="Left"
                           ItemsSource="{Binding Path=OwnersReviews, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedReview, UpdateSourceTrigger=PropertyChanged}"
-                          IsReadOnly="True" AutoGenerateColumns="False" FontSize="20">
+                          IsReadOnly="True" AutoGenerateColumns="False" FontSize="20" Background="#434242" Foreground="White">
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="User" Binding="{Binding Reservation.User.Username}" Width="110"/>
                         <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="250"/>
                         <DataGridTextColumn Header="Stard Date" Binding="{Binding Reservation.StartDate, StringFormat=d}" Width="120"/>
                         <DataGridTextColumn Header="End Date" Binding="{Binding Reservation.EndDate, StringFormat=d }" Width="120"/>
                     </DataGrid.Columns>
+                    <DataGrid.RowBackground>
+                        <SolidColorBrush Color="#434242"></SolidColorBrush>
+                    </DataGrid.RowBackground>
+                    <DataGrid.Resources>
+                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Background" Value="#434242" />
+                        </Style>
+                    </DataGrid.Resources>
                 </DataGrid>
 
                 <StackPanel Width="470" Height="440"

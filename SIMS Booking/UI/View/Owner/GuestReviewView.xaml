@@ -4,19 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Height="480" Width="400"
-        BorderBrush="DeepSkyBlue"
-        BorderThickness="1">
+        Height="470" Width="400"
+        BorderBrush="#FF6C3DD8"
+        BorderThickness="1"
+        Background="#222222">
+
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <StackPanel>
-            <WrapPanel Margin="0 0 0 20" Background="DeepSkyBlue">
+            <WrapPanel Margin="0 0 0 20" Background="#FF6C3DD8">
                 <Button Margin="10 10 70 0" Background="Transparent" BorderBrush="Transparent"
                         Command="{Binding NavigateBackCommand}">
                     <Image Height="30" Width="30" 
                            Source="../../../Resources/Images/arrow.png"/>
                 </Button>
                 <TextBlock Text="GuestReview" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
-                           Margin="0 10 0 0"></TextBlock>
+                           Margin="0 10 0 0" Foreground="White"></TextBlock>
             </WrapPanel>
             <Grid>
                 <Grid.RowDefinitions>
@@ -56,11 +64,11 @@
                        Visibility="{Binding ErrorText, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">Passwords must be the same</Label>
 
                 <Button Content="Submit Review" Width="100" Height="40" 
-                        Margin="0 40 0 0" HorizontalAlignment="Center"
-                        Command="{Binding SubmitReviewCommand}">
+                        Margin="0 20 0 0" HorizontalAlignment="Center"
+                        Command="{Binding SubmitReviewCommand}" Background="LightGreen">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="10"/>
+                            <Setter Property="CornerRadius" Value="3"/>
                         </Style>
                     </Button.Resources>
                 </Button>
