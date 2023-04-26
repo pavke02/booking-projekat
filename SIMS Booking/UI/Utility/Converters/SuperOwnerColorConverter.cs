@@ -2,7 +2,7 @@
 using System;
 using System.Windows.Data;
 
-namespace SIMS_Booking.UI.Utility.ColorConverters
+namespace SIMS_Booking.UI.Utility.Converters
 {
     internal class SuperOwnerColorConverter : IValueConverter
     {
