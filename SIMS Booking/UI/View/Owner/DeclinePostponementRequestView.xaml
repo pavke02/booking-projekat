@@ -3,12 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" Height="330" Width="350">
+        mc:Ignorable="d" Height="330" Width="350"
+        Background="#222222">
     <Grid>
         <StackPanel>
-            <WrapPanel Background="DeepSkyBlue">
+            <WrapPanel Background="#FF6C3DD8">
+                <Button Margin="5 0 10 0" Style="{StaticResource HoverButton}"
+                        Command="{Binding NavigateBackCommand}">
+                    <Image Height="20" Width="20" 
+                           Source="../../../Resources/Images/arrow.png"/>
+                </Button>
                 <Label FontSize="30" FontWeight="Bold"
-                       Margin="30 0 0 0">Rejection Comment</Label>
+                       Margin="0 0 0 0" Foreground="White">Rejection Comment</Label>
             </WrapPanel>
             <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" 
                      HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -21,11 +27,11 @@
                 </TextBox.Resources>
             </TextBox>
             <Button Content="Submit" Command="{Binding DeclinePostponementRequestCommand}"  
-                    Height="40" Width="100" Background="LightGreen"
+                    Height="40" Width="100" Style="{StaticResource HoverButton2}"
                     Margin="0 10 0 0 ">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="10"/>
+                        <Setter Property="CornerRadius" Value="3"/>
                     </Style>
                 </Button.Resources>
             </Button>
