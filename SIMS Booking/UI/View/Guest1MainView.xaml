@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:colorConverters="clr-namespace:SIMS_Booking.UI.Utility.ColorConverters"
+        xmlns:converters="clr-namespace:SIMS_Booking.UI.Utility.Converters"
         mc:Ignorable="d"
         Title="Guest1MainView" Height="768" Width="1024">
     <Grid>
@@ -39,7 +39,7 @@
                     AutoGenerateColumns="False" IsReadOnly="True"
                     Width="1000" Height="360">
                     <DataGrid.Resources>
-                        <colorConverters:SuperOwnerColorConverter x:Key="ColorConverter"></colorConverters:SuperOwnerColorConverter>
+                        <converters:SuperOwnerColorConverter x:Key="ColorConverter"></converters:SuperOwnerColorConverter>
                     </DataGrid.Resources>
                     <DataGrid.CellStyle>
                         <Style TargetType="{x:Type DataGridCell}">

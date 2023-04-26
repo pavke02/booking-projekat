@@ -3,8 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:colorConverters="clr-namespace:SIMS_Booking.UI.Utility.ColorConverters"
              xmlns:components="clr-namespace:SIMS_Booking.Utility.Components"
+             xmlns:converters="clr-namespace:SIMS_Booking.UI.Utility.Converters"
              mc:Ignorable="d" Height="450" Width="500"
              Background="#222222">
 
@@ -23,7 +23,7 @@
             <Setter Property="Foreground" Value="White"/>
         </Style>
 
-        <colorConverters:RoleConverter x:Key="RoleConverterKey"/>
+        <converters:RoleConverter x:Key="RoleConverterKey"/>
     </UserControl.Resources>
     <Grid>
         <StackPanel>

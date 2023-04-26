@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:colorConverters="clr-namespace:SIMS_Booking.UI.Utility.ColorConverters"
+             xmlns:converters="clr-namespace:SIMS_Booking.UI.Utility.Converters"
              mc:Ignorable="d"
              Height="580" Width="1300" FontSize="18" Background="#222222">
     <UserControl.Resources>
@@ -423,7 +423,7 @@
                           Background="#434242" Foreground="White"
                           RowHeaderWidth="0">
                         <DataGrid.Resources>
-                            <colorConverters:GuestReviewColorConverter x:Key="ColorConverter"></colorConverters:GuestReviewColorConverter>
+                            <converters:GuestReviewColorConverter x:Key="ColorConverter"></converters:GuestReviewColorConverter>
                             <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
                                     <Setter Property="Background" Value="#434242" />
                                 </Style>
