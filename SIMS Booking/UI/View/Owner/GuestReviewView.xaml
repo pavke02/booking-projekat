@@ -18,7 +18,7 @@
     <Grid>
         <StackPanel>
             <WrapPanel Margin="0 0 0 20" Background="#FF6C3DD8">
-                <Button Margin="10 10 70 0" Background="Transparent" BorderBrush="Transparent"
+                <Button Margin="10 10 70 0" Style="{StaticResource HoverButton}"
                         Command="{Binding NavigateBackCommand}">
                     <Image Height="30" Width="30" 
                            Source="../../../Resources/Images/arrow.png"/>
@@ -65,7 +65,7 @@
 
                 <Button Content="Submit Review" Width="100" Height="40" 
                         Margin="0 20 0 0" HorizontalAlignment="Center"
-                        Command="{Binding SubmitReviewCommand}" Background="LightGreen">
+                        Command="{Binding SubmitReviewCommand}" Style="{StaticResource HoverButton2}">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="3"/>

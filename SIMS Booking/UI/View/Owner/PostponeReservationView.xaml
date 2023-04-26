@@ -16,8 +16,9 @@
     <Grid>
         <StackPanel>
             <WrapPanel Background="#FF6C3DD8" >
-                <Button Margin="10 0 350 0" Background="Transparent" BorderBrush="Transparent"
-                        Command="{Binding NavigateBackCommand}">
+                <Button Margin="10 0 350 0"
+                        Command="{Binding NavigateBackCommand}"
+                        Style="{StaticResource HoverButton}">
                     <Image Height="30" Width="30" 
                            Source="../../../Resources/Images/arrow.png"/>
                 </Button>
@@ -29,7 +30,8 @@
                       Foreground="White"  
                       ItemsSource="{Binding Path=PostponementRequests, UpdateSourceTrigger=PropertyChanged}"
                       SelectedItem="{Binding Path=SelectedRequest, UpdateSourceTrigger=PropertyChanged}"
-                      IsReadOnly="True" AutoGenerateColumns="False" FontSize="20">
+                      IsReadOnly="True" AutoGenerateColumns="False" FontSize="20"
+                      RowHeaderWidth="0">
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="User" Binding="{Binding Reservation.User.Username}" Width="110"/>
                         <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="250"/>
@@ -69,10 +71,10 @@
 
                         <StackPanel>
                             <Button Content="Accept" Command="{Binding AcceptPostponementRequestCommand}" Height="40" Width="100"
-                            Margin="20 80 0 0" Background="LightGreen">
+                            Margin="20 80 0 0" Style="{StaticResource HoverButton2}">
                                 <Button.Resources>
                                     <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="10"/>
+                                        <Setter Property="CornerRadius" Value="3"/>
                                     </Style>
                                 </Button.Resources>
                             </Button>

@@ -286,15 +286,15 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             }
         }
 
-        private string _cancelationPeriod;
-        public string CancelationPeriod
+        private string _cancellationPeriod;
+        public string CancellationPeriod
         {
-            get => _cancelationPeriod;
+            get => _cancellationPeriod;
             set
             {
-                if (value != _cancelationPeriod)
+                if (value != _cancellationPeriod)
                 {
-                    _cancelationPeriod = value;
+                    _cancellationPeriod = value;
                     OnPropertyChanged();
                 }
             }
@@ -505,15 +505,15 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                         else if (!int.TryParse(MinReservationDays, out _))
                             result = "Min reservation days must be number";
                         break;
-                    case "CancelationPeriod":
-                        if (string.IsNullOrEmpty(CancelationPeriod))
-                            result = "Cancelation period must not be empty";
-                        else if (!int.TryParse(CancelationPeriod, out _))
-                            result = "Cancelation period must be number";
+                    case "CancellationPeriod":
+                        if (string.IsNullOrEmpty(CancellationPeriod))
+                            result = "Cancellation period must not be empty";
+                        else if (!int.TryParse(CancellationPeriod, out _))
+                            result = "Cancellation period must be number";
                         break;
                     case "ImageURLs":
                         if (string.IsNullOrEmpty(ImageURLs))
-                            result = "You must add atleast one image URL";
+                            result = "You must add at least one image URL";
                         break;
                     case "City":
                         if (string.IsNullOrEmpty(City))

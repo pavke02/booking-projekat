@@ -5,6 +5,7 @@ using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.UI.Utility;
 using SIMS_Booking.Utility.Stores;
 using System.Windows.Input;
+using SIMS_Booking.Commands.NavigateCommands;
 
 namespace SIMS_Booking.UI.ViewModel.Owner
 {
@@ -13,18 +14,19 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private readonly PostponementService _postponementService;
 
         public ICommand DeclinePostponementRequestCommand { get; }
+        public ICommand NavigateBackCommand { get; }
 
         public Postponement SelectedRequest { get; set; }
 
-        private string comment;
+        private string _comment;
         public string Comment
         {
-            get => comment;
+            get => _comment;
             set
             {
-                if (value != comment)
+                if (value != _comment)
                 {
-                    comment = value;
+                    _comment = value;
                     OnPropertyChanged();
                 }
             }
@@ -36,6 +38,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             SelectedRequest = selectedRequest;
 
             DeclinePostponementRequestCommand = new DeclinePostponementRequestCommand(CreateCloseModalNavigationService(modalNavigationStore), this, _postponementService);
+            NavigateBackCommand =
+                new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
         }
 
         private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)

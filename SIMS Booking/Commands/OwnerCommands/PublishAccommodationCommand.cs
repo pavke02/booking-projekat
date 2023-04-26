@@ -32,7 +32,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
         {
             return !string.IsNullOrEmpty(_viewModel.AccommodationName) && !string.IsNullOrEmpty(_viewModel.MaxGuests) && int.TryParse(_viewModel.MaxGuests, out _) &&
                 !string.IsNullOrEmpty(_viewModel.MinReservationDays) && int.TryParse(_viewModel.MinReservationDays, out _) &&
-                !string.IsNullOrEmpty(_viewModel.CancelationPeriod) && int.TryParse(_viewModel.CancelationPeriod, out _) &&
+                !string.IsNullOrEmpty(_viewModel.CancellationPeriod) && int.TryParse(_viewModel.CancellationPeriod, out _) &&
                 !string.IsNullOrEmpty(_viewModel.ImageURLs) && !string.IsNullOrEmpty(_viewModel.City) && !string.IsNullOrEmpty(_viewModel.Country.ToString()) &&
                 !string.IsNullOrEmpty(_viewModel.AccommodationType) && base.CanExecute(parameter);
         }
@@ -47,7 +47,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
                 imageURLs.Add(value);
 
             Accommodation accommodation = new Accommodation(_viewModel.AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType),
-                _viewModel.AccommodationType), _user, int.Parse(_viewModel.MaxGuests), int.Parse(_viewModel.MinReservationDays), int.Parse(_viewModel.CancelationPeriod), imageURLs);
+                _viewModel.AccommodationType), _user, int.Parse(_viewModel.MaxGuests), int.Parse(_viewModel.MinReservationDays), int.Parse(_viewModel.CancellationPeriod), imageURLs);
             _accommodationService.Save(accommodation);
 
             UsersAccommodation usersAccommodation = new UsersAccommodation(_user.getID(), accommodation.getID());
@@ -62,7 +62,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
             _viewModel.AccommodationName = "";
             _viewModel.MaxGuests = "";
             _viewModel.MinReservationDays = "";
-            _viewModel.CancelationPeriod = "";
+            _viewModel.CancellationPeriod = "";
             _viewModel.ImageURLs = "";
             _viewModel.AccommodationType = null;
             _viewModel.City = null;
@@ -71,7 +71,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(OwnerMainViewModel.AccommodationName) || e.PropertyName == nameof(OwnerMainViewModel.MaxGuests) ||
-                e.PropertyName == nameof(OwnerMainViewModel.MinReservationDays) || e.PropertyName == nameof(OwnerMainViewModel.CancelationPeriod) ||
+                e.PropertyName == nameof(OwnerMainViewModel.MinReservationDays) || e.PropertyName == nameof(OwnerMainViewModel.CancellationPeriod) ||
                 e.PropertyName == nameof(OwnerMainViewModel.ImageURLs) || e.PropertyName == nameof(OwnerMainViewModel.City) || e.PropertyName == nameof(OwnerMainViewModel.Country) ||
                 e.PropertyName == nameof(OwnerMainViewModel.AccommodationType))
             {

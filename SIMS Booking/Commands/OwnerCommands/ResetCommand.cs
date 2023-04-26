@@ -16,7 +16,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
             _viewModel.AccommodationName = "";
             _viewModel.MaxGuests = "";
             _viewModel.MinReservationDays = "";
-            _viewModel.CancelationPeriod = "";
+            _viewModel.CancellationPeriod = "";
             _viewModel.ImageURLs = "";
             _viewModel.AccommodationType = null;
             _viewModel.City = null;

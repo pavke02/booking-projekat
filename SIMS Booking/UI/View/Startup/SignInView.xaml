@@ -33,7 +33,7 @@
                     Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
             <Button Command="{Binding SignInCommand}" Content="LOGIN" IsDefault="True" FontSize="16" Padding="5" Width="200"
-                    Margin="0, 30, 0, 0" Background="DeepSkyBlue">
+                    Margin="0, 30, 0, 0" Style="{StaticResource HoverButton2}">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="7"/>
