@@ -1,9 +1,6 @@
-﻿using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Repository;
-using SIMS_Booking.Repository.RelationsRepository;
+﻿using SIMS_Booking.Repository.RelationsRepository;
 using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Serializer;
-using System;
 using System.Collections.Generic;
 
 namespace SIMS_Booking.Service.RelationsService

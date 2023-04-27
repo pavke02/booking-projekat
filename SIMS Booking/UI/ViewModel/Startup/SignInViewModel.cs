@@ -13,6 +13,8 @@ using SIMS_Booking.Utility.Stores;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SIMS_Booking.UI.View.Guide;
+using SIMS_Booking.UI.ViewModel.Guide;
 
 namespace SIMS_Booking.UI.ViewModel.Startup
 {
@@ -40,7 +42,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly ReservedAccommodationService _reservedAccommodationService;
         private readonly UsersAccommodationService _userAccommodationService;
         private readonly TourPointService _tourPointService;
-        private readonly ConfirmTourService _confirmTourService; 
+        private readonly ConfirmTourService _confirmTourService;
         #endregion
 
         private TourReview _tourReview;
@@ -119,7 +121,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _confirmTourService.loadGuests(_userService);
             _tourService.LoadCheckpoints(_tourPointService);
             _tourReviewService.loadusers(_userService, _confirmTourService);
-            _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService); 
+            _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService);
             #endregion
 
             _navigationStore = navigationStore;
@@ -168,9 +170,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                             //CheckFastRides(user);
                             break;
                         case Roles.Guide:
-                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService,
-                                _textBox, _userService, _tourReview, _tour, _tourReviewService);
-                            guideView.Show();
+                            _navigationStore.CurrentViewModel = new GuideMainViewModel(_tourService, _confirmTourService, _tourPointService,
+                                _textBox, _userService, _tourReview, _tour, _tourReviewService, _modalNavigationStore);
                             break;
                     }
                 }
@@ -183,7 +184,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             {
                 MessageBox.Show("Wrong username!");
             }
-        } 
+        }
         #endregion
-    } 
+    }
 }

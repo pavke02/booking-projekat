@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewOwner="clr-namespace:SIMS_Booking.UI.View.Owner"
         xmlns:viewModelOwner="clr-namespace:SIMS_Booking.UI.ViewModel.Owner"
+        xmlns:viewGuide="clr-namespace:SIMS_Booking.UI.View.Guide"
+        xmlns:viewModelGuide ="clr-namespace:SIMS_Booking.UI.ViewModel.Guide"
         xmlns:modalControl="clr-namespace:ModalControl;assembly=ModalControl"
         xmlns:startup="clr-namespace:SIMS_Booking.UI.ViewModel.Startup"
         xmlns:startup1="clr-namespace:SIMS_Booking.UI.View.Startup"
@@ -37,6 +39,18 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelOwner:DeclinePostponementRequestViewModel }">
                 <viewOwner:DeclinePostponementRequestView></viewOwner:DeclinePostponementRequestView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:GuideMainViewModel}">
+                <viewGuide:GuideMainView></viewGuide:GuideMainView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:GuideStatisticsViewModel}">
+                <viewGuide:GuideStatistics></viewGuide:GuideStatistics>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourReviewViewModel}">
+                <viewGuide:TourReviewView></viewGuide:TourReviewView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:StartTourViewModel}">
+                <viewGuide:StartTour></viewGuide:StartTour>
             </DataTemplate>
         </Grid.Resources>
 

@@ -1,19 +1,20 @@
+using SIMS_Booking.Model;
+using SIMS_Booking.Service;
+using SIMS_Booking.Utility.Observer;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using SIMS_Booking.Model;
-using SIMS_Booking.Service;
-using SIMS_Booking.Utility.Observer;
+using System.Windows.Controls;
 
-namespace SIMS_Booking.UI.View
+namespace SIMS_Booking.UI.View.Guide
 {
     /// <summary>
     /// Interaction logic for StartTour.xaml
     /// </summary>
-    public partial class StartTour : Window,  IObserver, INotifyPropertyChanged
+    public partial class StartTour : UserControl,  IObserver, INotifyPropertyChanged
     {
         private bool _checked;
         public bool Checked
@@ -39,6 +40,11 @@ namespace SIMS_Booking.UI.View
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public StartTour()
+        {
+            InitializeComponent();
         }
 
         public StartTour(Tour selectedTour , ConfirmTourService confirmTourService)

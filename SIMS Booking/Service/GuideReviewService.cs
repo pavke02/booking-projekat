@@ -1,6 +1,5 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.Utility.Observer;
 using System.Collections.Generic;
 using System.Linq;

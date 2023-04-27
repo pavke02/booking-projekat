@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
         Title="Guest2FindingTaxiFast" Height="250" Width="400">
     <Grid>
@@ -14,14 +13,14 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Width="300" Height="100" Margin="5,38,50,46" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
 
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"></ColumnDefinition>
-                <ColumnDefinition Width="29*"></ColumnDefinition>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="29*" />
                 <ColumnDefinition Width="151*"/>
             </Grid.ColumnDefinitions>
 
@@ -31,13 +30,12 @@
             <Label Margin="0,-36,0,36"> City :</Label>
 
 
-                    <TextBox Name="StartingAddressTextBox" Grid.Row="0" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0" Grid.ColumnSpan="2" Margin="0,2,0,1"></TextBox>
-            <TextBox Name="FinalAddressTextBox" Grid.Row="1" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0" Grid.ColumnSpan="2" Margin="0,2,0,2"></TextBox>
-            <TextBox Name="TimeofDepartureTextBox" Grid.Row="2" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0" Grid.ColumnSpan="2" Margin="0,1,0,2"></TextBox>
+                    <TextBox Name="StartingAddressTextBox" Grid.Row="0" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0" Grid.ColumnSpan="2" Margin="0,2,0,1" />
+                    <TextBox Name="FinalAddressTextBox" Grid.Row="1" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0" Grid.ColumnSpan="2" Margin="0,2,0,2" />
+                    <TextBox Name="TimeofDepartureTextBox" Grid.Row="2" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0" Grid.ColumnSpan="2" Margin="0,1,0,2" />
         </Grid>
         <Button Content="Confirm" HorizontalAlignment="Left" Margin="149,190,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <TextBox Name="TextBoxCity" Grid.ColumnSpan="3" Margin="149,10,72,176">
-        </TextBox>
+        <TextBox Name="TextBoxCity" Grid.ColumnSpan="3" Margin="149,10,72,176" />
 
 
     </Grid>

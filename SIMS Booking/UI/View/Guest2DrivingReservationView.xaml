@@ -3,29 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
         Title="Guest2DrivingReservationView" Height="450" Width="900">
     <Grid>
 
         <Grid Grid.Row="2" Grid.Column="0" Width="300" Height="100" Margin="50,-129,450,180">
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
 
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Height="30">Starting address:</Label>
             <Label Grid.Row="1" Grid.Column="0" Height="30">Final address:</Label>
             <Label Grid.Row="2" Grid.Column="0" Height="30">Time of departure:</Label>
-            <TextBox Name="StartingAddressTextBox" Grid.Row="0" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0"></TextBox>
-            <TextBox Name="FinalAddressTextBox" Grid.Row="1" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0"></TextBox>
-            <TextBox Name="TimeofDepartureTextBox" Grid.Row="2" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0"></TextBox>
+            <TextBox Name="StartingAddressTextBox" Grid.Row="0" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0" />
+            <TextBox Name="FinalAddressTextBox" Grid.Row="1" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0" />
+            <TextBox Name="TimeofDepartureTextBox" Grid.Row="2" Grid.Column="1" Height="30" VerticalContentAlignment="Center" FontSize="14" Padding="5 0" />
         </Grid>
 
         <Label Grid.Column="0" Content="Location(City or State):" Margin="518,38,141,0" VerticalAlignment="Top" Height="25" />
@@ -43,8 +42,8 @@
                     AutoGenerateColumns="False" IsReadOnly="True"
                     Width="900" Height="320" Margin="0,0,-6,0">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Location(City)" Binding="{Binding Location.City }" Width="180"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Location(Country)" Binding="{Binding Location.Country}" Width="180"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Location(City)" Binding="{Binding Location.City }" Width="180" />
+                        <DataGridTextColumn Header="Location(Country)" Binding="{Binding Location.Country}" Width="180" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

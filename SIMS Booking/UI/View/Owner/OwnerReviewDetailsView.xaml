@@ -22,7 +22,7 @@
                            Source="../../../Resources/Images/arrow.png"/>
                 </Button>
                 <TextBlock Text="Owner Review Details" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
-                           Margin="0 10 0 0" Foreground="White"></TextBlock>
+                           Margin="0 10 0 0" Foreground="White" />
             </WrapPanel>
             <WrapPanel>
                 <DataGrid Height="430" Width="610" VerticalAlignment="Top" HorizontalAlignment="Left"
@@ -37,7 +37,7 @@
                         <DataGridTextColumn Header="End Date" Binding="{Binding Reservation.EndDate, StringFormat=d }" Width="120"/>
                     </DataGrid.Columns>
                     <DataGrid.RowBackground>
-                        <SolidColorBrush Color="#434242"></SolidColorBrush>
+                        <SolidColorBrush Color="#434242" />
                     </DataGrid.RowBackground>
                     <DataGrid.Resources>
                         <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
@@ -50,14 +50,14 @@
                             Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">
                     <Grid Margin="20 0 0 0" Width="455" HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                            <ColumnDefinition Width="250"></ColumnDefinition>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="250" />
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="80"></RowDefinition>
-                            <RowDefinition Height="80"></RowDefinition>
+                            <RowDefinition Height="80" />
+                            <RowDefinition Height="80" />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Column="0" Grid.Row="0" FontSize="20" VerticalAlignment="Center">Tidiness:</Label>
@@ -98,8 +98,8 @@
 
                     <Grid Height="250">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0" FontSize="20" HorizontalAlignment="Center">Comment:</Label>

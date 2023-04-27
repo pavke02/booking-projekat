@@ -1,6 +1,4 @@
-﻿using SIMS_Booking.Model;
-using SIMS_Booking.Model.Relations;
-using System;
+﻿using SIMS_Booking.Model.Relations;
 
 namespace SIMS_Booking.Repository
 {

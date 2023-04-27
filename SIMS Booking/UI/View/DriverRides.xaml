@@ -3,21 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
         Title="DriverRides" Height="500" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="350" ></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="350" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Grid.Column="0">
-            <Label Content="Active rides" HorizontalAlignment="Center" VerticalAlignment="Top" Height="60" FontSize="30">
-            </Label>
+            <Label Content="Active rides" HorizontalAlignment="Center" VerticalAlignment="Top" Height="60" FontSize="30" />
             <DataGrid Grid.Row="0" Margin="0,60,0,0" x:Name="ridesGrid" SelectionChanged="ridesGrid_SelectionChanged"
-                          ItemsSource="{Binding Path=ActiveRides, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedItem="{Binding Path=SelectedRide, UpdateSourceTrigger=PropertyChanged}"
-                          IsReadOnly="True" AutoGenerateColumns="False">
+                      ItemsSource="{Binding Path=ActiveRides, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding Path=SelectedRide, UpdateSourceTrigger=PropertyChanged}"
+                      IsReadOnly="True" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Street" Binding="{Binding Street}" Width="*"/>
                     <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="*"/>

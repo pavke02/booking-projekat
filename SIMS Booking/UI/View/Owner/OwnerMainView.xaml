@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <Style x:Key="TabItemHover" TargetType="TabItem">
             <Setter Property="Background" Value="#434242" />
-            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="Foreground" Value="White" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
@@ -94,7 +94,7 @@
                                     </Rectangle.Fill>
                                 </Rectangle>
                                 <Image Source="../../../Resources/Images/owner.png" Height="150" Width="150"
-                                       Margin="0, 5, 0, 15"></Image>
+                                       Margin="0, 5, 0, 15" />
                             </Grid>
                             <Grid>
                                 <Rectangle RadiusX="5" RadiusY="5" Width="300" Height="60" Stroke="Black"
@@ -103,9 +103,9 @@
                                         <SolidColorBrush Color="#222222" />
                                     </Rectangle.Fill>
                                 </Rectangle>
-                                <TextBlock Text="Username:" Foreground="DarkGray" Margin="40, 15, 0, 0"></TextBlock>
+                                <TextBlock Text="Username:" Foreground="DarkGray" Margin="40, 15, 0, 0" />
                                 <TextBlock Foreground="White" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
-                                           FontWeight="Bold" Margin="80, 40, 0, 0"></TextBlock>
+                                           FontWeight="Bold" Margin="80, 40, 0, 0" />
                             </Grid>
                             <Grid>
                                 <Rectangle RadiusX="5" RadiusY="5" Width="300" Height="60" Stroke="Black"
@@ -114,9 +114,9 @@
                                         <SolidColorBrush Color="#222222" />
                                     </Rectangle.Fill>
                                 </Rectangle>
-                                <TextBlock Text="Role:" Foreground="DarkGray" Margin="40, 15, 0, 0"></TextBlock>
+                                <TextBlock Text="Role:" Foreground="DarkGray" Margin="40, 15, 0, 0" />
                                 <TextBlock Foreground="White" Text="{Binding Role, UpdateSourceTrigger=PropertyChanged}"
-                                           FontWeight="Bold" Margin="80, 40, 0, 0"></TextBlock>
+                                           FontWeight="Bold" Margin="80, 40, 0, 0" />
                             </Grid>
                             <WrapPanel Height="90" Margin="0, 5, 0, 0">
                                 <Button Content="Sign Out" Width="120" Height="40" 
@@ -143,19 +143,19 @@
                             <StackPanel>
                                 <WrapPanel>
                                     <TextBlock Text="Number of registered accommodations:" 
-                                               Margin="20, 20, 0, 0"></TextBlock>
+                                               Margin="20, 20, 0, 0" />
                                     <TextBlock Text="{Binding AccommodationNumber, UpdateSourceTrigger=PropertyChanged}"
-                                           Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
+                                               Margin="10 , 20, 0, 0" FontWeight="Bold" />
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <TextBlock Text="Number of reserved accommodations:" Margin="20, 20, 0, 0"></TextBlock>
+                                    <TextBlock Text="Number of reserved accommodations:" Margin="20, 20, 0, 0" />
                                     <TextBlock Text="{Binding ReservationNumber, UpdateSourceTrigger=PropertyChanged}"
-                                           Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
+                                               Margin="10 , 20, 0, 0" FontWeight="Bold" />
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <TextBlock Text="Owner rating:" Margin="20, 20, 0, 0"></TextBlock>
+                                    <TextBlock Text="Owner rating:" Margin="20, 20, 0, 0" />
                                     <TextBlock Text="{Binding OwnerRating, UpdateSourceTrigger=PropertyChanged}"
-                                           Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
+                                               Margin="10 , 20, 0, 0" FontWeight="Bold" />
                                 </WrapPanel>
                             </StackPanel>
                             <StackPanel Margin="80 0 0 0">
@@ -170,14 +170,14 @@
                                     <Image Source="../../../Resources/Images/review.png" Height="60" Width="60"/>
                                 </Button>
                                 <StackPanel Margin="20, 40, 0, 0" Width="250">
-                                    <TextBlock Text="Owners license:" Margin="0 ,25, 0, 0" HorizontalAlignment="Center"></TextBlock>
+                                    <TextBlock Text="Owners license:" Margin="0 ,25, 0, 0" HorizontalAlignment="Center" />
                                     <WrapPanel HorizontalAlignment="Center">
                                         <CheckBox Margin="0 ,20, 0, 0" IsEnabled="False" Content="Regular" 
                                                   VerticalContentAlignment="Center" IsChecked="{Binding RegularSelected}"
-                                                  Foreground="White"></CheckBox>
+                                                  Foreground="White" />
                                         <CheckBox Margin="20 ,20, 0, 0" Content="Super-Owner" IsEnabled="False" 
                                                   VerticalContentAlignment="Center" IsChecked="{Binding SuperSelected}"
-                                                  Foreground="White"></CheckBox>
+                                                  Foreground="White" />
                                     </WrapPanel>
                                 </StackPanel>
                             </StackPanel>
@@ -198,7 +198,7 @@
                         <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"/>
                     </DataGrid.Columns>
                     <DataGrid.RowBackground>
-                        <SolidColorBrush Color="#434242"></SolidColorBrush>
+                        <SolidColorBrush Color="#434242" />
                     </DataGrid.RowBackground>
                     <DataGrid.Resources>
                         <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
@@ -211,14 +211,14 @@
                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid Margin="0, 20, 0, 0">
                         <Grid.RowDefinitions>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition Width="200"></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="200" />
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="40, 20, 0, 0">Name</Label>
@@ -272,17 +272,17 @@
                     </Grid>
 
                     <Rectangle Width="1" Margin="25 0 0 0" Fill="#555555"
-                               Height="213"></Rectangle>
+                               Height="213" />
 
                     <Grid Margin="10, 20, 0, 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Grid.RowDefinitions>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="270"></ColumnDefinition>
-                            <ColumnDefinition Width="90"></ColumnDefinition>
+                            <ColumnDefinition Width="270" />
+                            <ColumnDefinition Width="90" />
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Maximum number of guests</Label>
@@ -332,7 +332,7 @@
                     </Grid>
 
                     <Rectangle Width="1075" Margin="0 0 0 0" Fill="#555555"
-                               Height="1"></Rectangle>
+                               Height="1" />
 
                     <Grid Height="200" Width="1100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
@@ -385,12 +385,12 @@
                     </Grid>
 
                     <Rectangle Width="1075" Margin="0 0 0 0" Fill="#555555"
-                               Height="1"></Rectangle>
+                               Height="1" />
 
                     <Grid Width="600" Margin="200, 50, 0, 0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="300"></ColumnDefinition>
-                            <ColumnDefinition Width="300"></ColumnDefinition>
+                            <ColumnDefinition Width="300" />
+                            <ColumnDefinition Width="300" />
                         </Grid.ColumnDefinitions>
 
                         <Button Grid.Column="0" Content="Publish" Command="{Binding PublishCommand}" 
@@ -423,7 +423,7 @@
                           Background="#434242" Foreground="White"
                           RowHeaderWidth="0">
                         <DataGrid.Resources>
-                            <converters:GuestReviewColorConverter x:Key="ColorConverter"></converters:GuestReviewColorConverter>
+                            <converters:GuestReviewColorConverter x:Key="ColorConverter" />
                             <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
                                     <Setter Property="Background" Value="#434242" />
                                 </Style>
@@ -445,7 +445,7 @@
                             <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=d }" Width="210"/>
                         </DataGrid.Columns>
                         <DataGrid.RowBackground>
-                            <SolidColorBrush Color="#434242"></SolidColorBrush>
+                            <SolidColorBrush Color="#434242" />
                         </DataGrid.RowBackground>
                     </DataGrid>
 
@@ -485,7 +485,7 @@
                             <DataGridTextColumn Header="End Date" Binding="{Binding Reservation.EndDate, StringFormat=d }" Width="210"/>
                         </DataGrid.Columns>
                         <DataGrid.RowBackground>
-                            <SolidColorBrush Color="#434242"></SolidColorBrush>
+                            <SolidColorBrush Color="#434242" />
                         </DataGrid.RowBackground>
                         <DataGrid.Resources>
                             <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
