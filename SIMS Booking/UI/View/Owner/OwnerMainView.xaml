@@ -148,7 +148,7 @@
                                            Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
                                 </WrapPanel>
                                 <WrapPanel>
-                                    <TextBlock Text="Number of reserved accommodations:" Margin="20, 20, 0, 0"></TextBlock>
+                                    <TextBlock Text="Number of reservations:" Margin="20, 20, 0, 0"></TextBlock>
                                     <TextBlock Text="{Binding ReservationNumber, UpdateSourceTrigger=PropertyChanged}"
                                            Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
                                 </WrapPanel>

@@ -458,7 +458,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 PastReservations.Add(guestreview);
         }
 
-        private void UpdateNumberOfRegisterdAccommodations()
+        private void UpdateNumberOfRegisteredAccommodations()
         {
             AccommodationNumber = Accommodations.Count().ToString();
         }
@@ -468,13 +468,19 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             ReservationNumber = ReservedAccommodations.Count().ToString();
         }
 
+        private void UpdateOwnerRating(int id)
+        {
+            OwnerRating = _ownerReviewService.CalculateRating(id).ToString();
+        }
+
         public void Update()
         {
             UpdateAccommodations(_accommodationService.GetByUserId(_user.getID()));
             UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.getID()));
             UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.getID()));
-            UpdateNumberOfRegisterdAccommodations();
+            UpdateNumberOfRegisteredAccommodations();
             UpdateNumberOfReservedAccommodations();
+            UpdateOwnerRating(_user.getID());
         }
         #endregion
 
