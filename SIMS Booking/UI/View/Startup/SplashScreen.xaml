@@ -6,7 +6,8 @@
         mc:Ignorable="d"
         Title="SplashScreen" Height="400" Width="750"
         ContentRendered="Window_ContentRendered"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None">
 
     <Window.Background>
         <ImageBrush ImageSource="../../../Resources/Images/airplane.png"/>
@@ -14,38 +15,35 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="350"></ColumnDefinition>
-            <ColumnDefinition Width="2"></ColumnDefinition>
-            <ColumnDefinition Width="400"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
+        <Grid.Background>
+            <SolidColorBrush Color="Black" Opacity=".7" />
+        </Grid.Background>
+
         <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                    Margin="25 0 25 0">
+                    Margin="200 0 40 0">
             <WrapPanel>
-                <Image Source="../../../Resources/Images/musketeer_icon_logo.png" HorizontalAlignment="Left" 
-                       Height="60" Width="60"></Image>
+                <Image Source="../../../Resources/Images/musketeer_full_logo.png" HorizontalAlignment="Left" 
+                       Height="128" Width="128"></Image>
 
                 <StackPanel>
-                    <TextBlock Text="The Five Booking" FontSize="24" FontWeight="Bold"
-                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"
+                    <TextBlock Text="The Five Booking" FontSize="28" FontWeight="Bold"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 20 0 0"
                            Foreground="White"></TextBlock>
-                    <TextBlock Text="Musketeers" FontSize="24" FontWeight="Bold"
+                    <TextBlock Text="Musketeers" FontSize="28" FontWeight="Bold"
                            HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15 0 0 0"
                            Foreground="White"></TextBlock>
                 </StackPanel>
             </WrapPanel>
 
             <TextBlock Text="Loading Resources..." FontSize="17" FontWeight="SemiBold"
-                       HorizontalAlignment="Left" Margin="0 30 0 15"
+                       HorizontalAlignment="Left" Margin="0 30 0 10"
                        Foreground="White"></TextBlock>
 
             <ProgressBar Name="progressBar" Value="0" Height="5" Width="280"
                          IsIndeterminate="True"></ProgressBar>
-        </StackPanel>
-
-        <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Height="320" Width="320" Margin="0 30 0 0">
-            <Image Source="../../../Resources/Images/musketeer_full_logo.png" Opacity="0.8"></Image>
         </StackPanel>
     </Grid>
 </Window>
