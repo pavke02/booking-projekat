@@ -1,14 +1,13 @@
-﻿using System;
+﻿using SIMS_Booking.UI.ViewModel.Owner;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using SIMS_Booking.UI.ViewModel.Owner;
 
 namespace SIMS_Booking.UI.View.Owner
 {
-    public partial class PostponeReservationView : UserControl
+    public partial class RenovationAppointingView : UserControl
     {
-        public PostponeReservationView()
+        public RenovationAppointingView()
         {
             InitializeComponent();
             DataContextChanged += SubscribeToBlackoutDatesChangedEvent;
@@ -16,7 +15,7 @@ namespace SIMS_Booking.UI.View.Owner
 
         private void SubscribeToBlackoutDatesChangedEvent(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var viewModel = (PostponeReservationViewModel)DataContext;
+            var viewModel = (RenovationAppointingViewModel)DataContext;
             if (viewModel != null)
                 viewModel.BlackoutDatesChangedEvent += UpdateBlackoutDates;
         }
@@ -24,10 +23,10 @@ namespace SIMS_Booking.UI.View.Owner
         //metoda koja onemogucuje rezervisane datume na kalendaru
         private void UpdateBlackoutDates(List<CalendarDateRange> blackoutDates)
         {
-            reservationCalendar.BlackoutDates.Clear();
-            foreach (var item in blackoutDates)
+            startDatesCalendar.BlackoutDates.Clear();
+            foreach (var blackoutDate in blackoutDates)
             {
-                reservationCalendar.BlackoutDates.Add(item);
+                startDatesCalendar.BlackoutDates.Add(blackoutDate);
             }
         }
     }

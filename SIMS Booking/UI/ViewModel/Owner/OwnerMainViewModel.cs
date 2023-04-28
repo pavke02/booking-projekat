@@ -38,6 +38,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand NavigateToGuestReviewDetailsCommand { get; }
         public ICommand NavigateToOwnerReviewDetailsCommand { get; }
         public ICommand NavigateToPostponeRequestsCommand { get; }
+        public ICommand NavigateToAppointRenovatingCommand { get; }
 
         #region Property                
         public Dictionary<string, List<string>> Countries { get; set; }
@@ -46,6 +47,20 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
+
+        private Accommodation _selectedAccommodation;
+        public Accommodation SelectedAccommodation
+        {
+            get => _selectedAccommodation;
+            set
+            {
+                if (value != _selectedAccommodation)
+                {
+                    _selectedAccommodation = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private GuestReview _selectedReview;
         public GuestReview SelectedReview
@@ -367,6 +382,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 new NavigateCommand(CreateOwnerReviewDetailsNavigationService(modalNavigationStore));
             NavigateToPostponeRequestsCommand =
                 new NavigateCommand(CreatePostponeRequestsNavigationService(modalNavigationStore));
+            NavigateToAppointRenovatingCommand = 
+                new NavigateCommand(CreateRenovationAppointingNavigationService(modalNavigationStore), this, () => SelectedAccommodation != null);
             #endregion
 
             CalculateRating(_user.getID());
@@ -388,6 +405,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         //ToDo: Ne racunati neocenjene smestaje
+
         private void CalculateRating(int id)
         {
             double rating = _ownerReviewService.CalculateRating(id);
@@ -409,6 +427,12 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         #region CreateNavigationServices
+        private INavigationService CreateRenovationAppointingNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<RenovationAppointingViewModel>
+                (modalNavigationStore, () => new RenovationAppointingViewModel(SelectedAccommodation, _reservationService, modalNavigationStore));
+        }
+
         private INavigationService CreateGuestReviewNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<GuestReviewViewModel>

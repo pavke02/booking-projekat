@@ -38,6 +38,9 @@
             <DataTemplate DataType="{x:Type viewModelOwner:DeclinePostponementRequestViewModel }">
                 <viewOwner:DeclinePostponementRequestView></viewOwner:DeclinePostponementRequestView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:RenovationAppointingViewModel}">
+                <viewOwner:RenovationAppointingView></viewOwner:RenovationAppointingView>
+            </DataTemplate>
         </Grid.Resources>
 
         <modalControl:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">

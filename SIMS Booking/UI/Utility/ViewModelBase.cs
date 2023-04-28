@@ -11,5 +11,7 @@ namespace SIMS_Booking.UI.Utility
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public virtual void Dispose() { }
     }
 }
