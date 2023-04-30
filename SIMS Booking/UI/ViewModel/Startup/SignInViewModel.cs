@@ -51,6 +51,37 @@ namespace SIMS_Booking.UI.ViewModel.Startup
 
         public ICommand NavigateToSignUpCommand { get; }
 
+        #region Property
+        private bool _passwordErrorText;
+        public bool PasswordErrorText
+        {
+            get => _passwordErrorText;
+            set
+            {
+                if (value != _passwordErrorText)
+                {
+                    _passwordErrorText = value;
+                    OnPropertyChanged();
+                }
+
+            }
+        }
+
+        private bool _usernameErrorText;
+        public bool UsernameErrorText
+        {
+            get => _usernameErrorText;
+            set
+            {
+                if (value != _usernameErrorText)
+                {
+                    _usernameErrorText = value;
+                    OnPropertyChanged();
+                }
+
+            }
+        }
+
         private string _username;
         public string Username
         {
@@ -77,7 +108,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     OnPropertyChanged();
                 }
             }
-        }
+        } 
+        #endregion
 
         public SignInViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
@@ -138,52 +170,41 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         [RelayCommand]
         public void SignIn()
         {
-            User user = _userService.GetByUsername(Username);
-            if (user != null)
+            User user = _userService.GetByUsername(Username);     
+            
+            if (UsernameErrorText = user == null) return;
+            if (PasswordErrorText = !_userService.CheckPassword(user, Password)) return;           
+            switch (user.Role)
             {
-                if (user.Password == Password)
-                {
-                    switch (user.Role)
-                    {
-                        case Roles.Owner:
-                            //Question: da li postoji bolji nacin(ovaj je izuzetno glup, zaobilazi celu strukturu)
-                            _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
-                                _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _navigationStore, _modalNavigationStore);
-                            break;
-                        case Roles.Guest1:
-                            Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository,
-                                _reservationService, _reservedAccommodationService, user, _postponementService,
-                                _cancellationCsvCrudRepository, _ownerReviewService);
-                            guest1View.Show();
-                            break;
-                        case Roles.Guest2:
-                            Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleService,
-                            _guideReviewService, _reservedTourService);
-                            guest2View.Show();
-                            break;
-                        case Roles.Driver:
-                            DriverView driverView = new DriverView(user, _ridesService, _finishedRidesService, _vehicleService,
-                                _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository);
-                            driverView.Show();
-                            //CheckFastRides(user);
-                            break;
-                        case Roles.Guide:
-                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService,
-                                _textBox, _userService, _tourReview, _tour, _tourReviewService);
-                            guideView.Show();
-                            break;
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Wrong password!");
-                }
+                case Roles.Owner:
+                    //Question: da li postoji bolji nacin(ovaj je izuzetno glup, zaobilazi celu strukturu)
+                    _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
+                        _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _navigationStore, _modalNavigationStore);
+                    break;
+                case Roles.Guest1:
+                    Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository,
+                        _reservationService, _reservedAccommodationService, user, _postponementService,
+                        _cancellationCsvCrudRepository, _ownerReviewService);
+                    guest1View.Show();
+                    break;
+                case Roles.Guest2:
+                    Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleService,
+                    _guideReviewService, _reservedTourService);
+                    guest2View.Show();
+                    break;
+                case Roles.Driver:
+                    DriverView driverView = new DriverView(user, _ridesService, _finishedRidesService, _vehicleService,
+                        _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository);
+                    driverView.Show();
+                    //CheckFastRides(user);
+                    break;
+                case Roles.Guide:
+                    GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService,
+                        _textBox, _userService, _tourReview, _tour, _tourReviewService);
+                    guideView.Show();
+                    break;
             }
-            else
-            {
-                MessageBox.Show("Wrong username!");
-            }
-        } 
+        }                        
         #endregion
     } 
 }

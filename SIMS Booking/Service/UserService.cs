@@ -6,7 +6,7 @@ namespace SIMS_Booking.Service
 {
     public class UserService
     {
-        private readonly CrudService<User> _crudService; 
+        private readonly CrudService<User> _crudService;
 
         public UserService()
         {
@@ -33,8 +33,13 @@ namespace SIMS_Booking.Service
         #endregion
 
         public User GetByUsername(string username)
-        {            
+        {
             return _crudService.GetAll().FirstOrDefault(u => u.Username == username);
+        }
+
+        public bool CheckPassword(User user, string pasword)
+        {
+            return user.Password == pasword;
         }
 
         public List<User> GetAll()
