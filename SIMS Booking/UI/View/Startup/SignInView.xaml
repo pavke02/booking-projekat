@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:components="clr-namespace:SIMS_Booking.Utility.Components"
-        mc:Ignorable="d" Height="380" Width="350" Background="#222222">
+        mc:Ignorable="d" Height="500" Width="350" Background="#222222">
     <UserControl.Resources>
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="White"/>
@@ -17,8 +17,29 @@
 
     <Grid>
         <StackPanel>
-            <Label FontSize="30" FontWeight="Bold"
+            <Grid>
+                <Rectangle Width="350" Height="71" StrokeThickness="1" VerticalAlignment="Top" Fill="DodgerBlue"/>
+                <Path Stroke="Black" Width="350" Fill="DodgerBlue" StrokeThickness="1">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathGeometry.Figures>
+                                <PathFigureCollection>
+                                    <PathFigure StartPoint="0,70">
+                                        <PathFigure.Segments>
+                                            <PathSegmentCollection>
+                                                <QuadraticBezierSegment Point1="180,200" Point2="350,70" />
+                                            </PathSegmentCollection>
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathFigureCollection>
+                            </PathGeometry.Figures>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <Label FontSize="30" FontWeight="Bold"
                    Margin="130, 10, 0, 0">Login</Label>
+                <Image Source="../../../Resources/Images/musketeer_full_logo.png" Height="120" Margin="0 70 0 0"></Image>
+            </Grid>
 
             <Label FontSize="20" Margin="20, 20, 0, 0">Username:</Label>
             <TextBox Text="{Binding Path=Username, UpdateSourceTrigger=PropertyChanged}" 

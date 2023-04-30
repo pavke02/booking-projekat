@@ -82,7 +82,7 @@
                         <Rectangle Height="400" Width="345" Stroke="Black" StrokeThickness="2"
                                    RadiusX="5" RadiusY="5" >
                             <Rectangle.Fill>
-                                <SolidColorBrush Color="#3E54AC" />
+                                <SolidColorBrush Color="DodgerBlue" />
                             </Rectangle.Fill>
                         </Rectangle>
                         <StackPanel>
