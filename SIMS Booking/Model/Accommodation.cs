@@ -18,14 +18,14 @@ namespace SIMS_Booking.Model
         public int MinReservationDays { get; set; }
         public int CancellationPeriod { get; set; }
         public List<string> ImageURLs { get; set; }
-        public bool Renovated {get; set; }
+        public bool IsRenovated {get; set; }
 
         public Accommodation()
         {
             ImageURLs = new List<string>();
         }
 
-        public Accommodation(string name, Location location, AccommodationType type, User user, int maxGuests, int minReservationDays, int cancellationPeriod, List<string> imagesURL, bool renovated)
+        public Accommodation(string name, Location location, AccommodationType type, User user, int maxGuests, int minReservationDays, int cancellationPeriod, List<string> imagesURL, bool isRenovated)
         {            
             Name = name;
             Location = location;
@@ -34,7 +34,7 @@ namespace SIMS_Booking.Model
             MaxGuests = maxGuests;
             MinReservationDays = minReservationDays;
             CancellationPeriod = cancellationPeriod;
-            Renovated = renovated;
+            IsRenovated = isRenovated;
             ImageURLs = new List<string>();
             foreach(string image in imagesURL)
             {
@@ -63,13 +63,13 @@ namespace SIMS_Booking.Model
             MinReservationDays = Convert.ToInt32(values[6]);
             CancellationPeriod = Convert.ToInt32(values[7]);
             ImageURLs = values[8].Split(',').ToList();
-            Renovated = bool.Parse(values[9]);
+            IsRenovated = bool.Parse(values[9]);
         }
 
         public string[] ToCSV()
         {
 
-            string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancellationPeriod.ToString(), string.Join(',', ImageURLs), Renovated.ToString()};
+            string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancellationPeriod.ToString(), string.Join(',', ImageURLs), IsRenovated.ToString()};
             return csvValues;
         }              
     }

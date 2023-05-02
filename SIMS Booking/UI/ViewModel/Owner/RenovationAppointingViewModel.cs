@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.TeamFoundation.WorkItemTracking.Process.WebApi.Models;
 using SIMS_Booking.Commands.NavigateCommands;
 using SIMS_Booking.Commands.OwnerCommands;
 using SIMS_Booking.Model;
@@ -7,19 +7,24 @@ using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.UI.Utility;
 using SIMS_Booking.Utility.Stores;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace SIMS_Booking.UI.ViewModel.Owner
 {
-    public class RenovationAppointingViewModel : ViewModelBase
+    public class RenovationAppointingViewModel : ViewModelBase, IDataErrorInfo
     {
         private readonly ReservationService _reservationService;
+        private readonly RenovationAppointmentService _renovationAppointmentService;
 
         private readonly ModalNavigationStore _modalNavigationStore;
         private readonly Accommodation _accommodation;
 
         #region Property
+        public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
+        public string Error { get { return null; } }
+
         private string _startDate;
         public string StartDate
         {
@@ -49,6 +54,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         private string _description;
+
         public string Description
         {
             get => _description;
@@ -66,16 +72,16 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand NavigateBackCommand { get; }
         public ICommand AppointRenovatingCommand { get; }
 
-        public RenovationAppointingViewModel(Accommodation selectedAccommodation, ReservationService reservationService, ModalNavigationStore modalNavigationStore)
+        public RenovationAppointingViewModel(Accommodation selectedAccommodation, ReservationService reservationService, RenovationAppointmentService renovationAppointmentService, ModalNavigationStore modalNavigationStore)
         {
             _accommodation = selectedAccommodation;
             _modalNavigationStore = modalNavigationStore;
             _reservationService = reservationService;
-            DisableReservedDates();
+            _renovationAppointmentService = renovationAppointmentService;
 
-            AppointRenovatingCommand = new AppointRenovatingCommand();
+            AppointRenovatingCommand = new AppointRenovatingCommand(this, _renovationAppointmentService);
             NavigateBackCommand =
-                new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
+                new NavigateBackCommand(CreateCloseModalNavigationService());
         }
 
         //Unsubscribe sve koji su subscribe na njega
@@ -91,7 +97,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public delegate void BlackoutDatesChangedHandler(List<CalendarDateRange> reservedDates);
         public event BlackoutDatesChangedHandler? BlackoutDatesChangedEvent;
 
-        private void DisableReservedDates()
+        public void DisableReservedDates()
         {
             List<CalendarDateRange> blackoutDates = new List<CalendarDateRange>();
             foreach (var reservation in _reservationService.GetByAccommodation(_accommodation.getID()))
@@ -108,9 +114,43 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             BlackoutDatesChangedEvent?.Invoke(blackoutDates);
         }
 
-        private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
+        private INavigationService CreateCloseModalNavigationService()
         {
-            return new CloseModalNavigationService(modalNavigationStore);
+            return new CloseModalNavigationService(_modalNavigationStore);
         }
+
+        #region Validation
+
+        public string this[string name]
+        {
+            get
+            {
+                string result = null;
+                switch (name)
+                {
+                    case "StartDate":
+                        if (string.IsNullOrWhiteSpace(StartDate))
+                            result = "You must select start date!";
+                        break;
+                    case "EndDate":
+                        if (string.IsNullOrEmpty(EndDate))
+                            result = "You must select end date!";
+                        break;
+                    case "Description":
+                        if (string.IsNullOrEmpty(Description))
+                            result = "Description can not be empty";
+                        break;
+                }
+
+                if (ErrorCollection.ContainsKey(name))
+                    ErrorCollection[name] = result;
+                else if (result != null)
+                    ErrorCollection.Add(name, result);
+
+                OnPropertyChanged("ErrorCollection");
+                return result;
+            }
+        }
+        #endregion
     }
 }

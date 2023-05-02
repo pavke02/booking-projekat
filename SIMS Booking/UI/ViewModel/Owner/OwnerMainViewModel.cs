@@ -27,6 +27,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private readonly OwnerReviewService _ownerReviewService;
         private readonly PostponementService _postponementService;
         private readonly UserService _userService;
+        private readonly RenovationAppointmentService _renovationAppointmentService;
 
         private readonly User _user;
 
@@ -316,6 +317,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         private string _imageURLs;
+
         public string ImageURLs
         {
             get => _imageURLs;
@@ -334,7 +336,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
             OwnerReviewService ownerReviewService, PostponementService postponementService, User user,
             CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService,
-            NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
+            RenovationAppointmentService renovationAppointmentService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
             _user = user;
 
@@ -364,6 +366,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             _usersAccommodationService = usersAccommodationService;
             _ownerReviewService = ownerReviewService;
             _postponementService = postponementService;
+            _renovationAppointmentService = renovationAppointmentService;
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
@@ -430,7 +433,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private INavigationService CreateRenovationAppointingNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<RenovationAppointingViewModel>
-                (modalNavigationStore, () => new RenovationAppointingViewModel(SelectedAccommodation, _reservationService, modalNavigationStore));
+                (modalNavigationStore, () => new RenovationAppointingViewModel(SelectedAccommodation, _reservationService, _renovationAppointmentService, modalNavigationStore));
         }
 
         private INavigationService CreateGuestReviewNavigationService(ModalNavigationStore modalNavigationStore)

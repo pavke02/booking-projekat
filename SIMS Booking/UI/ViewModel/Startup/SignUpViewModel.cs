@@ -147,7 +147,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                         if (string.IsNullOrEmpty(Age))
                             break;
                         else if (!uint.TryParse(Age, out _) || uint.Parse(Age) < 1)
-                            result = "Age muste be number greater than 0";
+                            result = "Age must be number greater than 0";
                         break;
                 }
 

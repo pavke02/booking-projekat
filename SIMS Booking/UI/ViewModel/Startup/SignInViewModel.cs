@@ -40,7 +40,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly ReservedAccommodationService _reservedAccommodationService;
         private readonly UsersAccommodationService _userAccommodationService;
         private readonly TourPointService _tourPointService;
-        private readonly ConfirmTourService _confirmTourService; 
+        private readonly ConfirmTourService _confirmTourService;
+        private readonly RenovationAppointmentService _renovationAppointmentService;
         #endregion
 
         private TourReview _tourReview;
@@ -106,6 +107,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _confirmTourService = new ConfirmTourService();
             _reservedAccommodationService = new ReservedAccommodationService();
             _userAccommodationService = new UsersAccommodationService();
+            _renovationAppointmentService = new RenovationAppointmentService();
             #endregion
 
             #region LoadingData
@@ -148,7 +150,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                         case Roles.Owner:
                             //Question: da li postoji bolji nacin(ovaj je izuzetno glup, zaobilazi celu strukturu)
                             _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
-                                _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _navigationStore, _modalNavigationStore);
+                                _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _renovationAppointmentService, _navigationStore, _modalNavigationStore);
                             break;
                         case Roles.Guest1:
                             Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository,

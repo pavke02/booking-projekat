@@ -30,14 +30,18 @@
                     <Label HorizontalAlignment="Center" Margin="0 20 0 0">Start Date:</Label>
                     <Calendar Name="startDatesCalendar" HorizontalAlignment="Center"
                               Margin="10 5 0 0" 
-                              SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                              IsTodayHighlighted="False"></Calendar>
+                              SelectedDate="{Binding StartDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True, StringFormat=dd-MM-yyyy}"
+                              IsTodayHighlighted="False" SelectedDatesChanged="StartDateSelectionChanged">
+                        <Calendar.ToolTip>
+                            <TextBlock Text="{Binding ErrorCollection[StartDate]}"/>
+                        </Calendar.ToolTip>
+                    </Calendar>
                 </StackPanel>
                 <StackPanel Width="220">
                     <Label HorizontalAlignment="Center" Margin="0 20 0 0">End Date:</Label>
                     <Calendar Name="endDatesCalendar" HorizontalAlignment="Center"
                               Margin="20 5 0 0" IsTodayHighlighted="False"
-                              SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}">
+                              SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True,  StringFormat=dd-MM-yyyy}">
                         <Calendar.Style>
                             <Style TargetType="Calendar">
                                 <Style.Triggers>
@@ -47,6 +51,9 @@
                                 </Style.Triggers>
                             </Style>
                         </Calendar.Style>
+                        <Calendar.ToolTip>
+                            <TextBlock Text="{Binding ErrorCollection[EndDate]}"/>
+                        </Calendar.ToolTip>
                     </Calendar>
                 </StackPanel>
             </WrapPanel>
@@ -55,12 +62,15 @@
                 <StackPanel>
                     <Label HorizontalAlignment="Center">Renovating Description:</Label>
                     <TextBox Width="250" Height="150" HorizontalAlignment="Left"
-                             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                         <TextBox.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="3"/>
                             </Style>
                         </TextBox.Resources>
+                        <TextBox.ToolTip>
+                            <TextBlock Text="{Binding ErrorCollection[Description]}"/>
+                        </TextBox.ToolTip>
                     </TextBox>
                 </StackPanel>
 

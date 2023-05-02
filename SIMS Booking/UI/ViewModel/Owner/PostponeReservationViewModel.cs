@@ -160,7 +160,6 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         #region Update
-
         public void UpdatePostponements(List<Postponement> postponements)
         {
             PostponementRequests.Clear();
