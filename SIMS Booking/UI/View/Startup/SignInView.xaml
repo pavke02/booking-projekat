@@ -25,12 +25,16 @@
                      Height="30" Width="280" BorderThickness="0, 0, 0, 2" 
                      Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"
                      HorizontalAlignment="Left" Background="#222222"/>
+            <Label Name="usernameValidationLb" FontSize="10" Foreground="Red" Margin="20, 0, 0, 0" 
+                           Visibility="{Binding UsernameErrorText, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">Wrong username</Label>
 
             <Label FontSize="20" Margin="20, 20, 0, 0">Password:</Label>
             <components:BindablePasswordBox Height="30" Width="280" Margin="25 0 0 0" 
                     Padding="0 5 0 0" FontSize="16"
                     HorizontalAlignment="Left"
                     Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <Label Name="passwordValidationLb" FontSize="10" Foreground="Red" Margin="20, 0, 0, 0" 
+                           Visibility="{Binding PasswordErrorText, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">Wrong password</Label>
 
             <Button Command="{Binding SignInCommand}" Content="LOGIN" IsDefault="True" FontSize="16" Padding="5" Width="200"
                     Margin="0, 30, 0, 0" Style="{StaticResource HoverButton2}">

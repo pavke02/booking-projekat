@@ -39,7 +39,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
 
         public override void Execute(object? parameter)
         {
-            Location location = new Location(_viewModel.Country.Key, _viewModel.City);
+            Location location = new Location(_viewModel.Country, _viewModel.City);
 
             List<string> imageURLs = new List<string>();
             string[] values = _viewModel.ImageURLs.Split("\n");
@@ -65,6 +65,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
             _viewModel.CancellationPeriod = "";
             _viewModel.ImageURLs = "";
             _viewModel.AccommodationType = null;
+            _viewModel.Country = null;
             _viewModel.City = null;
         }
 

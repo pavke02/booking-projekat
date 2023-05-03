@@ -52,6 +52,37 @@ namespace SIMS_Booking.UI.ViewModel.Startup
 
         public ICommand NavigateToSignUpCommand { get; }
 
+        #region Property
+        private bool _passwordErrorText;
+        public bool PasswordErrorText
+        {
+            get => _passwordErrorText;
+            set
+            {
+                if (value != _passwordErrorText)
+                {
+                    _passwordErrorText = value;
+                    OnPropertyChanged();
+                }
+
+            }
+        }
+
+        private bool _usernameErrorText;
+        public bool UsernameErrorText
+        {
+            get => _usernameErrorText;
+            set
+            {
+                if (value != _usernameErrorText)
+                {
+                    _usernameErrorText = value;
+                    OnPropertyChanged();
+                }
+
+            }
+        }
+
         private string _username;
         public string Username
         {
@@ -78,7 +109,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     OnPropertyChanged();
                 }
             }
-        }
+        } 
+        #endregion
 
         public SignInViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
@@ -141,13 +173,12 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         [RelayCommand]
         public void SignIn()
         {
-            User user = _userService.GetByUsername(Username);
-            if (user != null)
+            User user = _userService.GetByUsername(Username);     
+            
+            if (UsernameErrorText = user == null) return;
+            if (PasswordErrorText = !_userService.CheckPassword(user, Password)) return;           
+            switch (user.Role)
             {
-                if (user.Password == Password)
-                {
-                    switch (user.Role)
-                    {
                         case Roles.Owner:
                             //Question: da li postoji bolji nacin(ovaj je izuzetno glup, zaobilazi celu strukturu)
                             _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
@@ -175,18 +206,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                                 _textBox, _userService, _tourReview, _tour, _tourReviewService);
                             guideView.Show();
                             break;
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Wrong password!");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Wrong username!");
-            }
-        } 
+             }
+        }                        
         #endregion
     } 
 }

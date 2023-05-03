@@ -15,11 +15,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SIMS_Booking.UI.ViewModel.Owner
 {
     public class OwnerMainViewModel : ViewModelBase, IObserver, IDataErrorInfo
     {
+        private readonly CityCountryCsvRepository _cityCountryCsvRepository;
         private readonly AccommodationService _accommodationService;
         private readonly ReservationService _reservationService;
         private readonly GuestReviewService _guestReviewService;
@@ -42,9 +44,9 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand NavigateToAppointRenovatingCommand { get; }
 
         #region Property                
-        public Dictionary<string, List<string>> Countries { get; set; }
-        public ObservableCollection<string> Cities { get; set; }
         public List<string> TypesCollection { get; set; }
+        public List<string> Countries { get; set; }      
+        public ObservableCollection<string> Cities 
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
@@ -58,7 +60,6 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 if (value != _selectedAccommodation)
                 {
                     _selectedAccommodation = value;
-                    OnPropertyChanged();
                 }
             }
         }
@@ -245,13 +246,13 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             }
         }
 
-        private KeyValuePair<string, List<string>> _country;
-        public KeyValuePair<string, List<string>> Country
+        private string _country;
+        public string Country
         {
             get => _country;
             set
             {
-                if (value.Key != _country.Key)
+                if (value != _country)
                 {
                     _country = value;
                     OnPropertyChanged();
@@ -339,6 +340,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             RenovationAppointmentService renovationAppointmentService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
             _user = user;
+            _cityCountryCsvRepository = cityCountryCsvRepository;
 
             _userService = userService;
             Username = _user.Username;
@@ -360,8 +362,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             _guestReviewService.Subscribe(this);
             PastReservations = new ObservableCollection<GuestReview>(_guestReviewService.GetReviewedReservations(_user.getID()));
 
-            Countries = new Dictionary<string, List<string>>(cityCountryCsvRepository.Load());
-            Cities = new ObservableCollection<string>();
+            Countries = new List<string>(_cityCountryCsvRepository.LoadCountries());
+            Cities = new ObservableCollection<string>();            
 
             _usersAccommodationService = usersAccommodationService;
             _ownerReviewService = ownerReviewService;
@@ -396,18 +398,12 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             DatePassedTimer passedTimer =
                 new DatePassedTimer(_accommodationService, _renovationAppointmentService, _user);
         }
-
-        //ToDo: Resiti na bolji nacin: jokicev metod
-        //ToDo: BUG
+        
         private void FillCityCb()
         {
-            Cities.Clear();
-
-            if (Country.Key != null)
-            {
-                foreach (string city in Countries[Country.Key].ToList())
-                    Cities.Add(city);
-            }
+            Cities.Clear();           
+            if(Country != null)
+                Cities = _cityCountryCsvRepository.LoadCitiesForCountry(Country);            
         }
 
         //ToDo: Ne racunati neocenjene smestaje
@@ -549,7 +545,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                             result = "City can not be empty";
                         break;
                     case "Country":
-                        if (string.IsNullOrEmpty(Country.ToString()))
+                        if (string.IsNullOrEmpty(Country))
                             result = "Country can not be empty";
                         break;
                     case "AccommodationType":
