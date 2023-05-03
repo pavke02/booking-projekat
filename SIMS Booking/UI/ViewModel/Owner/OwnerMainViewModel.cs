@@ -46,7 +46,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         #region Property                
         public List<string> TypesCollection { get; set; }
         public List<string> Countries { get; set; }      
-        public ObservableCollection<string> Cities 
+        public ObservableCollection<string> Cities { get; set; }
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
@@ -60,6 +60,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 if (value != _selectedAccommodation)
                 {
                     _selectedAccommodation = value;
+                    OnPropertyChanged();
                 }
             }
         }
