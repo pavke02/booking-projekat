@@ -6,9 +6,9 @@ using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
-using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Observer;
 using SIMS_Booking.Utility.Stores;
+using SIMS_Booking.Utility.Timers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -391,7 +391,10 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
             CalculateRating(_user.getID());
 
-            NotificationTimer timer = new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);
+            NotificationTimer timer = 
+                new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);
+            DatePassedTimer passedTimer =
+                new DatePassedTimer(_accommodationService, _renovationAppointmentService, _user);
         }
 
         //ToDo: Resiti na bolji nacin: jokicev metod
@@ -408,7 +411,6 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         //ToDo: Ne racunati neocenjene smestaje
-
         private void CalculateRating(int id)
         {
             double rating = _ownerReviewService.CalculateRating(id);
@@ -433,7 +435,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private INavigationService CreateRenovationAppointingNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<RenovationAppointingViewModel>
-                (modalNavigationStore, () => new RenovationAppointingViewModel(SelectedAccommodation, _reservationService, _renovationAppointmentService, modalNavigationStore));
+                (modalNavigationStore, () => new RenovationAppointingViewModel(SelectedAccommodation, _reservationService, _renovationAppointmentService, _accommodationService, modalNavigationStore));
         }
 
         private INavigationService CreateGuestReviewNavigationService(ModalNavigationStore modalNavigationStore)

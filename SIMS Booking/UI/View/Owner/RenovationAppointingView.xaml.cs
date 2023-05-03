@@ -41,6 +41,7 @@ namespace SIMS_Booking.UI.View.Owner
         {
             if (startDatesCalendar.SelectedDate.HasValue)
             {
+                endDatesCalendar.IsEnabled=true;
                 endDatesCalendar.DisplayDateStart = startDatesCalendar.SelectedDate.Value.AddDays(1);
                 endDatesCalendar.DisplayDateEnd = startDatesCalendar.BlackoutDates.FirstOrDefault(d => d.Start > startDatesCalendar.SelectedDate.Value)?.Start.AddDays(-1);
             }

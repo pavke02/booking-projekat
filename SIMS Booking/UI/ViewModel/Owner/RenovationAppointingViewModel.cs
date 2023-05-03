@@ -1,4 +1,5 @@
-﻿using Microsoft.TeamFoundation.WorkItemTracking.Process.WebApi.Models;
+﻿using System;
+using Microsoft.TeamFoundation.WorkItemTracking.Process.WebApi.Models;
 using SIMS_Booking.Commands.NavigateCommands;
 using SIMS_Booking.Commands.OwnerCommands;
 using SIMS_Booking.Model;
@@ -17,6 +18,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
     {
         private readonly ReservationService _reservationService;
         private readonly RenovationAppointmentService _renovationAppointmentService;
+        private readonly AccommodationService _accommodationService;
 
         private readonly ModalNavigationStore _modalNavigationStore;
         private readonly Accommodation _accommodation;
@@ -25,8 +27,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
         public string Error { get { return null; } }
 
-        private string _startDate;
-        public string StartDate
+        private DateTime _startDate;
+        public DateTime StartDate
         {
             get => _startDate;
             set
@@ -39,8 +41,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             }
         }
 
-        private string _endDate;
-        public string EndDate
+        private DateTime _endDate;
+        public DateTime EndDate
         {
             get => _endDate;
             set
@@ -72,14 +74,16 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand NavigateBackCommand { get; }
         public ICommand AppointRenovatingCommand { get; }
 
-        public RenovationAppointingViewModel(Accommodation selectedAccommodation, ReservationService reservationService, RenovationAppointmentService renovationAppointmentService, ModalNavigationStore modalNavigationStore)
+        public RenovationAppointingViewModel(Accommodation selectedAccommodation, ReservationService reservationService, RenovationAppointmentService renovationAppointmentService, 
+                    AccommodationService accommodationService, ModalNavigationStore modalNavigationStore)
         {
             _accommodation = selectedAccommodation;
             _modalNavigationStore = modalNavigationStore;
             _reservationService = reservationService;
             _renovationAppointmentService = renovationAppointmentService;
+            _accommodationService = accommodationService;
 
-            AppointRenovatingCommand = new AppointRenovatingCommand(this, _renovationAppointmentService);
+            AppointRenovatingCommand = new AppointRenovatingCommand(this, _renovationAppointmentService, _accommodationService, CreateCloseModalNavigationService(), _accommodation);
             NavigateBackCommand =
                 new NavigateBackCommand(CreateCloseModalNavigationService());
         }
@@ -129,11 +133,11 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 switch (name)
                 {
                     case "StartDate":
-                        if (string.IsNullOrWhiteSpace(StartDate))
+                        if (StartDate == null)
                             result = "You must select start date!";
                         break;
                     case "EndDate":
-                        if (string.IsNullOrEmpty(EndDate))
+                        if (StartDate == null)
                             result = "You must select end date!";
                         break;
                     case "Description":
