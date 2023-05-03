@@ -186,26 +186,37 @@
                 </WrapPanel>
             </TabItem>
             <TabItem Header="Your Accommodations" Height="60" Style="{StaticResource TabItemHover}">
-                <DataGrid ItemsSource="{Binding Path=Accommodations, UpdateSourceTrigger=PropertyChanged}"
+                <StackPanel>
+                    <DataGrid ItemsSource="{Binding Path=Accommodations, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedAccommodation, UpdateSourceTrigger=PropertyChanged}"
                           IsReadOnly="True" AutoGenerateColumns="False" 
                           Foreground="White" Background="#434242"
-                          RowHeaderWidth="0">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="400"/>
-                        <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="250"/>
-                        <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="250"/>
-                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"/>
-                    </DataGrid.Columns>
-                    <DataGrid.RowBackground>
-                        <SolidColorBrush Color="#434242"></SolidColorBrush>
-                    </DataGrid.RowBackground>
-                    <DataGrid.Resources>
-                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="Background" Value="#434242" />
-                        </Style>
-                    </DataGrid.Resources>
-                </DataGrid>
+                          RowHeaderWidth="0" Height="480" VerticalAlignment="Top">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="400"/>
+                            <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="250"/>
+                            <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="250"/>
+                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"/>
+                        </DataGrid.Columns>
+                        <DataGrid.RowBackground>
+                            <SolidColorBrush Color="#434242"></SolidColorBrush>
+                        </DataGrid.RowBackground>
+                        <DataGrid.Resources>
+                            <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="#434242" />
+                            </Style>
+                        </DataGrid.Resources>
+                    </DataGrid>
+
+                    <Button Content="Appoint Renovating" Command="{Binding NavigateToAppointRenovatingCommand}"
+                            Width="170" Height="40" Margin="0, 40, 60, 0" HorizontalAlignment="Right" Name="gagiButton">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Publish Accommodation" Height="60" Style="{StaticResource TabItemHover}">
                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -447,7 +458,7 @@
 
                     <WrapPanel Height="100">
                         <Button Content="Postpone Requests" Command="{Binding NavigateToPostponeRequestsCommand}"
-                            Width="160" Height="40" Margin="680, 40, 20, 0">
+                            Width="160" Height="40" Margin="680, 40, 15, 0">
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="10"/>
@@ -455,7 +466,7 @@
                             </Button.Resources>
                         </Button>
                         <Button Content="Review Guest" Command="{Binding NavigateToGuestReviewCommand}"
-                            Width="150" Height="40" Margin="0, 40, 0, 0">
+                            Width="150" Height="40" Margin="10, 40, 0, 0">
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="10"/>
@@ -491,7 +502,7 @@
                     </DataGrid>
 
                     <Button Content="Show Review" Command="{Binding NavigateToGuestReviewDetailsCommand}"
-                            Width="150" Height="40" Margin="0, 30, 50, 0" HorizontalAlignment="Right">
+                            Width="150" Height="40" Margin="0, 40, 60, 0" HorizontalAlignment="Right">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="10"/>

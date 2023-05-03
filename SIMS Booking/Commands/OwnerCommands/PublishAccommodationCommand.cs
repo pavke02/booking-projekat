@@ -47,7 +47,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
                 imageURLs.Add(value);
 
             Accommodation accommodation = new Accommodation(_viewModel.AccommodationName, location, (AccommodationType)Enum.Parse(typeof(AccommodationType),
-                _viewModel.AccommodationType), _user, int.Parse(_viewModel.MaxGuests), int.Parse(_viewModel.MinReservationDays), int.Parse(_viewModel.CancellationPeriod), imageURLs);
+                _viewModel.AccommodationType), _user, int.Parse(_viewModel.MaxGuests), int.Parse(_viewModel.MinReservationDays), int.Parse(_viewModel.CancellationPeriod), imageURLs, false);
             _accommodationService.Save(accommodation);
 
             UsersAccommodation usersAccommodation = new UsersAccommodation(_user.getID(), accommodation.getID());

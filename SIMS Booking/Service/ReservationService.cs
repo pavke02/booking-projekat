@@ -48,7 +48,7 @@ namespace SIMS_Booking.Service
 
         public List<Reservation> GetByAccommodation(int id) 
         {
-            return _crudService.GetAll().Where(e => e.Accommodation.getID() == id).ToList();
+            return _crudService.GetAll().Where(e => e.Accommodation.getID() == id && e.EndDate >= DateTime.Now).ToList();
         }
 
         public ObservableCollection<Reservation> GetReservationsByUser(int userId)

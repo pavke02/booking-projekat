@@ -82,7 +82,7 @@
                             Margin="20 20 0 0" Background="IndianRed">
                                 <Button.Resources>
                                     <Style TargetType="{x:Type Border}">
-                                        <Setter Property="CornerRadius" Value="10"/>
+                                        <Setter Property="CornerRadius" Value="3"/>
                                     </Style>
                                 </Button.Resources>
                             </Button>

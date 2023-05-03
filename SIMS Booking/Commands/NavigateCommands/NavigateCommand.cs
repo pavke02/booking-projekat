@@ -41,7 +41,8 @@ namespace SIMS_Booking.Commands.NavigateCommands
 
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(OwnerMainViewModel.SelectedReservation) || e.PropertyName == nameof(OwnerMainViewModel.SelectedReview))
+            if (e.PropertyName == nameof(OwnerMainViewModel.SelectedReservation) || e.PropertyName == nameof(OwnerMainViewModel.SelectedReview) || 
+                e.PropertyName == nameof(OwnerMainViewModel.SelectedAccommodation))
                 OnCanExecuteChanged();
         }
     }

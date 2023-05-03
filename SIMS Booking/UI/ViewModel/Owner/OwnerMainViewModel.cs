@@ -6,9 +6,9 @@ using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
-using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Observer;
 using SIMS_Booking.Utility.Stores;
+using SIMS_Booking.Utility.Timers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,6 +29,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private readonly OwnerReviewService _ownerReviewService;
         private readonly PostponementService _postponementService;
         private readonly UserService _userService;
+        private readonly RenovationAppointmentService _renovationAppointmentService;
 
         private readonly User _user;
 
@@ -40,24 +41,25 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand NavigateToGuestReviewDetailsCommand { get; }
         public ICommand NavigateToOwnerReviewDetailsCommand { get; }
         public ICommand NavigateToPostponeRequestsCommand { get; }
+        public ICommand NavigateToAppointRenovatingCommand { get; }
 
         #region Property                
         public List<string> TypesCollection { get; set; }
-        public List<string> Countries { get; set; }       
+        public List<string> Countries { get; set; }      
+        public ObservableCollection<string> Cities 
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
 
-        private ObservableCollection<string> _cities;
-        public ObservableCollection<string> Cities 
-        { 
-            get => _cities;
+        private Accommodation _selectedAccommodation;
+        public Accommodation SelectedAccommodation
+        {
+            get => _selectedAccommodation;
             set
             {
-                if(value != null)
+                if (value != _selectedAccommodation)
                 {
-                    _cities = value;
-                    OnPropertyChanged();
+                    _selectedAccommodation = value;
                 }
             }
         }
@@ -316,6 +318,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         private string _imageURLs;
+
         public string ImageURLs
         {
             get => _imageURLs;
@@ -334,7 +337,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
             OwnerReviewService ownerReviewService, PostponementService postponementService, User user,
             CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService,
-            NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
+            RenovationAppointmentService renovationAppointmentService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
             _user = user;
             _cityCountryCsvRepository = cityCountryCsvRepository;
@@ -365,6 +368,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             _usersAccommodationService = usersAccommodationService;
             _ownerReviewService = ownerReviewService;
             _postponementService = postponementService;
+            _renovationAppointmentService = renovationAppointmentService;
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
@@ -383,11 +387,16 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 new NavigateCommand(CreateOwnerReviewDetailsNavigationService(modalNavigationStore));
             NavigateToPostponeRequestsCommand =
                 new NavigateCommand(CreatePostponeRequestsNavigationService(modalNavigationStore));
+            NavigateToAppointRenovatingCommand = 
+                new NavigateCommand(CreateRenovationAppointingNavigationService(modalNavigationStore), this, () => SelectedAccommodation != null);
             #endregion
 
             CalculateRating(_user.getID());
 
-            NotificationTimer timer = new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);
+            NotificationTimer timer = 
+                new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);
+            DatePassedTimer passedTimer =
+                new DatePassedTimer(_accommodationService, _renovationAppointmentService, _user);
         }
         
         private void FillCityCb()
@@ -419,6 +428,12 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         #region CreateNavigationServices
+        private INavigationService CreateRenovationAppointingNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<RenovationAppointingViewModel>
+                (modalNavigationStore, () => new RenovationAppointingViewModel(SelectedAccommodation, _reservationService, _renovationAppointmentService, _accommodationService, modalNavigationStore));
+        }
+
         private INavigationService CreateGuestReviewNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<GuestReviewViewModel>
