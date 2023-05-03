@@ -179,33 +179,33 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             if (PasswordErrorText = !_userService.CheckPassword(user, Password)) return;           
             switch (user.Role)
             {
-                        case Roles.Owner:
-                            //Question: da li postoji bolji nacin(ovaj je izuzetno glup, zaobilazi celu strukturu)
-                            _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
-                                _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _renovationAppointmentService, _navigationStore, _modalNavigationStore);
-                            break;
-                        case Roles.Guest1:
-                            Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository,
-                                _reservationService, _reservedAccommodationService, user, _postponementService,
-                                _cancellationCsvCrudRepository, _ownerReviewService);
-                            guest1View.Show();
-                            break;
-                        case Roles.Guest2:
-                            Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleService,
-                            _guideReviewService, _reservedTourService);
-                            guest2View.Show();
-                            break;
-                        case Roles.Driver:
-                            DriverView driverView = new DriverView(user, _ridesService, _finishedRidesService, _vehicleService,
-                                _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository);
-                            driverView.Show();
-                            //CheckFastRides(user);
-                            break;
-                        case Roles.Guide:
-                            GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService,
-                                _textBox, _userService, _tourReview, _tour, _tourReviewService);
-                            guideView.Show();
-                            break;
+                case Roles.Owner:
+                    //Question: da li postoji bolji nacin(ovaj je izuzetno glup, zaobilazi celu strukturu)
+                    _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
+                        _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _renovationAppointmentService, _navigationStore, _modalNavigationStore);
+                    break;
+                case Roles.Guest1:
+                    Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository,
+                        _reservationService, _reservedAccommodationService, user, _postponementService,
+                        _cancellationCsvCrudRepository, _ownerReviewService);
+                    guest1View.Show();
+                    break;
+                case Roles.Guest2:
+                    Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleService,
+                    _guideReviewService, _reservedTourService);
+                    guest2View.Show();
+                    break;
+                case Roles.Driver:
+                    DriverView driverView = new DriverView(user, _ridesService, _finishedRidesService, _vehicleService,
+                        _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository);
+                    driverView.Show();
+                    //CheckFastRides(user);
+                    break;
+                case Roles.Guide:
+                    GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService,
+                        _textBox, _userService, _tourReview, _tour, _tourReviewService);
+                    guideView.Show();
+                    break;
              }
         }                        
         #endregion
