@@ -74,6 +74,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand NavigateBackCommand { get; }
         public ICommand AppointRenovatingCommand { get; }
 
+        //ToDo:prekontrolisati
         public RenovationAppointingViewModel(Accommodation selectedAccommodation, ReservationService reservationService, RenovationAppointmentService renovationAppointmentService, 
                     AccommodationService accommodationService, ModalNavigationStore modalNavigationStore)
         {

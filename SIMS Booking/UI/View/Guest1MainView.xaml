@@ -57,6 +57,7 @@
                         <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="120" FontSize="18"></DataGridTextColumn>
                         <DataGridTextColumn Header= "Min reservation (days)" Binding="{Binding MinReservationDays}" Width="200" FontSize="18"></DataGridTextColumn>
                         <DataGridTextColumn Header= "Cancellation period (days)" Binding="{Binding CancellationPeriod}" Width="200" FontSize="18"></DataGridTextColumn>
+                        <!-- <DataGridTextColumn Header= "Renovated" Binding="{Binding IsRenovated}" Width="200" FontSize="18"></DataGridTextColumn> -->
                     </DataGrid.Columns>
                 </DataGrid>
 

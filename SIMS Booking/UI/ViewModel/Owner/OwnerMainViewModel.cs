@@ -59,6 +59,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 if (value != _selectedAccommodation)
                 {
                     _selectedAccommodation = value;
+                    OnPropertyChanged();
                 }
             }
         }
