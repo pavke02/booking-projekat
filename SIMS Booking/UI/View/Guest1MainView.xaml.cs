@@ -38,6 +38,7 @@ namespace SIMS_Booking.UI.View
         private readonly PostponementService _postponementService;
         private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
         private readonly OwnerReviewService _ownerReviewService;
+        private readonly RenovationAppointmentService _renovationAppointmentService;
 
         #region Properties
         private string _accommodationName;
@@ -126,6 +127,21 @@ namespace SIMS_Booking.UI.View
             }
         }
 
+        // private bool _isRenovated;
+        // public bool IsRenovated
+        // {
+        //     get => _isRenovated;
+        //     set
+        //     {
+        //         if (value != _isRenovated)
+        //         {
+        //             _isRenovated  = value;
+        //             OnPropertyChanged();
+        //
+        //         }
+        //     }
+        // }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -136,7 +152,7 @@ namespace SIMS_Booking.UI.View
 
         #endregion
 
-        public Guest1MainView(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationCsvCrudRepository cancellationCsvCrudRepository, OwnerReviewService ownerReviewService)
+        public Guest1MainView(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationCsvCrudRepository cancellationCsvCrudRepository, OwnerReviewService ownerReviewService, RenovationAppointmentService renovationAppointmentService)
         {
 
             LoggedUser = loggedUser;
@@ -161,6 +177,7 @@ namespace SIMS_Booking.UI.View
             _cancellationCsvCrudRepository = cancellationCsvCrudRepository;
 
             _reservedAccommodationService = reservedAccommodationService;
+            _renovationAppointmentService = renovationAppointmentService;
 
             AccommodationsFiltered = new List<Accommodation>(_accommodationService.GetAll());
             Countries = new Dictionary<string, List<string>>(_cityCountryCsvRepository.Load());
@@ -183,6 +200,9 @@ namespace SIMS_Booking.UI.View
             else
                 UserTb.Text = LoggedUser.Username + ", Super Guest";
 
+            // DatePassedTimer datePassedTimer =
+            //     new DatePassedTimer(_accommodationService, _renovationAppointmentService, loggedUser);
+            // _renovationAppointmentService = renovationAppointmentService;
         }
 
         private void Reserve(object sender, RoutedEventArgs e)
