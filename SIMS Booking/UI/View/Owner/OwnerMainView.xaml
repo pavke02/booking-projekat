@@ -38,28 +38,6 @@
             </Setter>
         </Style>
 
-        <Style x:Key="HoverButton1" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border
-                            Background="{TemplateBinding Background}"
-                            BorderThickness="0">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FFDF6C5C" /> 
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="False">
-                    <Setter Property="Background" Value="IndianRed" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
         </Style>
@@ -448,7 +426,7 @@
                             <DataGridTextColumn Header="Reserved by" Binding="{Binding User.Username}" Width="200"/>
                             <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Accommodation.Name}" Width="240"/>
                             <DataGridTextColumn Header="Accommodation Type" Binding="{Binding Accommodation.Type}" Width="*"/>
-                            <DataGridTextColumn Header="Stard Date" Binding="{Binding StartDate, StringFormat=d}" Width="210"/>
+                            <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=d}" Width="210"/>
                             <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=d }" Width="210"/>
                         </DataGrid.Columns>
                         <DataGrid.RowBackground>
@@ -506,6 +484,66 @@
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Renovations" Height="60" Style="{StaticResource TabItemHover}">
+                <StackPanel Margin="0,-3,0,3">
+                    <WrapPanel Width="1080">
+                        <StackPanel>
+                            <DataGrid Height="450" Width="540" VerticalAlignment="Top" HorizontalAlignment="Left"
+                          ItemsSource="{Binding Path=ActiveRenovations, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Path=SelectedRenovation, UpdateSourceTrigger=PropertyChanged}"
+                          IsReadOnly="True" AutoGenerateColumns="False"
+                          Background="#434242" Foreground="White"
+                          RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Accommodation.Name}" Width="295"/>
+                                    <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=d}" Width="120"/>
+                                    <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=d}" Width="120"/>
+                                </DataGrid.Columns>
+                                <DataGrid.RowBackground>
+                                    <SolidColorBrush Color="#434242"></SolidColorBrush>
+                                </DataGrid.RowBackground>
+                                <DataGrid.Resources>
+                                    <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="Background" Value="#434242" />
+                                    </Style>
+                                </DataGrid.Resources>
+                            </DataGrid>
+                            <Label FontSize="24" HorizontalAlignment="Center">Active renovations</Label>
+                        </StackPanel>
+                        <StackPanel>
+                            <DataGrid Height="450" Width="540" VerticalAlignment="Top" HorizontalAlignment="Left"
+                              ItemsSource="{Binding Path=PastRenovations, UpdateSourceTrigger=PropertyChanged}"
+                              IsReadOnly="True" AutoGenerateColumns="False"
+                              Background="#434242" Foreground="White"
+                              RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Accommodation.Name}" Width="295"/>
+                                    <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=d}" Width="120"/>
+                                    <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=d}" Width="120"/>
+                                </DataGrid.Columns>
+                                <DataGrid.RowBackground>
+                                    <SolidColorBrush Color="#434242"></SolidColorBrush>
+                                </DataGrid.RowBackground>
+                                <DataGrid.Resources>
+                                    <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="Background" Value="#434242" />
+                                    </Style>
+                                </DataGrid.Resources>
+                            </DataGrid>
+                            <Label FontSize="24" HorizontalAlignment="Center">Past renovations</Label>
+                        </StackPanel>
+                    </WrapPanel>
+                    <Button Content="Cancel Renovating" Width="160" Height="40" 
+                            Margin="0 20 0 0" Style="{StaticResource HoverButton1}"
+                            Command="{Binding CancelRenovationCommand}">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="3"/>
                             </Style>
                         </Button.Resources>
                     </Button>
