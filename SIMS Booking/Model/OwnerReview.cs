@@ -23,7 +23,7 @@ namespace SIMS_Booking.Model
         {
             ImageURLs = new List<string>();
         }
-        public OwnerReview(int ownersCorrectness, int tidiness, string comment, Reservation reservation, List<string> imageURLs, bool hasRenovation, int renovationLevel, string renovationComment)
+        public OwnerReview(int tidiness, int ownersCorrectness, string comment, Reservation reservation, List<string> imageURLs, bool hasRenovation, int renovationLevel, string renovationComment)
         {
             OwnersCorrectness = ownersCorrectness;
             Tidiness = tidiness;
@@ -53,8 +53,8 @@ namespace SIMS_Booking.Model
         public void FromCSV(string[] values)
         {
             ID = int.Parse(values[0]);
-            OwnersCorrectness = int.Parse(values[1]);
-            Tidiness = int.Parse(values[2]);
+            Tidiness = int.Parse(values[1]);
+            OwnersCorrectness = int.Parse(values[2]);
             Comment = values[3];
             ReservationId = int.Parse(values[4]);
             ImageURLs = values[5].Split(',').ToList();

@@ -48,7 +48,7 @@
                          Text="{Binding ElementName=renovationSl, Path=Value, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"                                 
                          Name="renovationTb"></TextBox>
                 <Slider Grid.Column="5" Grid.Row="1" IsEnabled="False" Margin="20, 0, 0, 0" VerticalAlignment="Center" Maximum="5" Minimum="1" Width="130" HorizontalAlignment="Left"
-                        Name="renovationSl" Value="{Binding OwnerFairness, UpdateSourceTrigger=PropertyChanged}"/>
+                        Name="renovationSl" Value="{Binding RenovationLevel, UpdateSourceTrigger=PropertyChanged}"/>
                 <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" >
                     <Label Height="40" FontSize="20" Margin="20, 20, 0, 0" HorizontalAlignment="Left">Accommodation Comment</Label>
                     <TextBox FontSize="17" Height="120" Width="375" Margin="20, 0, 0, 0" 

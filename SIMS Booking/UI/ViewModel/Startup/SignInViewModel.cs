@@ -187,7 +187,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                 case Roles.Guest1:
                     Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository,
                         _reservationService, _reservedAccommodationService, user, _postponementService,
-                        _cancellationCsvCrudRepository, _ownerReviewService, _renovationAppointmentService);
+                        _cancellationCsvCrudRepository, _ownerReviewService, _renovationAppointmentService, _guestReviewService);
                     guest1View.Show();
                     break;
                 case Roles.Guest2:
