@@ -46,5 +46,6 @@ namespace SIMS_Booking.Service
         {
             return _crudService.GetAll();
         }
+
     }
 }
