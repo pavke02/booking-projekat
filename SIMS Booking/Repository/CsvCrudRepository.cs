@@ -52,6 +52,7 @@ namespace SIMS_Booking.Repository
             if (foundEntity == null) return;
             _entityList.Remove(foundEntity);
             _serializer.ToCSV(_filePath, _entityList);
+            NotifyObservers();
         }
 
         public List<T> GetAll()

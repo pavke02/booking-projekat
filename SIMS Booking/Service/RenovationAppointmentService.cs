@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Windows.Documents;
-using SIMS_Booking.Model;
+﻿using SIMS_Booking.Model;
+using SIMS_Booking.Utility.Observer;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SIMS_Booking.Service
 {
@@ -28,6 +29,21 @@ namespace SIMS_Booking.Service
         {
             _crudService.Update(renovationAppointment);
         }
+
+        public void Subscribe(IObserver observer)
+        {
+            _crudService.Subscribe(observer);
+        }
+
+        public void Delete(RenovationAppointment renovationAppointment)
+        {
+            _crudService.Delete(renovationAppointment);
+        }
+
+        public RenovationAppointment GetById(int id)
+        {
+            return _crudService.GetById(id);
+        }
         #endregion
 
         public void LoadAccommodationInRenovationAppointment(AccommodationService accommodationService)
@@ -37,6 +53,16 @@ namespace SIMS_Booking.Service
                 renovationAppointment.Accommodation =
                     accommodationService.GetById(renovationAppointment.AccommodationId);
             }
+        }
+
+        public List<RenovationAppointment> GetActiveRenovations(int id)
+        {
+            return GetAll().Where(e => e.Accommodation.User.getID() == id && e.IsRenovating).ToList();
+        }
+
+        public List<RenovationAppointment> GetPastRenovations(int id)
+        {
+            return GetAll().Where(e => e.Accommodation.User.getID() == id && !e.IsRenovating).ToList();
         }
     }
 }

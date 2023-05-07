@@ -36,6 +36,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand ResetCommand { get; }
         public ICommand AddImageCommand { get; }
         public ICommand ClearURLsCommand { get; }
+        public ICommand CancelRenovationCommand { get; }
         public ICommand NavigateToGuestReviewCommand { get; }
         public ICommand NavigateToGuestReviewDetailsCommand { get; }
         public ICommand NavigateToOwnerReviewDetailsCommand { get; }
@@ -49,6 +50,22 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
+        public ObservableCollection<RenovationAppointment> ActiveRenovations { get; set; }
+        public ObservableCollection<RenovationAppointment> PastRenovations { get; set; }
+
+        private RenovationAppointment _selectedRenovation;
+        public RenovationAppointment SelectedRenovation
+        {
+            get => _selectedRenovation;
+            set
+            {
+                if (value != _selectedRenovation)
+                {
+                    _selectedRenovation = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private Accommodation _selectedAccommodation;
         public Accommodation SelectedAccommodation
@@ -362,13 +379,19 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             _guestReviewService.Subscribe(this);
             PastReservations = new ObservableCollection<GuestReview>(_guestReviewService.GetReviewedReservations(_user.getID()));
 
+            _renovationAppointmentService = renovationAppointmentService;
+            _renovationAppointmentService.Subscribe(this);
+            ActiveRenovations =
+                new ObservableCollection<RenovationAppointment>(_renovationAppointmentService.GetActiveRenovations(_user.getID()));
+            PastRenovations =
+                new ObservableCollection<RenovationAppointment>(_renovationAppointmentService.GetPastRenovations(_user.getID()));
+
             Countries = new List<string>(_cityCountryCsvRepository.LoadCountries());
             Cities = new ObservableCollection<string>();            
 
             _usersAccommodationService = usersAccommodationService;
             _ownerReviewService = ownerReviewService;
             _postponementService = postponementService;
-            _renovationAppointmentService = renovationAppointmentService;
 
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
@@ -377,6 +400,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             ResetCommand = new ResetCommand(this);
             AddImageCommand = new AddImageCommand(this);
             ClearURLsCommand = new ClearURLsCommand(this);
+            CancelRenovationCommand = new CancelRenovationCommand(this, _renovationAppointmentService);
 
             NavigateToGuestReviewCommand = 
                 new NavigateCommand(CreateGuestReviewNavigationService(modalNavigationStore), this, () => SelectedReservation != null && 
@@ -428,6 +452,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         #region CreateNavigationServices
+        //Da li smestaj moze da se renovira ukoliko je skoro renoviran?
         private INavigationService CreateRenovationAppointingNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<RenovationAppointingViewModel>
@@ -483,9 +508,23 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 PastReservations.Add(guestreview);
         }
 
-        private void UpdateNumberOfRegisterdAccommodations()
+        private void UpdateNumberOfRegisteredAccommodations()
         {
             AccommodationNumber = Accommodations.Count().ToString();
+        }
+
+        private void UpdateActiveRenovations(List<RenovationAppointment> activeRenovations)
+        {
+            ActiveRenovations.Clear();
+            foreach (var activeRenovation in activeRenovations)
+                ActiveRenovations.Add(activeRenovation);
+        }
+
+        private void UpdatePastRenovations(List<RenovationAppointment> pastRenovations)
+        {
+            PastRenovations.Clear();
+            foreach (var pastRenovation in pastRenovations)
+                PastRenovations.Add(pastRenovation);
         }
 
         private void UpdateNumberOfReservedAccommodations()
@@ -498,9 +537,12 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             UpdateAccommodations(_accommodationService.GetByUserId(_user.getID()));
             UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.getID()));
             UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.getID()));
-            UpdateNumberOfRegisterdAccommodations();
+            UpdateActiveRenovations(_renovationAppointmentService.GetActiveRenovations(_user.getID()));
+            UpdatePastRenovations(_renovationAppointmentService.GetPastRenovations(_user.getID()));
+            UpdateNumberOfRegisteredAccommodations();
             UpdateNumberOfReservedAccommodations();
         }
+
         #endregion
 
         #region Validation
