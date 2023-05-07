@@ -26,7 +26,7 @@
             </Grid.ColumnDefinitions>
             <TextBox Name="UserTb" Grid.Column="0" Grid.Row="1" FontSize="25" FontWeight="Bold" Padding="0" BorderThickness="0" VerticalContentAlignment="Center" Margin="0, 5, 0, 0">Pera, Guest</TextBox>
             <Button Click="LogOut"  Grid.Row="0" Grid.Column="0" Height="30" FontSize="18">Log Out</Button>
-            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width = "85" Margin="10,0,5,0" Source = "/Resources/Images\guest1_128.png" Height="85" Stretch="UniformToFill" VerticalAlignment="Bottom"/>
+            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width = "85" Margin="10,0,5,0" Source = "/Resources/Images/guest1_128.png" Height="85" Stretch="UniformToFill" VerticalAlignment="Bottom"/>
         </Grid>
 
         <TabControl x:Name="TabC" Width="1000" Height="400" Grid.Row="2" SelectionChanged="TabChanged">
@@ -145,12 +145,12 @@
 
                 <StackPanel Grid.Row="1" Grid.Column="1">
                     <Label Height="18" Margin="5, 0, 0, 0" Padding="0">Max Guests</Label>
-                    <TextBox Name="maxGuestsTb" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}" TextChanged="ApplyFilters"  Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="5, 0, 10, 10" Padding="5, 0, 5, 0"></TextBox>
+                    <TextBox PreviewTextInput="NumberValidationTextBox" Name="maxGuestsTb" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}" TextChanged="ApplyFilters"  Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="5, 0, 10, 10" Padding="5, 0, 5, 0"></TextBox>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Grid.Column="1">
                     <Label Height="18" Margin="5, 0, 0, 0" Padding="0">Min reservation days</Label>
-                    <TextBox Name="minReservationDaysTb" Text="{Binding Path=MinReservationDays, UpdateSourceTrigger=PropertyChanged}" TextChanged="ApplyFilters"  Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="5, 0, 10, 10" Padding="5, 0, 5, 0"></TextBox>
+                    <TextBox PreviewTextInput="NumberValidationTextBox" Name="minReservationDaysTb" Text="{Binding Path=MinReservationDays, UpdateSourceTrigger=PropertyChanged}" TextChanged="ApplyFilters"  Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="5, 0, 10, 10" Padding="5, 0, 5, 0"></TextBox>
                 </StackPanel>
 
                 <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Reset Filters"  FontSize="20" Click="Reset" Padding="5" Width="385" VerticalAlignment="Center" Margin="5, 0, 10, 0"
