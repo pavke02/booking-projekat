@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
@@ -599,5 +601,16 @@ namespace SIMS_Booking.UI.View
             Guest1OwnersViewDetailsView detailsView = new Guest1OwnersViewDetailsView(_guestReviewService, SelectedReservation, LoggedUser);
             detailsView.Show();
          }
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsTextAllowed(e.Text);
+        }
+
+        private static bool IsTextAllowed(string text)
+        {
+            // Allow only numeric input
+            Regex regex = new Regex("[^0-9]+");
+            return !regex.IsMatch(text);
+        }
     }
 }
