@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Documents;
-using SIMS_Booking.Model;
-using SIMS_Booking.UI.ViewModel.Owner;
+﻿using SIMS_Booking.Model;
 using SIMS_Booking.Utility.Observer;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SIMS_Booking.Service
 {
@@ -32,9 +30,19 @@ namespace SIMS_Booking.Service
             _crudService.Update(renovationAppointment);
         }
 
-        public void Subsctibe(IObserver observer)
+        public void Subscribe(IObserver observer)
         {
             _crudService.Subscribe(observer);
+        }
+
+        public void Delete(RenovationAppointment renovationAppointment)
+        {
+            _crudService.Delete(renovationAppointment);
+        }
+
+        public RenovationAppointment GetById(int id)
+        {
+            return _crudService.GetById(id);
         }
         #endregion
 

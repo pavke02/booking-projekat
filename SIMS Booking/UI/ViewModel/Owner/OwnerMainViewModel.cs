@@ -36,6 +36,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand ResetCommand { get; }
         public ICommand AddImageCommand { get; }
         public ICommand ClearURLsCommand { get; }
+        public ICommand CancelRenovationCommand { get; }
         public ICommand NavigateToGuestReviewCommand { get; }
         public ICommand NavigateToGuestReviewDetailsCommand { get; }
         public ICommand NavigateToOwnerReviewDetailsCommand { get; }
@@ -51,6 +52,20 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ObservableCollection<GuestReview> PastReservations { get; set; }
         public ObservableCollection<RenovationAppointment> ActiveRenovations { get; set; }
         public ObservableCollection<RenovationAppointment> PastRenovations { get; set; }
+
+        private RenovationAppointment _selectedRenovation;
+        public RenovationAppointment SelectedRenovation
+        {
+            get => _selectedRenovation;
+            set
+            {
+                if (value != _selectedRenovation)
+                {
+                    _selectedRenovation = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private Accommodation _selectedAccommodation;
         public Accommodation SelectedAccommodation
@@ -365,7 +380,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             PastReservations = new ObservableCollection<GuestReview>(_guestReviewService.GetReviewedReservations(_user.getID()));
 
             _renovationAppointmentService = renovationAppointmentService;
-            _renovationAppointmentService.Subsctibe(this);
+            _renovationAppointmentService.Subscribe(this);
             ActiveRenovations =
                 new ObservableCollection<RenovationAppointment>(_renovationAppointmentService.GetActiveRenovations(_user.getID()));
             PastRenovations =
@@ -385,6 +400,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             ResetCommand = new ResetCommand(this);
             AddImageCommand = new AddImageCommand(this);
             ClearURLsCommand = new ClearURLsCommand(this);
+            CancelRenovationCommand = new CancelRenovationCommand(this, _renovationAppointmentService);
 
             NavigateToGuestReviewCommand = 
                 new NavigateCommand(CreateGuestReviewNavigationService(modalNavigationStore), this, () => SelectedReservation != null && 
