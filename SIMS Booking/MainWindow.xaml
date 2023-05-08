@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewOwner="clr-namespace:SIMS_Booking.UI.View.Owner"
         xmlns:viewModelOwner="clr-namespace:SIMS_Booking.UI.ViewModel.Owner"
+        xmlns:viewDriver="clr-namespace:SIMS_Booking.UI.View.Driver"
+        xmlns:viewModelDriver="clr-namespace:SIMS_Booking.UI.ViewModel.Driver"
         xmlns:modalControl="clr-namespace:ModalControl;assembly=ModalControl"
         xmlns:startup="clr-namespace:SIMS_Booking.UI.ViewModel.Startup"
         xmlns:startup1="clr-namespace:SIMS_Booking.UI.View.Startup"
@@ -40,6 +42,18 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelOwner:RenovationAppointingViewModel}">
                 <viewOwner:RenovationAppointingView></viewOwner:RenovationAppointingView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverViewModel}">
+                <viewDriver:DriverView></viewDriver:DriverView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverGalleryViewModel}">
+                <viewDriver:DriverGalleryView></viewDriver:DriverGalleryView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverStatsViewModel}">
+                <viewDriver:DriverStatsView></viewDriver:DriverStatsView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverRidesViewModel}">
+                <viewDriver:DriverRides></viewDriver:DriverRides>
             </DataTemplate>
         </Grid.Resources>
 

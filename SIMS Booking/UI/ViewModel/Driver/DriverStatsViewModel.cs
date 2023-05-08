@@ -1,28 +1,37 @@
-﻿using System;
+﻿using SIMS_Booking.UI.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service;
+using SIMS_Booking.Utility.Stores;
+using System.Windows.Input;
+using SIMS_Booking.Commands.NavigateCommands;
+using SIMS_Booking.Service.NavigationService;
 
-namespace SIMS_Booking.UI.View
+namespace SIMS_Booking.UI.ViewModel.Driver
 {
-    public partial class DriverStatsView : Window
+    public class DriverStatsViewModel : ViewModelBase
     {
-
         public List<MonthlyDriverStats> MonthlyDriverStats2023 { get; set; }
         public List<MonthlyDriverStats> MonthlyDriverStats2022 { get; set; }
         public List<MonthlyDriverStats> MonthlyDriverStats2021 { get; set; }
+
         public User User;
 
         private FinishedRidesService _finishedRidesService;
 
         public List<FinishedRide> FinishedRides { get; set; }
 
-        public DriverStatsView(FinishedRidesService finishedRidesService, User user)
+        public ICommand NavigateBackCommand { get; }
+
+
+        public DriverStatsViewModel(FinishedRidesService finishedRidesService, User user, ModalNavigationStore modalNavigationStore)
         {
-            InitializeComponent();
-            DataContext = this;
 
             User = user;
 
@@ -41,9 +50,11 @@ namespace SIMS_Booking.UI.View
             FinishedRides = _finishedRidesService.GetAll().Where(e => e.Ride.DriverID == id).ToList();
 
             SortStats(MonthlyDriverStats2023, MonthlyDriverStats2022, MonthlyDriverStats2021);
+
+            NavigateBackCommand = new NavigateBackCommand(CreateCloseStatsNavigationService(modalNavigationStore));
         }
 
-        public void GenerateEmptyList(List<MonthlyDriverStats> monthlyDriverStats) 
+        public void GenerateEmptyList(List<MonthlyDriverStats> monthlyDriverStats)
         {
             MonthlyDriverStats yearStats = new MonthlyDriverStats("", 0, 0, 0);
             MonthlyDriverStats januaryStats = new MonthlyDriverStats("January", 0, 0, 0);
@@ -74,11 +85,11 @@ namespace SIMS_Booking.UI.View
             monthlyDriverStats.Add(decemberStats);
         }
 
-        public void SortStats(List<MonthlyDriverStats> monthlyDriverStats2023, List<MonthlyDriverStats> monthlyDriverStats2022, List<MonthlyDriverStats> monthlyDriverStats2021) 
+        public void SortStats(List<MonthlyDriverStats> monthlyDriverStats2023, List<MonthlyDriverStats> monthlyDriverStats2022, List<MonthlyDriverStats> monthlyDriverStats2021)
         {
-            foreach(FinishedRide finishedRide in FinishedRides)
+            foreach (FinishedRide finishedRide in FinishedRides)
             {
-                if(finishedRide.Ride.DateTime.Year == 2023)
+                if (finishedRide.Ride.DateTime.Year == 2023)
                 {
                     if (finishedRide.Ride.DateTime.Month == 1)
                     {
@@ -533,7 +544,7 @@ namespace SIMS_Booking.UI.View
 
             foreach (MonthlyDriverStats monthlyDriverStats in MonthlyDriverStats2023)
             {
-                if (monthlyDriverStats.TotalRides != 0) 
+                if (monthlyDriverStats.TotalRides != 0)
                 {
                     sumTotalRides2023 += monthlyDriverStats.TotalRides;
                     sumPrice2023 += monthlyDriverStats.AveragePrice;
@@ -570,7 +581,7 @@ namespace SIMS_Booking.UI.View
 
             foreach (MonthlyDriverStats monthlyDriverStats in MonthlyDriverStats2023)
             {
-                if(monthlyDriverStats.Month == "")
+                if (monthlyDriverStats.Month == "")
                 {
                     monthlyDriverStats.TotalRides = sumTotalRides2023;
                     if (monthlyDriverStats.TotalRides != 0)
@@ -597,7 +608,7 @@ namespace SIMS_Booking.UI.View
                 if (monthlyDriverStats.Month == "")
                 {
                     monthlyDriverStats.TotalRides = sumTotalRides2021;
-                    if(monthlyDriverStats.TotalRides != 0)
+                    if (monthlyDriverStats.TotalRides != 0)
                     {
                         monthlyDriverStats.AveragePrice = sumPrice2021 / sumTotalRides2021;
                         monthlyDriverStats.AverageTime = sumTime2021 / sumTotalRides2021;
@@ -606,6 +617,10 @@ namespace SIMS_Booking.UI.View
             }
         }
 
-    }
+        private INavigationService CreateCloseStatsNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new CloseModalNavigationService(modalNavigationStore);
+        }
 
+    }
 }
