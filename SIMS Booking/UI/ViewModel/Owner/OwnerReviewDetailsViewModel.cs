@@ -64,6 +64,20 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             }
         }
 
+        private int _renovationLevel;
+        public int RenovationLevel
+        {
+            get => _renovationLevel;
+            set
+            {
+                if (value != _renovationLevel)
+                {
+                    _renovationLevel = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private int _ownersCorrectness;
         public int OwnersCorrectness
         {
@@ -110,6 +124,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             Tidiness = SelectedReview.Tidiness;
             OwnersCorrectness = SelectedReview.OwnersCorrectness;
             Comment = SelectedReview.Comment;
+            RenovationLevel = SelectedReview.RenovationLevel;
         }
 
         private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
