@@ -66,5 +66,21 @@ namespace SIMS_Booking.Service
 
             return ratingSum / numberOfGuestReviews;
         }
+
+        public Dictionary<string, int> getRenovationsByYear(int id)
+        {
+            Dictionary<string, int> ownerRatings = new Dictionary<string, int>();
+
+            foreach (OwnerReview ownerRating in _crudService.GetAll().Where(e => e.Reservation.Accommodation.getID() == id && e.HasRenovation))
+            {
+                string key = ownerRating.Reservation.StartDate.Year.ToString();
+                if (ownerRatings.ContainsKey(key))
+                    ownerRatings[key] += 1;
+                else
+                    ownerRatings[key] = 1;
+            }
+
+            return ownerRatings;
+        }
     }
 }

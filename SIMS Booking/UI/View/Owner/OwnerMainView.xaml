@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:converters="clr-namespace:SIMS_Booking.UI.Utility.Converters"
              mc:Ignorable="d"
              Height="580" Width="1300" FontSize="18" Background="#222222">
@@ -56,7 +57,7 @@
             </TabControl.Resources>
             <TabItem Header="Profile" Height="60" IsSelected="True" Style="{StaticResource TabItemHover}">
                 <WrapPanel>
-                    <Grid>
+                    <Grid VerticalAlignment="Top">
                         <Rectangle Height="400" Width="345" Stroke="Black" StrokeThickness="2"
                                    RadiusX="5" RadiusY="5" >
                             <Rectangle.Fill>
@@ -110,57 +111,83 @@
                             </WrapPanel>
                         </StackPanel>
                     </Grid>
-                    <Grid>
-                        <Rectangle Width="731" Height="244" Stroke="Black" StrokeThickness="2"
+                    <StackPanel>
+                        <Grid Height="240" VerticalAlignment="Top">
+                            <Rectangle Width="731" Height="244" Stroke="Black" StrokeThickness="2"
                                    VerticalAlignment="Top" RadiusX="5" RadiusY="5" Margin="0 2 0 0">
-                            <Rectangle.Fill>
-                                <SolidColorBrush Color="#FF6C3DD8" />
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <WrapPanel>
-                            <StackPanel>
-                                <WrapPanel>
-                                    <TextBlock Text="Number of registered accommodations:" 
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="#FF6C3DD8" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <WrapPanel>
+                                <StackPanel>
+                                    <WrapPanel>
+                                        <TextBlock Text="Number of registered accommodations:" 
                                                Margin="20, 20, 0, 0"></TextBlock>
-                                    <TextBlock Text="{Binding AccommodationNumber, UpdateSourceTrigger=PropertyChanged}"
+                                        <TextBlock Text="{Binding AccommodationNumber, UpdateSourceTrigger=PropertyChanged}"
                                            Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
-                                </WrapPanel>
-                                <WrapPanel>
-                                    <TextBlock Text="Number of reserved accommodations:" Margin="20, 20, 0, 0"></TextBlock>
-                                    <TextBlock Text="{Binding ReservationNumber, UpdateSourceTrigger=PropertyChanged}"
+                                    </WrapPanel>
+                                    <WrapPanel>
+                                        <TextBlock Text="Number of reserved accommodations:" Margin="20, 20, 0, 0"></TextBlock>
+                                        <TextBlock Text="{Binding ReservationNumber, UpdateSourceTrigger=PropertyChanged}"
                                            Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
-                                </WrapPanel>
-                                <WrapPanel>
-                                    <TextBlock Text="Owner rating:" Margin="20, 20, 0, 0"></TextBlock>
-                                    <TextBlock Text="{Binding OwnerRating, UpdateSourceTrigger=PropertyChanged}"
+                                    </WrapPanel>
+                                    <WrapPanel>
+                                        <TextBlock Text="Owner rating:" Margin="20, 20, 0, 0"></TextBlock>
+                                        <TextBlock Text="{Binding OwnerRating, UpdateSourceTrigger=PropertyChanged}"
                                            Margin="10 , 20, 0, 0" FontWeight="Bold"></TextBlock>
-                                </WrapPanel>
-                            </StackPanel>
-                            <StackPanel Margin="80 0 0 0">
-                                <Button Width="80" Height="70" Margin="30, 30, 0, 0"
-                                        Command="{Binding NavigateToOwnerReviewDetailsCommand}"
-                                        Style="{StaticResource HoverButton}">
-                                    <Button.Resources>
-                                        <Style TargetType="{x:Type Border}">
-                                            <Setter Property="CornerRadius" Value="10"/>
-                                        </Style>
-                                    </Button.Resources>
-                                    <Image Source="../../../Resources/Images/review.png" Height="60" Width="60"/>
-                                </Button>
-                                <StackPanel Margin="20, 40, 0, 0" Width="250">
-                                    <TextBlock Text="Owners license:" Margin="0 ,25, 0, 0" HorizontalAlignment="Center"></TextBlock>
-                                    <WrapPanel HorizontalAlignment="Center">
-                                        <CheckBox Margin="0 ,20, 0, 0" IsEnabled="False" Content="Regular" 
-                                                  VerticalContentAlignment="Center" IsChecked="{Binding RegularSelected}"
-                                                  Foreground="White"></CheckBox>
-                                        <CheckBox Margin="20 ,20, 0, 0" Content="Super-Owner" IsEnabled="False" 
-                                                  VerticalContentAlignment="Center" IsChecked="{Binding SuperSelected}"
-                                                  Foreground="White"></CheckBox>
                                     </WrapPanel>
                                 </StackPanel>
+                                <StackPanel Margin="80 0 0 0">
+                                    <Button Width="80" Height="70" Margin="30, 30, 0, 0"
+                                        Command="{Binding NavigateToOwnerReviewDetailsCommand}"
+                                        Style="{StaticResource HoverButton}">
+                                        <Button.Resources>
+                                            <Style TargetType="{x:Type Border}">
+                                                <Setter Property="CornerRadius" Value="10"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <Image Source="../../../Resources/Images/review.png" Height="60" Width="60"/>
+                                    </Button>
+                                    <StackPanel Margin="20, 40, 0, 0" Width="250">
+                                        <TextBlock Text="Owners license:" Margin="0 ,25, 0, 0" HorizontalAlignment="Center"></TextBlock>
+                                        <WrapPanel HorizontalAlignment="Center">
+                                            <CheckBox Margin="0 ,20, 0, 0" IsEnabled="False" Content="Regular" 
+                                                  VerticalContentAlignment="Center" IsChecked="{Binding RegularSelected}"
+                                                  Foreground="White"></CheckBox>
+                                            <CheckBox Margin="20 ,20, 0, 0" Content="Super-Owner" IsEnabled="False" 
+                                                  VerticalContentAlignment="Center" IsChecked="{Binding SuperSelected}"
+                                                  Foreground="White"></CheckBox>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </WrapPanel>
+                        </Grid>
+                        <WrapPanel>
+                            <StackPanel>
+                                <Label Margin="10 20 0 0">Select Accommodation:</Label>
+                                <ListBox Height="120" Width="180" Background="Transparent" BorderThickness="2" BorderBrush="#555555" Foreground="White" ItemsSource="{Binding Accommodations}"
+                                         DisplayMemberPath="Name" SelectedItem="{Binding SelectedAccommodationStats}"></ListBox>
                             </StackPanel>
+                            <StackPanel>
+                                <Label HorizontalAlignment="Center" FontWeight="Bold" FontSize="24">Accommodation Statistics</Label>
+                                <Grid Margin="20 20 0 0">
+                                    <lvc:CartesianChart Series="{Binding Statistics}" LegendLocation="Bottom" Height="275" Width="500" HorizontalAlignment="Left">
+                                        <lvc:CartesianChart.DataTooltip>
+                                            <lvc:DefaultTooltip Background="#222222" Foreground="White"/>
+                                        </lvc:CartesianChart.DataTooltip>
+                                        <lvc:CartesianChart.AxisX>
+                                            <lvc:Axis Title="Salesman" Labels="{Binding Labels}"></lvc:Axis>
+                                        </lvc:CartesianChart.AxisX>
+                                        <lvc:CartesianChart.AxisY>
+                                            <lvc:Axis Title="Sold Apps" MinValue="0" LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                                        </lvc:CartesianChart.AxisY>
+                                    </lvc:CartesianChart>
+                                </Grid>
+                            </StackPanel>
+
                         </WrapPanel>
-                    </Grid>
+                    </StackPanel>
                 </WrapPanel>
             </TabItem>
             <TabItem Header="Your Accommodations" Height="60" Style="{StaticResource TabItemHover}">

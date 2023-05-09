@@ -111,5 +111,26 @@ namespace SIMS_Booking.Service
                 }
             }
         }
+
+        public List<Postponement> GetByAccommodation(int id)
+        {
+            return GetAll().Where(e => e.Reservation.Accommodation.getID() == id).ToList();
+        }
+
+        public Dictionary<string, int> getPostponemetsByYear(int id)
+        {
+            Dictionary<string, int> postponements = new Dictionary<string, int>();
+
+            foreach (Postponement postponement in GetByAccommodation(id))
+            {
+                string key = postponement.Reservation.StartDate.Year.ToString();
+                if (postponements.ContainsKey(key))
+                    postponements[key] += 1;
+                else
+                    postponements[key] = 1;
+            }
+
+            return postponements;
+        }
     }
 }

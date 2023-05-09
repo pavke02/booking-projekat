@@ -47,7 +47,7 @@
                 </DataGrid>
 
                 <StackPanel Width="480" Height="440"
-                            Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}, FallbackValue=Visible}">
+                            Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">
                     <Grid Margin="20 0 0 0" Width="465" HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="160"></ColumnDefinition>

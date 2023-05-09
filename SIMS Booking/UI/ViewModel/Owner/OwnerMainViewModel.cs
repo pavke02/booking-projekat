@@ -15,6 +15,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using LiveCharts;
+using LiveCharts.Wpf;
+using SIMS_Booking.Model.Relations;
+using Newtonsoft.Json.Linq;
 
 namespace SIMS_Booking.UI.ViewModel.Owner
 {
@@ -45,13 +49,58 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
         #region Property                
         public List<string> TypesCollection { get; set; }
-        public List<string> Countries { get; set; }      
+        public List<string> Countries { get; set; }
+        public List<string> AccommodationNames { get; set; }
         public ObservableCollection<string> Cities { get; set; }
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
         public ObservableCollection<RenovationAppointment> ActiveRenovations { get; set; }
         public ObservableCollection<RenovationAppointment> PastRenovations { get; set; }
+        public Func<double, string> Formatter { get; set; }
+
+        private string[] _labels;
+        public string[] Labels
+        {
+            get => _labels;
+            set
+            {
+                if (value != _labels)
+                {
+                    _labels = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private SeriesCollection _statistics;
+        public SeriesCollection Statistics
+        {
+            get => _statistics;
+            set
+            {
+                if (value != _statistics)
+                {
+                    _statistics = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private Accommodation _selectedAccommodationStats;
+        public Accommodation SelectedAccommodationStats
+        {
+            get => _selectedAccommodationStats;
+            set
+            {
+                if (value != _selectedAccommodationStats)
+                {
+                    _selectedAccommodationStats = value;
+                    OnPropertyChanged();
+                    GenerateStats();
+                }
+            }
+        }
 
         private RenovationAppointment _selectedRenovation;
         public RenovationAppointment SelectedRenovation
@@ -367,6 +416,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             _accommodationService.Subscribe(this);
             Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetByUserId(_user.getID()));
 
+            AccommodationNames = new List<string>(_accommodationService.GetAccommodationNames(_user.getID()));
+
             AccommodationNumber = Accommodations.Count().ToString();
 
             _reservationService = reservationService;
@@ -421,6 +472,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);
             DatePassedTimer passedTimer =
                 new DatePassedTimer(_accommodationService, _renovationAppointmentService, _user);
+
+            Formatter = value => value.ToString("N");
         }
         
         private void FillCityCb()
@@ -448,6 +501,54 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 RegularSelected = true;
                 _user.IsSuperUser = false;
                 _userService.Update(_user);
+            }
+        }
+
+
+        private void GenerateStats()
+        {
+            if (SelectedAccommodationStats != null)
+            {
+                Dictionary<string, int> reservationCount = new Dictionary<string, int>(_reservationService.getReservationsByYear(SelectedAccommodationStats.getID()));
+                Dictionary<string, int> postponementCount = new Dictionary<string, int>(_postponementService.getPostponemetsByYear(SelectedAccommodationStats.getID()));
+                Dictionary<string, int> renovationsCount = new Dictionary<string, int>(_ownerReviewService.getRenovationsByYear(SelectedAccommodationStats.getID()));
+
+                List<string> sortedLabels = reservationCount.Keys
+                    .Union(postponementCount.Keys)
+                    .Union(renovationsCount.Keys).ToList();
+                sortedLabels.Sort();
+                Labels = sortedLabels.ToArray();
+
+                ChartValues<int> reservationsChartValues = new ChartValues<int>();
+                ChartValues<int> postponementsChartValues = new ChartValues<int>();
+                ChartValues<int> renovationsChartValues = new ChartValues<int>();
+                foreach (string label in Labels)
+                {
+                    reservationsChartValues.Add(reservationCount.ContainsKey(label) ? reservationCount[label] : 0);
+                    postponementsChartValues.Add(postponementCount.ContainsKey(label) ? postponementCount[label] : 0);
+                    renovationsChartValues.Add(renovationsCount.ContainsKey(label) ? renovationsCount[label] : 0);
+                }
+
+                Statistics = new SeriesCollection
+                {
+                    new ColumnSeries
+                    {
+                        Title = "Reservations",
+                        Values = reservationsChartValues
+                    }
+                };
+
+                Statistics.Add(new ColumnSeries
+                {
+                    Title = "Postponements",
+                    Values = postponementsChartValues
+                });
+
+                Statistics.Add(new ColumnSeries
+                {
+                    Title = "Renovations",
+                    Values = renovationsChartValues
+                });
             }
         }
 
