@@ -45,13 +45,26 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
         #region Property                
         public List<string> TypesCollection { get; set; }
-        public List<string> Countries { get; set; }      
-        public ObservableCollection<string> Cities { get; set; }
+        public List<string> Countries { get; set; }
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
         public ObservableCollection<RenovationAppointment> ActiveRenovations { get; set; }
         public ObservableCollection<RenovationAppointment> PastRenovations { get; set; }
+
+        private ObservableCollection<string> _cities;
+        public ObservableCollection<string> Cities
+        {
+            get => _cities;
+            set
+            {
+                if (value != null)
+                {
+                    _cities = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private RenovationAppointment _selectedRenovation;
         public RenovationAppointment SelectedRenovation
