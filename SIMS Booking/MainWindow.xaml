@@ -40,8 +40,8 @@
             <DataTemplate DataType="{x:Type viewModelOwner:DeclinePostponementRequestViewModel }">
                 <viewOwner:DeclinePostponementRequestView></viewOwner:DeclinePostponementRequestView>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModelGuide:GuideMainViewModel}">
-                <viewGuide:GuideMainView></viewGuide:GuideMainView>
+            <DataTemplate DataType="{x:Type viewModelGuide:MainWindowViewModel}">
+                <viewGuide:MainWindowView></viewGuide:MainWindowView>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelGuide:GuideStatisticsViewModel}">
                 <viewGuide:GuideStatistics></viewGuide:GuideStatistics>
@@ -52,12 +52,32 @@
             <DataTemplate DataType="{x:Type viewModelGuide:StartTourViewModel}">
                 <viewGuide:StartTour></viewGuide:StartTour>
             </DataTemplate>
-        </Grid.Resources>
+            <DataTemplate DataType="{x:Type viewModelGuide:ConfirmByGuestViewModel}">
+                <viewGuide:ConfirmByGuest></viewGuide:ConfirmByGuest>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:CreateTourViewModel}">
+                <viewGuide:CreateTour></viewGuide:CreateTour>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TodaysToursViewModel}">
+                <viewGuide:TodaysTours></viewGuide:TodaysTours>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:FutureToursViewModel}">
+                <viewGuide:FutureToursView></viewGuide:FutureToursView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:CompletedToursViewModel}">
+                <viewGuide:CompletedToursView></viewGuide:CompletedToursView>
+            </DataTemplate>
 
-        <modalControl:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="35*"/>
+            <ColumnDefinition Width="51*"/>
+        </Grid.ColumnDefinitions>
+
+        <modalControl:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}" Grid.ColumnSpan="2">
             <ContentControl Content="{Binding CurrentModalViewModel}"/>
         </modalControl:Modal>
 
-        <ContentControl Content="{Binding CurrentViewModel}"/>
+        <ContentControl Content="{Binding CurrentViewModel}" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

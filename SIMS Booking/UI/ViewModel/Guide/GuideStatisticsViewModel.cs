@@ -80,7 +80,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             Visitor = confirmTourService.MostVisitedTour(tourService).Name;
         }
 
-        [RelayCommand]
+        [RelayCommand] // command za xaml
         private void MostVisitedTourForInputYear()
         {
             Visitor = _confirmTourService.MostVisitedTourByYear(_tourService, Year).Name;

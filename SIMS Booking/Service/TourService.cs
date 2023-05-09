@@ -32,7 +32,33 @@ namespace SIMS_Booking.Service
             return todaysTours;
         }
 
-        
+        public List<Tour> GetFutureTours()
+        {
+            List<Tour> FutureTours = new List<Tour>();
+            foreach (Tour tour in _crudService.GetAll())
+            {
+                if (DateTime.Today < tour.StartTour)
+                {
+                    FutureTours.Add(tour);
+                }
+            }
+            return FutureTours;
+        }
+
+        public List<Tour> GetCompletedTours()
+        {
+            List<Tour> FutureTours = new List<Tour>();
+            foreach (Tour tour in _crudService.GetAll())
+            {
+                if (DateTime.Today > tour.StartTour)
+                {
+                    FutureTours.Add(tour);
+                }
+            }
+            return FutureTours;
+        }
+
+
         public void LoadCheckpoints(TourPointService tp)
         {
             foreach (var tour in _crudService.GetAll())
@@ -43,6 +69,18 @@ namespace SIMS_Booking.Service
                 }
             }
         }
+
+        //public List<string> AllPictures(Tour tour)
+        //{
+        //    List<string> pictures = new List<string>();
+        //    foreach (var ture in _crudService.GetAll())
+        //    {
+        //        foreach(var tourID in tour.getID())
+        //        {
+        //            pictures.Add(ture.ImageURLs);
+        //        }
+        //    }
+        //}
 
         public void Subscribe(IObserver observer)
         {

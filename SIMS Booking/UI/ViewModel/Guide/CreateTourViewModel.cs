@@ -1,22 +1,24 @@
-﻿using SIMS_Booking.Model;
-using SIMS_Booking.Service;
-using SIMS_Booking.UI.Utility;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Controls;
-using System;
-using SIMS_Booking.Utility.Observer;
-using CommunityToolkit.Mvvm.Input;
-using System.Windows;
-using System.Windows.Input;
-using SIMS_Booking.Commands.NavigateCommands;
-using SIMS_Booking.Utility.Stores;
-using SIMS_Booking.Service.NavigationService;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
+using SIMS_Booking.Commands.NavigateCommands;
+using SIMS_Booking.Model;
+using SIMS_Booking.Service;
+using SIMS_Booking.Service.NavigationService;
+using SIMS_Booking.UI.Utility;
+using SIMS_Booking.UI.ViewModel.Guide;
+using SIMS_Booking.Utility.Stores;
 
 namespace SIMS_Booking.UI.ViewModel.Guide
 {
-    public partial class GuideMainViewModel : ViewModelBase, IObserver
+    public partial class CreateTourViewModel: ViewModelBase
     {
         #region props
         public ObservableCollection<Tour> TodaysTours { get; set; }
@@ -24,10 +26,8 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         public ObservableCollection<TourPoint> AllCheckpoints { get; set; }
         public ObservableCollection<String> Checkpoints { get; set; }
         public TourReview _tourReview { get; set; }
-
         private Tour _tour { get; set; }
         private TourReviewService _tourReviewService { get; set; }
-
         public List<string> Cities { get; set; }
 
         public Tour Tour { get; set; }
@@ -40,7 +40,8 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         private ConfirmTourService _confirmTourService;
         private ConfirmTour _confirmTour;
         private UserService _userService;
-        
+      
+
         private Tour selectedTour;
         public Tour SelectedTour
         {
@@ -117,7 +118,6 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             }
         }
 
-
         private string language;
 
         public string Languages
@@ -134,9 +134,9 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         }
 
 
-        private string maxGuest;
+        private int maxGuest;
 
-        public string MaxGuest
+        public int MaxGuest
         {
             get => maxGuest;
             set
@@ -149,9 +149,9 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             }
         }
 
-        private string time;
+        private int time;
 
-        public string Times
+        public int Times
         {
             get => time;
             set
@@ -284,13 +284,16 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         #endregion
 
         private readonly ModalNavigationStore _modalNavigationStore;
+        private CreateTourViewModel _viewModel;
+        private MainWindowViewModel _mainViewModel;
         public ICommand NavigateToStatistics { get; }
         public ICommand NavigateToTourReview { get; }
         public ICommand NavigateToStartingTour { get; }
-       
-        public GuideMainViewModel(TourService tourService, ConfirmTourService confirmTourService,
+        public ICommand BackCommand { get; }
+
+        public CreateTourViewModel(TourService tourService, ConfirmTourService confirmTourService,
             TourPointService tourPointService, TextBox textBox, UserService userService, TourReview tourReview,
-            Tour tour, TourReviewService tourReviewService, NavigationStore navigationStore,ModalNavigationStore modalNavigationStore)
+            Tour tour, TourReviewService tourReviewService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,MainWindowViewModel mainViewModel)
         {
             Tour = new Tour();
             Tour1 = new Tour();
@@ -299,12 +302,17 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             _tour = tour;
             _tourReviewService = tourReviewService;
             _tourService = tourService;
-            _tourService.Subscribe(this);
             _tourPointService = tourPointService;
-            _tourPointService.Subscribe(this);
             _userService = userService;
             _confirmTourService = confirmTourService;
-           
+            _mainViewModel = mainViewModel;
+            _modalNavigationStore = modalNavigationStore;
+
+
+
+
+            BackCommand = new NavigateCommand(CreateCloseModalNavigationService(modalNavigationStore));
+
 
             Cities = new List<string> { "Serbia,Novi Sad", "Serbia,Ruma", "Serbia,Belgrade", "Serbia, Nis", "England,London", "England,London EAST" };
 
@@ -313,31 +321,21 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             AllCheckpoints = new ObservableCollection<TourPoint>(_tourPointService.GetAll());
             Checkpoints = new ObservableCollection<string>();
 
-            NavigateToStatistics = new NavigateCommand(CreateStatisticsModalNavigationService(_modalNavigationStore)); // prozori koji se otvaraju iz glavnog
-            NavigateToTourReview = new NavigateCommand(CreateTourReviewModalService(_modalNavigationStore), this, (() => SelectedTour != null));
-            //NavigateToStartingTour = new NavigateCommand(CreateStartingTourModalService(navigationStore,modalNavigationStore), this,
-            //    () => SelectedTour != null);
+            NavigateToStartingTour = new NavigateCommand(CreateStartingTourModalService(navigationStore, modalNavigationStore), this,
+                () => SelectedTour != null);
         }
 
-        //private INavigationService CreateStartingTourModalService(NavigationStore navigationStore,ModalNavigationStore modalNavigationStore)
-        //{
-        //    return new NavigationService<StartTourViewModel>
-        //        (navigationStore, () => new StartTourViewModel(SelectedTour, _confirmTourService,this, navigationStore,modalNavigationStore));
-        //}
-
-        private INavigationService CreateTourReviewModalService(ModalNavigationStore modalNavigationStore)
+        private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
         {
-            return new ModalNavigationService<TourReviewViewModel>
-                (modalNavigationStore, () => new TourReviewViewModel(_tourReview,_tourReviewService,_tour,_confirmTourService, _tourReview));
+            return new CloseModalNavigationService(modalNavigationStore);
         }
-
-        private INavigationService CreateStatisticsModalNavigationService(ModalNavigationStore modalNavigationStore)
+        private INavigationService CreateStartingTourModalService(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
-            return new ModalNavigationService<GuideStatisticsViewModel>
-            (modalNavigationStore, () => new GuideStatisticsViewModel(_confirmTourService, _tourService, _textBox, _userService, _confirmTour));
+            return new NavigationService<StartTourViewModel>
+                (navigationStore, () => new StartTourViewModel(SelectedTour, _confirmTourService, this, navigationStore, modalNavigationStore));
         }
 
-
+ 
         private void UpdateTour(List<Tour> tours, List<Tour> todaysTours)
         {
             AllTours.Clear();
@@ -374,28 +372,11 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             }
         }
 
-        [RelayCommand]
-        private void Statistika()
-        {
-            if (SelectedTour != null)
-            {
-                string poruka = string.Format("Sa vaucerom: {0}\nBez vaucera: {1}\nIspod 18 godina: {2}\nIzmedju 18 i 50 godina: {2}\nIznad 50 godina: {3}", _confirmTourService.PercentageByVaucer(SelectedTour), _confirmTourService.PercentageWithoutVaucer(SelectedTour), _confirmTourService.NumberOfGuesteByAgesUnder18(_userService, SelectedTour), _confirmTourService.NumberOfGuestsByAgesBetween18and50(_userService, SelectedTour), _confirmTourService.NumberOfGuestByAgesUp50(_userService, SelectedTour));
-                MessageBox.Show(poruka, "Informacije o statistici");
-            }
-            else
-            {
-                NavigateToStatistics.Execute(null);
-            }
-        }
+       
+
+        
 
         [RelayCommand]
-        private void Otkazi_Turu()
-        {
-            if (SelectedTour != null && _confirmTourService.AddVaucer(SelectedTour, SelectedTour.TourTime, _confirmTour) == true)
-                _tourService.Delete(SelectedTour);
-        }
-
-        [RelayCommand] 
         private void AddTour()
         {
             int count = _tourService.CountCheckPoints(TourPointArray);
@@ -428,9 +409,10 @@ namespace SIMS_Booking.UI.ViewModel.Guide
                 Location location = new Location(v[0], v[1]);
 
                 DateTime time = new DateTime(StartTour.Year, StartTour.Month, StartTour.Day, TourTime.Hour, TourTime.Minute, TourTime.Second);
-                Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), time, int.Parse(Times), imageURLs, TourPointIds, TourPoints, TourTime);
+                Tour tour = new Tour(TourName, location, Descriptions, Languages, MaxGuest, time, Times, imageURLs, TourPointIds, TourPoints, TourTime);
                 _tourService.Save(tour);
             }
         }
+
     }
 }
