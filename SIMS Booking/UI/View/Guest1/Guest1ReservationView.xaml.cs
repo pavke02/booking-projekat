@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Service;
@@ -134,5 +136,17 @@ public partial class Guest1ReservationView : Window
         }
 
         return nextBlackoutDate.Start.AddDays(-1);
+    }
+
+    private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+    {
+        e.Handled = !IsTextAllowed(e.Text);
+    }
+
+    private static bool IsTextAllowed(string text)
+    {
+        // Allow only numeric input
+        Regex regex = new Regex("[^0-9]+");
+        return !regex.IsMatch(text);
     }
 }
