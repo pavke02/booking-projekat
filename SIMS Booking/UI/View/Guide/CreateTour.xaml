@@ -21,21 +21,29 @@
         <TextBlock Text="KREIRANJE TURE" HorizontalAlignment="Center" Margin="0,70" FontSize="40"/>
 
         <StackPanel Margin="0,150,0,0">
-            <TextBox  Text="{Binding TourName}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Height="30" Margin="10"  />
+            <Label Content="NAZIV TURE" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" FontSize="8"/>
+            <TextBox   x:Name="textBox1" LostFocus="TextBox_LostFocus" Text="{Binding TourName}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Height="30" Margin="0"  />
+            <Label Content="LOKACIJA" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" FontSize="8"/>
             <ComboBox  FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Height="30" Margin="10" ItemsSource="{Binding Cities}" SelectedItem="{Binding City}"/>
-            <TextBox  Text="{Binding Descriptions}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Height="30" Margin="10"/>
-            <TextBox   Text="{Binding Languages}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Height="30" Margin="10"/>
-            <TextBox   Text="{Binding MaxGuest}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Height="30" Margin="10"/>
-            <TextBox  Text="{Binding TourPointArray}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Height="30" Margin="10"/>
+            <Label Content="OPIS" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" FontSize="8"/>
+            <TextBox   x:Name="textBox2" LostFocus="TextBox_LostFocus" Text="{Binding Descriptions}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Height="30" Margin="0" />
+            <Label Content="JEZIK" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" FontSize="8"/>
+            <TextBox   x:Name="textBox3" LostFocus="TextBox_LostFocus" Text="{Binding Languages}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Height="30" Margin="0"/>
+            <Label Content="MAKSIMALAN BROJ GOSTIJU" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" FontSize="8"/>
+            <TextBox   x:Name="textBox4"  Text="{Binding MaxGuest}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Height="30" Margin="0"/>
+            <Label Content="KLJUCNE TACKE" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" FontSize="8"/>
+            <TextBox   Text="{Binding TourPointArray}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Width="320" Height="30" Margin="0"/>
            
-            <StackPanel Orientation="Horizontal" Margin="50,0,0,0">
-                <TextBox  Text="{Binding Times}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="LEFT" Width="100" Height="30" Margin="15,0,0,0" />
-                <DatePicker  Text="{Binding TourTime}" FontSize="15" Width="204" Height="30" Margin="15,0,0,0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="-4,16,0,0" Width="850">
+                <Label Content="SATNICA" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" FontSize="8"/>
+                <TextBox   x:Name="textBox5"  Text="{Binding Times}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="LEFT" Width="100" Height="30" Margin="28,0,0,0" />
+                <DatePicker  Text="{Binding StartTour}" FontSize="15" Width="204" Height="30" Margin="15,0,0,0" />
             </StackPanel>
             
             
-            <StackPanel Orientation="Horizontal" Margin="50,0,0,0">
-                <TextBox Text="{Binding ImageURLs}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="LEFT" Width="250" Height="30" Margin="15" />
+            <StackPanel Orientation="Horizontal" Margin="-4,0,0,0">
+                <Label Content="URL SLIKE" VerticalAlignment="Center" HorizontalAlignment="Center" Height="20" FontSize="8"/>
+                <TextBox x:Name="textBox6" LostFocus="TextBox_LostFocus"  Text="{Binding ImageURLs}" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="LEFT" Width="250" Height="30" Margin="24,15" />
                 <Button Width="60" Height="60" BorderThickness="0" Background="Blue" Foreground="White" Content="+" FontSize="50" FontFamily="." Command="{Binding AddImageCommand}" >
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}" >

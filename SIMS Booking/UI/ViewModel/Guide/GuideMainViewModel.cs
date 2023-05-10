@@ -409,7 +409,6 @@ namespace SIMS_Booking.UI.ViewModel.Guide
                 foreach (string value in values)
                     imageURLs.Add(value);
 
-
                 List<int> TourPointIds = new List<int>();
                 List<TourPoint> TourPoints = new List<TourPoint>();
 

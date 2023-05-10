@@ -19,18 +19,18 @@
         <TextBlock Text="PRIJAVLJENI STE KAO &#x0a;            VODIC" FontSize="40" Margin="0,60,0,500" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Text="MENU" FontSize="30" Margin="40,5,0,0" HorizontalAlignment="Left" VerticalAlignment="top" />
 
-        <StackPanel Orientation="Horizontal"  Width="430" Margin="0,200,0,0">
-            <StackPanel Width="200">
-                <Button Content="Dugme 1" Width="150" Height="100" Margin="15" Command="{Binding NavigateCreateTour}" />
-                <Button Content="Dugme 2" Width="150" Height="100" Margin="15"  />
-                <Button Content="Dugme 3" Width="150" Height="100" Margin="15"/>
-                <Button Content="Dugme 4" Width="150" Height="100" Margin="15"/>
+        <StackPanel Orientation="Horizontal"  Width="430" Margin="15,200,0,0">
+            <StackPanel Width="200" >
+                <Button Content="Napravi Turu" Width="150" Height="100" Margin="15" Command="{Binding NavigateCreateTour}" FontSize="20" />
+                <Button Content="Statistika" Width="150" Height="100" Margin="15" FontSize="20" />
+                <Button Content="Zahtevi" Width="150" Height="100" Margin="15" FontSize="20" />
+                <Button Content="Profil" Width="150" Height="100" Margin="15" FontSize="20" />
             </StackPanel>
             <StackPanel Width="200">
-                <Button Content="Buduce ture" Width="150" Height="100" Margin="15" Command ="{Binding NavigateFutureTours }" />
-                <Button Content="Danasnje ture" Width="150" Height="100" Margin="15" Command="{Binding NavigateTodaysTours}" />
-                <Button Content="Zavrsene ture" Width="150" Height="100" Margin="15" Command="{Binding NavigateCompletedTours}" />
-                <Button Content="Dugme 8" Width="150" Height="100" Margin="15"/>
+                <Button Content="Buduce ture" Width="150" Height="100" Margin="15" Command ="{Binding NavigateFutureTours }" FontSize="20"/>
+                <Button Content="Danasnje ture" Width="150" Height="100" Margin="15" Command="{Binding NavigateTodaysTours}" FontSize="20"/>
+                <Button Content="Zavrsene ture" Width="150" Height="100" Margin="15" Command="{Binding NavigateCompletedTours}" FontSize="20" />
+                <Button Content="Otkaz" Width="150" Height="100" Margin="15" FontSize="20" />
             </StackPanel>
         </StackPanel>
 
