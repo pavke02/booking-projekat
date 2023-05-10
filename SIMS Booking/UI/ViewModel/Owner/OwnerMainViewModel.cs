@@ -53,7 +53,6 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public List<string> Countries { get; set; }
         public List<string> AccommodationNames { get; set; }
         public List<int> Years { get; set; }
-        public ObservableCollection<string> Cities { get; set; }
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
