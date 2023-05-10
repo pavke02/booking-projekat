@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Utility.Observer;
+using System.Globalization;
 
 namespace SIMS_Booking.Service
 {
@@ -117,13 +118,29 @@ namespace SIMS_Booking.Service
             return GetAll().Where(e => e.Reservation.Accommodation.getID() == id).ToList();
         }
 
-        public Dictionary<string, int> getPostponemetsByYear(int id)
+        public Dictionary<string, int> GetPostponemetsByYear(int id)
         {
             Dictionary<string, int> postponements = new Dictionary<string, int>();
 
             foreach (Postponement postponement in GetByAccommodation(id))
             {
                 string key = postponement.Reservation.StartDate.Year.ToString();
+                if (postponements.ContainsKey(key))
+                    postponements[key] += 1;
+                else
+                    postponements[key] = 1;
+            }
+
+            return postponements;
+        }
+
+        public Dictionary<int, int> GetPostponemetsByMonth(int id, int year)
+        {
+            Dictionary<int, int> postponements = new Dictionary<int, int>();
+
+            foreach (Postponement postponement in GetByAccommodation(id).Where(e => e.Reservation.StartDate.Year == year))
+            {
+                int key = postponement.Reservation.StartDate.Month;
                 if (postponements.ContainsKey(key))
                     postponements[key] += 1;
                 else
