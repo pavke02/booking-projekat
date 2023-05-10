@@ -79,7 +79,7 @@
                                  Name="urlTb"></TextBox>
                         <Button Background="Transparent" BorderBrush="Transparent" Margin="10, 0, 20, 0"
                                 Name="addURLButton" Visibility="Hidden" Click="AddImage">
-                            <Image Source="../Resources/Images/add.png" Height="40" Width="40"/>
+                            <Image Source="../../../Resources/Images/add.png" Height="40" Width="40"/>
                         </Button>
                     </StackPanel>
                 </StackPanel>
@@ -94,7 +94,7 @@
                     </TextBox>
                     <Button Background="Transparent" BorderBrush="Transparent" Margin="0, 20, 0, 0"
                             Name="clerURLs" Height="55" Width="55" Click="ClearURLs">
-                        <Image Source="../Resources/Images/remove.png" Height="45" Width="45"/>
+                        <Image Source="../../../Resources/Images/remove.png" Height="45" Width="45"/>
                     </Button>
                 </StackPanel>
 

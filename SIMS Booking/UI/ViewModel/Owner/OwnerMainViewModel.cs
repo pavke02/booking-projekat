@@ -133,6 +133,20 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             }
         }
 
+        private ObservableCollection<string> _cities;
+        public ObservableCollection<string> Cities
+        {
+            get => _cities;
+            set
+            {
+                if (value != null)
+                {
+                    _cities = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private RenovationAppointment _selectedRenovation;
         public RenovationAppointment SelectedRenovation
         {
