@@ -149,9 +149,9 @@ namespace SIMS_Booking.UI.View
             foreach (string value in values)
                 imageURLs.Add(value);
             if(RenovationCheckBox.IsChecked == false)
-                _ownerReviewService.SubmitReview(Tidiness, OwnerFairness, Comment, _reservation, imageURLs, true, 0, "");
+                _ownerReviewService.SubmitReview(Tidiness, OwnerFairness, Comment, _reservation, imageURLs, false, 0, "");
             else
-                _ownerReviewService.SubmitReview(Tidiness, OwnerFairness, Comment, _reservation, imageURLs, false, RenovationLevel, RenovationComment);
+                _ownerReviewService.SubmitReview(Tidiness, OwnerFairness, Comment, _reservation, imageURLs, true, RenovationLevel, RenovationComment);
 
             _reservationService.Update(_reservation);
             Close();
