@@ -1,30 +1,28 @@
-﻿using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Repository;
-using SIMS_Booking.Repository.RelationsRepository;
+﻿using SIMS_Booking.Repository.RelationsRepository;
 using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Serializer;
-using System;
 using System.Collections.Generic;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service.RelationsService
 {
     internal class RelationsCrudService<T> where T: ISerializable,IDable, new()
     {
-        private readonly RelationsCsvCrudRepository<T> _relationsCsvCrudRepository;
+        private readonly ICRUDRepository<T> _repository;
 
-        public RelationsCrudService(string filePath)
+        public RelationsCrudService(ICRUDRepository<T> repository)
         {
-            _relationsCsvCrudRepository = new RelationsCsvCrudRepository<T>(filePath);
+            _repository = repository;
         }
 
         public void Save(T entity)
         {
-            _relationsCsvCrudRepository.Save(entity);
+            _repository.Save(entity);
         }
 
         public List<T> GetAll()
         {
-            return _relationsCsvCrudRepository.GetAll();
+            return _repository.GetAll();
         }
 
 

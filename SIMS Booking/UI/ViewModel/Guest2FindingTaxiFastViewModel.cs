@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
+using SIMS_Booking.Repository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
 
@@ -19,10 +20,7 @@ namespace SIMS_Booking.UI.ViewModel
             loggedUser = _loggedUser;
 
             vehicleReservationService = new VehicleReservationService();
-            driverLocationService = new DriverLocationService();
-
-
-
+            driverLocationService = new DriverLocationService(new CsvCrudRepository<DriverLocations>());
         }
 
         public bool Button_Click(string city, string startingAddress, string finalAddress, string timeOfDeparture)

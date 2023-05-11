@@ -2,53 +2,54 @@
 using SIMS_Booking.Utility.Observer;
 using System.Collections.Generic;
 using System.Linq;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service
 {
     public class RenovationAppointmentService
     {
-        private readonly CrudService<RenovationAppointment> _crudService;
+        private readonly ICRUDRepository<RenovationAppointment> _repository;
 
-        public RenovationAppointmentService()
+        public RenovationAppointmentService(ICRUDRepository<RenovationAppointment> repository)
         {
-            _crudService = new CrudService<RenovationAppointment>("../../../Resources/Data/renovationAppointment.csv");
+            _repository = repository;
         }
 
         #region Crud
         public void Save(RenovationAppointment renovationAppointment)
         {
-            _crudService.Save(renovationAppointment);
+            _repository.Save(renovationAppointment);
         }
 
         public List<RenovationAppointment> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
         public void Update(RenovationAppointment renovationAppointment)
         {
-            _crudService.Update(renovationAppointment);
+            _repository.Update(renovationAppointment);
         }
 
         public void Subscribe(IObserver observer)
         {
-            _crudService.Subscribe(observer);
+            _repository.Subscribe(observer);
         }
 
         public void Delete(RenovationAppointment renovationAppointment)
         {
-            _crudService.Delete(renovationAppointment);
+            _repository.Delete(renovationAppointment);
         }
 
         public RenovationAppointment GetById(int id)
         {
-            return _crudService.GetById(id);
+            return _repository.GetById(id);
         }
         #endregion
 
         public void LoadAccommodationInRenovationAppointment(AccommodationService accommodationService)
         {
-            foreach (RenovationAppointment renovationAppointment in _crudService.GetAll())
+            foreach (RenovationAppointment renovationAppointment in _repository.GetAll())
             {
                 renovationAppointment.Accommodation =
                     accommodationService.GetById(renovationAppointment.AccommodationId);

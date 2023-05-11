@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
+using SIMS_Booking.Repository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.Utility.Observer;
@@ -42,7 +43,7 @@ namespace SIMS_Booking.UI.View
             InitializeComponent();
 
           //  _reservedToursCsvCrudRepository = new ReservedToursCsvCrudRepository();
-            _reservedTourService = new ReservedTourService();
+            _reservedTourService = new ReservedTourService(new CsvCrudRepository<TourReservation>());
             _voucherService = new VoucherService();
             DataContext = this;   
 

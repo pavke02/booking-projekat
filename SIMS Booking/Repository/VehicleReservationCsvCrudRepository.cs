@@ -7,7 +7,7 @@ namespace SIMS_Booking.Repository
     public class VehicleReservationCsvCrudRepository : CsvCrudRepository<ReservationOfVehicle>
     {
 
-        public VehicleReservationCsvCrudRepository() : base("../../../Resources/Data/vehiclereservation.csv") { }
+        public VehicleReservationCsvCrudRepository() : base() { }
 
     }
 }

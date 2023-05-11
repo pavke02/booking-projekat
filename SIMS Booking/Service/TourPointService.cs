@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SIMS_Booking.Model;
+using SIMS_Booking.Repository;
 using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.Service
@@ -10,7 +11,7 @@ namespace SIMS_Booking.Service
 
         public TourPointService()
         {
-            _crudService = new CrudService<TourPoint>("../../../Resources/Data/checkpoints.csv");
+            _crudService = new CrudService<TourPoint>(new CsvCrudRepository<TourPoint>());
         }
 
         public void Subscribe(IObserver observer)

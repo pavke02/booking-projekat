@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service
 {
@@ -16,7 +17,7 @@ namespace SIMS_Booking.Service
 
         public VehicleReservationService()
         {
-            _crudService = new CrudService<ReservationOfVehicle>("../../../Resources/Data/vehiclereservation.csv");
+            _crudService = new CrudService<ReservationOfVehicle>(new CsvCrudRepository<ReservationOfVehicle>());
         }
 
 

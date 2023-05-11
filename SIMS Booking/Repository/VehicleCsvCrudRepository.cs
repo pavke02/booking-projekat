@@ -5,7 +5,7 @@ namespace SIMS_Booking.Repository
 {
     public class VehicleCsvCrudRepository : CsvCrudRepository<Vehicle>, ISubject
     {        
-        public VehicleCsvCrudRepository() : base("../../../Resources/Data/vehicles.csv") { } 
+        public VehicleCsvCrudRepository() : base() { } 
 
 
         public Vehicle GetVehicleByUserID(int id)

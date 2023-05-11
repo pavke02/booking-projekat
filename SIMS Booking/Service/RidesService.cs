@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service
 {
@@ -13,7 +14,7 @@ namespace SIMS_Booking.Service
 
         public RidesService()
         {
-            _crudService = new CrudService<Rides>("../../../Resources/Data/rides.csv");
+            _crudService = new CrudService<Rides>(new CsvCrudRepository<Rides>());
         }
 
         #region Crud 

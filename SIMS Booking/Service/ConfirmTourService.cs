@@ -14,7 +14,7 @@ namespace SIMS_Booking.Service
 
         public ConfirmTourService()
         {
-            _crudService = new CrudService<ConfirmTour>("../../../Resources/Data/confirmTours.csv");
+            _crudService = new CrudService<ConfirmTour>(new CsvCrudRepository<ConfirmTour>());
         }
 
         public void Subscribe(IObserver observer)

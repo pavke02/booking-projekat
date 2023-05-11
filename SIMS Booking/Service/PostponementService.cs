@@ -5,38 +5,38 @@ using System.Linq;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Utility.Observer;
 using System.Globalization;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service
 {
     public class PostponementService
     {
-        private readonly CrudService<Postponement> _crudService;
+        private readonly ICRUDRepository<Postponement> _repository;
 
-        public PostponementService()
+        public PostponementService(ICRUDRepository<Postponement> repository)
         {
-            _crudService = new CrudService<Postponement>("../../../Resources/Data/postponements.csv");
+            _repository = repository;
         }
 
         #region Crud
-
         public void Save(Postponement postponement)
         {
-            _crudService.Save(postponement);
+            _repository.Save(postponement);
         }
 
         public List<Postponement> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
         public Postponement GetById(int id)
         {
-            return _crudService.GetById(id);
+            return _repository.GetById(id);
         }
 
         public void Subscribe(IObserver observer)
         {
-            _crudService.Subscribe(observer);
+            _repository.Subscribe(observer);
         }
 
         #endregion
@@ -51,7 +51,7 @@ namespace SIMS_Booking.Service
             Postponement postponement = GetById(id);
             postponement.Status = status;
             postponement.Comment = comment;
-            _crudService.Update(postponement);
+            _repository.Update(postponement);
         }
 
         public void LoadReservationInPostponement(ReservationService reservationService)
@@ -81,7 +81,7 @@ namespace SIMS_Booking.Service
             {
                 if (postponement.ReservationId == reservationId)
                 {
-                    _crudService.Delete(postponement);
+                    _repository.Delete(postponement);
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace SIMS_Booking.Service
                 if (postponement.Status != Enums.PostponementStatus.Pending)
                 {
                     postponement.IsNotified = true;
-                    _crudService.Update(postponement);
+                    _repository.Update(postponement);
                 }
             }
         }

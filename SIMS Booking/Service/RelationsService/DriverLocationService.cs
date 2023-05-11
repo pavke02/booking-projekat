@@ -1,20 +1,21 @@
 ﻿using SIMS_Booking.Model.Relations;
 using System.Linq;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service.RelationsService
 {
     public class DriverLocationService
     {
-        private readonly RelationsCrudService<DriverLocations> _crudService;
+        private readonly ICRUDRepository<DriverLocations> _repository;
 
-        public DriverLocationService()
+        public DriverLocationService(ICRUDRepository<DriverLocations> repository)
         {
-            _crudService = new RelationsCrudService<DriverLocations>("../../../Resources/Data/driverlocations.csv");
+            _repository = repository;
         }
 
         public DriverLocations GetDriverLocationsByLocation(string city)
         {
-            return _crudService.GetAll().FirstOrDefault(d => d.Location.City.ToLower().Contains(city.ToLower()));
+            return _repository.GetAll().FirstOrDefault(d => d.Location.City.ToLower().Contains(city.ToLower()));
         }
 
 
