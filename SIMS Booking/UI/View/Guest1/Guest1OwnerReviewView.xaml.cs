@@ -132,7 +132,6 @@ namespace SIMS_Booking.UI.View
             renovationTb.Text = "";
             RenovationCheckBox.IsChecked = true;
             RenovationCheckBox.IsChecked = false;
-
         }
 
         private void TextBoxCheck(object sender, System.Windows.Controls.TextChangedEventArgs e)

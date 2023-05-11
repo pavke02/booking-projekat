@@ -16,7 +16,6 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private Reservation _reservation;
 
         public ICommand SubmitReviewCommand { get; }
-        //ToDo: implementirati NavigateBackCommand
         public ICommand NavigateBackCommand { get; }
 
         #region Property

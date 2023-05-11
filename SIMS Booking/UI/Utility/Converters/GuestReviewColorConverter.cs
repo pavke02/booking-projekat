@@ -9,7 +9,6 @@ namespace SIMS_Booking.UI.Utility.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            //ToDo: Srediti da radi za promenu dana// Po mogucnosti staviti u poseban namespace
             return DateTime.Now >= (DateTime)value && (DateTime.Now - (DateTime)value).TotalDays <= 5;
         }
 
