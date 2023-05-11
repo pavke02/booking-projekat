@@ -524,12 +524,11 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 Cities = _cityCountryCsvRepository.LoadCitiesForCountry(Country);            
         }
 
-        //ToDo: Ne racunati neocenjene smestaje
         private void CalculateRating(int id)
         {
             double rating = _ownerReviewService.CalculateRating(id);
             OwnerRating = Math.Round(rating, 2).ToString();
-            if (rating > 5.5 && PastReservations.Count() > 3)
+            if (rating > 9.5 && PastReservations.Count() > 50)
             {
                 RegularSelected = false;
                 SuperSelected = true;
@@ -583,7 +582,6 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 GenerateStats(reservationCount.ToDictionary(kvp => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(kvp.Key), kvp => kvp.Value),
                     postponementCount.ToDictionary(kvp => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(kvp.Key), kvp => kvp.Value),
                     renovationsCount.ToDictionary(kvp => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(kvp.Key), kvp => kvp.Value));
-
                 XLabelName = "Months";
             }
         }
@@ -601,14 +599,11 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 renovationsChartValues.Add(renovationsCount.ContainsKey(label) ? renovationsCount[label] : 0);
             }
 
-            Statistics = new SeriesCollection
+            Statistics = new SeriesCollection { new ColumnSeries
             {
-                new ColumnSeries
-                {
-                    Title = "Reservations",
-                    Values = reservationsChartValues
-                }
-            };
+                Title = "Reservations",
+                Values = reservationsChartValues
+            }};
 
             Statistics.Add(new ColumnSeries
             {
