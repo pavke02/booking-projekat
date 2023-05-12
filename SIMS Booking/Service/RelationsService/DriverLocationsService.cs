@@ -42,6 +42,10 @@ namespace SIMS_Booking.Service.RelationsService
             return _crudService.GetAll();
         }
 
+        public DriverLocations GetDriverLocationsByLocation(string city)
+        {
+            return _crudService.GetAll().FirstOrDefault(d => d.Location.City.ToLower().Contains(city.ToLower()));
+        }
 
 
     }

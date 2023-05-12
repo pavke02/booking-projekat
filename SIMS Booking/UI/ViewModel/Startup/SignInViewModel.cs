@@ -41,7 +41,6 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly UsersAccommodationService _userAccommodationService;
         private readonly TourPointService _tourPointService;
         private readonly ConfirmTourService _confirmTourService;
-        private readonly DriverLocationService _driverLocationService;
         private readonly VehicleReservationService _vehicleReservationService;
         private readonly VoucherService _voucherService;
         private readonly RenovationAppointmentService _renovationAppointmentService;
