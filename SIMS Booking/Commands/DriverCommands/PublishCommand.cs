@@ -1,0 +1,112 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SIMS_Booking.Enums;
+using SIMS_Booking.Model.Relations;
+using SIMS_Booking.Model;
+using SIMS_Booking.Service;
+using SIMS_Booking.Service.RelationsService;
+using System.Windows;
+using System.ComponentModel;
+using SIMS_Booking.UI.ViewModel.Driver;
+using System.Windows.Threading;
+
+namespace SIMS_Booking.Commands.DriverCommands
+{
+    class PublishCommand : CommandBase
+    {
+        private readonly DriverAddVehicleViewModel _viewModel;
+        private readonly VehicleService _vehicleService;
+        private readonly DriverLanguagesService _driverLanguagesService;
+        private readonly DriverLocationsService _driverLocationsService;
+        private readonly User user;
+
+
+        public PublishCommand(DriverAddVehicleViewModel viewModel, VehicleService vehicleService, DriverLanguagesService driverLanguagesService, DriverLocationsService driverLocationsService, User user)
+        {
+            _viewModel = viewModel;
+            _vehicleService = vehicleService;
+            _driverLanguagesService = driverLanguagesService;
+            _driverLocationsService = driverLocationsService;
+            this.user = user;
+        }
+
+        public override void Execute(object? parameter)
+        {
+            List<Language> languages = new List<Language>();
+            ReadLanguages(languages);
+            List<Location> locations = new List<Location>();
+            ReadLocations(locations);
+            List<string> imageurls = new List<string>();
+            ReadImageURLs(imageurls);
+            int maximumGuests = int.Parse(_viewModel.MaxGuests);
+
+            Vehicle vehicle = new Vehicle(locations, maximumGuests, languages, imageurls, user);
+            _vehicleService.Save(vehicle);
+
+            foreach (Language language in languages)
+            {
+                DriverLanguages driverLanguages = new DriverLanguages(vehicle.getID(), language);
+                _driverLanguagesService.Save(driverLanguages);
+            }
+
+            foreach (Location location in locations)
+            {
+                DriverLocations driverLocations = new DriverLocations(vehicle.getID(), location);
+                _driverLocationsService.Save(driverLocations);
+            }
+
+            MessageBox.Show("Vehicle published successfully!");
+
+
+
+            _driverLocationsService.AddDriverLocationsToVehicles(_vehicleService);
+            _driverLanguagesService.AddDriverLanguagesToVehicles(_vehicleService);
+        }
+
+
+
+        public void ReadLanguages(List<Language> languages)
+        {
+            string languagesText = _viewModel.Languages;
+            string[] languageStrings = languagesText.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string languageString in languageStrings)
+            {
+                if (Enum.TryParse(languageString, out Language language))
+                {
+                    languages.Add(language);
+                }
+            }
+        }
+
+        public void ReadLocations(List<Location> locations)
+        {
+            string locationsText = _viewModel.Locations;
+            string[] locationStrings = locationsText.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string locationString in locationStrings)
+            {
+                string[] countryAndCity = locationString.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (countryAndCity.Length == 2)
+                {
+                    string country = countryAndCity[0].Trim();
+                    string city = countryAndCity[1].Trim();
+                    Location location = new Location { Country = country, City = city };
+                    locations.Add(location);
+                }
+            }
+        }
+
+        public void ReadImageURLs(List<string> imageurls)
+        {
+            string imagesText = _viewModel.Images;
+            string[] imageStrings = imagesText.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string imageString in imageStrings)
+            {
+                imageurls.Add(imageString);
+            }
+        }
+    }
+}

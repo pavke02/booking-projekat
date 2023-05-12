@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
-        Height="450" Width="800">
-    <Grid>
+        Height="460" Width="720">
+    <Grid Margin="0,0,0,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="350" ></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -28,16 +28,18 @@
             </DataGrid>
             <Button x:Name="CloseButton" Content="x" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Black" Width="20" Height="20" Foreground="White" Command="{Binding NavigateBackCommand}"/>
         </Grid>
-        <Grid Grid.Row="1">
-            <Grid>
-                <Button x:Name="arrivedButton" Content="Arrived" HorizontalAlignment="Left" Margin="20,25,0,0" VerticalAlignment="Top" Width="80" Height="40"/>
-                <Button x:Name="lateButton" Content="Late" HorizontalAlignment="Left" Margin="120,25,0,0" VerticalAlignment="Top" Width="80" Height="40"/>
-                <Label x:Name="RemainingTimeLabel" Content="" HorizontalAlignment="Left" Margin="239,32,0,0" VerticalAlignment="Top" Width="60" Height="30"/>
-                <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="695,25,0,0" VerticalAlignment="Top" Width="80" Height="40"/>
-                <Button x:Name="startButton" Content="Start" HorizontalAlignment="Left" Margin="595,25,0,0" VerticalAlignment="Top" Width="80" Height="40"/>
-                <Label x:Name="StartingPriceLabel" Content="" HorizontalAlignment="Left" Margin="518,32,0,0" VerticalAlignment="Top" Width="60" Height="30"/>
-                <Label x:Name="StopwatchLabel" Content="" HorizontalAlignment="Left" Margin="440,32,0,0" VerticalAlignment="Top" Width="60" Height="30" RenderTransformOrigin="1.401,0.599"/>
-                <Button x:Name="stopButton" Visibility="Hidden" Content="Stop" HorizontalAlignment="Left" Margin="333,25,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.223,-1.029" Width="80" Height="40"/>
+        <Grid Grid.Row="1" Margin="0,0,0,0">
+            <Grid Margin="0,0,0,0">
+                <Button x:Name="arrivedButton" Content="Arrived" HorizontalAlignment="Left" Margin="20,25,0,0" VerticalAlignment="Top" Width="80" Height="40" Command="{Binding ArrivedOnLocationCommand}"/>
+                <Button x:Name="lateButton" Content="Late" HorizontalAlignment="Left" Margin="120,58,0,0" VerticalAlignment="Top" Width="80" Height="40" Command="{Binding ArrivedOnLocationLateCommand}"/>
+                <Label x:Name="TimeLeft" Content="Time left:" HorizontalAlignment="Left" Margin="239,32,0,0" VerticalAlignment="Top" Width="60" Height="30"/>
+                <Label x:Name="RemainingTimeLabel" Content="{Binding RemainingTime}" HorizontalAlignment="Left" Margin="310,32,0,0" VerticalAlignment="Top" Width="60" Height="30"/>
+                <Button x:Name="startButton" Content="Start" HorizontalAlignment="Left" Margin="628,25,0,0" VerticalAlignment="Top" Width="70" Height="40" Command="{Binding StartRideCommand}"/>
+                <Label x:Name="StartingPriceLabel" Content="{Binding Price}" HorizontalAlignment="Left" Margin="541,32,0,0" VerticalAlignment="Top" Width="32" Height="30"/>
+                <Label x:Name="StopwatchLabel" Content="{Binding Taximeter}" HorizontalAlignment="Left" Margin="466,32,0,0" VerticalAlignment="Top" Width="57" Height="30" RenderTransformOrigin="1.401,0.599"/>
+                <Button x:Name="stopButton" Content="Stop" HorizontalAlignment="Left" Margin="384,25,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.223,-1.029" Width="67" Height="40" Command="{Binding StopRideCommand}"/>
+                <Label Content="{Binding RSDString}" HorizontalAlignment="Left" Margin="578,32,0,0" VerticalAlignment="Top" Width="32" Height="30" HorizontalContentAlignment="Left" VerticalContentAlignment="Top"/>
+                <TextBox x:Name="lateInMinutesTb" Text="{Binding LateInMinutes}" HorizontalAlignment="Left" Margin="120,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80" Height="30" Background="White"/>
 
             </Grid>
         </Grid>

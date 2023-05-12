@@ -37,6 +37,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         public ICommand NavigateToGalleryViewCommand { get; }
         public ICommand NavigateToStatsViewCommand { get; }
         public ICommand NavigateToRidesCommand { get; }
+        public ICommand NavigateToAddVehicleCommand { get; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -144,6 +145,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             NavigateToGalleryViewCommand = new NavigateCommand(CreateGalleryViewNavigationService(modalNavigationStore));
             NavigateToStatsViewCommand = new NavigateCommand(CreateStatsViewNavigationService(modalNavigationStore));
             NavigateToRidesCommand = new NavigateCommand(CreateRidesNavigationService(modalNavigationStore));
+            NavigateToAddVehicleCommand = new NavigateCommand(CreateAddVehicleNavigationService(modalNavigationStore));
         }
 
         public string LocationsToString(List<Location> locations)
@@ -245,6 +247,12 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         {
             return new ModalNavigationService<DriverRidesViewModel>
                 (modalNavigationStore, () => new DriverRidesViewModel(User,_ridesService, _finishedRidesService, _vehicleService, modalNavigationStore));
+        }
+
+        private INavigationService CreateAddVehicleNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<DriverAddVehicleViewModel>
+                (modalNavigationStore, () => new DriverAddVehicleViewModel(_vehicleService, _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository, User, modalNavigationStore));
         }
 
     }

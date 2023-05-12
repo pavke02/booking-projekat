@@ -40,7 +40,26 @@ namespace SIMS_Booking.Service
 
         #endregion
 
-
+        public List<Rides> GetActiveRides(User user, Vehicle vehicle)
+        {
+            List<Rides> ActiveRides = new List<Rides>();
+            foreach (Rides ride in _crudService.GetAll())
+            {
+                bool onLocation = false;
+                foreach (Location location in vehicle.Locations)
+                {
+                    if (location.City == ride.Location.City && location.Country == ride.Location.Country)
+                    {
+                        onLocation = true;
+                    }
+                }
+                if ((ride.DriverID == user.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now) || (ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now && ride.Fast == true && onLocation == true))
+                {
+                    ActiveRides.Add(ride);
+                }
+            }
+            return ActiveRides;
+        }
 
 
 

@@ -16,18 +16,17 @@ using SIMS_Booking.Utility.Stores;
 using System.Windows.Input;
 using SIMS_Booking.Commands.NavigateCommands;
 using SIMS_Booking.Service.NavigationService;
+using SIMS_Booking.Commands.DriverCommands;
 
 namespace SIMS_Booking.UI.ViewModel.Driver
 {
     public class DriverRidesViewModel : ViewModelBase
     {
-        private DispatcherTimer timer;
-        private DispatcherTimer timer2;
+        public DispatcherTimer timer;
+        public DispatcherTimer timer2;
 
         private int startingPrice = 190;
         private int timerTickCounter = 0;
-
-        public Rides selectedRide;
 
         private RidesService _ridesService;
         private FinishedRidesService _finishedRidesService;
@@ -35,16 +34,101 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         public User User { get; set; }
 
         public static ObservableCollection<Rides> Rides { get; set; }
-
-        public List<Rides> ActiveRides { get; set; }
+        public static ObservableCollection<Rides> ActiveRides { get; set; }
+        //public List<Rides> ActiveRides { get; set; }
 
         public ICommand NavigateBackCommand { get; }
+        public ICommand NavigateToDriverLateCommand { get; }
+        public ICommand ArrivedOnLocationCommand { get; }
+        public ICommand StartRideCommand { get; }
+        public ICommand StopRideCommand { get; }
+        public ICommand ArrivedOnLocationLateCommand { get; }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //public ObservableCollection<Rides> ActiveRides { get; set; }
+
+        private Rides _selectedRide;
+        public Rides SelectedRide
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get => _selectedRide;
+            set
+            {
+                if (value != _selectedRide)
+                {
+                    _selectedRide = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _remainingTime;
+        public string RemainingTime
+        {
+            get => _remainingTime;
+            set
+            {
+                if (value != _remainingTime)
+                {
+                    _remainingTime = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _price;
+        public string Price
+        {
+            get => _price;
+            set
+            {
+                if (value != _price)
+                {
+                    _price = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _rSDString;
+        public string RSDString
+        {
+            get => _rSDString;
+            set
+            {
+                if (value != _rSDString)
+                {
+                    _rSDString = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _taximeter;
+        public string Taximeter
+        {
+            get => _taximeter;
+            set
+            {
+                if (value != _taximeter)
+                {
+                    _taximeter = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _lateInMinutes;
+        public string LateInMinutes
+        {
+            get => _lateInMinutes;
+            set
+            {
+                if (value != _lateInMinutes)
+                {
+                    _lateInMinutes = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public DriverRidesViewModel(User user, RidesService ridesService, FinishedRidesService finishedRidesService, VehicleService vehicleService, ModalNavigationStore modalNavigationStore)
@@ -59,24 +143,30 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             Vehicle vehicle = _vehicleService.GetVehicleByUserID(user.getID());
 
             Rides = new ObservableCollection<Rides>(_ridesService.GetAll());
-            ActiveRides = new List<Rides>();
+            ActiveRides = new ObservableCollection<Rides>(_ridesService.GetActiveRides(User, vehicle));
+            //ActiveRides = new List<Rides>();
 
-            foreach (Rides ride in Rides)
-            {
-                bool onLocation = false;
-                foreach (Location location in vehicle.Locations)
-                {
-                    if (location.City == ride.Location.City && location.Country == ride.Location.Country)
-                    {
-                        onLocation = true;
-                    }
-                }
-                if ((ride.DriverID == User.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now) || (ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now && ride.Fast == true && onLocation == true))
-                {
-                    ActiveRides.Add(ride);
-                }
-            }
+            //foreach (Rides ride in Rides)
+            //{
+            //    bool onLocation = false;
+            //    foreach (Location location in vehicle.Locations)
+            //    {
+            //        if (location.City == ride.Location.City && location.Country == ride.Location.Country)
+            //        {
+            //            onLocation = true;
+            //        }
+            //    }
+            //    if ((ride.DriverID == User.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now) || (ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now && ride.Fast == true && onLocation == true))
+            //    {
+            //        ActiveRides.Add(ride);
+            //    }
+            //}
             NavigateBackCommand = new NavigateBackCommand(CreateCloseRidesNavigationService(modalNavigationStore));
+
+            ArrivedOnLocationCommand = new ArrivedCommand(this);
+            StartRideCommand = new StartCommand(this);
+            StopRideCommand = new StopCommand(this, _finishedRidesService, _ridesService);
+            ArrivedOnLocationLateCommand = new LateArrivedCommand(this);
         }
 
         //private int remainingTime;
@@ -220,6 +310,5 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         {
             return new CloseModalNavigationService(modalNavigationStore);
         }
-
     }
 }
