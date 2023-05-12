@@ -24,20 +24,24 @@ namespace SIMS_Booking.UI.View
         public DriverLocations driverLocations { get; set; }
         public TourReservation SelectedTourReservation { get; set; }
 
+        public ReservationOfVehicle SelectedVehicleReservation { get; set; }
+        
+
         public ObservableCollection<TourReservation> TourReservation { get; set; }
+        public ObservableCollection<ReservationOfVehicle> ReservationOfVehicle { get; set; }
+
 
         private readonly TourService _tourService;
         private readonly VehicleService _vehicleService;
         private readonly ReservedTourService _reservedTourService;
         private readonly GuideReviewService _guideReviewService;
         private readonly VoucherService _voucherService;
-        private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
-        private readonly VehicleReservationCsvCrudRepository _vehicleReservationCsvCrudRepository;
-        private readonly DriverLocationsCsvCrudRepository _driverLocationsCsvCrudRepository;
         private readonly TourReservation tourReservation;
+        private readonly VehicleReservationService _vehicleReservationService;
+        private readonly DriverLocationsService _driverLocationsService;
 
         /*VehicleCsvCrudRepository vehicleCsvCrudRepository*/
-        public Guest2MainView(TourService tourService, User loggedUser,VehicleService vehicleService, GuideReviewService guideReviewService, ReservedTourService reservedTourService)
+        public Guest2MainView(TourService tourService, User loggedUser,VehicleService vehicleService, GuideReviewService guideReviewService, ReservedTourService reservedTourService, DriverLocationsService driverLocationsService, VehicleReservationService vehicleReservationService, VoucherService voucherService)
         {
             InitializeComponent();
             DataContext = this;
@@ -50,15 +54,20 @@ namespace SIMS_Booking.UI.View
             _vehicleService = vehicleService;
             _vehicleService.Subscribe(this);
 
-
+            _guideReviewService = guideReviewService;
+            _driverLocationsService = driverLocationsService;
+            _vehicleReservationService = vehicleReservationService;
+            _voucherService = voucherService;
+            
             
             _reservedTourService = new ReservedTourService();
+            
 
 
             Tours = new ObservableCollection<Tour>(_tourService.GetAll());
 
             TourReservation = new ObservableCollection<TourReservation>(_reservedTourService.GetAll());
-
+            ReservationOfVehicle = new ObservableCollection<ReservationOfVehicle>(_vehicleReservationService.GetAll());
             _guideReviewService = guideReviewService;
             _reservedTourService = reservedTourService;
 
@@ -110,7 +119,16 @@ namespace SIMS_Booking.UI.View
         private void Reserve_Taxi(object sender, RoutedEventArgs e)
         {
             Guest2DrivingReservationView reservationView =
-                new Guest2DrivingReservationView(SelectedVehicle, LoggedUser);
+                new Guest2DrivingReservationView(SelectedVehicle, LoggedUser,_vehicleReservationService, _vehicleService, _driverLocationsService);
+
+            reservationView.Show();
+
+        }
+
+        private void ShowReserved_Tours(object sender, RoutedEventArgs e)
+        {
+            Guest2ReservedTours reservationView =
+                new Guest2ReservedTours(LoggedUser, _guideReviewService, _reservedTourService);
 
             reservationView.Show();
 
@@ -122,7 +140,7 @@ namespace SIMS_Booking.UI.View
             if (SelectedTour != null)
             {
                 
-                Guest2TourReservation reservation = new Guest2TourReservation(SelectedTour, LoggedUser);
+                Guest2TourReservation reservation = new Guest2TourReservation(SelectedTour, LoggedUser, _reservedTourService, _voucherService, SelectedVoucher);
                 reservation.ShowDialog();
             }
             else

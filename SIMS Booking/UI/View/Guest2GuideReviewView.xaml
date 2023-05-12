@@ -20,7 +20,7 @@
                     <ColumnDefinition Width="160"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Tour rating</Label>
+                <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Ocena ture</Label>
                 <TextBox Grid.Column="1" Grid.Row="0" Height="30" Width="80" Margin="0, 10, 0, 0" Padding="34, 5, 0, 0"
                                  Text="{Binding ElementName=tourRatingSl, Path=Value, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"                                 
                                  Name="tidinessTb"></TextBox>
@@ -35,7 +35,7 @@
                 
                 <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="0, 20, 0, 0">
                     <Label Height="40" HorizontalAlignment="Center" 
-                                   Margin="20, 20, 35, 0">ImageURL</Label>
+                                   Margin="20, 20, 35, 0">Slika ture</Label>
                     <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0, 10 ,0, 0">
                         <TextBox Width="150" Height="40" HorizontalAlignment="Center" 
                                     Margin="0, 5 0, 0" TextChanged="ImageTbCheck"
@@ -61,7 +61,7 @@
                     </StackPanel>
 
                 </StackPanel>
-                <Button Content="Submit Review" Width="100" Height="40" Margin="0, 40, 0, 0" HorizontalAlignment="Center"
+                <Button Content="Oceni turu" Width="100" Height="40" Margin="0, 40, 0, 0" HorizontalAlignment="Center"
                         Click="SubmitReview" 
                         Name="submitButton">
                 </Button>

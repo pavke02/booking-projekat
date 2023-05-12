@@ -2,6 +2,8 @@
 using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Serializer;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace SIMS_Booking.Model
 {
@@ -12,7 +14,10 @@ namespace SIMS_Booking.Model
         public Address EndingAddress { get; set; }
         public string TimeOfDeparture { get; set; }
 
-  
+
+        private Regex _timeRegex = new Regex("^[0 - 2][0 - 3]:[0 - 5][0 - 9]$");
+
+
         public int getID()
         {
             return ID;

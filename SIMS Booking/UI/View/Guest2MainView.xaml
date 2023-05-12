@@ -6,43 +6,79 @@
         xmlns:local="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
         Title="Guest2MainView" Height="450" Width="800">
-    <Grid>
+    <Grid Margin="0,-48,0,16">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="26.04"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TabControl x:Name="TabC" Width="900" Height="350" Grid.Row="2">
-            <TabItem Header="Tours">
-                <DataGrid
+
+        <TabControl x:Name="TabC" Grid.Row="2">
+            <TabItem Header="Ture" Margin="271,0,-275,-2">
+
+
+                <Grid Margin="0,0,92,0" Height="379">
+
+                    <Label Margin="265,-7,330,329" Content="Prikaz ture" Height="40" Width="100" HorizontalContentAlignment="Center" FontSize="17"/>
+
+                    <DataGrid
                     Name="DataGridTours"
                     ItemsSource="{Binding Path=Tours, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding Path=SelectedTour, UpdateSourceTrigger=PropertyChanged}"
-                    AutoGenerateColumns="False" IsReadOnly="True" Height="320" Margin="0,0,106,0">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="170"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="130"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Language" Binding="{Binding Language}" Width="120"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="160"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Description" Binding="{Binding Description}" Width="150"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Time(h)" Binding="{Binding Time}" Width="200"></DataGridTextColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                    AutoGenerateColumns="False" IsReadOnly="True" Margin="56,60,56,-75" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Ime ture" Binding="{Binding Name}" Width="170"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Lokacija" Binding="{Binding Location}" Width="130"></DataGridTextColumn>
+                            <DataGridTextColumn Header= "Jezik" Binding="{Binding Language}" Width="120"></DataGridTextColumn>
+                            <DataGridTextColumn Header= "Maksimalno gostiju" Binding="{Binding MaxGuests}" Width="160"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+
+                    <Button Content="Rezerviši turu"  FontSize="16" HorizontalAlignment="Left" Height="50" Margin="166,262,0,0" VerticalAlignment="Top" Width="100" Click="Reserve_Tour"/>
+                    <Button Content="Zakazane ture" FontSize="16" HorizontalAlignment="Left" Height="50" Margin="382,262,0,0" VerticalAlignment="Top" Width="109" Click="ShowReserved_Tours"/>
+                    <Label Margin="75,-8,550,330" Content="Jezik" Height="40" Width="70" HorizontalContentAlignment="Center" FontSize="15"/>
+                    <Label Margin="0,-9,625,331" Content="Tema" Height="40" Width="70" HorizontalContentAlignment="Center" FontSize="15"/>
+
+
+                </Grid>
+
             </TabItem>
-            <TabItem Header="Reserved Tours" >
-                <DataGrid
-                    Name="DataGridReservedTours"
-                    ItemsSource="{Binding Path=TourReservation, UpdateSourceTrigger=PropertyChanged}"
-                    SelectedItem="{Binding Path = SelectedTourReservation}"
-                    AutoGenerateColumns="False" IsReadOnly="True" Height="320" Margin="0,0,106,0">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="User ID" Binding="{Binding UserId}" Width="170"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Tour ID" Binding="{Binding TourId}" Width="130"></DataGridTextColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+            <TabItem Header="Vožnja" Margin="274,-1,-278,-1" >
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="833*"/>
+                        <ColumnDefinition Width="61*"/>
+                        <ColumnDefinition Width="0*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Margin="180,-4,259,336" Content="Prikaz rezervisanih vožnji" HorizontalContentAlignment="Center" FontSize="17"/>
+
+
+                    <DataGrid
+                        Name="DataGridReservedTours"
+                        ItemsSource="{Binding Path=ReservationOfVehicle, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedItem="{Binding Path = SelectedVehicleReservation}"
+                        AutoGenerateColumns="False" IsReadOnly="True" Margin="46,84,47,-53">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Početna adresa" Binding="{Binding StartAddress.Street}" Width="170"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Krajnja adresa" Binding="{Binding Destination.Street}" Width="130"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Vreme polaska" Binding="{Binding Time}" Width="130"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Button Content="Rezerviši vožnju" HorizontalAlignment="Left" Height="50" Margin="198,277,0,0" VerticalAlignment="Top" Width="100" Click="Reserve_Taxi"/>
+                    <Button Content="Rezerviši brzu vožnju" HorizontalAlignment="Left" Height="50" Margin="452,277,0,0" VerticalAlignment="Top" Width="120" Click="QuickTaxi_Click" />
+                    <Label Margin="83,0,587,331" Content="Jezik" Height="40" Width="70" HorizontalContentAlignment="Center" FontSize="15" VerticalAlignment="Bottom"/>
+                    <Label Margin="0,-10,670,332" Content="Tema" Height="40" Width="70" HorizontalContentAlignment="Center" FontSize="15"/>
+
+
+                </Grid>
+
 
 
             </TabItem>
@@ -50,11 +86,17 @@
         </TabControl>
 
 
+        <ComboBox  Name="Jezik" HorizontalAlignment="Left" Margin="75,28,0,0" VerticalAlignment="Top" Width="90" Grid.Row="1" Grid.RowSpan="2" Height="22" >
+            <ComboBoxItem Content="Engleski"/>
+            <ComboBoxItem Content="Srpski"/>
 
-        <Button Content="Reserve Taxi" HorizontalAlignment="Left" Height="50" Margin="43,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="100" Click="Reserve_Taxi"/>
-        <Button Content="Reserve Tour" HorizontalAlignment="Left" Height="50" Margin="203,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="100" Click="Reserve_Tour"/>
-        <Button Content="Review reservation" HorizontalAlignment="Left" Height="50" Margin="363,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="109" Click="Review_Tour"/>
-        <Button Content="Reserve quick taxi" HorizontalAlignment="Left" Height="50" Margin="523,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="109" Click="QuickTaxi_Click" />
+        </ComboBox>
+
+        <ComboBox  Name="Tema" HorizontalAlignment="Left" Margin="0,28,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1" Grid.RowSpan="2" Height="22" >
+            <ComboBoxItem Content="Tamna"/>
+            <ComboBoxItem Content="Svetla"/>
+
+        </ComboBox>
 
 
 
