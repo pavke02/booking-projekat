@@ -23,11 +23,6 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand NavigateToDeclinePostponementRequestCommand { get; }
         public ICommand NavigateBackCommand { get; }
 
-        //event hendler za promene datuma
-        public delegate void BlackoutDatesChangedHandler(List<CalendarDateRange> list);
-        //
-        public event BlackoutDatesChangedHandler? BlackoutDatesChangedEvent;
-
         #region Property
         public ObservableCollection<Postponement> PostponementRequests { get; set; }
 
@@ -86,7 +81,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                     OnPropertyChanged();
                 }
             }
-        } 
+        }
         #endregion
 
         public PostponeReservationViewModel(ModalNavigationStore modalNavigationStore, PostponementService postponementService,
@@ -108,6 +103,16 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 new NavigateCommand(CreateDeclinePostponementNavigationService(modalNavigationStore));
         }
 
+        //Unsubscribe sve koji su subscribe na njega
+        public override void Dispose()
+        {
+            base.Dispose();
+            foreach (var date in BlackoutDatesChangedEvent.GetInvocationList())
+            {
+                BlackoutDatesChangedEvent -= date as BlackoutDatesChangedHandler;
+            }
+        }
+
         private void ShowRequestDetails()
         {
             IsVisible = true;
@@ -119,7 +124,9 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             }
         }
 
-        //Question: How to do this
+        //event hendler za promene datuma
+        public delegate void BlackoutDatesChangedHandler(List<CalendarDateRange> reservedDates);
+        public event BlackoutDatesChangedHandler? BlackoutDatesChangedEvent;
         private void DisableReservedDates(ReservationService reservationService)
         {
             List<CalendarDateRange> blackoutDates = new List<CalendarDateRange>();
@@ -163,7 +170,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public void Update()
         {
             UpdatePostponements(_postponementService.GetByUserId(_user.getID()));
-        } 
+        }
         #endregion
     }
 }

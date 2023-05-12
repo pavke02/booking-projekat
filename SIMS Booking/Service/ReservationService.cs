@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Windows.Input;
 
 namespace SIMS_Booking.Service
 {
@@ -48,7 +50,7 @@ namespace SIMS_Booking.Service
 
         public List<Reservation> GetByAccommodation(int id) 
         {
-            return _crudService.GetAll().Where(e => e.Accommodation.getID() == id).ToList();
+            return _crudService.GetAll().Where(e => e.Accommodation.getID() == id && e.EndDate >= DateTime.Now).ToList();
         }
 
         public ObservableCollection<Reservation> GetReservationsByUser(int userId)
@@ -116,6 +118,53 @@ namespace SIMS_Booking.Service
                     _crudService.Delete(reservation);
                 }
             }
+        }
+
+        public bool isSuperGuest(User user)
+        {
+            int reservationCounter = 0;
+            foreach (Reservation reservation in _crudService.GetAll())
+            {
+                if (reservation.User == user && DateTime.Today - reservation.EndDate < TimeSpan.FromDays(365))
+                    reservationCounter++;
+            }
+
+            if (reservationCounter >= 5)
+                return true;
+            return false;
+
+        }
+
+        public Dictionary<string, int> GetReservationsByYear(int id)
+        {
+            Dictionary<string, int> reservations = new Dictionary<string, int>();
+
+            foreach (Reservation reservation in GetAll().Where(e => e.Accommodation.getID() == id))
+            {
+                string key = reservation.StartDate.Year.ToString();
+                if (reservations.ContainsKey(key))
+                    reservations[key] += 1;
+                else
+                    reservations[key] = 1;
+            }
+
+            return reservations;
+        }
+
+        public Dictionary<int, int> GetReservationsByMonth(int id, int year)
+        {
+            Dictionary<int, int> reservations = new Dictionary<int, int>();
+
+            foreach (Reservation reservation in GetAll().Where(e => e.Accommodation.getID() == id && e.StartDate.Year == year))
+            {
+                int key = reservation.StartDate.Month;
+                if (reservations.ContainsKey(key))
+                    reservations[key] += 1;
+                else
+                    reservations[key] = 1;
+            }
+
+            return reservations;
         }
     }
 }

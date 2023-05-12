@@ -58,6 +58,29 @@ namespace SIMS_Booking.UI.View
             }
         }
 
+        private int renovationLevel = 0;
+        public int RenovationLevel
+        {
+            get => renovationLevel;
+            set
+            {
+                if (!renovationSl.IsEnabled)
+                {
+                    renovationLevel = 0;
+                }
+                if (value != renovationLevel)
+                {
+                    if (value > 5)
+                        renovationLevel = 5;
+                    else if (value < 1)
+                        renovationLevel = 1;
+                    else
+                        renovationLevel = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private string comment;
         public string Comment
         {
@@ -71,6 +94,22 @@ namespace SIMS_Booking.UI.View
                 }
             }
         }
+
+        private string renovationComment;
+        public string RenovationComment
+        {
+            get => renovationComment;
+            set
+            {
+                if (value != renovationComment)
+                {
+                    renovationComment = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -89,6 +128,10 @@ namespace SIMS_Booking.UI.View
 
             _ownerReviewService = ownerReviewService;
             _reservationService = reservationService;
+
+            renovationTb.Text = "";
+            RenovationCheckBox.IsChecked = true;
+            RenovationCheckBox.IsChecked = false;
         }
 
         private void TextBoxCheck(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -104,7 +147,11 @@ namespace SIMS_Booking.UI.View
             string[] values = imageTb.Text.Split("\n");
             foreach (string value in values)
                 imageURLs.Add(value);
-            _ownerReviewService.SubmitReview(Tidiness, OwnerFairness, Comment, _reservation, imageURLs);
+            if(RenovationCheckBox.IsChecked == false)
+                _ownerReviewService.SubmitReview(Tidiness, OwnerFairness, Comment, _reservation, imageURLs, false, 0, "");
+            else
+                _ownerReviewService.SubmitReview(Tidiness, OwnerFairness, Comment, _reservation, imageURLs, true, RenovationLevel, RenovationComment);
+
             _reservationService.Update(_reservation);
             Close();
         }
@@ -165,6 +212,31 @@ namespace SIMS_Booking.UI.View
         {
             imageTb.Clear();
             ImageURLs = "";
+        }
+
+        private void EnableRenovation(object sender, RoutedEventArgs e)
+        {
+            renovationTb.IsReadOnly = false;
+            renovationCommentTb.IsReadOnly = false;
+            renovationSl.IsEnabled = true;
+            renovationTb.Focusable = true;
+            renovationCommentTb.Focusable = true;
+            RenovationCommentLabel.Opacity = 1;
+            RenovationLevelLabel.Opacity = 1;
+            renovationTb.FontSize = 12;
+        }
+
+        private void DisableRenovation(object sender, RoutedEventArgs e)
+        {
+            renovationTb.IsReadOnly = true;
+            renovationTb.Text = "";
+            renovationCommentTb.IsReadOnly = true;
+            renovationTb.Text = "";
+            renovationSl.IsEnabled = false;
+            RenovationCommentLabel.Opacity = 0.5;
+            RenovationLevelLabel.Opacity = 0.5;
+            renovationTb.Focusable = false;
+            renovationCommentTb.Focusable = false;
         }
     }
 }

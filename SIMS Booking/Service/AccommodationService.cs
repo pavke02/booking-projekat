@@ -1,7 +1,9 @@
-﻿using SIMS_Booking.Model;
+﻿using System;
+using SIMS_Booking.Model;
 using SIMS_Booking.Utility.Observer;
 using System.Collections.Generic;
 using System.Linq;
+using SIMS_Booking.UI.ViewModel.Owner;
 
 namespace SIMS_Booking.Service
 {
@@ -15,7 +17,6 @@ namespace SIMS_Booking.Service
         }
 
         #region Crud
-
         public void Save(Accommodation accommodation)
         {
             _crudService.Save(accommodation);
@@ -36,6 +37,10 @@ namespace SIMS_Booking.Service
             _crudService.Subscribe(observer);
         }
 
+        public void Update(Accommodation accommodation)
+        {
+            _crudService.Update(accommodation);
+        }
         #endregion
 
         public List<Accommodation> GetByUserId(int id)
@@ -46,6 +51,17 @@ namespace SIMS_Booking.Service
         public List<Accommodation> SortBySuperOwner(List<Accommodation> accommodations)
         {
             return accommodations.OrderBy(x => !x.User.IsSuperUser).ToList();
+        }
+
+        public List<string> GetAccommodationNames(int id)
+        {
+            List<string> names = new List<string>();
+            foreach (Accommodation accommodation in GetAll())
+            {
+                names.Add(accommodation.Name);
+            }
+
+            return names;
         }
     }
 }

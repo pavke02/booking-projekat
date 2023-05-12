@@ -4,15 +4,17 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
-using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Observer;
+using SIMS_Booking.Utility.Timers;
 using SIMS_Booking.View;
 
 namespace SIMS_Booking.UI.View
@@ -39,6 +41,9 @@ namespace SIMS_Booking.UI.View
         private readonly PostponementService _postponementService;
         private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
         private readonly OwnerReviewService _ownerReviewService;
+        private readonly RenovationAppointmentService _renovationAppointmentService;
+        private readonly GuestReviewService _guestReviewService;
+
 
         #region Properties
         private string _accommodationName;
@@ -127,6 +132,21 @@ namespace SIMS_Booking.UI.View
             }
         }
 
+        // private bool _isRenovated;
+        // public bool IsRenovated
+        // {
+        //     get => _isRenovated;
+        //     set
+        //     {
+        //         if (value != _isRenovated)
+        //         {
+        //             _isRenovated  = value;
+        //             OnPropertyChanged();
+        //
+        //         }
+        //     }
+        // }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -137,15 +157,16 @@ namespace SIMS_Booking.UI.View
 
         #endregion
 
-        public Guest1MainView(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationCsvCrudRepository cancellationCsvCrudRepository, OwnerReviewService ownerReviewService)
+        public Guest1MainView(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationCsvCrudRepository cancellationCsvCrudRepository, OwnerReviewService ownerReviewService, RenovationAppointmentService renovationAppointmentService, GuestReviewService guestReviewService)
+
         {
 
             LoggedUser = loggedUser;
 
             _accommodationService = accommodationService;
             _accommodationService.Subscribe(this);
-            //Accommodations = new ObservableCollection<Accommodation>(_accommodationService.SortBySuperOwner(_accommodationService.GetAll()));
-            Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetAll());
+            Accommodations = new ObservableCollection<Accommodation>(_accommodationService.SortBySuperOwner(_accommodationService.GetAll()));
+            //Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetAll());
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
@@ -157,11 +178,12 @@ namespace SIMS_Booking.UI.View
             UserPostponements = new ObservableCollection<Postponement>(_postponementService.GetPostponementsByUser(loggedUser.getID()));
 
             _ownerReviewService = ownerReviewService;
-
+            _guestReviewService = guestReviewService;
             _cityCountryCsvRepository = cityCountryCsvRepository;
             _cancellationCsvCrudRepository = cancellationCsvCrudRepository;
 
             _reservedAccommodationService = reservedAccommodationService;
+            _renovationAppointmentService = renovationAppointmentService;
 
             AccommodationsFiltered = new List<Accommodation>(_accommodationService.GetAll());
             Countries = new Dictionary<string, List<string>>(_cityCountryCsvRepository.Load());
@@ -179,11 +201,20 @@ namespace SIMS_Booking.UI.View
                 "Cottage"
             };
 
-            if (!loggedUser.IsSuperUser)
-                UserTb.Text = LoggedUser.Username + ", Guest";
-            else
-                UserTb.Text = LoggedUser.Username + ", Super Guest";
+                SetSuperGuest();
 
+            // DatePassedTimer datePassedTimer =
+            //     new DatePassedTimer(_accommodationService, _renovationAppointmentService, loggedUser);
+            // _renovationAppointmentService = renovationAppointmentService;
+        }
+
+        private void SetSuperGuest()
+        {
+            UserTb.Text = LoggedUser.Username + ", Guest";
+            if (_reservationService.isSuperGuest(LoggedUser))
+            {
+                UserTb.Text = LoggedUser.Username + ", Super Guest";
+            }
         }
 
         private void Reserve(object sender, RoutedEventArgs e)
@@ -191,6 +222,7 @@ namespace SIMS_Booking.UI.View
             Guest1ReservationView reservationView =
                 new Guest1ReservationView(SelectedAccommodation, LoggedUser, _reservationService, _reservedAccommodationService);
             reservationView.Show();
+            SetSuperGuest();
         }
 
         private void OpenGallery(object sender, RoutedEventArgs e)
@@ -248,6 +280,7 @@ namespace SIMS_Booking.UI.View
                     newReservations.Remove(reservation);
                     UpdateUserReservations(newReservations);
                     UpdateUserPostponements(_postponementService.GetAll().ToList());
+                    SetSuperGuest();
                     return;
                 }
             }
@@ -268,13 +301,19 @@ namespace SIMS_Booking.UI.View
             if (TabC.SelectedIndex == 0)
             {
                 FiltersGrid.Visibility = Visibility.Visible;
-                AccommodationsButtonsGrid.Visibility = Visibility.Visible;
+                ReserveButton.Visibility = Visibility.Visible;
+                ViewGalleryButton.Visibility = Visibility.Visible;
+                OpenForumButton.Visibility = Visibility.Visible;
+                GeneratePDFButton.Visibility = Visibility.Visible;
+                WhereverWheneverButton.Visibility = Visibility.Visible;
+                DemoButton.Visibility = Visibility.Visible;
                 AccommodationsTab.Height += 10;
             }
             else if (TabC.SelectedIndex == 1)
             {
                 ReservationsPanel.Visibility = Visibility.Visible;
                 ReservationsTab.Height += 10;
+                DemoButton.Visibility = Visibility.Visible;
             }
             else
             {
@@ -289,7 +328,11 @@ namespace SIMS_Booking.UI.View
             PostponementsTab.Height = 50;
             ReservationsPanel.Visibility = Visibility.Collapsed;
             FiltersGrid.Visibility = Visibility.Collapsed;
-            AccommodationsButtonsGrid.Visibility = Visibility.Collapsed;
+            ReserveButton.Visibility = Visibility.Collapsed;
+            ViewGalleryButton.Visibility = Visibility.Collapsed;
+            OpenForumButton.Visibility = Visibility.Collapsed;
+            GeneratePDFButton.Visibility = Visibility.Collapsed;
+            WhereverWheneverButton.Visibility = Visibility.Collapsed;
         }
 
 
@@ -314,14 +357,15 @@ namespace SIMS_Booking.UI.View
             CancelReservationButton.IsEnabled = true;
             ChangeReservationButton.IsEnabled = true;
 
-            if (DateTime.Today - SelectedReservation.EndDate > TimeSpan.FromDays(5) || DateTime.Today - SelectedReservation.EndDate < TimeSpan.FromDays(0))
-            {
+            if (DateTime.Today - SelectedReservation.EndDate > TimeSpan.FromDays(5) || DateTime.Today - SelectedReservation.EndDate < TimeSpan.FromDays(0) || SelectedReservation.HasGuestReviewed)
                 ReviewButton.IsEnabled = false;
-            }
             else
-            {
                 ReviewButton.IsEnabled = true;
-            }
+
+            if (SelectedReservation.HasOwnerReviewed && SelectedReservation.HasGuestReviewed)
+                OwnersReviewButton.IsEnabled = true;
+            else
+                OwnersReviewButton.IsEnabled = false;
         }
 
         private void ChangeCities(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -353,8 +397,8 @@ namespace SIMS_Booking.UI.View
                 }
             }
 
-            //UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
-            UpdateAccommodationsDataGrid(accommodationsFiltered);
+            UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
+            //UpdateAccommodationsDataGrid(accommodationsFiltered);
 
         }
 
@@ -366,8 +410,8 @@ namespace SIMS_Booking.UI.View
             {
                 if (window.GetType() == typeof(Guest1MainView))
                 {
-                    // ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationService.SortBySuperOwner(_accommodationService.GetAll());
-                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationService.GetAll();
+                    ((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationService.SortBySuperOwner(_accommodationService.GetAll());
+                    //((window as Guest1MainView)!).DataGridAccommodations.ItemsSource = _accommodationService.GetAll();
                 }
             }
         }
@@ -421,8 +465,8 @@ namespace SIMS_Booking.UI.View
                 }
             }
 
-            //UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
-            UpdateAccommodationsDataGrid(accommodationsFiltered);
+            UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
+            //UpdateAccommodationsDataGrid(accommodationsFiltered);
         }
 
         private void ApplyCityChange(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
@@ -458,8 +502,8 @@ namespace SIMS_Booking.UI.View
                 }
             }
 
-            //UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
-            UpdateAccommodationsDataGrid(accommodationsFiltered);
+            UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
+            //UpdateAccommodationsDataGrid(accommodationsFiltered);
         }
 
         private void UpdateKindsState()
@@ -527,8 +571,8 @@ namespace SIMS_Booking.UI.View
                 }
             }
 
-            //UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
-            UpdateAccommodationsDataGrid(accommodationsFiltered);
+            UpdateAccommodationsDataGrid(_accommodationService.SortBySuperOwner(accommodationsFiltered));
+            //UpdateAccommodationsDataGrid(accommodationsFiltered);
         }
 
         //Gagi: ovo je samo zakomentarisano, jer je dodata logika za navigaciju, te vise ne moze da se koristi ShowWindow i Close
@@ -550,6 +594,23 @@ namespace SIMS_Booking.UI.View
             // SignInForm signIn = new SignInForm();
             // signIn.Show();
             // CloseAllWindowsButSignIn();
+        }
+
+        private void ViewOwnersView(object sender, RoutedEventArgs e)
+        {
+            Guest1OwnersViewDetailsView detailsView = new Guest1OwnersViewDetailsView(_guestReviewService, SelectedReservation, LoggedUser);
+            detailsView.Show();
+         }
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsTextAllowed(e.Text);
+        }
+
+        private static bool IsTextAllowed(string text)
+        {
+            // Allow only numeric input
+            Regex regex = new Regex("[^0-9]+");
+            return !regex.IsMatch(text);
         }
     }
 }

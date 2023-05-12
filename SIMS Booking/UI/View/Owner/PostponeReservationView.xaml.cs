@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using SIMS_Booking.UI.ViewModel.Owner;
@@ -10,15 +11,7 @@ namespace SIMS_Booking.UI.View.Owner
         public PostponeReservationView()
         {
             InitializeComponent();
-            //subscribe se na SubscribeToBlackoutDatesChangedEvent
             DataContextChanged += SubscribeToBlackoutDatesChangedEvent;
-        }
-
-        ~PostponeReservationView()
-        {
-            var viewModel = (PostponeReservationViewModel)DataContext;
-            if (viewModel != null)
-                viewModel.BlackoutDatesChangedEvent -= UpdateBlackoutDates;
         }
 
         private void SubscribeToBlackoutDatesChangedEvent(object sender, DependencyPropertyChangedEventArgs e)

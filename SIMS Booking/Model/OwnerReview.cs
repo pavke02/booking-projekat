@@ -15,12 +15,15 @@ namespace SIMS_Booking.Model
         public Reservation Reservation { get; set; }
         public int ReservationId { get; set; }
         public List<string> ImageURLs { get; set; }
+        public bool HasRenovation { get; set; }
+        public int RenovationLevel { get; set; }
+        public string RenovationComment { get; set; }
 
         public OwnerReview()
         {
             ImageURLs = new List<string>();
         }
-        public OwnerReview(int ownersCorrectness, int tidiness, string comment, Reservation reservation, List<string> imageURLs)
+        public OwnerReview(int tidiness, int ownersCorrectness, string comment, Reservation reservation, List<string> imageURLs, bool hasRenovation, int renovationLevel, string renovationComment)
         {
             OwnersCorrectness = ownersCorrectness;
             Tidiness = tidiness;
@@ -32,6 +35,9 @@ namespace SIMS_Booking.Model
             {
                 ImageURLs.Add(image);
             }
+            HasRenovation = hasRenovation;
+            RenovationLevel = renovationLevel;
+            RenovationComment = renovationComment;
         }
 
         public int getID()
@@ -47,16 +53,19 @@ namespace SIMS_Booking.Model
         public void FromCSV(string[] values)
         {
             ID = int.Parse(values[0]);
-            OwnersCorrectness = int.Parse(values[1]);
-            Tidiness = int.Parse(values[2]);
+            Tidiness = int.Parse(values[1]);
+            OwnersCorrectness = int.Parse(values[2]);
             Comment = values[3];
             ReservationId = int.Parse(values[4]);
             ImageURLs = values[5].Split(',').ToList();
+            HasRenovation = values[6] == "True";
+            RenovationLevel = int.Parse(values[7]);
+            RenovationComment = values[8];
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { ID.ToString(), Tidiness.ToString(), OwnersCorrectness.ToString(), Comment, ReservationId.ToString(), string.Join(',', ImageURLs)};
+            string[] csvValues = { ID.ToString(), Tidiness.ToString(), OwnersCorrectness.ToString(), Comment, ReservationId.ToString(), string.Join(',', ImageURLs), HasRenovation.ToString(), RenovationLevel.ToString(), RenovationComment};
             return csvValues;
         }
     }

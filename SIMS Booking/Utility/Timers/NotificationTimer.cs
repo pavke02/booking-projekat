@@ -12,8 +12,8 @@ using System.Windows;
 using Microsoft.TeamFoundation.Common;
 using SIMS_Booking.Service;
 
-namespace SIMS_Booking.Utility
-{    
+namespace SIMS_Booking.Utility.Timers
+{
     internal class NotificationTimer
     {
         private DateTime _date;
@@ -27,8 +27,8 @@ namespace SIMS_Booking.Utility
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
 
 
-        public NotificationTimer(User user, PostponementService postponementService = null, ObservableCollection<Reservation> reservedAccommodations = null, 
-                                 ReservationService reservationService = null, GuestReviewService guestReviewService = null, 
+        public NotificationTimer(User user, PostponementService postponementService = null, ObservableCollection<Reservation> reservedAccommodations = null,
+                                 ReservationService reservationService = null, GuestReviewService guestReviewService = null,
                                  CancellationCsvCrudRepository cancellationCsvCrudRepository = null)
         {
             ReservedAccommodations = reservedAccommodations;

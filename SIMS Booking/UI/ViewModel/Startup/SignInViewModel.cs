@@ -44,6 +44,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly DriverLocationService _driverLocationService;
         private readonly VehicleReservationService _vehicleReservationService;
         private readonly VoucherService _voucherService;
+        private readonly RenovationAppointmentService _renovationAppointmentService;
+
         #endregion
 
         private TourReview _tourReview;
@@ -144,6 +146,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _driverLocationsService = new DriverLocationsService();
             _vehicleReservationService = new VehicleReservationService();
             _voucherService = new VoucherService();
+            _renovationAppointmentService = new RenovationAppointmentService();
+
             #endregion
 
             #region LoadingData
@@ -158,6 +162,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _tourService.LoadCheckpoints(_tourPointService);
             _tourReviewService.loadusers(_userService, _confirmTourService);
             _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService); 
+            _renovationAppointmentService.LoadAccommodationInRenovationAppointment(_accommodationService);
             #endregion
 
             _navigationStore = navigationStore;
@@ -185,12 +190,12 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                 case Roles.Owner:
                     //Question: da li postoji bolji nacin(ovaj je izuzetno glup, zaobilazi celu strukturu)
                     _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
-                        _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _navigationStore, _modalNavigationStore);
+                        _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _renovationAppointmentService, _navigationStore, _modalNavigationStore);
                     break;
                 case Roles.Guest1:
                     Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository,
                         _reservationService, _reservedAccommodationService, user, _postponementService,
-                        _cancellationCsvCrudRepository, _ownerReviewService);
+                        _cancellationCsvCrudRepository, _ownerReviewService, _renovationAppointmentService, _guestReviewService);
                     guest1View.Show();
                     break;
                 case Roles.Guest2:
@@ -209,7 +214,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                         _textBox, _userService, _tourReview, _tour, _tourReviewService);
                     guideView.Show();
                     break;
-            }
+             }
         }                        
         #endregion
     } 

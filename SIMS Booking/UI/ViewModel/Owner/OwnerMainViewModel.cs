@@ -6,16 +6,18 @@ using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
-using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Observer;
 using SIMS_Booking.Utility.Stores;
+using SIMS_Booking.Utility.Timers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
-using System.Windows.Media;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace SIMS_Booking.UI.ViewModel.Owner
 {
@@ -29,34 +31,144 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private readonly OwnerReviewService _ownerReviewService;
         private readonly PostponementService _postponementService;
         private readonly UserService _userService;
+        private readonly RenovationAppointmentService _renovationAppointmentService;
 
         private readonly User _user;
 
+        #region Commands
         public ICommand PublishCommand { get; }
         public ICommand ResetCommand { get; }
         public ICommand AddImageCommand { get; }
         public ICommand ClearURLsCommand { get; }
+        public ICommand CancelRenovationCommand { get; }
         public ICommand NavigateToGuestReviewCommand { get; }
         public ICommand NavigateToGuestReviewDetailsCommand { get; }
         public ICommand NavigateToOwnerReviewDetailsCommand { get; }
         public ICommand NavigateToPostponeRequestsCommand { get; }
+        public ICommand NavigateToAppointRenovatingCommand { get; } 
+        #endregion
 
         #region Property                
         public List<string> TypesCollection { get; set; }
-        public List<string> Countries { get; set; }       
+        public List<string> Countries { get; set; }
+        public List<string> AccommodationNames { get; set; }
+        public List<int> Years { get; set; }
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
+        public ObservableCollection<RenovationAppointment> ActiveRenovations { get; set; }
+        public ObservableCollection<RenovationAppointment> PastRenovations { get; set; }
+        public Func<double, string> Formatter { get; set; }
+
+        private string _xLabelName;
+        public string XLabelName
+        {
+            get => _xLabelName;
+            set
+            {
+                if (value != _xLabelName)
+                {
+                    _xLabelName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _selectedYear;
+        public string SelectedYear
+        {
+            get => _selectedYear;
+            set
+            {
+                if (value != _selectedYear)
+                {
+                    _selectedYear = value;
+                    OnPropertyChanged();
+                    GenerateStatsForMonths();
+                }
+            }
+        }
+
+        private string[] _labels;
+        public string[] Labels
+        {
+            get => _labels;
+            set
+            {
+                if (value != _labels)
+                {
+                    _labels = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private SeriesCollection _statistics;
+        public SeriesCollection Statistics
+        {
+            get => _statistics;
+            set
+            {
+                if (value != _statistics)
+                {
+                    _statistics = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private Accommodation _selectedAccommodationStats;
+        public Accommodation SelectedAccommodationStats
+        {
+            get => _selectedAccommodationStats;
+            set
+            {
+                if (value != _selectedAccommodationStats)
+                {
+                    _selectedAccommodationStats = value;
+                    OnPropertyChanged();
+                    GenerateStatsForYears();
+                }
+            }
+        }
 
         private ObservableCollection<string> _cities;
-        public ObservableCollection<string> Cities 
-        { 
+        public ObservableCollection<string> Cities
+        {
             get => _cities;
             set
             {
-                if(value != null)
+                if (value != null)
                 {
                     _cities = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private RenovationAppointment _selectedRenovation;
+        public RenovationAppointment SelectedRenovation
+        {
+            get => _selectedRenovation;
+            set
+            {
+                if (value != _selectedRenovation)
+                {
+                    _selectedRenovation = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private Accommodation _selectedAccommodation;
+        public Accommodation SelectedAccommodation
+        {
+            get => _selectedAccommodation;
+            set
+            {
+                if (value != _selectedAccommodation)
+                {
+                    _selectedAccommodation = value;
                     OnPropertyChanged();
                 }
             }
@@ -328,13 +440,14 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 }
             }
         }
+
         #endregion
 
         public OwnerMainViewModel(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository,
             ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
             OwnerReviewService ownerReviewService, PostponementService postponementService, User user,
             CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService,
-            NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
+            RenovationAppointmentService renovationAppointmentService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
             _user = user;
             _cityCountryCsvRepository = cityCountryCsvRepository;
@@ -346,33 +459,40 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             _accommodationService = accommodationService;
             _accommodationService.Subscribe(this);
             Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetByUserId(_user.getID()));
-
+            AccommodationNames = new List<string>(_accommodationService.GetAccommodationNames(_user.getID()));
             AccommodationNumber = Accommodations.Count().ToString();
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
             ReservedAccommodations = new ObservableCollection<Reservation>(_reservationService.GetUnreviewedReservations(_user.getID()));
-
             ReservationNumber = ReservedAccommodations.Count().ToString();
 
             _guestReviewService = guestReviewService;
             _guestReviewService.Subscribe(this);
             PastReservations = new ObservableCollection<GuestReview>(_guestReviewService.GetReviewedReservations(_user.getID()));
 
+            _renovationAppointmentService = renovationAppointmentService;
+            _renovationAppointmentService.Subscribe(this);
+            ActiveRenovations =
+                new ObservableCollection<RenovationAppointment>(_renovationAppointmentService.GetActiveRenovations(_user.getID()));
+            PastRenovations =
+                new ObservableCollection<RenovationAppointment>(_renovationAppointmentService.GetPastRenovations(_user.getID()));
+
             Countries = new List<string>(_cityCountryCsvRepository.LoadCountries());
-            Cities = new ObservableCollection<string>();            
+            TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
+            Years = new List<int>((Enumerable.Range(2000, DateTime.Now.Year - 1999).Reverse()).ToList());
+            Cities = new ObservableCollection<string>();
 
             _usersAccommodationService = usersAccommodationService;
             _ownerReviewService = ownerReviewService;
             _postponementService = postponementService;
-
-            TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
 
             #region Commands
             PublishCommand = new PublishAccommodationCommand(this, _accommodationService, _usersAccommodationService, _user);
             ResetCommand = new ResetCommand(this);
             AddImageCommand = new AddImageCommand(this);
             ClearURLsCommand = new ClearURLsCommand(this);
+            CancelRenovationCommand = new CancelRenovationCommand(this, _renovationAppointmentService);
 
             NavigateToGuestReviewCommand = 
                 new NavigateCommand(CreateGuestReviewNavigationService(modalNavigationStore), this, () => SelectedReservation != null && 
@@ -383,13 +503,20 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 new NavigateCommand(CreateOwnerReviewDetailsNavigationService(modalNavigationStore));
             NavigateToPostponeRequestsCommand =
                 new NavigateCommand(CreatePostponeRequestsNavigationService(modalNavigationStore));
+            NavigateToAppointRenovatingCommand = 
+                new NavigateCommand(CreateRenovationAppointingNavigationService(modalNavigationStore), this, () => SelectedAccommodation != null);
             #endregion
 
             CalculateRating(_user.getID());
 
-            NotificationTimer timer = new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);
+            NotificationTimer timer = 
+                new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);
+            DatePassedTimer passedTimer =
+                new DatePassedTimer(_accommodationService, _renovationAppointmentService, _user);
+
+            Formatter = value => value.ToString("N");
         }
-        
+
         private void FillCityCb()
         {
             Cities.Clear();           
@@ -397,12 +524,11 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 Cities = _cityCountryCsvRepository.LoadCitiesForCountry(Country);            
         }
 
-        //ToDo: Ne racunati neocenjene smestaje
         private void CalculateRating(int id)
         {
             double rating = _ownerReviewService.CalculateRating(id);
             OwnerRating = Math.Round(rating, 2).ToString();
-            if (rating > 5.5 && PastReservations.Count() > 3)
+            if (rating > 9.5 && PastReservations.Count() > 50)
             {
                 RegularSelected = false;
                 SuperSelected = true;
@@ -418,7 +544,89 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             }
         }
 
+        #region Statistics
+        private void GenerateStatsForYears()
+        {
+            if (SelectedAccommodationStats != null)
+            {
+                Dictionary<string, int> reservationCount = new Dictionary<string, int>(_reservationService.GetReservationsByYear(SelectedAccommodationStats.getID()));
+                Dictionary<string, int> postponementCount = new Dictionary<string, int>(_postponementService.GetPostponemetsByYear(SelectedAccommodationStats.getID()));
+                Dictionary<string, int> renovationsCount = new Dictionary<string, int>(_ownerReviewService.GetRenovationsByYear(SelectedAccommodationStats.getID()));
+
+                List<string> sortedLabels = reservationCount.Keys
+                    .Union(postponementCount.Keys)
+                    .Union(renovationsCount.Keys).ToList();
+                sortedLabels.Sort();
+                Labels = sortedLabels.ToArray();
+
+                GenerateStats(reservationCount, postponementCount, renovationsCount);
+                XLabelName = "Years";
+            }
+        }
+
+        private void GenerateStatsForMonths()
+        {
+            if (SelectedAccommodationStats != null)
+            {
+                Dictionary<int, int> reservationCount = new Dictionary<int, int>(_reservationService.GetReservationsByMonth(SelectedAccommodationStats.getID(), int.Parse(SelectedYear)));
+                Dictionary<int, int> postponementCount = new Dictionary<int, int>(_postponementService.GetPostponemetsByMonth(SelectedAccommodationStats.getID(), int.Parse(SelectedYear)));
+                Dictionary<int, int> renovationsCount = new Dictionary<int, int>(_ownerReviewService.GetRenovationsByMonth(SelectedAccommodationStats.getID(), int.Parse(SelectedYear)));
+
+                List<int> sortedLabels = reservationCount.Keys
+                    .Union(postponementCount.Keys)
+                    .Union(renovationsCount.Keys).ToList();
+                sortedLabels.Sort();
+                Labels = sortedLabels.Select(e => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(e)).ToArray();
+
+                //mapira dictionary<int, int> na dictionary<string, int>
+                GenerateStats(reservationCount.ToDictionary(kvp => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(kvp.Key), kvp => kvp.Value),
+                    postponementCount.ToDictionary(kvp => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(kvp.Key), kvp => kvp.Value),
+                    renovationsCount.ToDictionary(kvp => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(kvp.Key), kvp => kvp.Value));
+                XLabelName = "Months";
+            }
+        }
+
+        //ToDo:zavrsiti
+        private void GenerateStats(Dictionary<string, int> reservationCount, Dictionary<string, int> postponementCount, Dictionary<string, int> renovationsCount)
+        {
+            ChartValues<int> reservationsChartValues = new ChartValues<int>();
+            ChartValues<int> postponementsChartValues = new ChartValues<int>();
+            ChartValues<int> renovationsChartValues = new ChartValues<int>();
+            foreach (string label in Labels)
+            {
+                reservationsChartValues.Add(reservationCount.ContainsKey(label) ? reservationCount[label] : 0);
+                postponementsChartValues.Add(postponementCount.ContainsKey(label) ? postponementCount[label] : 0);
+                renovationsChartValues.Add(renovationsCount.ContainsKey(label) ? renovationsCount[label] : 0);
+            }
+
+            Statistics = new SeriesCollection { new ColumnSeries
+            {
+                Title = "Reservations",
+                Values = reservationsChartValues
+            }};
+
+            Statistics.Add(new ColumnSeries
+            {
+                Title = "Postponements",
+                Values = postponementsChartValues
+            });
+
+            Statistics.Add(new ColumnSeries
+            {
+                Title = "Renovations",
+                Values = renovationsChartValues
+            });
+        } 
+        #endregion
+
         #region CreateNavigationServices
+        //Da li smestaj moze da se renovira ukoliko je skoro renoviran?
+        private INavigationService CreateRenovationAppointingNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<RenovationAppointingViewModel>
+                (modalNavigationStore, () => new RenovationAppointingViewModel(SelectedAccommodation, _reservationService, _renovationAppointmentService, _accommodationService, modalNavigationStore));
+        }
+
         private INavigationService CreateGuestReviewNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<GuestReviewViewModel>
@@ -468,9 +676,23 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 PastReservations.Add(guestreview);
         }
 
-        private void UpdateNumberOfRegisterdAccommodations()
+        private void UpdateNumberOfRegisteredAccommodations()
         {
             AccommodationNumber = Accommodations.Count().ToString();
+        }
+
+        private void UpdateActiveRenovations(List<RenovationAppointment> activeRenovations)
+        {
+            ActiveRenovations.Clear();
+            foreach (var activeRenovation in activeRenovations)
+                ActiveRenovations.Add(activeRenovation);
+        }
+
+        private void UpdatePastRenovations(List<RenovationAppointment> pastRenovations)
+        {
+            PastRenovations.Clear();
+            foreach (var pastRenovation in pastRenovations)
+                PastRenovations.Add(pastRenovation);
         }
 
         private void UpdateNumberOfReservedAccommodations()
@@ -483,9 +705,12 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             UpdateAccommodations(_accommodationService.GetByUserId(_user.getID()));
             UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.getID()));
             UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.getID()));
-            UpdateNumberOfRegisterdAccommodations();
+            UpdateActiveRenovations(_renovationAppointmentService.GetActiveRenovations(_user.getID()));
+            UpdatePastRenovations(_renovationAppointmentService.GetPastRenovations(_user.getID()));
+            UpdateNumberOfRegisteredAccommodations();
             UpdateNumberOfReservedAccommodations();
         }
+
         #endregion
 
         #region Validation
