@@ -19,7 +19,7 @@ namespace SIMS_Booking.UI.View
         private readonly Tour _selectedTour;
         public Voucher SelectedVoucher { get; set; }
         public User LoggedUser { get; set; }
-        //private ReservedToursCsvCrudRepository _reservedToursCsvCrudRepository;
+        
         private ReservedTourService _reservedTourService;
         public TourReservation _tourReservation;
         public List<Reservation> Reservations { get; set; } 
@@ -35,20 +35,18 @@ namespace SIMS_Booking.UI.View
         private int maxGuests;
         private string name;
 
-        //string name, Location location, string description, Language language, int maxGuests, int time, User loggedUser
-
-        public Guest2TourReservation(Tour selectedTour, User loggedUser)
+     
+        public Guest2TourReservation(Tour selectedTour, User loggedUser, ReservedTourService reservedTourService, VoucherService voucherService, Voucher voucher)
         {
             InitializeComponent();
 
-          //  _reservedToursCsvCrudRepository = new ReservedToursCsvCrudRepository();
-            _reservedTourService = new ReservedTourService();
-            _voucherService = new VoucherService();
+            _reservedTourService = reservedTourService;
+            _voucherService = voucherService;
             DataContext = this;   
 
             LoggedUser = loggedUser;
             _selectedTour = selectedTour;
-            SelectedVoucher = new Voucher();
+            SelectedVoucher = voucher;
 
             BoxName.Text = selectedTour.Name;
             BoxLocation.Text = selectedTour.Location.City;
@@ -56,7 +54,6 @@ namespace SIMS_Booking.UI.View
             BoxLanguage.Text = selectedTour.Language.ToString();
             BoxMaxGuests.Text = selectedTour.MaxGuests.ToString();
             BoxTime.Text = selectedTour.Time.ToString();
-            //AvailableNumber.Text = (selectedTour.MaxGuests - _reservedToursCsvCrudRepository.GetNumberOfGuestsForTour(selectedTour.getID())).ToString();
             AvailableNumber.Text = (selectedTour.MaxGuests - _reservedTourService.GetNumberOfGuestsForTour(selectedTour.getID())).ToString();
 
 
@@ -75,16 +72,20 @@ namespace SIMS_Booking.UI.View
 
         private void Confirm(object sender, RoutedEventArgs e)
         {
-            
-            if (Convert.ToInt32(NumberOfGuests.Text) == null)
-            {
-                MessageBox.Show("Please enter the number of guests.");
+            int numberOfGuests;
+
+            if (!int.TryParse(NumberOfGuests.Text, out numberOfGuests)) {
+
+                MessageBox.Show("Niste uneli u dobrom formatu.");
 
             }
-            //else if (_selectedTour.MaxGuests < Convert.ToInt32(NumberOfGuests.Text) + _reservedToursCsvCrudRepository.GetNumberOfGuestsForTour(_selectedTour.getID()))
+            else if (Convert.ToInt32(NumberOfGuests.Text) == null)
+            {
+                MessageBox.Show("Molim Vas da unesete broj gostiju.");
+
+            }
             else if (_selectedTour.MaxGuests < Convert.ToInt32(NumberOfGuests.Text) + _reservedTourService.GetNumberOfGuestsForTour(_selectedTour.getID()))
             {
-                //    MessageBox.Show($"Number of guests cannot be more than the maximum number of guests for this tour ({_selectedTour.MaxGuests - _reservedToursCsvCrudRepository.GetNumberOfGuestsForTour(_selectedTour.getID())} guests).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 MessageBox.Show($"Number of guests cannot be more than the maximum number of guests for this tour ({_selectedTour.MaxGuests - _reservedTourService.GetNumberOfGuestsForTour(_selectedTour.getID())} guests).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 return;
@@ -102,9 +103,7 @@ namespace SIMS_Booking.UI.View
 
 
                 TourReservation tourReservation = new TourReservation(LoggedUser.getID(), _selectedTour.getID(), Convert.ToInt32(NumberOfGuests.Text));
-             //   _reservedToursCsvCrudRepository.Save(tourReservation);
-              //  AvailableNumber.Text = (_selectedTour.MaxGuests - _reservedToursCsvCrudRepository.GetNumberOfGuestsForTour(_selectedTour.getID())).ToString();
-
+            
                 _reservedTourService.Save(tourReservation);
                 AvailableNumber.Text = (_selectedTour.MaxGuests - _reservedTourService.GetNumberOfGuestsForTour(_selectedTour.getID())).ToString();
 

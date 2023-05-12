@@ -7,6 +7,8 @@ using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Repository.RelationsRepository;
+using SIMS_Booking.Service;
+using SIMS_Booking.Service.RelationsService;
 
 namespace SIMS_Booking.UI.View;
 
@@ -16,36 +18,44 @@ namespace SIMS_Booking.UI.View;
 public partial class Guest2DrivingReservationView : Window
 {
     public readonly Vehicle _selectedVehicle;
-    private readonly VehicleCsvCrudRepository _vehicleCsvCrudRepository;
+ 
+    private readonly VehicleReservationService _vehicleReservationService;
     public List<Location> Locations { get; set; }
     public List<DriverLocations> DrivingReservations { get; set; }
     public User LoggedUser { get; set; }
     public Address StartingAddress { get; set; }
     public Address EndingAddress { get; set; }
     public ReservationOfVehicle ReservationOfVehicle { get; set; }
-    public VehicleReservationCsvCrudRepository VehicleReservationCsvCrudRespository;
+    
+    private readonly VehicleService _vehicleService;
     private string searchLocation;
     public ObservableCollection<DriverLocations> drivers { get; set; }
     public DriverLocations selectedDriver { get; set; }
 
 
-    private DriverLocationsCsvCrudRepository _driverLocationsCsvCrudRespository;
+    
+    private DriverLocationsService _driverLocationsService;
 
 
 
 
-    public Guest2DrivingReservationView(Vehicle selectedVehicle, User loggedUser)
+    public Guest2DrivingReservationView(Vehicle selectedVehicle, User loggedUser, VehicleReservationService vehicleReservationService, VehicleService vehicleService, DriverLocationsService driverLocationsService)
     {
         InitializeComponent();
 
         DataContext = this;
         _selectedVehicle = selectedVehicle;
         selectedDriver = new DriverLocations();
-        VehicleReservationCsvCrudRespository = new VehicleReservationCsvCrudRepository();  
-        _vehicleCsvCrudRepository = new VehicleCsvCrudRepository();
-        _driverLocationsCsvCrudRespository = new DriverLocationsCsvCrudRepository();
+      
+       
+        _vehicleReservationService = vehicleReservationService;
+        _vehicleService = vehicleService;
+        _driverLocationsService = driverLocationsService;
+
         LoggedUser = loggedUser;
-        drivers = new ObservableCollection<DriverLocations>(_driverLocationsCsvCrudRespository.GetAll());
+   
+        drivers = new ObservableCollection<DriverLocations>(_driverLocationsService.GetAll());
+
 
         var startingAddress = StartingAddress;
         var endingAddress = EndingAddress;
@@ -54,8 +64,11 @@ public partial class Guest2DrivingReservationView : Window
     private void Reserve(object sender, RoutedEventArgs e)
     {
         var reservedVehicle =
-            new ReservationOfVehicle(LoggedUser.getID(), _vehicleCsvCrudRepository.GetVehicleByUserID(selectedDriver.DriverId).getID(), TimeofDepartureTextBox.Text, new Address(StartingAddressTextBox.Text, selectedDriver.Location), new Address (FinalAddressTextBox.Text, selectedDriver.Location)); 
-        VehicleReservationCsvCrudRespository.Save(reservedVehicle);
+            new ReservationOfVehicle(LoggedUser.getID(), _vehicleService.GetVehicleByUserID(selectedDriver.DriverId).getID(), TimeofDepartureTextBox.Text, new Address(StartingAddressTextBox.Text, selectedDriver.Location), new Address(FinalAddressTextBox.Text, selectedDriver.Location));
+        _vehicleReservationService.Save(reservedVehicle);
+
+        MessageBox.Show("Uspešno ste rezervisali vožnju!");
+
         Close();
     }
 
@@ -74,7 +87,7 @@ public partial class Guest2DrivingReservationView : Window
     {
         get
         {
-            var result = _driverLocationsCsvCrudRespository.GetAll();
+            var result = _driverLocationsService.GetAll();
 
             if (!string.IsNullOrEmpty(searchLocation))
                 drivers = new ObservableCollection<DriverLocations>(result.Where(a =>
@@ -88,8 +101,8 @@ public partial class Guest2DrivingReservationView : Window
     public void UpdateDriverList()
     {
         drivers.Clear();
-        var result = _driverLocationsCsvCrudRespository.GetAll();
-
+      
+        var result = _driverLocationsService.GetAll();
 
         if (!string.IsNullOrEmpty(searchLocation))
             result = new List<DriverLocations>(result.Where(a =>

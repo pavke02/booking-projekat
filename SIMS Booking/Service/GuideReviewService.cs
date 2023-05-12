@@ -47,6 +47,8 @@ namespace SIMS_Booking.Service
         */
         public void SubmitReview(int tourRating, TourReservation tourReservation, List<string> images)
         {
+            //tourReservation = new TourReservation();
+            
             tourReservation.HasGuestReviewed = true;
             GuideReview guideReview = new GuideReview(tourRating, tourReservation, images);
             Save(guideReview);

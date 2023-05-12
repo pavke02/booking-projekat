@@ -37,6 +37,11 @@ namespace SIMS_Booking.Service.RelationsService
             }
         }
 
+        public List<DriverLocations> GetAll()
+        {
+            return _crudService.GetAll();
+        }
+
 
 
     }

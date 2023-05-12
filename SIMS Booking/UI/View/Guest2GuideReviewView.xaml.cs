@@ -66,6 +66,10 @@ namespace SIMS_Booking.UI.View
             imageTb.Clear();
             guest2GuideReviewViewModel.ClearURLs();
         }
-        
+
+        private void imageTb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
