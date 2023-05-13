@@ -12,6 +12,7 @@ using System.Windows;
 using System.ComponentModel;
 using SIMS_Booking.UI.ViewModel.Driver;
 using System.Windows.Threading;
+using SIMS_Booking.Service.NavigationService;
 
 namespace SIMS_Booking.Commands.DriverCommands
 {
@@ -22,15 +23,20 @@ namespace SIMS_Booking.Commands.DriverCommands
         private readonly DriverLanguagesService _driverLanguagesService;
         private readonly DriverLocationsService _driverLocationsService;
         private readonly User user;
+        private readonly INavigationService _closeModalNavigationService;
 
 
-        public PublishCommand(DriverAddVehicleViewModel viewModel, VehicleService vehicleService, DriverLanguagesService driverLanguagesService, DriverLocationsService driverLocationsService, User user)
+        public PublishCommand(DriverAddVehicleViewModel viewModel, VehicleService vehicleService, DriverLanguagesService driverLanguagesService,
+            DriverLocationsService driverLocationsService, User user, INavigationService closeModalNavigationService)
         {
             _viewModel = viewModel;
             _vehicleService = vehicleService;
             _driverLanguagesService = driverLanguagesService;
             _driverLocationsService = driverLocationsService;
             this.user = user;
+            _closeModalNavigationService = closeModalNavigationService;
+
+            _viewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
 
         public override void Execute(object? parameter)
@@ -43,7 +49,7 @@ namespace SIMS_Booking.Commands.DriverCommands
             ReadImageURLs(imageurls);
             int maximumGuests = int.Parse(_viewModel.MaxGuests);
 
-            Vehicle vehicle = new Vehicle(locations, maximumGuests, languages, imageurls, user);
+            Vehicle vehicle = new Vehicle(locations, maximumGuests, languages, imageurls, user, 0);
             _vehicleService.Save(vehicle);
 
             foreach (Language language in languages)
@@ -58,15 +64,15 @@ namespace SIMS_Booking.Commands.DriverCommands
                 _driverLocationsService.Save(driverLocations);
             }
 
-            MessageBox.Show("Vehicle published successfully!");
-
-
-
             _driverLocationsService.AddDriverLocationsToVehicles(_vehicleService);
             _driverLanguagesService.AddDriverLanguagesToVehicles(_vehicleService);
+
+            MessageBox.Show("Vehicle published successfully!");
+
+            _closeModalNavigationService.Navigate();
+
+            
         }
-
-
 
         public void ReadLanguages(List<Language> languages)
         {
@@ -106,6 +112,21 @@ namespace SIMS_Booking.Commands.DriverCommands
             foreach (string imageString in imageStrings)
             {
                 imageurls.Add(imageString);
+            }
+        }
+
+        public override bool CanExecute(object? parameter)
+        {
+            return !string.IsNullOrEmpty(_viewModel.Locations) && !string.IsNullOrEmpty(_viewModel.Languages) && 
+                   !string.IsNullOrEmpty(_viewModel.Images) && !string.IsNullOrEmpty(_viewModel.MaxGuests) && base.CanExecute(parameter);
+        }
+
+        private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(DriverAddVehicleViewModel.Locations) || e.PropertyName == nameof(DriverAddVehicleViewModel.Languages) ||
+                e.PropertyName == nameof(DriverAddVehicleViewModel.Images) || e.PropertyName == nameof(DriverAddVehicleViewModel.MaxGuests))
+            {
+                OnCanExecuteChanged();
             }
         }
     }

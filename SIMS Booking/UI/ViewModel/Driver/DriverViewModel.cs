@@ -24,7 +24,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
     public class DriverViewModel : ViewModelBase, IObserver
     { 
 
-        public Vehicle Vehicle { get; set; }
+        //public Vehicle Vehicle { get; set; }
         public User User { get; set; }
 
         private VehicleService _vehicleService;
@@ -38,6 +38,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         public ICommand NavigateToStatsViewCommand { get; }
         public ICommand NavigateToRidesCommand { get; }
         public ICommand NavigateToAddVehicleCommand { get; }
+        public ICommand NavigateToProfileCommand { get; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -45,6 +46,21 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private Vehicle _vehicle;
+        public Vehicle Vehicle
+        {
+            get => _vehicle;
+            set
+            {
+                if (value != _vehicle)
+                {
+                    _vehicle = value;
+                    Update();
+                    OnPropertyChanged();
+                }
+            }
         }
 
         private List<Location> _locations;
@@ -140,12 +156,28 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             _ridesService = ridesService;
             _finishedRidesService = finishedRidesService;
 
-            Update();
+            //Update();
 
-            NavigateToGalleryViewCommand = new NavigateCommand(CreateGalleryViewNavigationService(modalNavigationStore));
-            NavigateToStatsViewCommand = new NavigateCommand(CreateStatsViewNavigationService(modalNavigationStore));
-            NavigateToRidesCommand = new NavigateCommand(CreateRidesNavigationService(modalNavigationStore));
-            NavigateToAddVehicleCommand = new NavigateCommand(CreateAddVehicleNavigationService(modalNavigationStore));
+            NavigateToGalleryViewCommand = new NavigateCommand(CreateGalleryViewNavigationService(modalNavigationStore), this, () => Vehicle != null);
+            NavigateToStatsViewCommand = new NavigateCommand(CreateStatsViewNavigationService(modalNavigationStore), this, () => Vehicle != null);
+            NavigateToRidesCommand = new NavigateCommand(CreateRidesNavigationService(modalNavigationStore), this, () => Vehicle != null);
+            NavigateToAddVehicleCommand = new NavigateCommand(CreateAddVehicleNavigationService(modalNavigationStore), this, () => Vehicle == null);
+            NavigateToProfileCommand = new NavigateCommand(CreateProfileNavigationService(modalNavigationStore), this, () => Vehicle != null);
+
+            foreach(Rides ride in _ridesService.GetActiveRides(User, Vehicle))
+            {
+                if(ride.Type == "Fast")
+                {
+                    MessageBox.Show("You have new fast rides!");
+                }
+            }
+            foreach (Rides ride in _ridesService.GetActiveRides(User, Vehicle))
+            {
+                if (ride.Type == "Group")
+                {
+                    MessageBox.Show("You have new group rides!");
+                }
+            }
         }
 
         public string LocationsToString(List<Location> locations)
@@ -168,16 +200,8 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             return AllLanguages;
         }
 
-        //private void AddVehicle_Click(object sender, RoutedEventArgs e)
-        //{
-        //    DriverAddVehicle driverAddVehicle = new DriverAddVehicle(_vehicleService, _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository, User);
-        //    driverAddVehicle.Show();
-        //    Update();
-        //}
-
         public void Update()
         {
-
             Vehicle = _vehicleService.GetVehicleByUserID(User.getID());
 
             if (Vehicle != null)
@@ -196,40 +220,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 LanguagesString = LanguagesToString(Languages);
                 MaxGuestsString = MaxGuests.ToString();
             }
-
-            //if (string.IsNullOrEmpty(MaxGuestsTB.Text))
-            //{
-            //    AddVehicle.IsEnabled = true;
-            //    DriverGallery.IsEnabled = false;
-            //    ViewStatsButton.IsEnabled = false;
-            //    ViewRides.IsEnabled = false;
-            //}
-            //else
-            //{
-            //    AddVehicle.IsEnabled = false;
-            //    DriverGallery.IsEnabled = true;
-            //    ViewStatsButton.IsEnabled = true;
-            //    ViewRides.IsEnabled = true;
-            //}
         }
-
-        //private void DriverGallery_Click(object sender, RoutedEventArgs e)
-        //{
-        //    DriverGalleryView galleryView = new DriverGalleryView(Vehicle);
-        //    galleryView.Show();
-        //}
-
-        //private void ViewRides_Click(object sender, RoutedEventArgs e)
-        //{
-        //    DriverRides driverRides = new DriverRides(User, _ridesService, _finishedRidesService, _vehicleService);
-        //    driverRides.Show();
-        //}
-
-        //private void ViewStatsButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    DriverStatsView driverStatsView = new DriverStatsView(_finishedRidesService, User);
-        //    driverStatsView.Show();
-        //}
 
         private INavigationService CreateGalleryViewNavigationService(ModalNavigationStore modalNavigationStore)
         {
@@ -255,5 +246,10 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 (modalNavigationStore, () => new DriverAddVehicleViewModel(_vehicleService, _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository, User, modalNavigationStore));
         }
 
+        private INavigationService CreateProfileNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<DriverProfileViewModel>
+                (modalNavigationStore, () => new DriverProfileViewModel(modalNavigationStore, _finishedRidesService, _vehicleService, User));
+        }
     }
 }

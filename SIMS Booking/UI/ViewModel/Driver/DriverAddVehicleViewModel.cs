@@ -33,9 +33,9 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         public User User { get; set; }
 
         public List<string> Countries { get; set; }
-        public ObservableCollection<string> Cities { get; set; }
+        //public ObservableCollection<string> Cities { get; set; }
 
-        public string Image { get; set; }
+        
 
         //public string Locations { get; set; }
         //public ObservableCollection<string> Languages { get; set; }
@@ -48,6 +48,33 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         public ICommand AddImageCommand { get; }
         public ICommand PublishVehicleCommand { get; }
 
+        private string _image;
+        public string Image
+        {
+            get => _image;
+            set
+            {
+                if (value != _image)
+                {
+                    _image = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private ObservableCollection<string> _cities;
+        public ObservableCollection<string> Cities
+        {
+            get => _cities;
+            set
+            {
+                if (value != _cities)
+                {
+                    _cities = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private string _city;
         public string City
@@ -73,7 +100,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 {
                     _country = value;
                     OnPropertyChanged();
-                    //FillCityCb();
+                    FillCityCb();
                 }
             }
         }
@@ -87,7 +114,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 if (_locations != value)
                 {
                     _locations = value;
-                    OnPropertyChanged(nameof(Locations));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -101,7 +128,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 if (_languages != value)
                 {
                     _languages = value;
-                    OnPropertyChanged(nameof(Languages));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -115,7 +142,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 if (_images != value)
                 {
                     _images = value;
-                    OnPropertyChanged(nameof(Images));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -129,7 +156,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 if (_maxGuests != value)
                 {
                     _maxGuests = value;
-                    OnPropertyChanged(nameof(_maxGuests));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -143,7 +170,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 if (_selectedLanguage != value)
                 {
                     _selectedLanguage = value;
-                    OnPropertyChanged(nameof(_selectedLanguage));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -156,26 +183,13 @@ namespace SIMS_Booking.UI.ViewModel.Driver
 
             _cityCountryCsvRepository = cityCountryCsvRepository;
 
-            //if(Countries == null)
-            //{
-            //    Countries = new List<string>(_cityCountryCsvRepository.LoadCountries());
-            //}
-
             Locations = "";
             Languages = "";
             Images = "";
 
-
-            Countries = new List<string> { "Serbia", "England", "France", "Germany", "Italy", "Spain" };
+            Countries = new List<string>(_cityCountryCsvRepository.LoadCountries());
 
             Cities = new ObservableCollection<string>();
-
-            Cities.Add("Belgrade");
-            Cities.Add("Novi Sad");
-            Cities.Add("Nis");
-            Cities.Add("Kraljevo");
-            Cities.Add("Sombor");
-
             AllLanguages = new List<string> { "Serbian", "English" };
 
             User = user;
@@ -184,7 +198,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             AddLocationCommand = new AddLocation(this);
             AddLanguageCommand = new AddLanguage(this);
             AddImageCommand = new AddImage(this);
-            PublishVehicleCommand = new PublishCommand(this, _vehicleService, _driverLanguagesService, _driverLocationsService, User);
+            PublishVehicleCommand = new PublishCommand(this, _vehicleService, _driverLanguagesService, _driverLocationsService, User, CreateCloseAddVehicleNavigationService(modalNavigationStore));
         }
 
         private void FillCityCb()

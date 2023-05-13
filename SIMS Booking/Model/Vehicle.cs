@@ -16,6 +16,7 @@ namespace SIMS_Booking.Model
         public int MaxGuests  { get; set; }
         public List<Language> Languages { get; set; }
         public List<string> ImagesURL { get; set; }
+        public int CanceledRidesCount { get; set; }
 
         public Vehicle()
         {
@@ -24,7 +25,7 @@ namespace SIMS_Booking.Model
             ImagesURL = new List<string>();
         }
 
-        public Vehicle(List<Location> locations, int maxGuests, List<Language> languages, List<string> imagesURL, User user)
+        public Vehicle(List<Location> locations, int maxGuests, List<Language> languages, List<string> imagesURL, User user, int canceledRidesCount)
         {
             Locations = new List<Location>();
             foreach (Location location in locations)
@@ -44,6 +45,7 @@ namespace SIMS_Booking.Model
             }
             User = user;
             UserID = user.getID();
+            CanceledRidesCount = canceledRidesCount;
         }
 
         public int getID()
@@ -62,6 +64,7 @@ namespace SIMS_Booking.Model
             MaxGuests = Convert.ToInt32(values[1]);
             UserID = Convert.ToInt32(values[2]);
             ImagesURL = values[3].Split(',').ToList();
+            CanceledRidesCount = Convert.ToInt32(values[4]);
         }
 
         public string[] ToCSV()
@@ -70,7 +73,8 @@ namespace SIMS_Booking.Model
                 ID.ToString(),
                 MaxGuests.ToString(),
                 UserID.ToString(),
-                string.Join(',', ImagesURL)
+                string.Join(',', ImagesURL),
+                CanceledRidesCount.ToString(),
                 };
             return csvValues;
         }

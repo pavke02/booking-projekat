@@ -15,21 +15,21 @@ namespace SIMS_Booking.Model
         public string Street { get; set; }
         public Location Location { get; set; }
         public DateTime DateTime { get; set; }
-        public bool Fast { get; set; }
+        public string Type { get; set; }
         public Rides() { }
 
-        public Rides(int driverID, string street, Location location, DateTime dateTime, bool fast)
+        public Rides(int driverID, string street, Location location, DateTime dateTime, string type)
         {
             DriverID = driverID;
             Street = street;
             Location = location;
             DateTime = dateTime;
-            Fast = fast;
+            Type = type;
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { ID.ToString(), DriverID.ToString(), Street, Location.Country, Location.City, DateTime.ToString(), Fast.ToString()};
+            string[] csvValues = { ID.ToString(), DriverID.ToString(), Street, Location.Country, Location.City, DateTime.ToString(), Type};
             return csvValues;
         }
 
@@ -40,7 +40,7 @@ namespace SIMS_Booking.Model
             Street = values[2];
             Location = new Location(values[3], values[4]);
             DateTime = Convert.ToDateTime(values[5]);
-            Fast = Convert.ToBoolean(values[6]);
+            Type = values[6];
         }
 
         public int getID()

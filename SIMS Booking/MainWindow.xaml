@@ -58,6 +58,9 @@
             <DataTemplate DataType="{x:Type viewModelDriver:DriverAddVehicleViewModel}">
                 <viewDriver:DriverAddVehicle></viewDriver:DriverAddVehicle>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverProfileViewModel}">
+                <viewDriver:ProfileView></viewDriver:ProfileView>
+            </DataTemplate>
         </Grid.Resources>
 
         <modalControl:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">

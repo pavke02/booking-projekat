@@ -53,7 +53,7 @@ namespace SIMS_Booking.Service
                         onLocation = true;
                     }
                 }
-                if ((ride.DriverID == user.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now) || (ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now && ride.Fast == true && onLocation == true))
+                if ((ride.DriverID == user.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now) || (ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now && ride.Type == "Fast" && onLocation == true))
                 {
                     ActiveRides.Add(ride);
                 }

@@ -15,30 +15,36 @@ using System.Windows.Threading;
 
 namespace SIMS_Booking.Commands.DriverCommands
 {
-    class AddImage : CommandBase
+    class CancelCommand : CommandBase
     {
-        private readonly DriverAddVehicleViewModel _viewModel;
+        private readonly DriverRidesViewModel _viewModel;
+        private readonly RidesService _ridesService;
 
-        public AddImage(DriverAddVehicleViewModel viewModel)
+        public CancelCommand(DriverRidesViewModel viewModel, RidesService ridesService)
         {
             _viewModel = viewModel;
+            _ridesService = ridesService;
 
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
 
         public override void Execute(object? parameter)
         {
-            _viewModel.Images += _viewModel.Image + "\n";
+            MessageBox.Show("Ride successfully canceled!");
+
+            _ridesService.Delete(_viewModel.SelectedRide);
+
+            _viewModel.Vehicle.CanceledRidesCount++;
         }
 
         public override bool CanExecute(object? parameter)
         {
-            return _viewModel.Image != null && base.CanExecute(parameter);
+            return _viewModel.SelectedRide != null && string.IsNullOrEmpty(_viewModel.RemainingTime) && string.IsNullOrEmpty(_viewModel.Taximeter) && base.CanExecute(parameter);
         }
 
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(DriverAddVehicleViewModel.Image))
+            if (e.PropertyName == nameof(DriverRidesViewModel.SelectedRide) || e.PropertyName == nameof(DriverRidesViewModel.Taximeter) || e.PropertyName == nameof(DriverRidesViewModel.RemainingTime))
             {
                 OnCanExecuteChanged();
             }

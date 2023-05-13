@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Height="450" Width="950">
+        Height="450" Width="1000">
     
     <Grid>
         <Grid.RowDefinitions>
@@ -47,6 +47,10 @@
 
             </Button>
             <Button x:Name="ViewStatsButton" Content="View Stats" Width="80" Command="{Binding NavigateToStatsViewCommand}"/>
+
+            <Button Name="ViewProfile" Content="View Profile" Padding="5, 0, 5, 0" Margin="575, 0, 10, 0 " Width="75" Command="{Binding NavigateToProfileCommand}" >
+
+            </Button>
 
         </StackPanel>
 

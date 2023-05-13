@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
-        Height="460" Width="720">
+        Height="460" Width="820">
     <Grid Margin="0,0,0,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="350" ></RowDefinition>
@@ -23,7 +23,7 @@
                     <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="*"/>
                     <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="*"/>
                     <DataGridTextColumn Header="Date" Binding="{Binding DateTime}" Width="*"/>
-                    <DataGridTextColumn Header="Is fast" Binding="{Binding Fast}" Width="*"/>
+                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Button x:Name="CloseButton" Content="x" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Black" Width="20" Height="20" Foreground="White" Command="{Binding NavigateBackCommand}"/>
@@ -39,7 +39,8 @@
                 <Label x:Name="StopwatchLabel" Content="{Binding Taximeter}" HorizontalAlignment="Left" Margin="466,32,0,0" VerticalAlignment="Top" Width="57" Height="30" RenderTransformOrigin="1.401,0.599"/>
                 <Button x:Name="stopButton" Content="Stop" HorizontalAlignment="Left" Margin="384,25,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.223,-1.029" Width="67" Height="40" Command="{Binding StopRideCommand}"/>
                 <Label Content="{Binding RSDString}" HorizontalAlignment="Left" Margin="578,32,0,0" VerticalAlignment="Top" Width="32" Height="30" HorizontalContentAlignment="Left" VerticalContentAlignment="Top"/>
-                <TextBox x:Name="lateInMinutesTb" Text="{Binding LateInMinutes}" HorizontalAlignment="Left" Margin="120,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80" Height="30" Background="White"/>
+                <TextBox x:Name="lateInMinutesTb" Text="{Binding LateInMinutes, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="120,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80" Height="30" Background="White"/>
+                <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="719,25,0,0" VerticalAlignment="Top" Width="70" Height="40" Command="{Binding CancelCommand}"/>
 
             </Grid>
         </Grid>

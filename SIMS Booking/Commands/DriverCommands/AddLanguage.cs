@@ -33,7 +33,7 @@ namespace SIMS_Booking.Commands.DriverCommands
 
         public override bool CanExecute(object? parameter)
         {
-            return /*_viewModel.SelectedLanguage != null &&*/ base.CanExecute(parameter);
+            return _viewModel.SelectedLanguage != null && base.CanExecute(parameter);
         }
 
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
