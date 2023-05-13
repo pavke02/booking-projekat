@@ -21,6 +21,8 @@ namespace SIMS_Booking.UI.View
         public Voucher SelectedVoucher { get; set; }
         public User LoggedUser { get; set; }
         public int searchGuestNumber;
+        
+
         public DriverLocations driverLocations { get; set; }
         public TourReservation SelectedTourReservation { get; set; }
 
@@ -153,7 +155,7 @@ namespace SIMS_Booking.UI.View
         private void QuickTaxi_Click(object sender, RoutedEventArgs e)
         {
 
-            Guest2FindingTaxiFast guest2FindingTaxiFast = new Guest2FindingTaxiFast(LoggedUser);
+            Guest2FindingTaxiFast guest2FindingTaxiFast = new Guest2FindingTaxiFast(LoggedUser, _vehicleReservationService, _driverLocationsService);
             guest2FindingTaxiFast.Show();
 
 

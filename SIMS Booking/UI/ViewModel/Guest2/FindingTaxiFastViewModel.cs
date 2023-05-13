@@ -14,8 +14,8 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
 {
     public class FindingTaxiFastViewModel : ViewModelBase
     {
-        public VehicleReservationService vehicleReservationService;
-        public DriverLocationService driverLocationService;
+        public VehicleReservationService _vehicleReservationService;
+        public DriverLocationsService _driverLocationsService;
         public User loggedUser { get; set; }
 
         public ICommand SubmitReviewCommand { get; }
@@ -92,13 +92,13 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
 
         #endregion
 
-        public FindingTaxiFastViewModel(User _loggedUser)
+        public FindingTaxiFastViewModel(User _loggedUser, VehicleReservationService vehicleReservationService, DriverLocationsService driverLocationsService)
         {
 
             loggedUser = _loggedUser;
 
-            vehicleReservationService = new VehicleReservationService();
-            driverLocationService = new DriverLocationService();
+            _vehicleReservationService = vehicleReservationService;
+            _driverLocationsService = driverLocationsService;
 
 
 
@@ -108,14 +108,14 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
         {
             if (city != "" && startingAddress != "" && finalAddress != "" && timeOfDeparture != "")
             {
-                DriverLocations driverLocations = driverLocationService.GetDriverLocationsByLocation(city);
+                DriverLocations driverLocations = _driverLocationsService.GetDriverLocationsByLocation(city);
                 if (driverLocations == null)
                 {
                     MessageBox.Show("Trenutno nema slobodnih vozila. ");
                 }
                 else
                 {
-                    vehicleReservationService.Save(new ReservationOfVehicle(loggedUser.GetId(), driverLocations.DriverId, timeOfDeparture, new Address(startingAddress, driverLocations.Location), new Address(finalAddress, driverLocations.Location)));
+                    _vehicleReservationService.Save(new ReservationOfVehicle(loggedUser.GetId(), driverLocations.DriverId, timeOfDeparture, new Address(startingAddress, driverLocations.Location), new Address(finalAddress, driverLocations.Location)));
                     MessageBox.Show("Uspesno ste rezervisali brzu voznju. ");
                     return true;
                 }

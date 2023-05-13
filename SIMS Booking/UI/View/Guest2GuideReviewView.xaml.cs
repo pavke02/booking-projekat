@@ -4,6 +4,7 @@ using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.ViewModel;
+using SIMS_Booking.UI.ViewModel.Guest2;
 
 namespace SIMS_Booking.UI.View
 {
@@ -13,15 +14,15 @@ namespace SIMS_Booking.UI.View
     public partial class Guest2GuideReviewView : Window
     {
 
-        Guest2GuideReviewViewModel guest2GuideReviewViewModel { get; set; }
+        GuideReviewViewModel GuideReviewViewModel { get; set; }
 
         public Guest2GuideReviewView(GuideReviewService guideReviewService, ReservedTourService reservedTourService, TourReservation tourReservation)
         {
             InitializeComponent();
-            guest2GuideReviewViewModel = new Guest2GuideReviewViewModel(guideReviewService,reservedTourService,tourReservation);
+            GuideReviewViewModel = new GuideReviewViewModel(guideReviewService,reservedTourService,tourReservation);
 
 
-            DataContext = guest2GuideReviewViewModel;
+            DataContext = GuideReviewViewModel;
 
             
 
@@ -36,7 +37,7 @@ namespace SIMS_Booking.UI.View
 
         private void SubmitReview(object sender, RoutedEventArgs e)
         {
-            guest2GuideReviewViewModel.SubmitReview(imageTb.Text);
+            GuideReviewViewModel.SubmitReview(imageTb.Text);
             Close();
         }
 
@@ -44,7 +45,7 @@ namespace SIMS_Booking.UI.View
         {
             addURLButton.Visibility = Visibility.Hidden;
 
-            if (guest2GuideReviewViewModel.ImageTbCheck(urlTb.Text))
+            if (GuideReviewViewModel.ImageTbCheck(urlTb.Text))
             {
                 addURLButton.Visibility = Visibility.Visible;
             }
@@ -64,7 +65,7 @@ namespace SIMS_Booking.UI.View
         private void ClearURLs(object sender, RoutedEventArgs e)
         {
             imageTb.Clear();
-            guest2GuideReviewViewModel.ClearURLs();
+            GuideReviewViewModel.ClearURLs();
         }
 
         private void imageTb_TextChanged(object sender, TextChangedEventArgs e)
