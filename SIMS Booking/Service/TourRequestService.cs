@@ -1,43 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using SIMS_Booking.Model;
-using SIMS_Booking.Utility.Observer;
+﻿using SIMS_Booking.Model;
+using SIMS_Booking.Repository;
 
 
 namespace SIMS_Booking.Service
 {
     public class TourRequestService
     {
-        private readonly CrudService<TourRequest> _crudService;
+        private readonly ICRUDRepository<TourRequest> _repository;
 
-
-        public TourRequestService()
+        public TourRequestService(ICRUDRepository<TourRequest> repository)
         {
-            _crudService = new CrudService<TourRequest>("../../../Resources/Data/tourRequests.csv");
+            _repository = repository;
         }
-
-        #region Crud 
-
-        public void Save(TourRequest tourRequest)
-        {
-            _crudService.Save(tourRequest);
-        }
-
-        public List<TourRequest> GetAll()
-        {
-            return _crudService.GetAll();
-        }
-
-        public TourRequest GetById(int id)
-        {
-            return _crudService.GetById(id);
-        }
-
-        #endregion
-
-
-
-
-
     }
 }

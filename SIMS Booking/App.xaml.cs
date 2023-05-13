@@ -92,7 +92,6 @@ namespace SIMS_Booking
             services.AddSingleton<UsersAccommodationService>();
 
             services.AddSingleton<DriverLanguagesService>();
-            services.AddSingleton<DriverLocationService>();
             services.AddSingleton<DriverLocationsService>();
             services.AddSingleton<ReservedTourService>();
             services.AddSingleton<ConfirmTourService>();

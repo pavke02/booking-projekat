@@ -1,4 +1,6 @@
-﻿using SIMS_Booking.Model;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Repository;
 
@@ -34,12 +36,12 @@ namespace SIMS_Booking.Service.RelationsService
 
         public List<DriverLocations> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
         public DriverLocations GetDriverLocationsByLocation(string city)
         {
-            return _crudService.GetAll().FirstOrDefault(d => d.Location.City.ToLower().Contains(city.ToLower()));
+            return _repository.GetAll().FirstOrDefault(d => d.Location.City.ToLower().Contains(city.ToLower()));
         }
 
 
