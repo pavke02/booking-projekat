@@ -9,7 +9,7 @@ namespace SIMS_Booking.Model
 
     public class User : ISerializable, IDable
     {
-        private int ID;        
+        private int _id;        
         public string Username { get; set; }
         public string Password { get; set; }
         public Roles Role { get; set; }
@@ -29,17 +29,17 @@ namespace SIMS_Booking.Model
 
         public int GetId()
         {
-            return ID;
+            return _id;
         }
 
         public void SetId(int id)
         {
-            ID = id;
+            _id = id;
         }
 
         public void FromCSV(string[] values)
         {
-            ID = int.Parse(values[0]);
+            _id = int.Parse(values[0]);
             Username = values[1];
             Password = values[2];
             Role = (Roles)Enum.Parse(typeof(Roles), values[3]);
@@ -49,7 +49,7 @@ namespace SIMS_Booking.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { ID.ToString(), Username, Password, Role.ToString(), IsSuperUser.ToString(), Age.ToString() };
+            string[] csvValues = { _id.ToString(), Username, Password, Role.ToString(), IsSuperUser.ToString(), Age.ToString() };
             return csvValues;
         }                
     }

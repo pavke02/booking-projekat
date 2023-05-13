@@ -7,7 +7,7 @@ namespace SIMS_Booking.Model
 {
     public class Postponement : ISerializable, IDable
     {
-        private int Id { get; set; }
+        private int _id { get; set; }
         public int ReservationId { get; set; }
         public Reservation Reservation { get; set; }
         public DateTime NewStartDate { get; set; }
@@ -35,7 +35,7 @@ namespace SIMS_Booking.Model
         {
             string[] csvValues =
             {
-                Id.ToString(), ReservationId.ToString(), NewStartDate.ToShortDateString(),
+                _id.ToString(), ReservationId.ToString(), NewStartDate.ToShortDateString(),
                 NewEndDate.ToShortDateString(), Status.ToString(), Comment, IsNotified.ToString()
             };
             return csvValues;
@@ -43,7 +43,7 @@ namespace SIMS_Booking.Model
 
         public void FromCSV(string[] values)
         {
-            Id = int.Parse(values[0]);
+            _id = int.Parse(values[0]);
             ReservationId = int.Parse(values[1]);
             NewStartDate = (DateTime.Parse(values[2]));
             NewEndDate = (DateTime.Parse(values[3]));
@@ -54,12 +54,12 @@ namespace SIMS_Booking.Model
 
         public int GetId()
         {
-            return Id;
+            return _id;
         }
 
         public void SetId(int id)
         {
-            Id = id;
+            _id = id;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace SIMS_Booking.Model
 {
     public class Reservation : ISerializable, IDable
     {
-        private int ID;
+        private int _id;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Accommodation Accommodation { get; set; }
@@ -28,17 +28,17 @@ namespace SIMS_Booking.Model
 
         public int GetId()
         {
-            return ID;
+            return _id;
         }
 
         public void SetId(int id)
         {
-            ID = id;
+            _id = id;
         }
 
         public void FromCSV(string[] values)
         {
-            ID = int.Parse(values[0]);
+            _id = int.Parse(values[0]);
             StartDate = DateTime.Parse(values[1]);
             EndDate = DateTime.Parse(values[2]);
             HasOwnerReviewed = bool.Parse(values[3]);
@@ -47,7 +47,7 @@ namespace SIMS_Booking.Model
 
         public string[] ToCSV()
         {            
-            string[] csvValues = { ID.ToString(), StartDate.ToShortDateString(), EndDate.ToShortDateString(), HasOwnerReviewed.ToString(), HasGuestReviewed.ToString() };
+            string[] csvValues = { _id.ToString(), StartDate.ToShortDateString(), EndDate.ToShortDateString(), HasOwnerReviewed.ToString(), HasGuestReviewed.ToString() };
             return csvValues;
         }        
     }
