@@ -67,6 +67,10 @@
             <DataTemplate DataType="{x:Type viewModelGuide:CompletedToursViewModel}">
                 <viewGuide:CompletedToursView></viewGuide:CompletedToursView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:StartingTourViewModel}">
+                <viewGuide:StartingTourView></viewGuide:StartingTourView>
+            </DataTemplate>
+
 
         </Grid.Resources>
         <Grid.ColumnDefinitions>

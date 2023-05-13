@@ -55,19 +55,21 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             _modalNavigationStore = modalNavigationStore;
 
             NowTours = new ObservableCollection<Tour>(_tourService.GetTodaysTours());
-            BackCommand = new NavigateCommand(CreateCloseModalNavigationService(modalNavigationStore));
+            BackCommand = new NavigateCommand(CreateCloseModalNavigationService(navigationStore));
             StartingTourCommand = new NavigateCommand(CreateStartingTournavigationService(navigationStore));
 
         }
-        private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
+        private INavigationService CreateCloseModalNavigationService(NavigationStore navigationStore)
         {
-            return new CloseModalNavigationService(modalNavigationStore);
+            return new NavigationService<MainWindowViewModel>
+            (navigationStore, () => _mainViewModel);
+
         }
 
         private INavigationService CreateStartingTournavigationService(NavigationStore navigationStore)
         {
             return new NavigationService<StartingTourViewModel>
-            (navigationStore, () => new StartingTourViewModel(_tour, _confirmTourService, _createTourViewModel, _modalNavigationStore, navigationStore));
+            (navigationStore, () => new StartingTourViewModel(SelectedTour, _confirmTourService, _createTourViewModel, _modalNavigationStore, navigationStore));
         }
 
     }

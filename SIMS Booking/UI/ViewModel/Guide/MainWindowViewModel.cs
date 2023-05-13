@@ -43,12 +43,11 @@ namespace SIMS_Booking.UI.ViewModel.Guide
 
 
         public MainWindowViewModel(TourService tourService, ConfirmTourService confirmTourService,
-            TourPointService tourPointService, TextBox textBox, UserService userService, TourReview tourReview,
-            Tour tour, TourReviewService tourReviewService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,MainWindowViewModel mainViewModel)
+            TourPointService tourPointService, TextBox textBox, UserService userService, TourReview tourReview
+            , TourReviewService tourReviewService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,MainWindowViewModel mainViewModel)
         {
             _textBox = textBox;
             _tourReview = tourReview;
-            _tour = tour;
             _tourReviewService = tourReviewService;
             _tourService = tourService;
             _tourService.Subscribe(this);
@@ -78,19 +77,19 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         private INavigationService CreateTodaysToursnavigationService(NavigationStore navigationStore)
         {
             return new NavigationService<TodaysToursViewModel>
-            (navigationStore, () => new TodaysToursViewModel(_tourService,_tour,_mainviewModel,_modalNavigationStore,_navigationStore,_confirmTourService,_createTourViewModel) );
+            (navigationStore, () => new TodaysToursViewModel(_tourService,_tour,this,_modalNavigationStore,_navigationStore,_confirmTourService,_createTourViewModel) );
         }
 
         private INavigationService CreateFutureToursnavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<FutureToursViewModel>
-            (modalNavigationStore, () => new FutureToursViewModel(_tourService,_mainviewModel,_modalNavigationStore));
+            (modalNavigationStore, () => new FutureToursViewModel(_tourService,this,_modalNavigationStore));
         }
 
         private INavigationService CreateCompletedToursnavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<CompletedToursViewModel>
-            (modalNavigationStore, () => new CompletedToursViewModel(_tourService,_mainviewModel,_modalNavigationStore));
+            (modalNavigationStore, () => new CompletedToursViewModel(_tourService,this,_modalNavigationStore));
         }
 
 

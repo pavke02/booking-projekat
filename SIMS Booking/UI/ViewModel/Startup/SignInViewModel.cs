@@ -172,7 +172,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                             break;
                         case Roles.Guide:
                             _navigationStore.CurrentViewModel = new MainWindowViewModel(_tourService, _confirmTourService, _tourPointService,
-                                _textBox, _userService, _tourReview, _tour, _tourReviewService, _navigationStore, _modalNavigationStore, _mainViewModel);
+                                _textBox, _userService, _tourReview,  _tourReviewService, _navigationStore, _modalNavigationStore, _mainViewModel);
                             break;
                     }
                 }
