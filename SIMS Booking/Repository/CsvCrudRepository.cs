@@ -28,7 +28,7 @@ namespace SIMS_Booking.Repository
 
         public void Save(T entity)
         {
-            entity.setID(GetNextId(_entityList));
+            entity.SetId(GetNextId(_entityList));
             _entityList.Add(entity);
             _serializer.ToCSV(_filePath, _entityList);
             NotifyObservers();
@@ -36,7 +36,7 @@ namespace SIMS_Booking.Repository
 
         public T? Update(T entity)
         {            
-            T? current = _entityList.Find(c => c.getID() == entity.getID());
+            T? current = _entityList.Find(c => c.GetId() == entity.GetId());
             if (current == null) return default(T);
             int index = _entityList.IndexOf(current);
             _entityList.Remove(current);
@@ -48,7 +48,7 @@ namespace SIMS_Booking.Repository
 
         public void Delete(T entity)
         {
-            T? foundEntity = _entityList.Find(c => c.getID() == entity.getID());
+            T? foundEntity = _entityList.Find(c => c.GetId() == entity.GetId());
             if (foundEntity == null) return;
             _entityList.Remove(foundEntity);
             _serializer.ToCSV(_filePath, _entityList);
@@ -62,7 +62,7 @@ namespace SIMS_Booking.Repository
 
         public T GetById(int id)
         {
-            return _entityList.FirstOrDefault(e => e.getID() == id);
+            return _entityList.FirstOrDefault(e => e.GetId() == id);
         }
 
         public int GetNextId(List<T> etities)
@@ -72,11 +72,11 @@ namespace SIMS_Booking.Repository
                 return 1;
             }
 
-            int maxi = _entityList[0].getID();
+            int maxi = _entityList[0].GetId();
             foreach (T entity in etities)
             {
-                if (maxi < entity.getID())                
-                    maxi = entity.getID();                
+                if (maxi < entity.GetId())                
+                    maxi = entity.GetId();                
             }
             return maxi + 1;
         }

@@ -103,13 +103,13 @@ namespace SIMS_Booking.UI.View
 
             foreach (Language language in languages)
             {
-                DriverLanguages driverLanguages = new DriverLanguages(vehicle.getID(), language);
+                DriverLanguages driverLanguages = new DriverLanguages(vehicle.GetId(), language);
                 _driverLanguagesService.Save(driverLanguages);
             }
 
             foreach (Location location in locations)
             {
-                DriverLocations driverLocations = new DriverLocations(vehicle.getID(), location);
+                DriverLocations driverLocations = new DriverLocations(vehicle.GetId(), location);
                 _driverLocationsService.Save(driverLocations);
             }
 

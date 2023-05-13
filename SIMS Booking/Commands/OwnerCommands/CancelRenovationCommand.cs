@@ -24,7 +24,7 @@ public class CancelRenovationCommand : CommandBase
         MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure you want to cancel renovation?", "Cancel Renovation Appointment", MessageBoxButton.YesNo);
         if ( messageBoxResult == MessageBoxResult.Yes)
         {
-            _renovationAppointingService.Delete(_renovationAppointingService.GetById(_viewModel.SelectedRenovation.getID()));
+            _renovationAppointingService.Delete(_renovationAppointingService.GetById(_viewModel.SelectedRenovation.GetId()));
         }
     }
 

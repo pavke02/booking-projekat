@@ -57,7 +57,7 @@ namespace SIMS_Booking.Service
 
             foreach (ConfirmTour tour in _crudService.GetAll())
             {
-                if (tour.IdTour == selectedTour.getID())
+                if (tour.IdTour == selectedTour.GetId())
                 {
                     if (tour.IdCheckpoint < 0)
                         GuestOnTour.Add(tour.User);
@@ -75,7 +75,7 @@ namespace SIMS_Booking.Service
             int brojac = 0;
             foreach (ConfirmTour confirmTour in _crudService.GetAll())
             {
-                if (confirmTour.IdTour == selectedTour.getID() && confirmTour.IdCheckpoint != -5)
+                if (confirmTour.IdTour == selectedTour.GetId() && confirmTour.IdCheckpoint != -5)
                 {
                     brojac++;
                 }
@@ -101,7 +101,7 @@ namespace SIMS_Booking.Service
                 foreach (ConfirmTour confirmTour in _crudService.GetAll())
                 {
 
-                    if (confirmTour.IdTour == tour.getID() && confirmTour.IdCheckpoint >= 0)
+                    if (confirmTour.IdTour == tour.GetId() && confirmTour.IdCheckpoint >= 0)
                     {
                         numberOfVisitors++;
 
@@ -127,7 +127,7 @@ namespace SIMS_Booking.Service
                 foreach (ConfirmTour confirmTour in _crudService.GetAll())
                 {
 
-                    if (confirmTour.IdTour == tour.getID() && confirmTour.IdCheckpoint >= 0 && tour.StartTour.Year == godina)
+                    if (confirmTour.IdTour == tour.GetId() && confirmTour.IdCheckpoint >= 0 && tour.StartTour.Year == godina)
                     {
                         numberOfVisitors++;
 
@@ -148,7 +148,7 @@ namespace SIMS_Booking.Service
                 var lista = _crudService.GetAll();
                 for (int i = 0;i <lista.Count ; i++)
                 {
-                    if (tour.getID() == lista[i].IdTour)
+                    if (tour.GetId() == lista[i].IdTour)
                     {
                         lista[i].Vaucer += 1;
                         lista[i].IdTour = -1;
@@ -167,11 +167,11 @@ namespace SIMS_Booking.Service
             int under18 = 0;    
             foreach (ConfirmTour confirmTour in _crudService.GetAll())
             {
-                if (confirmTour.IdTour == tour.getID())
+                if (confirmTour.IdTour == tour.GetId())
                 {
                     foreach (User users in userService.GetAll())
                     {
-                        if (confirmTour.UserId == users.getID())
+                        if (confirmTour.UserId == users.GetId())
                         {
                             if (users.Age <18)
                                 under18++;
@@ -188,11 +188,11 @@ namespace SIMS_Booking.Service
             
             foreach (ConfirmTour confirmTour in _crudService.GetAll())
             {
-                if (confirmTour.IdTour == tour.getID())
+                if (confirmTour.IdTour == tour.GetId())
                 {
                     foreach (User users in userService.GetAll())
                     {
-                        if (confirmTour.UserId == users.getID())
+                        if (confirmTour.UserId == users.GetId())
                         {
                             if (users.Age >= 18 && users.Age <= 50)
                                 between18and50++;
@@ -211,11 +211,11 @@ namespace SIMS_Booking.Service
             int up50 = 0;
             foreach (ConfirmTour confirmTour in _crudService.GetAll())
             {
-                if (confirmTour.IdTour == tour.getID())
+                if (confirmTour.IdTour == tour.GetId())
                 {
                     foreach (User users in userService.GetAll())
                     {
-                        if (confirmTour.UserId == users.getID())
+                        if (confirmTour.UserId == users.GetId())
                         {
                             if (users.Age > 50)
                                 up50++;
@@ -235,7 +235,7 @@ namespace SIMS_Booking.Service
                 float brojLjudi = 0;
                 foreach (ConfirmTour confirmTour in _crudService.GetAll())
                 {
-                    if (confirmTour.IdTour == tour.getID())
+                    if (confirmTour.IdTour == tour.GetId())
                     {
                         brojLjudi++;
 
@@ -262,7 +262,7 @@ namespace SIMS_Booking.Service
             float brojLjudi = 0;
             foreach (ConfirmTour confirmTour in _crudService.GetAll())
             {
-                if (confirmTour.IdTour == tour.getID())
+                if (confirmTour.IdTour == tour.GetId())
                 {
                     brojLjudi++;
 

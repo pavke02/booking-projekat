@@ -28,7 +28,7 @@ namespace SIMS_Booking.Service.RelationsService
             {
                 foreach (Vehicle vehicle in vehicleService.GetAll())
                 {
-                    if (driverLanguages.DriverId == vehicle.getID())
+                    if (driverLanguages.DriverId == vehicle.GetId())
                     {
                         vehicle.Languages.Add(driverLanguages.Language);
                     }

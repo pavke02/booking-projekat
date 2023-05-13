@@ -45,7 +45,7 @@ namespace SIMS_Booking.Service
 
         public List<Accommodation> GetByUserId(int id)
         {
-            return _crudService.GetAll().Where(e => e.User.getID() == id).ToList();
+            return _crudService.GetAll().Where(e => e.User.GetId() == id).ToList();
         }
 
         public List<Accommodation> SortBySuperOwner(List<Accommodation> accommodations)

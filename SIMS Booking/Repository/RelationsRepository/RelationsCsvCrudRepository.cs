@@ -38,7 +38,7 @@ namespace SIMS_Booking.Repository.RelationsRepository
 
         public T? Update(T entity)
         {
-            T? current = _entityList.Find(c => c.getID() == entity.getID());
+            T? current = _entityList.Find(c => c.GetId() == entity.GetId());
             if (current == null) return default(T);
             int index = _entityList.IndexOf(current);
             _entityList.Remove(current);

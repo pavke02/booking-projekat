@@ -115,7 +115,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
                 }
                 else
                 {
-                    _vehicleReservationService.Save(new ReservationOfVehicle(loggedUser.getID(), driverLocations.DriverId, timeOfDeparture, new Address(startingAddress, driverLocations.Location), new Address(finalAddress, driverLocations.Location)));
+                    _vehicleReservationService.Save(new ReservationOfVehicle(loggedUser.GetId(), driverLocations.DriverId, timeOfDeparture, new Address(startingAddress, driverLocations.Location), new Address(finalAddress, driverLocations.Location)));
                     MessageBox.Show("Uspesno ste rezervisali brzu voznju. ");
                     return true;
                 }

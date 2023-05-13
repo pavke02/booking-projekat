@@ -54,7 +54,7 @@ namespace SIMS_Booking.UI.View
             BoxLanguage.Text = selectedTour.Language.ToString();
             BoxMaxGuests.Text = selectedTour.MaxGuests.ToString();
             BoxTime.Text = selectedTour.Time.ToString();
-            AvailableNumber.Text = (selectedTour.MaxGuests - _reservedTourService.GetNumberOfGuestsForTour(selectedTour.getID())).ToString();
+            AvailableNumber.Text = (selectedTour.MaxGuests - _reservedTourService.GetNumberOfGuestsForTour(selectedTour.GetId())).ToString();
 
 
             BoxName.IsReadOnly = true;
@@ -84,9 +84,9 @@ namespace SIMS_Booking.UI.View
                 MessageBox.Show("Molim Vas da unesete broj gostiju.");
 
             }
-            else if (_selectedTour.MaxGuests < Convert.ToInt32(NumberOfGuests.Text) + _reservedTourService.GetNumberOfGuestsForTour(_selectedTour.getID()))
+            else if (_selectedTour.MaxGuests < Convert.ToInt32(NumberOfGuests.Text) + _reservedTourService.GetNumberOfGuestsForTour(_selectedTour.GetId()))
             {
-                MessageBox.Show($"Number of guests cannot be more than the maximum number of guests for this tour ({_selectedTour.MaxGuests - _reservedTourService.GetNumberOfGuestsForTour(_selectedTour.getID())} guests).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Number of guests cannot be more than the maximum number of guests for this tour ({_selectedTour.MaxGuests - _reservedTourService.GetNumberOfGuestsForTour(_selectedTour.GetId())} guests).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 return;
             }
@@ -102,10 +102,10 @@ namespace SIMS_Booking.UI.View
                 _maxGuests = maxGuests - Convert.ToInt32(NumberOfGuests.Text);
 
 
-                TourReservation tourReservation = new TourReservation(LoggedUser.getID(), _selectedTour.getID(), Convert.ToInt32(NumberOfGuests.Text));
+                TourReservation tourReservation = new TourReservation(LoggedUser.GetId(), _selectedTour.GetId(), Convert.ToInt32(NumberOfGuests.Text));
             
                 _reservedTourService.Save(tourReservation);
-                AvailableNumber.Text = (_selectedTour.MaxGuests - _reservedTourService.GetNumberOfGuestsForTour(_selectedTour.getID())).ToString();
+                AvailableNumber.Text = (_selectedTour.MaxGuests - _reservedTourService.GetNumberOfGuestsForTour(_selectedTour.GetId())).ToString();
 
                 MessageBox.Show($"You reserved for ({Convert.ToInt32(NumberOfGuests.Text)} guests)");
             }          

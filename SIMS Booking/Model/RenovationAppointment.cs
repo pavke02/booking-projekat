@@ -21,17 +21,17 @@ namespace SIMS_Booking.Model
             Description = description;
             IsRenovating = isRenovating;
             Accommodation = accommodation;
-            AccommodationId = Accommodation.getID();
+            AccommodationId = Accommodation.GetId();
         }
 
         public RenovationAppointment() { }
 
-        public int getID()
+        public int GetId()
         {
             return Id;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
             Id = id;
         }

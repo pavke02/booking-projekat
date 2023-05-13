@@ -21,7 +21,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
         public override void Execute(object? parameter)
         {
             PostponementStatus postponementStatus = PostponementStatus.Declined;
-            _postponementService.ReviewPostponementRequest(_viewModel.SelectedRequest.getID(), _viewModel.Comment, postponementStatus);
+            _postponementService.ReviewPostponementRequest(_viewModel.SelectedRequest.GetId(), _viewModel.Comment, postponementStatus);
             _navigationService.Navigate();
         }
     }

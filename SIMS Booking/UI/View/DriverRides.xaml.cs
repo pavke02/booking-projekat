@@ -48,7 +48,7 @@ namespace SIMS_Booking.UI.View
 
             User = user;
 
-            Vehicle vehicle = _vehicleService.GetVehicleByUserID(user.getID());
+            Vehicle vehicle = _vehicleService.GetVehicleByUserID(user.GetId());
 
             Rides = new ObservableCollection<Rides>(_ridesService.GetAll());
             ActiveRides = new List<Rides>();
@@ -63,7 +63,7 @@ namespace SIMS_Booking.UI.View
                         onLocation = true;
                     }
                 }
-                if((ride.DriverID == User.getID() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now) || (ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now && ride.Fast == true && onLocation == true))
+                if((ride.DriverID == User.GetId() && ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now) || (ride.DateTime.Date == DateTime.Now.Date && ride.DateTime > DateTime.Now && ride.Fast == true && onLocation == true))
                 {
                     ActiveRides.Add(ride);
                 }

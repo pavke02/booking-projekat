@@ -29,7 +29,7 @@ namespace SIMS_Booking.Service.RelationsService
             {
                 foreach (Vehicle vehicle in vehicleService.GetAll())
                 {
-                    if (driverLocations.DriverId == vehicle.getID())
+                    if (driverLocations.DriverId == vehicle.GetId())
                     {
                         vehicle.Locations.Add(driverLocations.Location);
                     }

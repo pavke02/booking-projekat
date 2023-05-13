@@ -383,7 +383,7 @@ namespace SIMS_Booking.UI.View
                     isFirst = false;
                     _tourPointService.Save(tourPoint); 
                     TourPoints.Add(tourPoint);
-                    TourPointIds.Add(tourPoint.getID());
+                    TourPointIds.Add(tourPoint.GetId());
                 }
                 
                 string[] v = City.Split(",");

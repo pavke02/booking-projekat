@@ -29,12 +29,12 @@ namespace SIMS_Booking.Model.Relations
             return csvValues;
         }
 
-        public int getID()
+        public int GetId()
         {
             return UserId;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
             UserId = id;
         }

@@ -43,12 +43,12 @@ namespace SIMS_Booking.Model.Relations
             throw new NotImplementedException();
         }
 
-        public int getID()
+        public int GetId()
         {
             return Id;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
             Id = id;
         }

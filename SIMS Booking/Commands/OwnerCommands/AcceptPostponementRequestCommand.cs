@@ -23,7 +23,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
                 _viewModel.SelectedRequest.NewEndDate);
             string comment = "";
             PostponementStatus postponementStatus = PostponementStatus.Accepted;
-            _postponementService.ReviewPostponementRequest(_viewModel.SelectedRequest.getID(), comment, postponementStatus);
+            _postponementService.ReviewPostponementRequest(_viewModel.SelectedRequest.GetId(), comment, postponementStatus);
             _viewModel.IsVisible = false;
         }
     }

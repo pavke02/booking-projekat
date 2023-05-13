@@ -57,12 +57,12 @@ namespace SIMS_Booking.Service
 
         public List<RenovationAppointment> GetActiveRenovations(int id)
         {
-            return GetAll().Where(e => e.Accommodation.User.getID() == id && e.IsRenovating).ToList();
+            return GetAll().Where(e => e.Accommodation.User.GetId() == id && e.IsRenovating).ToList();
         }
 
         public List<RenovationAppointment> GetPastRenovations(int id)
         {
-            return GetAll().Where(e => e.Accommodation.User.getID() == id && !e.IsRenovating).ToList();
+            return GetAll().Where(e => e.Accommodation.User.GetId() == id && !e.IsRenovating).ToList();
         }
     }
 }

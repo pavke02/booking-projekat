@@ -42,12 +42,12 @@ namespace SIMS_Booking.Model
             IsValid = bool.Parse(values[4]);
         }
 
-        public int getID()
+        public int GetId()
         {
            return Id;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
             Id = id;
         }

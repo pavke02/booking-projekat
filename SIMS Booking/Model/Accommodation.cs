@@ -7,9 +7,9 @@ using SIMS_Booking.Utility.Serializer;
 
 namespace SIMS_Booking.Model
 {
-    public class   Accommodation : ISerializable, IDable
+    public class Accommodation : ISerializable, IDable
     {
-        private int ID;
+        private int _id;
         public string Name { get; set; }
         public Location Location { get; set; }
         public AccommodationType Type { get; set; }
@@ -42,20 +42,20 @@ namespace SIMS_Booking.Model
             }
         }
 
-        public int getID()
+        public int GetId()
         {
-            return ID;
+            return _id;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
-            ID = id;
+            _id = id;
         }
 
 
         public void FromCSV(string[] values)
         {
-            ID = int.Parse(values[0]);
+            _id = int.Parse(values[0]);
             Name = values[1];
             Location = new Location(values[2], values[3]);
             Type = (AccommodationType)Enum.Parse(typeof(AccommodationType), values[4]);
@@ -69,7 +69,7 @@ namespace SIMS_Booking.Model
         public string[] ToCSV()
         {
 
-            string[] csvValues = { ID.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancellationPeriod.ToString(), string.Join(',', ImageURLs), IsRenovated.ToString()};
+            string[] csvValues = { _id.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancellationPeriod.ToString(), string.Join(',', ImageURLs), IsRenovated.ToString()};
             return csvValues;
         }              
     }

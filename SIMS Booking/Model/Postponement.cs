@@ -23,7 +23,7 @@ namespace SIMS_Booking.Model
         public Postponement(Reservation reservation, DateTime newStartDate, DateTime newEndDate, PostponementStatus status, bool isNotified)
         {
             Reservation = reservation;
-            ReservationId = reservation.getID();
+            ReservationId = reservation.GetId();
             NewStartDate = newStartDate;
             NewEndDate = newEndDate;
             Status = status;
@@ -52,12 +52,12 @@ namespace SIMS_Booking.Model
             IsNotified = (values[6] == "True"); 
         }
 
-        public int getID()
+        public int GetId()
         {
             return Id;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
             Id = id;
         }

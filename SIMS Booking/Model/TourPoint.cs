@@ -57,12 +57,12 @@ namespace SIMS_Booking.Model
             CheckedCheckBox = bool.Parse(values[2]);
         }
 
-        public int getID()
+        public int GetId()
         {
             return Id;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
             Id = id;
         }

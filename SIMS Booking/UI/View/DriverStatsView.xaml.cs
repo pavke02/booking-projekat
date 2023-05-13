@@ -37,7 +37,7 @@ namespace SIMS_Booking.UI.View
             GenerateEmptyList(MonthlyDriverStats2023);
 
             FinishedRides = new List<FinishedRide>();
-            int id = User.getID();
+            int id = User.GetId();
             FinishedRides = _finishedRidesService.GetAll().Where(e => e.Ride.DriverID == id).ToList();
 
             SortStats(MonthlyDriverStats2023, MonthlyDriverStats2022, MonthlyDriverStats2021);
