@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Utility.Observer;
-using System.Globalization;
 using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service

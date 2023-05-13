@@ -1,10 +1,8 @@
-﻿using System;
-using SIMS_Booking.Model;
+﻿using SIMS_Booking.Model;
+using SIMS_Booking.Repository;
 using SIMS_Booking.Utility.Observer;
 using System.Collections.Generic;
 using System.Linq;
-using SIMS_Booking.Repository;
-using SIMS_Booking.UI.ViewModel.Owner;
 
 namespace SIMS_Booking.Service
 {

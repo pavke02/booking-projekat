@@ -1,11 +1,5 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Repository.RelationsRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service.RelationsService
