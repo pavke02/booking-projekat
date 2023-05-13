@@ -67,15 +67,15 @@
 
                 <StackPanel Margin="60, 45, 0, 0">
                     <RadioButton x:Name="ownerRb" Content="Owner" Foreground="White"
-                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Owner}"></RadioButton>
+                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Owner}" />
                     <RadioButton x:Name="guest1Rb" Content="Guest1" Foreground="White" 
-                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guest1}"></RadioButton>
+                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guest1}" />
                     <RadioButton x:Name="guest2Rb" Content="Guest2" Foreground="White"
-                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guest2}"></RadioButton>
+                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guest2}" />
                     <RadioButton x:Name="driverRb" Content="Driver" Foreground="White"
-                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Driver}"></RadioButton>
+                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Driver}" />
                     <RadioButton x:Name="guideRb" Content="Guide" Foreground="White"
-                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guide}"></RadioButton>
+                                 IsChecked="{Binding Role, Converter={StaticResource ResourceKey=RoleConverterKey}, ConverterParameter=Guide}" />
                     <Label HorizontalAlignment="Center" FontSize="20" Margin="0 20 0 0">Age:</Label>
                     <TextBox Margin="0 5 0 0" Padding="0 5 0 0" Height="25" 
                              BorderThickness="0 0 0 2" Background="#222222"

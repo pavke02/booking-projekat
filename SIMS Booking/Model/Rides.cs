@@ -1,10 +1,6 @@
 ﻿using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Serializer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SIMS_Booking.Model
 {

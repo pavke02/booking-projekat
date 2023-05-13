@@ -1,8 +1,7 @@
 ﻿using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Model;
 using System.Collections.Generic;
-using System;
 using SIMS_Booking.Repository;
+
 
 namespace SIMS_Booking.Service.RelationsService
 {

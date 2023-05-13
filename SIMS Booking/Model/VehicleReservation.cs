@@ -5,6 +5,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
+
 namespace SIMS_Booking.Model
 {
     public class VehicleReservation : ISerializable, IDable

@@ -13,6 +13,8 @@ using SIMS_Booking.Utility.Stores;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SIMS_Booking.UI.View.Guide;
+using SIMS_Booking.UI.ViewModel.Guide;
 
 namespace SIMS_Booking.UI.ViewModel.Startup
 {
@@ -45,10 +47,12 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly VoucherService _voucherService;
         private readonly RenovationAppointmentService _renovationAppointmentService;
 
+
         #endregion
 
         private TourReview _tourReview;
         private Tour _tour;
+        private MainWindowViewModel _mainViewModel;
 
         private readonly NavigationStore _navigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
@@ -170,6 +174,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _tourReviewService.loadusers(_userService, _confirmTourService);
             _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService);
             _renovationAppointmentService.LoadAccommodationInRenovationAppointment(_accommodationService);
+
             #endregion
 
             _navigationStore = navigationStore;
@@ -217,9 +222,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     //CheckFastRides(user);
                     break;
                 case Roles.Guide:
-                    GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService,
-                      _textBox, _userService, _tourReview, _tour, _tourReviewService);
-                    guideView.Show();
+                    _navigationStore.CurrentViewModel = new MainWindowViewModel(_tourService, _confirmTourService, _tourPointService,
+                        _textBox, _userService, _tourReview, _tourReviewService, _navigationStore, _modalNavigationStore, _mainViewModel);
                     break;
             }
         }

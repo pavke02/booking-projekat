@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewOwner="clr-namespace:SIMS_Booking.UI.View.Owner"
         xmlns:viewModelOwner="clr-namespace:SIMS_Booking.UI.ViewModel.Owner"
+        xmlns:viewGuide="clr-namespace:SIMS_Booking.UI.View.Guide"
+        xmlns:viewModelGuide ="clr-namespace:SIMS_Booking.UI.ViewModel.Guide"
         xmlns:modalControl="clr-namespace:ModalControl;assembly=ModalControl"
         xmlns:startup="clr-namespace:SIMS_Booking.UI.ViewModel.Startup"
         xmlns:startup1="clr-namespace:SIMS_Booking.UI.View.Startup"
@@ -41,12 +43,48 @@
             <DataTemplate DataType="{x:Type viewModelOwner:RenovationAppointingViewModel}">
                 <viewOwner:RenovationAppointingView></viewOwner:RenovationAppointingView>
             </DataTemplate>
-        </Grid.Resources>
 
-        <modalControl:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}">
+            <DataTemplate DataType="{x:Type viewModelGuide:MainWindowViewModel}">
+                <viewGuide:MainWindowView></viewGuide:MainWindowView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:GuideStatisticsViewModel}">
+                <viewGuide:GuideStatistics></viewGuide:GuideStatistics>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourReviewViewModel}">
+                <viewGuide:TourReviewView></viewGuide:TourReviewView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:StartTourViewModel}">
+                <viewGuide:StartTour></viewGuide:StartTour>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:ConfirmByGuestViewModel}">
+                <viewGuide:ConfirmByGuest></viewGuide:ConfirmByGuest>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:CreateTourViewModel}">
+                <viewGuide:CreateTour></viewGuide:CreateTour>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TodaysToursViewModel}">
+                <viewGuide:TodaysTours></viewGuide:TodaysTours>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:FutureToursViewModel}">
+                <viewGuide:FutureToursView></viewGuide:FutureToursView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:CompletedToursViewModel}">
+                <viewGuide:CompletedToursView></viewGuide:CompletedToursView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:StartingTourViewModel}">
+                <viewGuide:StartingTourView></viewGuide:StartingTourView>
+            </DataTemplate>
+
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="35*"/>
+            <ColumnDefinition Width="51*"/>
+        </Grid.ColumnDefinitions>
+
+        <modalControl:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}" Grid.ColumnSpan="2">
             <ContentControl Content="{Binding CurrentModalViewModel}"/>
         </modalControl:Modal>
 
-        <ContentControl Content="{Binding CurrentViewModel}"/>
+        <ContentControl Content="{Binding CurrentViewModel}" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
