@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SIMS_Booking.UI.View;
-using System.Xml.Linq;
 using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Serializer;
 using SIMS_Booking.Enums;
@@ -13,7 +9,6 @@ namespace SIMS_Booking.Model
     {
 
         private int ID = 1;
-
         public Requests Requests { get; set; }
         public Location Location { get; set; }
         public string Description { get; set; }
@@ -24,12 +19,12 @@ namespace SIMS_Booking.Model
 
         public TourRequest() { }
 
-        public int getID()
+        public int GetId()
         {
             return ID;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
             ID = id;
         }
