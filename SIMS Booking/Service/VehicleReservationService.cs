@@ -13,43 +13,23 @@ namespace SIMS_Booking.Service
     public class VehicleReservationService
     {
 
-        private readonly CrudService<ReservationOfVehicle> _crudService;
+        private readonly ICRUDRepository<ReservationOfVehicle> _repository;
 
-        public VehicleReservationService()
+        public VehicleReservationService(ICRUDRepository<ReservationOfVehicle> repository)
         {
-            _crudService = new CrudService<ReservationOfVehicle>(new CsvCrudRepository<ReservationOfVehicle>());
+            _repository = repository;
         }
-
 
         #region Crud
-
-        public void Subscribe(IObserver observer)
-        {
-            _crudService.Subscribe(observer);
-        }
-
         public void Save(ReservationOfVehicle reservation)
         {
-            _crudService.Save(reservation);
-        }
-
-        public void Update(ReservationOfVehicle reservation)
-        {
-            _crudService.Update(reservation);
+            _repository.Save(reservation);
         }
 
         public List<ReservationOfVehicle> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
-
-        public ReservationOfVehicle GetById(int id)
-        {
-            return _crudService.GetById(id);
-        }
-
         #endregion
-
-
     }
 }

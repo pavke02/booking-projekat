@@ -7,21 +7,21 @@ namespace SIMS_Booking.Service
 {
     public class TourReviewService
     {
-        private readonly CrudService<TourReview> _crudService;
+        private readonly ICRUDRepository<TourReview> _repository;
 
-        public TourReviewService()
+        public TourReviewService(ICRUDRepository<TourReview> repository)
         {
-            _crudService = new CrudService<TourReview>(new CsvCrudRepository<TourReview>());
+            _repository = repository;
         }
 
         public void Subscribe(IObserver observer)
         {
-            _crudService.Subscribe(observer);
+            _repository.Subscribe(observer);
         }
 
         public List<TourReview> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
         public void loadusers(UserService userservice,ConfirmTourService confirmTourService)
@@ -46,7 +46,7 @@ namespace SIMS_Booking.Service
 
             foreach (ConfirmTour confirmTour in confirmTourService.GetAll())
             {
-                foreach (TourReview tourReview in _crudService.GetAll())
+                foreach (TourReview tourReview in _repository.GetAll())
                 {
                     if (tourReview.ConfirmTourId == confirmTour.Id)
                     {
@@ -61,7 +61,7 @@ namespace SIMS_Booking.Service
         public void updateIsValidReview(TourReview tourReview)
         {
             tourReview.IsValid = true;
-            _crudService.Update(tourReview);
+            _repository.Update(tourReview);
         }
 
     }

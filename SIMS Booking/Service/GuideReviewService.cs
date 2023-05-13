@@ -11,35 +11,35 @@ namespace SIMS_Booking.Service
 {
     public class GuideReviewService
     {
-        private readonly CrudService<GuideReview> _crudService;
+        private readonly ICRUDRepository<GuideReview> _repository;
 
-        public GuideReviewService()
+        public GuideReviewService(ICRUDRepository<GuideReview> repository)
         {
-            _crudService = new CrudService<GuideReview>(new CsvCrudRepository<GuideReview>());
+            _repository = repository;
         }
 
         #region Crud
 
         public void Save(GuideReview guideReview)
         {
-            _crudService.Save(guideReview);
+            _repository.Save(guideReview);
         }
         
         public void Subscribe(IObserver observer)
         {
-            _crudService.Subscribe(observer);
+            _repository.Subscribe(observer);
         }
 
         #endregion
 
         public List<GuideReview> GetByUserId(int id)
         {
-            return _crudService.GetAll().Where(e => e.TourReservation.UserId == id).ToList();
+            return _repository.GetAll().Where(e => e.TourReservation.UserId == id).ToList();
         }
         /*
         public void LoadReservationInOwnerReview(ReservedTourService _reservedTourService)
         {
-           foreach (GuideReview guideReview in _crudService.GetAll())
+           foreach (GuideReview guideReview in _repository.GetAll())
             {
                 guideReview.TourReservation = _reservedTourService.GetById(guideReview.getID());
             }
@@ -58,7 +58,7 @@ namespace SIMS_Booking.Service
         
         public List<GuideReview> GetShowableReviews(int id)
         {
-            return _crudService.GetAll().Where(e => e.TourReservation.HasGuestReviewed && e.TourReservation.HasGuideReviewed && e.TourReservation.TourId == id).ToList();
+            return _repository.GetAll().Where(e => e.TourReservation.HasGuestReviewed && e.TourReservation.HasGuideReviewed && e.TourReservation.TourId == id).ToList();
         }
         
         public double CalculateRating(int id)

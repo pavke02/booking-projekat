@@ -8,38 +8,38 @@ namespace SIMS_Booking.Service
 {
     public class VoucherService
     {
-        private readonly CrudService<Voucher> _crudService;
+        private readonly ICRUDRepository<Voucher> _repository;
 
-        public VoucherService()
+        public VoucherService(ICRUDRepository<Voucher> repository)
         {
-            _crudService = new CrudService<Voucher>(new CsvCrudRepository<Voucher>());
+            _repository = repository;
         }
 
         #region Crud
 
         public void Subscribe(IObserver observer)
         {
-            _crudService.Subscribe(observer);
+            _repository.Subscribe(observer);
         }
 
         public void Save(Voucher voucher)
         {
-            _crudService.Save(voucher);
+            _repository.Save(voucher);
         }
 
         public void Update(Voucher voucher)
         {
-            _crudService.Update(voucher);
+            _repository.Update(voucher);
         }
 
         public List<Voucher> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
         public List<Voucher> GetAllValidVouchers()
         {
-            return _crudService.GetAll().Where(w => !w.Used).ToList();
+            return _repository.GetAll().Where(w => !w.Used).ToList();
         }
 
         public  void UseVoucher(Voucher voucher)
@@ -51,7 +51,7 @@ namespace SIMS_Booking.Service
 
         public Voucher GetById(int id)
         {
-            return _crudService.GetById(id);
+            return _repository.GetById(id);
         }
 
         #endregion
