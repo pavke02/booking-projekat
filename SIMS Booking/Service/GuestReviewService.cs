@@ -2,35 +2,36 @@
 using SIMS_Booking.Utility.Observer;
 using System.Collections.Generic;
 using System.Linq;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service
 {
     public class GuestReviewService
     {
-        private readonly CrudService<GuestReview> _crudService;
+        private readonly ICRUDRepository<GuestReview> _repository;
 
-        public GuestReviewService()
+        public GuestReviewService(ICRUDRepository<GuestReview> repository)
         {
-            _crudService = new CrudService<GuestReview>("../../../Resources/Data/guestReviews.csv");
+            _repository = repository;
         }
 
         #region Crud
 
         public void Save(GuestReview guestReview)
         {
-            _crudService.Save(guestReview);
+            _repository.Save(guestReview);
         }
 
         public void Subscribe(IObserver observer)
         {
-            _crudService.Subscribe(observer);
+            _repository.Subscribe(observer);
         }
 
         #endregion
 
         public void LoadReservationInGuestReview(ReservationService _reservationService)
         {
-            foreach (GuestReview guestReview in _crudService.GetAll())
+            foreach (GuestReview guestReview in _repository.GetAll())
             {
                 guestReview.Reservation = _reservationService.GetById(guestReview.ReservationId);
             }
@@ -45,7 +46,7 @@ namespace SIMS_Booking.Service
 
         public List<GuestReview> GetReviewedReservations(int id)
         {
-            return _crudService.GetAll().Where(e => e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.GetId() == id).ToList();
+            return _repository.GetAll().Where(e => e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.GetId() == id).ToList();
         }
 
     }

@@ -2,27 +2,28 @@
 using SIMS_Booking.Model;
 using System.Collections.Generic;
 using System;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service.RelationsService
 {
     public class ReservedTourService
     {
-        private readonly RelationsCrudService<TourReservation> _crudService;
+        private readonly ICRUDRepository<TourReservation> _repository;
 
-        public ReservedTourService()
+        public ReservedTourService(ICRUDRepository<TourReservation> repository)
         {
-            _crudService = new RelationsCrudService<TourReservation>("../../../Resources/Data/reservedTours.csv");
+            _repository = repository;
         }
 
         public List<TourReservation> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
         public int GetNumberOfGuestsForTour(int tourId)
         {
             int numberOfGuests = 0;
-            foreach (TourReservation tourReservation in _crudService.GetAll())
+            foreach (TourReservation tourReservation in _repository.GetAll())
             {
                 if (tourReservation.TourId == tourId)
                 {
@@ -34,17 +35,17 @@ namespace SIMS_Booking.Service.RelationsService
 
         public void Save(TourReservation tourReservation)
         {
-            _crudService.Save(tourReservation);
+            _repository.Save(tourReservation);
         }
 
         public void Update(TourReservation tourReservation)
         {
-          //  _crudService.Update(tourReservation);
+          //  _repository.Update(tourReservation);
         }
 
         /*public TourReservation GetById(int id)
         {
-            return _crudService.GetById(id);
+            return _repository.GetById(id);
         }
         */
 

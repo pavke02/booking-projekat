@@ -65,7 +65,5 @@ namespace SIMS_Booking.Repository.RelationsRepository
                 observer.Update();
             }
         }
-
-
     }
 }

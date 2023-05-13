@@ -81,7 +81,7 @@ namespace SIMS_Booking.Utility.Timers
                     notifier.ShowInformation("Your reservation has been canceled");
                 foreach (Reservation reservation in _cancellationCsvCrudRepository.GetAll().ToList())
                 {
-                    _cancellationCsvCrudRepository.Delete(reservation);
+                    //_cancellationCsvCrudRepository.Delete(reservation);
                 }
 
                 timer.Stop();

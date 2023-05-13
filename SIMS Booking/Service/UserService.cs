@@ -1,40 +1,41 @@
 ﻿using SIMS_Booking.Model;
 using System.Collections.Generic;
 using System.Linq;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service
 {
     public class UserService
     {
-        private readonly CrudService<User> _crudService;
+        private readonly ICRUDRepository<User> _repository;
 
-        public UserService()
+        public UserService(ICRUDRepository<User> repository)
         {
-            _crudService = new CrudService<User>("../../../Resources/Data/users.csv");
+            _repository = repository;
         }
 
         #region Crud
 
         public void Save(User user)
         {
-            _crudService.Save(user);
+            _repository.Save(user);
         }
 
         public User GetById(int id)
         {
-            return _crudService.GetById(id);
+            return _repository.GetById(id);
         }
 
         public void Update(User user)
         {
-            _crudService.Update(user);
+            _repository.Update(user);
         }
 
         #endregion
 
         public User GetByUsername(string username)
         {
-            return _crudService.GetAll().FirstOrDefault(u => u.Username == username);
+            return _repository.GetAll().FirstOrDefault(u => u.Username == username);
         }
 
         public bool CheckPassword(User user, string pasword)
@@ -44,7 +45,7 @@ namespace SIMS_Booking.Service
 
         public List<User> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
     }

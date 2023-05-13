@@ -6,22 +6,23 @@ using System.Linq;
 
 namespace SIMS_Booking.Repository
 {
-    public class CsvCrudRepository<T> : ISubject where T : ISerializable, IDable, new()
+    public class CsvCrudRepository<T> : ICRUDRepository<T> where T : ISerializable, IDable, new()
     {
         protected readonly string _filePath;
         protected readonly Serializer<T> _serializer;
         protected List<T> _entityList;
         protected List<IObserver> _observers;
 
-        public CsvCrudRepository(string filePath)
+        public CsvCrudRepository()
         {
             _observers = new List<IObserver>();
             _serializer = new Serializer<T>();
-            _filePath = filePath;
+            string fileName = typeof(T).Name[0].ToString().ToLower() + typeof(T).Name.Substring(1);
+            _filePath = $"../../../Resources/Data/{fileName}.csv";
             _entityList = Load();
         }
 
-        public List<T> Load()
+        private List<T> Load()
         {
             return _serializer.FromCSV(_filePath);
         }

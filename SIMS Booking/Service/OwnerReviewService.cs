@@ -3,40 +3,41 @@ using SIMS_Booking.Utility.Observer;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service
 {
     public class OwnerReviewService
     {
-        private readonly CrudService<OwnerReview> _crudService;
+        private readonly ICRUDRepository<OwnerReview> _repository;
 
-        public OwnerReviewService()
+        public OwnerReviewService(ICRUDRepository<OwnerReview> repository)
         {
-            _crudService = new CrudService<OwnerReview>("../../../Resources/Data/ownerReviews.csv");
+            _repository = repository;
         }
 
         #region Crud
 
         public void Save(OwnerReview ownerReview)
         {
-            _crudService.Save(ownerReview);
+            _repository.Save(ownerReview);
         }
 
         public void Subscribe(IObserver observer)
         {
-            _crudService.Subscribe(observer);
+            _repository.Subscribe(observer);
         }
 
         #endregion
 
         public List<OwnerReview> GetByUserId(int id)
         {
-            return _crudService.GetAll().Where(e => e.Reservation.User.GetId() == id).ToList();
+            return _repository.GetAll().Where(e => e.Reservation.User.GetId() == id).ToList();
         }
 
         public void LoadReservationInOwnerReview(ReservationService _reservationService)
         {
-            foreach (OwnerReview ownerReview in _crudService.GetAll())
+            foreach (OwnerReview ownerReview in _repository.GetAll())
             {
                 ownerReview.Reservation = _reservationService.GetById(ownerReview.ReservationId);
             }
@@ -51,7 +52,7 @@ namespace SIMS_Booking.Service
 
         public List<OwnerReview> GetShowableReviews(int id)
         {
-            return _crudService.GetAll().Where(e => e.Reservation.HasGuestReviewed && e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.GetId() == id).ToList();
+            return _repository.GetAll().Where(e => e.Reservation.HasGuestReviewed && e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.GetId() == id).ToList();
         }
 
         public double CalculateRating(int id)
@@ -72,7 +73,7 @@ namespace SIMS_Booking.Service
         {
             Dictionary<string, int> ownerRatings = new Dictionary<string, int>();
 
-            foreach (OwnerReview ownerRating in _crudService.GetAll().Where(e => e.Reservation.Accommodation.GetId() == id && e.HasRenovation))
+            foreach (OwnerReview ownerRating in _repository.GetAll().Where(e => e.Reservation.Accommodation.GetId() == id && e.HasRenovation))
             {
                 string key = ownerRating.Reservation.StartDate.Year.ToString();
                 if (ownerRatings.ContainsKey(key))
@@ -88,7 +89,7 @@ namespace SIMS_Booking.Service
         {
             Dictionary<int, int> ownerRatings = new Dictionary<int, int>();
 
-            foreach (OwnerReview ownerRating in _crudService.GetAll().Where(e => e.Reservation.Accommodation.GetId() == id && 
+            foreach (OwnerReview ownerRating in _repository.GetAll().Where(e => e.Reservation.Accommodation.GetId() == id &&
                          e.HasRenovation && e.Reservation.StartDate.Year == year))
             {
                 int key = ownerRating.Reservation.StartDate.Month;

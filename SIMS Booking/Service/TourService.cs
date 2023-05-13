@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SIMS_Booking.Model;
+using SIMS_Booking.Repository;
 using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.Service
@@ -11,7 +12,7 @@ namespace SIMS_Booking.Service
 
         public TourService()
         {
-            _crudService = new CrudService<Tour>("../../../Resources/Data/guides.csv");
+            _crudService = new CrudService<Tour>(new CsvCrudRepository<Tour>());
         }
 
         public void Delete(Tour entity)

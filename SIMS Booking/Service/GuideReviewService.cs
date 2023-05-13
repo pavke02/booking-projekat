@@ -4,6 +4,7 @@ using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.Utility.Observer;
 using System.Collections.Generic;
 using System.Linq;
+using SIMS_Booking.Repository;
 
 
 namespace SIMS_Booking.Service
@@ -14,7 +15,7 @@ namespace SIMS_Booking.Service
 
         public GuideReviewService()
         {
-            _crudService = new CrudService<GuideReview>("../../../Resources/Data/guideReviews.csv");
+            _crudService = new CrudService<GuideReview>(new CsvCrudRepository<GuideReview>());
         }
 
         #region Crud

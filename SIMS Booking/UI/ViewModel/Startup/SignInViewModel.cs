@@ -53,7 +53,10 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly NavigationStore _navigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
 
-        public ICommand NavigateToSignUpCommand { get; }
+        public ICommand NavigateToSignUpCommand
+        {
+            get;
+        }
 
         #region Property
         private bool _passwordErrorText;
@@ -112,41 +115,46 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     OnPropertyChanged();
                 }
             }
-        } 
+        }
         #endregion
 
-        public SignInViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
+        public SignInViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore, AccommodationService accommodationService,
+                              CityCountryCsvRepository cityCountryCsvRepository,
+                              ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
+                              OwnerReviewService ownerReviewService, PostponementService postponementService,
+                              CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService,
+                              RenovationAppointmentService renovationAppointmentService, TourService tourService, ConfirmTourService confirmTourService,
+                              TourPointService tourPointService, TextBox textBox, TourReviewService tourReviewService,
+                              RidesService ridesService, FinishedRidesService finishedRidesService, VehicleService vehicleService, DriverLanguagesService driverLanguagesService,
+                              DriverLocationsService driverLocationsService, ReservedAccommodationService reservedAccommodationService, ReservedTourService reservedTourService, 
+                              GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService)
         {
             #region ServiceInitializaton
-            _userService = new UserService();
-            _accommodationService = new AccommodationService();
-            _cityCountryCsvRepository = new CityCountryCsvRepository();
-            _tourService = new TourService();
-            _reservedTourService = new ReservedTourService();
-            _tourReviewService = new TourReviewService();
-            _reservationService = new ReservationService();
-            _postponementService = new PostponementService();
-            _vehicleService = new VehicleService();
-            _driverLanguagesService = new DriverLanguagesService();
-            _driverLocationsService = new DriverLocationsService();
-            _ridesService = new RidesService();
-            _finishedRidesService = new FinishedRidesService();
-            _guestReviewService = new GuestReviewService();
-            _ownerReviewService = new OwnerReviewService();
-            _guideReviewService = new GuideReviewService();
-            _cancellationCsvCrudRepository = new CancellationCsvCrudRepository();
-            _textBox = new TextBox();
-            _guestReviewService = new GuestReviewService();
-            _ownerReviewService = new OwnerReviewService();
-            _tourPointService = new TourPointService();
-            _confirmTourService = new ConfirmTourService();
-            _reservedAccommodationService = new ReservedAccommodationService();
-            _userAccommodationService = new UsersAccommodationService();
-            _driverLocationsService = new DriverLocationsService();
-            _vehicleReservationService = new VehicleReservationService();
-            _voucherService = new VoucherService();
-            _renovationAppointmentService = new RenovationAppointmentService();
-
+            _cityCountryCsvRepository = cityCountryCsvRepository;
+            _reservationService = reservationService;
+            _guestReviewService = guestReviewService;
+            _userService = userService;
+            _tourService = tourService;
+            _userAccommodationService = usersAccommodationService;
+            _ownerReviewService = ownerReviewService;
+            _accommodationService = accommodationService;
+            _postponementService = postponementService;
+            _cancellationCsvCrudRepository = cancellationCsvCrudRepository;
+            _renovationAppointmentService = renovationAppointmentService;
+            _confirmTourService = confirmTourService;
+            _tourPointService = tourPointService;
+            _vehicleService = vehicleService;
+            _driverLanguagesService = driverLanguagesService;
+            _tourReviewService = tourReviewService;
+            _ridesService = ridesService;
+            _finishedRidesService = finishedRidesService;
+            _driverLocationsService = driverLocationsService;
+            _reservedAccommodationService = reservedAccommodationService;
+            _reservedTourService = reservedTourService;
+            _guideReviewService = guideReviewService;
+            _textBox = textBox;
+            _vehicleReservationService = vehicleReservationService;
+            _voucherService = voucherService;
             #endregion
 
             #region LoadingData
@@ -160,7 +168,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _confirmTourService.loadGuests(_userService);
             _tourService.LoadCheckpoints(_tourPointService);
             _tourReviewService.loadusers(_userService, _confirmTourService);
-            _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService); 
+            _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService);
             _renovationAppointmentService.LoadAccommodationInRenovationAppointment(_accommodationService);
             #endregion
 
@@ -173,48 +181,48 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private INavigationService CreateSignUpNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new NavigationService<SignUpViewModel>
-                (_navigationStore, () => new SignUpViewModel(_navigationStore, modalNavigationStore, _userService));
+              (_navigationStore, () => new SignUpViewModel(_navigationStore, modalNavigationStore, _userService));
         }
 
         #region SignIn
         [RelayCommand]
         public void SignIn()
         {
-            User user = _userService.GetByUsername(Username);     
-            
+            User user = _userService.GetByUsername(Username);
+
             if (UsernameErrorText = user == null) return;
-            if (PasswordErrorText = !_userService.CheckPassword(user, Password)) return;           
+            if (PasswordErrorText = !_userService.CheckPassword(user, Password)) return;
             switch (user.Role)
             {
                 case Roles.Owner:
                     //Question: da li postoji bolji nacin(ovaj je izuzetno glup, zaobilazi celu strukturu)
                     _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
-                        _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _renovationAppointmentService, _navigationStore, _modalNavigationStore);
+                      _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _renovationAppointmentService, _navigationStore, _modalNavigationStore);
                     break;
                 case Roles.Guest1:
                     Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository,
-                        _reservationService, _reservedAccommodationService, user, _postponementService,
-                        _cancellationCsvCrudRepository, _ownerReviewService, _renovationAppointmentService, _guestReviewService);
+                      _reservationService, _reservedAccommodationService, user, _postponementService,
+                      _cancellationCsvCrudRepository, _ownerReviewService, _renovationAppointmentService, _guestReviewService);
                     guest1View.Show();
                     break;
                 case Roles.Guest2:
                     Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleService,
-                    _guideReviewService, _reservedTourService, _driverLocationsService, _vehicleReservationService, _voucherService);
+                        _guideReviewService, _reservedTourService, _driverLocationsService, _vehicleReservationService, _voucherService);
                     guest2View.Show();
                     break;
                 case Roles.Driver:
                     DriverView driverView = new DriverView(user, _ridesService, _finishedRidesService, _vehicleService,
-                        _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository);
+                      _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository);
                     driverView.Show();
                     //CheckFastRides(user);
                     break;
                 case Roles.Guide:
                     GuideMainView guideView = new GuideMainView(_tourService, _confirmTourService, _tourPointService,
-                        _textBox, _userService, _tourReview, _tour, _tourReviewService);
+                      _textBox, _userService, _tourReview, _tour, _tourReviewService);
                     guideView.Show();
                     break;
-             }
-        }                        
+            }
+        }
         #endregion
-    } 
+    }
 }

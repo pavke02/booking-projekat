@@ -11,7 +11,7 @@ namespace SIMS_Booking.Service
 
         public VehicleService()
         {
-            _crudService = new CrudService<Vehicle>("../../../Resources/Data/vehicles.csv");
+            _crudService = new CrudService<Vehicle>(new CsvCrudRepository<Vehicle>());
         }
 
         #region Crud 

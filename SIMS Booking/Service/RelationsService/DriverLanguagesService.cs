@@ -5,26 +5,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service.RelationsService
 {
     public class DriverLanguagesService
     {
-        private readonly RelationsCrudService<DriverLanguages> _crudService;
+        private readonly ICRUDRepository<DriverLanguages> _repository;
 
-        public DriverLanguagesService()
+        public DriverLanguagesService(ICRUDRepository<DriverLanguages> repository)
         {
-            _crudService = new RelationsCrudService<DriverLanguages>("../../../Resources/Data/driverlanguages.csv");
+            _repository = repository;
         }
 
         public void Save(DriverLanguages driverLanguages)
         {
-            _crudService.Save(driverLanguages);
+            _repository.Save(driverLanguages);
         }
 
         public void AddDriverLanguagesToVehicles(VehicleService vehicleService)
         {
-            foreach (DriverLanguages driverLanguages in _crudService.GetAll())
+            foreach (DriverLanguages driverLanguages in _repository.GetAll())
             {
                 foreach (Vehicle vehicle in vehicleService.GetAll())
                 {

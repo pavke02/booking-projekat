@@ -1,51 +1,50 @@
-﻿using System;
-using SIMS_Booking.Model;
+﻿using SIMS_Booking.Model;
+using SIMS_Booking.Repository;
 using SIMS_Booking.Utility.Observer;
 using System.Collections.Generic;
 using System.Linq;
-using SIMS_Booking.UI.ViewModel.Owner;
 
 namespace SIMS_Booking.Service
 {
     public class AccommodationService
     {
-        private readonly CrudService<Accommodation> _crudService;
+        private readonly ICRUDRepository<Accommodation> _repository;
 
-        public AccommodationService()
+        public AccommodationService(ICRUDRepository<Accommodation> repository)
         {
-            _crudService = new CrudService<Accommodation>("../../../Resources/Data/accommodations.csv");
+            _repository = repository;
         }
 
         #region Crud
         public void Save(Accommodation accommodation)
         {
-            _crudService.Save(accommodation);
+            _repository.Save(accommodation);
         }
 
         public List<Accommodation> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
         public Accommodation GetById(int id)
         {
-            return _crudService.GetById(id);
+            return _repository.GetById(id);
         }
 
         public void Subscribe(IObserver observer)
         {
-            _crudService.Subscribe(observer);
+            _repository.Subscribe(observer);
         }
 
         public void Update(Accommodation accommodation)
         {
-            _crudService.Update(accommodation);
+            _repository.Update(accommodation);
         }
         #endregion
 
         public List<Accommodation> GetByUserId(int id)
         {
-            return _crudService.GetAll().Where(e => e.User.GetId() == id).ToList();
+            return _repository.GetAll().Where(e => e.User.GetId() == id).ToList();
         }
 
         public List<Accommodation> SortBySuperOwner(List<Accommodation> accommodations)

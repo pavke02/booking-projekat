@@ -60,21 +60,14 @@ namespace SIMS_Booking.UI.View
             _driverLocationsService = driverLocationsService;
             _vehicleReservationService = vehicleReservationService;
             _voucherService = voucherService;
-            
-            
-            _reservedTourService = new ReservedTourService();
-            
 
-
+            _reservedTourService = new ReservedTourService(new CsvCrudRepository<TourReservation>());
             Tours = new ObservableCollection<Tour>(_tourService.GetAll());
 
             TourReservation = new ObservableCollection<TourReservation>(_reservedTourService.GetAll());
             ReservationOfVehicle = new ObservableCollection<ReservationOfVehicle>(_vehicleReservationService.GetAll());
             _guideReviewService = guideReviewService;
             _reservedTourService = reservedTourService;
-
-
-
         }
         private void UpdateTours(List<Tour> tours)
         {

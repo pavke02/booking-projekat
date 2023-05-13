@@ -1,31 +1,26 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Repository.RelationsRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service.RelationsService
 {
     public class DriverLocationsService
     {
-        private readonly RelationsCrudService<DriverLocations> _crudService;
+        private readonly ICRUDRepository<DriverLocations> _repository;
 
-        public DriverLocationsService()
+        public DriverLocationsService(ICRUDRepository<DriverLocations> repository)
         {
-            _crudService = new RelationsCrudService<DriverLocations>("../../../Resources/Data/driverlocations.csv");
+            _repository = repository;
         }
 
         public void Save(DriverLocations driverLocations)
         {
-            _crudService.Save(driverLocations);
+            _repository.Save(driverLocations);
         }
 
         public void AddDriverLocationsToVehicles(VehicleService vehicleService)
         {
-            foreach (DriverLocations driverLocations in _crudService.GetAll())
+            foreach (DriverLocations driverLocations in _repository.GetAll())
             {
                 foreach (Vehicle vehicle in vehicleService.GetAll())
                 {

@@ -4,6 +4,6 @@ namespace SIMS_Booking.Repository
 {
     public class CancellationCsvCrudRepository : CsvCrudRepository<Reservation>
     {
-        public CancellationCsvCrudRepository() : base("../../../Resources/Data/cancellations.csv") { }
+        public CancellationCsvCrudRepository() : base() { }
     }
 }

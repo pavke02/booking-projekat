@@ -11,7 +11,7 @@ namespace SIMS_Booking.Service
 
         public TourReviewService()
         {
-            _crudService = new CrudService<TourReview>("../../../Resources/Data/tourReview.csv");
+            _crudService = new CrudService<TourReview>(new CsvCrudRepository<TourReview>());
         }
 
         public void Subscribe(IObserver observer)

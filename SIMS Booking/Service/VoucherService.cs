@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SIMS_Booking.Model;
+using SIMS_Booking.Repository;
 using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.Service
@@ -11,7 +12,7 @@ namespace SIMS_Booking.Service
 
         public VoucherService()
         {
-            _crudService = new CrudService<Voucher>("../../../Resources/Data/vouchers.csv");
+            _crudService = new CrudService<Voucher>(new CsvCrudRepository<Voucher>());
         }
 
         #region Crud

@@ -8,11 +8,11 @@ namespace SIMS_Booking.Service
 {
     public class CrudService<T> where T: ISerializable, IDable, new()
     {
-        private readonly CsvCrudRepository<T> _csvCrudRepository;
+        private readonly ICRUDRepository<T> _csvCrudRepository;
 
-        public CrudService(string filePath)
+        public CrudService(ICRUDRepository<T> csvCrudRepository)
         {
-            _csvCrudRepository = new CsvCrudRepository<T>(filePath);
+            _csvCrudRepository = csvCrudRepository;
         }
 
         public void Save(T entity)

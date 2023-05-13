@@ -124,7 +124,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private static INavigationService CreateSignInNavigationService(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
             return new NavigationService<SignInViewModel>
-                (navigationStore, () => new SignInViewModel(navigationStore, modalNavigationStore));
+                (navigationStore, () => App.GetViewModel<SignInViewModel>());
         }
 
         #region Validation
