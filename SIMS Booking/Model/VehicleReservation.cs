@@ -18,12 +18,12 @@ namespace SIMS_Booking.Model
         private Regex _timeRegex = new Regex("^[0 - 2][0 - 3]:[0 - 5][0 - 9]$");
 
 
-        public int getID()
+        public int GetId()
         {
             return ID;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
            ID= id;
 

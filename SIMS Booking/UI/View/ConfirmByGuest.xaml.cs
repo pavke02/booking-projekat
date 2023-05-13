@@ -51,8 +51,8 @@ namespace SIMS_Booking.UI.View
                 ConfirmTour temp = new ConfirmTour();
                 foreach (ConfirmTour confirmTour in _confirmTourService.GetAll())
                 {
-                    Trace.WriteLine(SelectedUser.getID());
-                    if (confirmTour.IdTour == _tour.getID() && SelectedUser.getID() == confirmTour.UserId)
+                    Trace.WriteLine(SelectedUser.GetId());
+                    if (confirmTour.IdTour == _tour.GetId() && SelectedUser.GetId() == confirmTour.UserId)
                         temp = confirmTour;
 
                 }

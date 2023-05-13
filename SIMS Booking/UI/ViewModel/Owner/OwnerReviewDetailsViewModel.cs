@@ -113,7 +113,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
             _ownerReviewService = ownerReviewService;
             _ownerReviewService.Subscribe(this);
-            OwnersReviews = new ObservableCollection<OwnerReview>(_ownerReviewService.GetShowableReviews(_user.getID()));
+            OwnersReviews = new ObservableCollection<OwnerReview>(_ownerReviewService.GetShowableReviews(_user.GetId()));
             NavigateBackCommand =
                 new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
         }
@@ -142,7 +142,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
         public void Update()
         {
-            UpdateOwnersReviews(_ownerReviewService.GetByUserId(_user.getID()));
+            UpdateOwnersReviews(_ownerReviewService.GetByUserId(_user.GetId()));
         }
         #endregion
     }

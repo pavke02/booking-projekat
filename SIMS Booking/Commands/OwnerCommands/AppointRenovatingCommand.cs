@@ -29,7 +29,7 @@ public class AppointRenovatingCommand : CommandBase
     public override void Execute(object? parameter)
     {
         RenovationAppointment renovationAppointment = new RenovationAppointment(_viewModel.StartDate,
-            _viewModel.EndDate, _viewModel.Description, true, _accommodationService.GetById(_accommodation.getID()));
+            _viewModel.EndDate, _viewModel.Description, true, _accommodationService.GetById(_accommodation.GetId()));
         _renovationAppointmentService.Save(renovationAppointment);
         MessageBox.Show("Renovation appointed successfully");
 

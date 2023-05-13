@@ -43,12 +43,12 @@ namespace SIMS_Booking.Model
             Fast = Convert.ToBoolean(values[6]);
         }
 
-        public int getID()
+        public int GetId()
         {
             return ID;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
             ID = id;
         }

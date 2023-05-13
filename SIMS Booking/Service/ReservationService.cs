@@ -50,7 +50,7 @@ namespace SIMS_Booking.Service
 
         public List<Reservation> GetByAccommodation(int id) 
         {
-            return _crudService.GetAll().Where(e => e.Accommodation.getID() == id && e.EndDate >= DateTime.Now).ToList();
+            return _crudService.GetAll().Where(e => e.Accommodation.GetId() == id && e.EndDate >= DateTime.Now).ToList();
         }
 
         public ObservableCollection<Reservation> GetReservationsByUser(int userId)
@@ -59,7 +59,7 @@ namespace SIMS_Booking.Service
             foreach (Reservation reservation in _crudService.GetAll())
             {
                 
-                if (reservation.User.getID() == userId)
+                if (reservation.User.GetId() == userId)
                     userReservations.Add(reservation);
             }                
 
@@ -68,7 +68,7 @@ namespace SIMS_Booking.Service
 
         public List<Reservation> GetUnreviewedReservations(int id)
         {
-            return _crudService.GetAll().Where(e => !e.HasOwnerReviewed && e.Accommodation.User.getID() == id).ToList();
+            return _crudService.GetAll().Where(e => !e.HasOwnerReviewed && e.Accommodation.User.GetId() == id).ToList();
         }
 
         //Metoda proverava da li je istekao rok za ocenjivanje,
@@ -92,7 +92,7 @@ namespace SIMS_Booking.Service
             foreach (Reservation reservation in _crudService.GetAll())
             {
 
-                if (reservation.Accommodation.getID() == selectedAccommodation.getID())
+                if (reservation.Accommodation.GetId() == selectedAccommodation.GetId())
                 {
                     accommodationReservations.Add(reservation);
                 }
@@ -113,7 +113,7 @@ namespace SIMS_Booking.Service
         {
             foreach (Reservation reservation in _crudService.GetAll().ToList())
             {
-                if (reservation.getID() == id)
+                if (reservation.GetId() == id)
                 {
                     _crudService.Delete(reservation);
                 }
@@ -139,7 +139,7 @@ namespace SIMS_Booking.Service
         {
             Dictionary<string, int> reservations = new Dictionary<string, int>();
 
-            foreach (Reservation reservation in GetAll().Where(e => e.Accommodation.getID() == id))
+            foreach (Reservation reservation in GetAll().Where(e => e.Accommodation.GetId() == id))
             {
                 string key = reservation.StartDate.Year.ToString();
                 if (reservations.ContainsKey(key))
@@ -155,7 +155,7 @@ namespace SIMS_Booking.Service
         {
             Dictionary<int, int> reservations = new Dictionary<int, int>();
 
-            foreach (Reservation reservation in GetAll().Where(e => e.Accommodation.getID() == id && e.StartDate.Year == year))
+            foreach (Reservation reservation in GetAll().Where(e => e.Accommodation.GetId() == id && e.StartDate.Year == year))
             {
                 int key = reservation.StartDate.Month;
                 if (reservations.ContainsKey(key))

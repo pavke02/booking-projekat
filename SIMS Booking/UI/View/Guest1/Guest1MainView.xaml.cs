@@ -170,12 +170,12 @@ namespace SIMS_Booking.UI.View
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
-            UserReservations = new ObservableCollection<Reservation>(_reservationService.GetReservationsByUser(loggedUser.getID()));
+            UserReservations = new ObservableCollection<Reservation>(_reservationService.GetReservationsByUser(loggedUser.GetId()));
 
             _postponementService = postponementService;
             NotificationTimer timer = new NotificationTimer(LoggedUser, _postponementService);
             _postponementService.Subscribe(this);
-            UserPostponements = new ObservableCollection<Postponement>(_postponementService.GetPostponementsByUser(loggedUser.getID()));
+            UserPostponements = new ObservableCollection<Postponement>(_postponementService.GetPostponementsByUser(loggedUser.GetId()));
 
             _ownerReviewService = ownerReviewService;
             _guestReviewService = guestReviewService;
@@ -257,8 +257,8 @@ namespace SIMS_Booking.UI.View
         public void Update()
         {
             UpdateAccommodations(_accommodationService.GetAll());
-            UpdateUserReservations(_reservationService.GetReservationsByUser(LoggedUser.getID()).ToList());
-            UpdateUserPostponements(_postponementService.GetPostponementsByUser(LoggedUser.getID()).ToList());
+            UpdateUserReservations(_reservationService.GetReservationsByUser(LoggedUser.GetId()).ToList());
+            UpdateUserPostponements(_postponementService.GetPostponementsByUser(LoggedUser.GetId()).ToList());
         }
 
         public void CancelReservation(object sender, RoutedEventArgs e)
@@ -272,10 +272,10 @@ namespace SIMS_Booking.UI.View
             List<Reservation> newReservations = _reservationService.GetAll();
             foreach (Reservation reservation in newReservations)
             {
-                if (reservation.getID() == SelectedReservation.getID())
+                if (reservation.GetId() == SelectedReservation.GetId())
                 {
-                    _postponementService.DeletePostponementsByReservationId(reservation.getID());
-                    _reservationService.DeleteCancelledReservation(reservation.getID());
+                    _postponementService.DeletePostponementsByReservationId(reservation.GetId());
+                    _reservationService.DeleteCancelledReservation(reservation.GetId());
                     _cancellationCsvCrudRepository.Save(reservation);
                     newReservations.Remove(reservation);
                     UpdateUserReservations(newReservations);

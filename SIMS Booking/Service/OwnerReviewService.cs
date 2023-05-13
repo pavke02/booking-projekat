@@ -31,7 +31,7 @@ namespace SIMS_Booking.Service
 
         public List<OwnerReview> GetByUserId(int id)
         {
-            return _crudService.GetAll().Where(e => e.Reservation.User.getID() == id).ToList();
+            return _crudService.GetAll().Where(e => e.Reservation.User.GetId() == id).ToList();
         }
 
         public void LoadReservationInOwnerReview(ReservationService _reservationService)
@@ -51,7 +51,7 @@ namespace SIMS_Booking.Service
 
         public List<OwnerReview> GetShowableReviews(int id)
         {
-            return _crudService.GetAll().Where(e => e.Reservation.HasGuestReviewed && e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
+            return _crudService.GetAll().Where(e => e.Reservation.HasGuestReviewed && e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.GetId() == id).ToList();
         }
 
         public double CalculateRating(int id)
@@ -72,7 +72,7 @@ namespace SIMS_Booking.Service
         {
             Dictionary<string, int> ownerRatings = new Dictionary<string, int>();
 
-            foreach (OwnerReview ownerRating in _crudService.GetAll().Where(e => e.Reservation.Accommodation.getID() == id && e.HasRenovation))
+            foreach (OwnerReview ownerRating in _crudService.GetAll().Where(e => e.Reservation.Accommodation.GetId() == id && e.HasRenovation))
             {
                 string key = ownerRating.Reservation.StartDate.Year.ToString();
                 if (ownerRatings.ContainsKey(key))
@@ -88,7 +88,7 @@ namespace SIMS_Booking.Service
         {
             Dictionary<int, int> ownerRatings = new Dictionary<int, int>();
 
-            foreach (OwnerReview ownerRating in _crudService.GetAll().Where(e => e.Reservation.Accommodation.getID() == id && 
+            foreach (OwnerReview ownerRating in _crudService.GetAll().Where(e => e.Reservation.Accommodation.GetId() == id && 
                          e.HasRenovation && e.Reservation.StartDate.Year == year))
             {
                 int key = ownerRating.Reservation.StartDate.Month;

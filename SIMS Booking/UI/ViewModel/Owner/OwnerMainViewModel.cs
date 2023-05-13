@@ -458,25 +458,25 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
             _accommodationService = accommodationService;
             _accommodationService.Subscribe(this);
-            Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetByUserId(_user.getID()));
-            AccommodationNames = new List<string>(_accommodationService.GetAccommodationNames(_user.getID()));
+            Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetByUserId(_user.GetId()));
+            AccommodationNames = new List<string>(_accommodationService.GetAccommodationNames(_user.GetId()));
             AccommodationNumber = Accommodations.Count().ToString();
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
-            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationService.GetUnreviewedReservations(_user.getID()));
+            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationService.GetUnreviewedReservations(_user.GetId()));
             ReservationNumber = ReservedAccommodations.Count().ToString();
 
             _guestReviewService = guestReviewService;
             _guestReviewService.Subscribe(this);
-            PastReservations = new ObservableCollection<GuestReview>(_guestReviewService.GetReviewedReservations(_user.getID()));
+            PastReservations = new ObservableCollection<GuestReview>(_guestReviewService.GetReviewedReservations(_user.GetId()));
 
             _renovationAppointmentService = renovationAppointmentService;
             _renovationAppointmentService.Subscribe(this);
             ActiveRenovations =
-                new ObservableCollection<RenovationAppointment>(_renovationAppointmentService.GetActiveRenovations(_user.getID()));
+                new ObservableCollection<RenovationAppointment>(_renovationAppointmentService.GetActiveRenovations(_user.GetId()));
             PastRenovations =
-                new ObservableCollection<RenovationAppointment>(_renovationAppointmentService.GetPastRenovations(_user.getID()));
+                new ObservableCollection<RenovationAppointment>(_renovationAppointmentService.GetPastRenovations(_user.GetId()));
 
             Countries = new List<string>(_cityCountryCsvRepository.LoadCountries());
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
@@ -507,7 +507,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 new NavigateCommand(CreateRenovationAppointingNavigationService(modalNavigationStore), this, () => SelectedAccommodation != null);
             #endregion
 
-            CalculateRating(_user.getID());
+            CalculateRating(_user.GetId());
 
             NotificationTimer timer = 
                 new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);
@@ -549,9 +549,9 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         {
             if (SelectedAccommodationStats != null)
             {
-                Dictionary<string, int> reservationCount = new Dictionary<string, int>(_reservationService.GetReservationsByYear(SelectedAccommodationStats.getID()));
-                Dictionary<string, int> postponementCount = new Dictionary<string, int>(_postponementService.GetPostponemetsByYear(SelectedAccommodationStats.getID()));
-                Dictionary<string, int> renovationsCount = new Dictionary<string, int>(_ownerReviewService.GetRenovationsByYear(SelectedAccommodationStats.getID()));
+                Dictionary<string, int> reservationCount = new Dictionary<string, int>(_reservationService.GetReservationsByYear(SelectedAccommodationStats.GetId()));
+                Dictionary<string, int> postponementCount = new Dictionary<string, int>(_postponementService.GetPostponemetsByYear(SelectedAccommodationStats.GetId()));
+                Dictionary<string, int> renovationsCount = new Dictionary<string, int>(_ownerReviewService.GetRenovationsByYear(SelectedAccommodationStats.GetId()));
 
                 List<string> sortedLabels = reservationCount.Keys
                     .Union(postponementCount.Keys)
@@ -568,9 +568,9 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         {
             if (SelectedAccommodationStats != null)
             {
-                Dictionary<int, int> reservationCount = new Dictionary<int, int>(_reservationService.GetReservationsByMonth(SelectedAccommodationStats.getID(), int.Parse(SelectedYear)));
-                Dictionary<int, int> postponementCount = new Dictionary<int, int>(_postponementService.GetPostponemetsByMonth(SelectedAccommodationStats.getID(), int.Parse(SelectedYear)));
-                Dictionary<int, int> renovationsCount = new Dictionary<int, int>(_ownerReviewService.GetRenovationsByMonth(SelectedAccommodationStats.getID(), int.Parse(SelectedYear)));
+                Dictionary<int, int> reservationCount = new Dictionary<int, int>(_reservationService.GetReservationsByMonth(SelectedAccommodationStats.GetId(), int.Parse(SelectedYear)));
+                Dictionary<int, int> postponementCount = new Dictionary<int, int>(_postponementService.GetPostponemetsByMonth(SelectedAccommodationStats.GetId(), int.Parse(SelectedYear)));
+                Dictionary<int, int> renovationsCount = new Dictionary<int, int>(_ownerReviewService.GetRenovationsByMonth(SelectedAccommodationStats.GetId(), int.Parse(SelectedYear)));
 
                 List<int> sortedLabels = reservationCount.Keys
                     .Union(postponementCount.Keys)
@@ -702,11 +702,11 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
         public void Update()
         {
-            UpdateAccommodations(_accommodationService.GetByUserId(_user.getID()));
-            UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.getID()));
-            UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.getID()));
-            UpdateActiveRenovations(_renovationAppointmentService.GetActiveRenovations(_user.getID()));
-            UpdatePastRenovations(_renovationAppointmentService.GetPastRenovations(_user.getID()));
+            UpdateAccommodations(_accommodationService.GetByUserId(_user.GetId()));
+            UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.GetId()));
+            UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.GetId()));
+            UpdateActiveRenovations(_renovationAppointmentService.GetActiveRenovations(_user.GetId()));
+            UpdatePastRenovations(_renovationAppointmentService.GetPastRenovations(_user.GetId()));
             UpdateNumberOfRegisteredAccommodations();
             UpdateNumberOfReservedAccommodations();
         }

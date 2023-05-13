@@ -43,7 +43,7 @@ namespace SIMS_Booking.UI.View
 
             foreach (Reservation reservation in AccommodationReservations)
             {
-                if (reservation.getID() == selectedReservation.getID())
+                if (reservation.GetId() == selectedReservation.GetId())
                 {
                     AccommodationReservations.Remove(reservation);
                     break;
@@ -57,7 +57,7 @@ namespace SIMS_Booking.UI.View
 
         private void Postpone(object sender, RoutedEventArgs e)
         {
-            Postponement postponement = new Postponement(_reservationService.GetById(_selectedReservation.getID()), (DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, PostponementStatus.Pending, false);
+            Postponement postponement = new Postponement(_reservationService.GetById(_selectedReservation.GetId()), (DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, PostponementStatus.Pending, false);
             _postponementService.Save(postponement);
             MessageBox.Show("Request sent successfully");
             Close();

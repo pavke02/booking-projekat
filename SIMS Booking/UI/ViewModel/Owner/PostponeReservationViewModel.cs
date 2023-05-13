@@ -92,7 +92,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
             _postponementService = postponementService;
             _postponementService.Subscribe(this);
-            PostponementRequests = new ObservableCollection<Postponement>(_postponementService.GetByUserId(_user.getID()));
+            PostponementRequests = new ObservableCollection<Postponement>(_postponementService.GetByUserId(_user.GetId()));
 
             AcceptPostponementRequestCommand =
                 new AcceptPostponementRequestCommand(this, _reservationService, _postponementService);
@@ -130,9 +130,9 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private void DisableReservedDates(ReservationService reservationService)
         {
             List<CalendarDateRange> blackoutDates = new List<CalendarDateRange>();
-            foreach (var reservation in reservationService.GetByAccommodation(SelectedRequest.Reservation.Accommodation.getID()))
+            foreach (var reservation in reservationService.GetByAccommodation(SelectedRequest.Reservation.Accommodation.GetId()))
             {
-                if (reservation != _reservationService.GetById(SelectedRequest.Reservation.getID()))
+                if (reservation != _reservationService.GetById(SelectedRequest.Reservation.GetId()))
                 {
                     var startDate = reservation.StartDate.Date;
                     var endDate = reservation.EndDate.Date;
@@ -169,7 +169,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
         public void Update()
         {
-            UpdatePostponements(_postponementService.GetByUserId(_user.getID()));
+            UpdatePostponements(_postponementService.GetByUserId(_user.GetId()));
         }
         #endregion
     }

@@ -31,9 +31,9 @@ namespace SIMS_Booking.View
             InitializeComponent();
             _guestReviewService = guestReviewService;
             _loggedUser = loggedUser;
-            foreach (GuestReview guestReview in _guestReviewService.GetReviewedReservations(selectedReservation.Accommodation.User.getID()))
+            foreach (GuestReview guestReview in _guestReviewService.GetReviewedReservations(selectedReservation.Accommodation.User.GetId()))
             {
-                if (selectedReservation.getID() == guestReview.ReservationId)
+                if (selectedReservation.GetId() == guestReview.ReservationId)
                 {
 
                     tidinessTb.Text = guestReview.Tidiness.ToString();

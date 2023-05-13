@@ -45,7 +45,7 @@ namespace SIMS_Booking.Service
 
         public List<GuestReview> GetReviewedReservations(int id)
         {
-            return _crudService.GetAll().Where(e => e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.getID() == id).ToList();
+            return _crudService.GetAll().Where(e => e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.GetId() == id).ToList();
         }
 
     }

@@ -13,7 +13,7 @@ namespace SIMS_Booking.Repository.RelationsRepository
             {
                 foreach (Vehicle vehicle in vehicleCsvCrudRepository.GetAll())
                 {
-                    if (driverLocations.DriverId == vehicle.getID())
+                    if (driverLocations.DriverId == vehicle.GetId())
                     {
                         vehicle.Locations.Add(driverLocations.Location);
                     }

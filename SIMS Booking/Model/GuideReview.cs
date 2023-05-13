@@ -33,12 +33,12 @@ namespace SIMS_Booking.Model
             }
         }
 
-        public int getID()
+        public int GetId()
         {
             return ID;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
             ID = id;
         }

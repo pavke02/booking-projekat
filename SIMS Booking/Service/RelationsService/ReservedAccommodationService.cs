@@ -23,7 +23,7 @@ namespace SIMS_Booking.Service.RelationsService
             {
                 foreach (Reservation reservation in reservationService.GetAll())
                 {
-                    if (reservedAccommodation.ReservationId == reservation.getID())
+                    if (reservedAccommodation.ReservationId == reservation.GetId())
                     {
                         reservation.Accommodation = accommodationService.GetById(reservedAccommodation.AccommodationId);
                         reservation.User = userService.GetById(reservedAccommodation.UserId);

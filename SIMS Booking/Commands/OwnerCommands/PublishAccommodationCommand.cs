@@ -50,7 +50,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
                 _viewModel.AccommodationType), _user, int.Parse(_viewModel.MaxGuests), int.Parse(_viewModel.MinReservationDays), int.Parse(_viewModel.CancellationPeriod), imageURLs, false);
             _accommodationService.Save(accommodation);
 
-            UsersAccommodation usersAccommodation = new UsersAccommodation(_user.getID(), accommodation.getID());
+            UsersAccommodation usersAccommodation = new UsersAccommodation(_user.GetId(), accommodation.GetId());
             _usersAccommodationService.Save(usersAccommodation);
             MessageBox.Show("Accommodation published successfully");
 

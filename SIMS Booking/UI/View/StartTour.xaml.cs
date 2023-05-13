@@ -96,7 +96,7 @@ namespace SIMS_Booking.UI.View
             }
             foreach (ConfirmTour confirmTour in _confirmTourService.GetAll().ToList())
             {
-                if (confirmTour.IdTour == SelectedTour.getID())
+                if (confirmTour.IdTour == SelectedTour.GetId())
                 {
                     _confirmTourService.Delete(confirmTour);
                 }

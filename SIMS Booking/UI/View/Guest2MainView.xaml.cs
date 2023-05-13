@@ -95,7 +95,7 @@ namespace SIMS_Booking.UI.View
                 return 1;
             }
 
-            return SelectedTour.getID() + 1;
+            return SelectedTour.GetId() + 1;
         }
 
 

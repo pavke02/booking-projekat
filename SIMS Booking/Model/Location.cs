@@ -12,23 +12,5 @@
             Country = country;
             City = city;
         }
-
-        public string[] ToCSV()
-        {
-            string[] csvValues = { Country, City};
-            return csvValues;
-        }
-
-        public void FromCSV(string[] values)
-        {
-            Country = values[0];
-            City = values[1];
-        }
-
-        public override string ToString()
-        {
-            string location = City + ", " + Country;
-            return location;
-        }
     }
 }

@@ -28,12 +28,12 @@ namespace SIMS_Booking.Model.Relations
             Location = new Location(values[1], values[2]);
         }
 
-        public int getID()
+        public int GetId()
         {
             return DriverId;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
             DriverId=id;
         }

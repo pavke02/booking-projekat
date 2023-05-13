@@ -1,11 +1,11 @@
-﻿using SIMS_Booking.Utility;
+﻿ using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Serializer;
 
 namespace SIMS_Booking.Model
 {
     public class GuestReview: ISerializable, IDable
     {
-        private int ID;
+        private int _id;
         public int RuleFollowing { get; set; }
         public int Tidiness { get; set; }
         public string Comment { get; set; }
@@ -19,22 +19,22 @@ namespace SIMS_Booking.Model
             Tidiness = tidiness;
             Comment = comment;
             Reservation = reservation;
-            ReservationId = reservation.getID();
+            ReservationId = reservation.GetId();
         }
 
-        public int getID()
+        public int GetId()
         {
-            return ID;
+            return _id;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
-            ID = id;
+            _id = id;
         }
 
         public void FromCSV(string[] values)
         {
-            ID = int.Parse(values[0]);
+            _id = int.Parse(values[0]);
             RuleFollowing = int.Parse(values[1]);
             Tidiness = int.Parse(values[2]);
             Comment = values[3];   
@@ -43,7 +43,7 @@ namespace SIMS_Booking.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { ID.ToString(), RuleFollowing.ToString(), Tidiness.ToString(), Comment, ReservationId.ToString() };
+            string[] csvValues = { _id.ToString(), RuleFollowing.ToString(), Tidiness.ToString(), Comment, ReservationId.ToString() };
             return csvValues;
         }
     }

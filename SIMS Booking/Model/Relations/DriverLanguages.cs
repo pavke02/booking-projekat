@@ -30,12 +30,12 @@ namespace SIMS_Booking.Model.Relations
             Language = (Language)Enum.Parse(typeof(Language), values[1]);
         }
 
-        public int getID()
+        public int GetId()
         {
             return DriverId;
         }
 
-        public void setID(int id)
+        public void SetId(int id)
         {
             DriverId = id;
         }

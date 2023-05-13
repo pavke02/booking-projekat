@@ -43,7 +43,7 @@ namespace SIMS_Booking.Service
 
         public List<Postponement> GetByUserId(int id)
         {
-            return GetAll().Where(e => e.Reservation.Accommodation.User.getID() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
+            return GetAll().Where(e => e.Reservation.Accommodation.User.GetId() == id && e.Status == Enums.PostponementStatus.Pending).ToList();
         }
 
         public void ReviewPostponementRequest(int id, string comment, PostponementStatus status)
@@ -68,7 +68,7 @@ namespace SIMS_Booking.Service
             foreach (Postponement postponement in GetAll())
             {
 
-                if (postponement.Reservation.User.getID() == userId)
+                if (postponement.Reservation.User.GetId() == userId)
                     userReservations.Add(postponement);
             }
 
@@ -115,7 +115,7 @@ namespace SIMS_Booking.Service
 
         public List<Postponement> GetByAccommodation(int id)
         {
-            return GetAll().Where(e => e.Reservation.Accommodation.getID() == id).ToList();
+            return GetAll().Where(e => e.Reservation.Accommodation.GetId() == id).ToList();
         }
 
         public Dictionary<string, int> GetPostponemetsByYear(int id)

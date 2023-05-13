@@ -64,7 +64,7 @@ public partial class Guest2DrivingReservationView : Window
     private void Reserve(object sender, RoutedEventArgs e)
     {
         var reservedVehicle =
-            new ReservationOfVehicle(LoggedUser.getID(), _vehicleService.GetVehicleByUserID(selectedDriver.DriverId).getID(), TimeofDepartureTextBox.Text, new Address(StartingAddressTextBox.Text, selectedDriver.Location), new Address(FinalAddressTextBox.Text, selectedDriver.Location));
+            new ReservationOfVehicle(LoggedUser.GetId(), _vehicleService.GetVehicleByUserID(selectedDriver.DriverId).GetId(), TimeofDepartureTextBox.Text, new Address(StartingAddressTextBox.Text, selectedDriver.Location), new Address(FinalAddressTextBox.Text, selectedDriver.Location));
         _vehicleReservationService.Save(reservedVehicle);
 
         MessageBox.Show("Uspešno ste rezervisali vožnju!");

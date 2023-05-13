@@ -3,7 +3,7 @@ namespace SIMS_Booking.Utility
 {
     public interface IDable
     {
-        public int getID();
-        public void setID(int id);
+        public int GetId();
+        public void SetId(int id);
     }
 }
