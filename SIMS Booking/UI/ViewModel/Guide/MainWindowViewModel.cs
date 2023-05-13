@@ -63,7 +63,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
 
 
             NavigateCreateTour = new NavigateCommand(CreateCreateTourModalNavigationService(modalNavigationStore));
-            NavigateTodaysTours = new NavigateCommand(CreateTodaysToursnavigationService(modalNavigationStore));
+            NavigateTodaysTours = new NavigateCommand(CreateTodaysToursnavigationService(navigationStore));
             NavigateFutureTours = new NavigateCommand(CreateFutureToursnavigationService(modalNavigationStore));
             NavigateCompletedTours = new NavigateCommand(CreateCompletedToursnavigationService(modalNavigationStore));
 
@@ -75,10 +75,10 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             (modalNavigationStore, () => new CreateTourViewModel(_tourService,_confirmTourService,_tourPointService,_textBox,_userService,_tourReview,_tour,_tourReviewService,_navigationStore,modalNavigationStore, _mainviewModel));
         }
 
-        private INavigationService CreateTodaysToursnavigationService(ModalNavigationStore modalNavigationStore)
+        private INavigationService CreateTodaysToursnavigationService(NavigationStore navigationStore)
         {
-            return new ModalNavigationService<TodaysToursViewModel>
-            (modalNavigationStore, () => new TodaysToursViewModel(_tourService,_tour,_mainviewModel,_modalNavigationStore) );
+            return new NavigationService<TodaysToursViewModel>
+            (navigationStore, () => new TodaysToursViewModel(_tourService,_tour,_mainviewModel,_modalNavigationStore,_navigationStore,_confirmTourService,_createTourViewModel) );
         }
 
         private INavigationService CreateFutureToursnavigationService(ModalNavigationStore modalNavigationStore)

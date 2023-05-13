@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using SIMS_Booking.Commands.NavigateCommands;
@@ -12,12 +11,11 @@ using SIMS_Booking.Model;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.UI.Utility;
-using SIMS_Booking.UI.View.Guide;
 using SIMS_Booking.Utility.Stores;
 
 namespace SIMS_Booking.UI.ViewModel.Guide
 {
-    public partial class StartTourViewModel:ViewModelBase
+    public partial class StartingTourViewModel : ViewModelBase
     {
         public ICommand BackCommand { get; }
         public ICommand ListOfGuests { get; }
@@ -26,6 +24,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         private bool _checked;
         private CreateTourViewModel _viewModel;
         private ModalNavigationStore _modalNavigationStore;
+        private NavigationStore _navigationStore;
         public bool Checked
         {
             get => _checked;
@@ -37,33 +36,33 @@ namespace SIMS_Booking.UI.ViewModel.Guide
                     OnPropertyChanged();
                 }
             }
-        }
 
+
+        }
         public ObservableCollection<TourPoint> Checkpoints { get; set; }
-       
-  
-        public StartTourViewModel(Tour tour, ConfirmTourService confirmTourService, CreateTourViewModel viewModel,NavigationStore navigationStore,ModalNavigationStore modalNavigationStore)
+
+
+        public StartingTourViewModel(Tour tour, ConfirmTourService confirmTourService, CreateTourViewModel viewModel, ModalNavigationStore modalNavigationStore,NavigationStore navigationStore)
         {
             _tour = tour;
             _confirmTourService = confirmTourService;
             Checkpoints = new ObservableCollection<TourPoint>(_tour.TourPoints);
             _viewModel = viewModel;
-            _modalNavigationStore = modalNavigationStore; 
+            _modalNavigationStore = modalNavigationStore;
 
             BackCommand = new NavigateCommand(CreateService(navigationStore));
-            
         }
 
-        private INavigationService CreateConfirmTourByGuestNavigationService(ModalNavigationStore modalNavigationStore)
+        private INavigationService CreateConfirmTourByGuestNavigationService(NavigationStore navigationStore)
         {
-            return new ModalNavigationService<ConfirmByGuestViewModel>
-                 (modalNavigationStore, () => new ConfirmByGuestViewModel(_confirmTourService,_tour));
+            return new NavigationService<ConfirmByGuestViewModel>
+                 (navigationStore, () => new ConfirmByGuestViewModel(_confirmTourService, _tour));
         }
 
         private INavigationService CreateService(NavigationStore navigationStore)
         {
-           return new NavigationService<CreateTourViewModel>
-                (navigationStore, () =>  _viewModel);
+            return new NavigationService<CreateTourViewModel>
+                 (navigationStore, () => _viewModel);
 
         }
 
@@ -74,7 +73,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             {
                 if ((Checkpoints[i].CheckedCheckBox) && (i != Checkpoints.Count - 1))
                 {
-                    (new NavigateCommand(CreateConfirmTourByGuestNavigationService(_modalNavigationStore))).Execute(null);
+                    (new NavigateCommand(CreateConfirmTourByGuestNavigationService(_navigationStore))).Execute(null);
 
                     Checkpoints[i].CheckedCheckBox = false;
                     Checkpoints[i + 1].CheckedCheckBox = true;
@@ -114,7 +113,6 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             }
             //Window.GetWindow(this).Close();
         }
-
 
     }
 }

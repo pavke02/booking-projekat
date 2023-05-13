@@ -25,6 +25,39 @@ namespace SIMS_Booking.UI.View.Guide
         {
             InitializeComponent();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox textBox = sender as TextBox;
@@ -41,9 +74,9 @@ namespace SIMS_Booking.UI.View.Guide
             TextBox textBox = sender as TextBox;
 
             if (int.TryParse(textBox.Text, out int result))
-                textBox.Background = Brushes.Red;
-            else
                 textBox.Background = Brushes.White;
+            else
+                textBox.Background = Brushes.Red;
 
         }
     }

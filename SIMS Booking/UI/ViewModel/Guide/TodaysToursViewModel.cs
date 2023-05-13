@@ -4,12 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using SIMS_Booking.Commands.NavigateCommands;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.UI.Utility;
+using SIMS_Booking.UI.ViewModel.Startup;
 using SIMS_Booking.Utility.Stores;
 
 namespace SIMS_Booking.UI.ViewModel.Guide
@@ -22,7 +24,11 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         private Tour _tour;
         private Tour selectedTour;
         public ICommand BackCommand { get; }
+        public ICommand StartingTourCommand { get; }
         private MainWindowViewModel _mainViewModel;
+        private ConfirmTourService _confirmTourService;
+        private CreateTourViewModel _createTourViewModel;
+        private ModalNavigationStore _modalNavigationStore;
         public Tour SelectedTour
         {
             get { return selectedTour; }
@@ -39,20 +45,29 @@ namespace SIMS_Booking.UI.ViewModel.Guide
 
         public bool MozeLiKomso => SelectedTour != null;
         
-        public TodaysToursViewModel(TourService tourService, Tour tour, MainWindowViewModel mainViewModel, ModalNavigationStore modalNavigationStore)
+        public TodaysToursViewModel(TourService tourService, Tour tour, MainWindowViewModel mainViewModel, ModalNavigationStore modalNavigationStore,NavigationStore navigationStore, ConfirmTourService confirmTourService,CreateTourViewModel createTourViewModel)
         {
             _tourService = tourService;
             _tour = tour;
             _mainViewModel = mainViewModel;
+            _confirmTourService = confirmTourService;
+            _createTourViewModel = createTourViewModel;
+            _modalNavigationStore = modalNavigationStore;
 
             NowTours = new ObservableCollection<Tour>(_tourService.GetTodaysTours());
             BackCommand = new NavigateCommand(CreateCloseModalNavigationService(modalNavigationStore));
-
+            StartingTourCommand = new NavigateCommand(CreateStartingTournavigationService(navigationStore));
 
         }
         private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new CloseModalNavigationService(modalNavigationStore);
+        }
+
+        private INavigationService CreateStartingTournavigationService(NavigationStore navigationStore)
+        {
+            return new NavigationService<StartingTourViewModel>
+            (navigationStore, () => new StartingTourViewModel(_tour, _confirmTourService, _createTourViewModel, _modalNavigationStore, navigationStore));
         }
 
     }
