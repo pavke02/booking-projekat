@@ -10,33 +10,33 @@ namespace SIMS_Booking.Service
 {
     public class RidesService
     {
-        private readonly CrudService<Rides> _crudService;
+        private readonly ICRUDRepository<Rides> _repository;
 
-        public RidesService()
+        public RidesService(ICRUDRepository<Rides> repository)
         {
-            _crudService = new CrudService<Rides>(new CsvCrudRepository<Rides>());
+            _repository = repository;
         }
 
         #region Crud 
 
         public void Save(Rides ride)
         {
-            _crudService.Save(ride);
+            _repository.Save(ride);
         }
 
         public List<Rides> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
         public Rides GetById(int id)
         {
-            return _crudService.GetById(id);
+            return _repository.GetById(id);
         }
 
         public void Delete(Rides ride)
         {
-            _crudService.Delete(ride);
+            _repository.Delete(ride);
         }
 
         #endregion

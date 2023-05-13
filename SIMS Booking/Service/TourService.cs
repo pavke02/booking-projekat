@@ -8,22 +8,22 @@ namespace SIMS_Booking.Service
 {
     public class TourService
     {
-        private readonly CrudService<Tour> _crudService;
+        private readonly ICRUDRepository<Tour> _repository;
 
-        public TourService()
+        public TourService(ICRUDRepository<Tour> repository)
         {
-            _crudService = new CrudService<Tour>(new CsvCrudRepository<Tour>());
+            _repository = repository;
         }
 
         public void Delete(Tour entity)
         {
-            _crudService.Delete(entity);
+            _repository.Delete(entity);
         }
 
         public List<Tour> GetTodaysTours()
         {
             List<Tour> todaysTours = new List<Tour>();
-            foreach (Tour tour in _crudService.GetAll())
+            foreach (Tour tour in _repository.GetAll())
             {
                 if (DateTime.Today == tour.StartTour)
                 {
@@ -36,7 +36,7 @@ namespace SIMS_Booking.Service
         
         public void LoadCheckpoints(TourPointService tp)
         {
-            foreach (var tour in _crudService.GetAll())
+            foreach (var tour in _repository.GetAll())
             {
                 foreach (var tourPointId in tour.TourPointIds)
                 {
@@ -47,24 +47,24 @@ namespace SIMS_Booking.Service
 
         public void Subscribe(IObserver observer)
         {
-            _crudService.Subscribe(observer);
+            _repository.Subscribe(observer);
         }
 
         public List<Tour> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
         public void Save(Tour tour)
         {
-           _crudService.Save(tour);
+           _repository.Save(tour);
         }
 
         public bool ValidTimeOfTour()
         {
-            foreach (var tour in _crudService.GetAll())
+            foreach (var tour in _repository.GetAll())
             {
-                foreach (var tour1 in _crudService.GetAll())
+                foreach (var tour1 in _repository.GetAll())
                 {
                     if (tour.TourTime.AddHours(tour.Time) > tour1.TourTime.AddHours(tour1.Time))
                     {

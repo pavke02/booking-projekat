@@ -73,6 +73,7 @@ namespace SIMS_Booking
             services.AddSingleton<ICRUDRepository<Vehicle>, CsvCrudRepository<Vehicle>>();
             services.AddSingleton<ICRUDRepository<Voucher>, CsvCrudRepository<Voucher>>();
             services.AddSingleton<ICRUDRepository<TourReservation>, CsvCrudRepository<TourReservation>>();
+            services.AddSingleton<ICRUDRepository<ReservationOfVehicle>, CsvCrudRepository<ReservationOfVehicle>>();
             services.AddSingleton<TextBox>();
 
             return services;

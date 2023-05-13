@@ -10,52 +10,52 @@ namespace SIMS_Booking.Service
 {
     public class ConfirmTourService
     {
-        private readonly CrudService<ConfirmTour> _crudService;
+        private readonly ICRUDRepository<ConfirmTour> _repository;
 
-        public ConfirmTourService()
+        public ConfirmTourService(ICRUDRepository<ConfirmTour> repository)
         {
-            _crudService = new CrudService<ConfirmTour>(new CsvCrudRepository<ConfirmTour>());
+            _repository = repository;
         }
 
         public void Subscribe(IObserver observer)
         {
-            _crudService.Subscribe(observer);
+            _repository.Subscribe(observer);
         }
 
         public List<ConfirmTour> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
         public ConfirmTour? Update(ConfirmTour entity)
         {
 
-            return _crudService.Update(entity);
+            return _repository.Update(entity);
         }
 
         public void Delete(ConfirmTour entity)
         {
-            _crudService.Delete(entity);
+            _repository.Delete(entity);
 
         }
 
         public void loadGuests(UserService userService)
         {
-            foreach (ConfirmTour tour in _crudService.GetAll())
+            foreach (ConfirmTour tour in _repository.GetAll())
             {
                 tour.User = userService.GetById(tour.UserId);
             }
         }
         public ConfirmTour GetById(int id)
         {
-            return _crudService.GetById(id);
+            return _repository.GetById(id);
         }
 
         public List<User> GetGuestOnTour(Tour selectedTour)
         {
             List<User> GuestOnTour = new List<User>();
 
-            foreach (ConfirmTour tour in _crudService.GetAll())
+            foreach (ConfirmTour tour in _repository.GetAll())
             {
                 if (tour.IdTour == selectedTour.GetId())
                 {
@@ -73,7 +73,7 @@ namespace SIMS_Booking.Service
         public int GetNumberOfGuestOnTour(Tour selectedTour)
         {
             int brojac = 0;
-            foreach (ConfirmTour confirmTour in _crudService.GetAll())
+            foreach (ConfirmTour confirmTour in _repository.GetAll())
             {
                 if (confirmTour.IdTour == selectedTour.GetId() && confirmTour.IdCheckpoint != -5)
                 {
@@ -98,7 +98,7 @@ namespace SIMS_Booking.Service
            
             foreach (Tour tour in tourService.GetAll())
             {
-                foreach (ConfirmTour confirmTour in _crudService.GetAll())
+                foreach (ConfirmTour confirmTour in _repository.GetAll())
                 {
 
                     if (confirmTour.IdTour == tour.GetId() && confirmTour.IdCheckpoint >= 0)
@@ -124,7 +124,7 @@ namespace SIMS_Booking.Service
 
             foreach (Tour tour in tourService.GetAll())
             {
-                foreach (ConfirmTour confirmTour in _crudService.GetAll())
+                foreach (ConfirmTour confirmTour in _repository.GetAll())
                 {
 
                     if (confirmTour.IdTour == tour.GetId() && confirmTour.IdCheckpoint >= 0 && tour.StartTour.Year == godina)
@@ -145,14 +145,14 @@ namespace SIMS_Booking.Service
         {
             if (tour.StartTour > DateTime.Now.AddHours(48))
             {
-                var lista = _crudService.GetAll();
+                var lista = _repository.GetAll();
                 for (int i = 0;i <lista.Count ; i++)
                 {
                     if (tour.GetId() == lista[i].IdTour)
                     {
                         lista[i].Vaucer += 1;
                         lista[i].IdTour = -1;
-                        _crudService.Update(lista[i]);
+                        _repository.Update(lista[i]);
                     }
                 }
 
@@ -165,7 +165,7 @@ namespace SIMS_Booking.Service
         public int NumberOfGuesteByAgesUnder18(UserService userService, Tour tour)
         {
             int under18 = 0;    
-            foreach (ConfirmTour confirmTour in _crudService.GetAll())
+            foreach (ConfirmTour confirmTour in _repository.GetAll())
             {
                 if (confirmTour.IdTour == tour.GetId())
                 {
@@ -186,7 +186,7 @@ namespace SIMS_Booking.Service
         {
             int between18and50 = 0;
             
-            foreach (ConfirmTour confirmTour in _crudService.GetAll())
+            foreach (ConfirmTour confirmTour in _repository.GetAll())
             {
                 if (confirmTour.IdTour == tour.GetId())
                 {
@@ -209,7 +209,7 @@ namespace SIMS_Booking.Service
         public int NumberOfGuestByAgesUp50(UserService userService,Tour tour)
         {
             int up50 = 0;
-            foreach (ConfirmTour confirmTour in _crudService.GetAll())
+            foreach (ConfirmTour confirmTour in _repository.GetAll())
             {
                 if (confirmTour.IdTour == tour.GetId())
                 {
@@ -233,7 +233,7 @@ namespace SIMS_Booking.Service
             {
                 float saVaucerom = 0;
                 float brojLjudi = 0;
-                foreach (ConfirmTour confirmTour in _crudService.GetAll())
+                foreach (ConfirmTour confirmTour in _repository.GetAll())
                 {
                     if (confirmTour.IdTour == tour.GetId())
                     {
@@ -260,7 +260,7 @@ namespace SIMS_Booking.Service
             {
             float saVaucerom = 0;
             float brojLjudi = 0;
-            foreach (ConfirmTour confirmTour in _crudService.GetAll())
+            foreach (ConfirmTour confirmTour in _repository.GetAll())
             {
                 if (confirmTour.IdTour == tour.GetId())
                 {

@@ -7,31 +7,31 @@ namespace SIMS_Booking.Service
 {
     public class TourPointService
     {
-        private readonly CrudService<TourPoint> _crudService;
+        private readonly ICRUDRepository<TourPoint> _repository;
 
-        public TourPointService()
+        public TourPointService(ICRUDRepository<TourPoint> repository)
         {
-            _crudService = new CrudService<TourPoint>(new CsvCrudRepository<TourPoint>());
+            _repository = repository;
         }
 
         public void Subscribe(IObserver observer)
         {
-            _crudService.Subscribe(observer);
+            _repository.Subscribe(observer);
         }
 
         public List<TourPoint> GetAll()
         {
-            return _crudService.GetAll();
+            return _repository.GetAll();
         }
 
         public void Save(TourPoint tour)
         {
-            _crudService.Save(tour);
+            _repository.Save(tour);
         }
 
         public TourPoint GetById(int id)
         {
-            return _crudService.GetById(id);
+            return _repository.GetById(id);
         }
 
     }
