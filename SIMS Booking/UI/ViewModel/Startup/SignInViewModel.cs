@@ -8,6 +8,8 @@ using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
 using SIMS_Booking.UI.View;
+using SIMS_Booking.UI.View.Driver;
+using SIMS_Booking.UI.ViewModel.Driver;
 using SIMS_Booking.UI.ViewModel.Owner;
 using SIMS_Booking.Utility.Stores;
 using System.Windows;
@@ -212,10 +214,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     guest2View.Show();
                     break;
                 case Roles.Driver:
-                    DriverView driverView = new DriverView(user, _ridesService, _finishedRidesService, _vehicleService,
-                      _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository);
-                    driverView.Show();
-                    //CheckFastRides(user);
+                    _navigationStore.CurrentViewModel = new DriverViewModel(user, _ridesService, _finishedRidesService, _vehicleService,
+                        _driverLanguagesService, _driverLocationsService, _cityCountryCsvRepository, _navigationStore, _modalNavigationStore);
                     break;
                 case Roles.Guide:
                     _navigationStore.CurrentViewModel = new MainWindowViewModel(_tourService, _confirmTourService, _tourPointService,
