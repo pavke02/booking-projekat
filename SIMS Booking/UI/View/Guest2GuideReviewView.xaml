@@ -3,27 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SIMS_Booking.View"
         mc:Ignorable="d"
         Title="Guest2GuideReviewView" Height="500" Width="750">
     <Grid>
         <StackPanel>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="110"></ColumnDefinition>
-                    <ColumnDefinition Width="90"></ColumnDefinition>
-                    <ColumnDefinition Width="160"></ColumnDefinition>
+                    <ColumnDefinition Width="110" />
+                    <ColumnDefinition Width="90" />
+                    <ColumnDefinition Width="160" />
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Ocena ture</Label>
                 <TextBox Grid.Column="1" Grid.Row="0" Height="30" Width="80" Margin="0, 10, 0, 0" Padding="34, 5, 0, 0"
                                  Text="{Binding ElementName=tourRatingSl, Path=Value, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"                                 
-                                 Name="tidinessTb"></TextBox>
+                                 Name="tidinessTb" />
                 <Slider Grid.Column="2" Grid.Row="0" Margin="20, 25, 0, 0" Maximum="5" Minimum="1"
                         Name="tourRatingSl" Value="{Binding TourRating, UpdateSourceTrigger=PropertyChanged}"/>
 
@@ -39,9 +38,9 @@
                     <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0, 10 ,0, 0">
                         <TextBox Width="150" Height="40" HorizontalAlignment="Center" 
                                     Margin="0, 5 0, 0" TextChanged="ImageTbCheck"
-                                    Name="urlTb"></TextBox>
+                                    Name="urlTb" />
                         <Button Background="Transparent" BorderBrush="Transparent" Margin="10, 5, 20, 0"
-                                        Name="addURLButton" Visibility="Hidden" Click="AddImage">
+                                Name="addURLButton" Visibility="Hidden" Click="AddImage">
                             <Image Source="../Resources/Images/add.png" Height="30" Width="30"/>
                         </Button>
 
@@ -63,8 +62,7 @@
                 </StackPanel>
                 <Button Content="Oceni turu" Width="100" Height="40" Margin="0, 40, 0, 0" HorizontalAlignment="Center"
                         Click="SubmitReview" 
-                        Name="submitButton">
-                </Button>
+                        Name="submitButton" />
             </StackPanel>
 
         </StackPanel>

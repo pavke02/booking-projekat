@@ -3,10 +3,7 @@ using SIMS_Booking.Utility.Observer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Windows.Input;
 using SIMS_Booking.Repository;
 
 namespace SIMS_Booking.Service

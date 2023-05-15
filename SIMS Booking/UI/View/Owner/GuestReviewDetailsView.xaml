@@ -31,38 +31,34 @@
             <WrapPanel >
                 <Grid Margin="20 50 25 0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="80"></RowDefinition>
-                        <RowDefinition Height="80"></RowDefinition>
-                        <RowDefinition Height="80"></RowDefinition>
-                        <RowDefinition Height="80"></RowDefinition>
+                        <RowDefinition Height="80" />
+                        <RowDefinition Height="80" />
+                        <RowDefinition Height="80" />
+                        <RowDefinition Height="80" />
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Column="0" Grid.Row="0" Width="250">
                         <Label FontSize="20" VerticalAlignment="Center">Username:</Label>
                         <TextBlock Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                           Width="255" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="10 0 0 0">
-                        </TextBlock>
+                           Width="255" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="10 0 0 0" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="0" Grid.Row="1">
                         <Label  FontSize="20" VerticalAlignment="Center">Accommodation:</Label>
                         <TextBlock Text="{Binding AccommodationName, UpdateSourceTrigger=PropertyChanged}"
-                           Width="255" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="10 0 0 0">
-                        </TextBlock>
+                           Width="255" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="10 0 0 0" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="0" Grid.Row="2">
                         <Label  FontSize="20" VerticalAlignment="Center">Start Date:</Label>
                         <TextBlock Text="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}"
-                           Width="255" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="10 0 0 0">
-                        </TextBlock>
+                           Width="255" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="10 0 0 0" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="0" Grid.Row="3">
                         <Label FontSize="20" VerticalAlignment="Center">End Date:</Label>
                         <TextBlock Text="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"
-                           Width="255" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="10 0 0 0">
-                        </TextBlock>
+                           Width="255" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="10 0 0 0" />
                     </StackPanel>
                 </Grid>
 
@@ -71,14 +67,14 @@
                 <StackPanel>
                     <Grid Margin="40 30 0 0" Width="600">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                            <ColumnDefinition Width="250"></ColumnDefinition>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="250" />
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="80"></RowDefinition>
-                            <RowDefinition Height="80"></RowDefinition>
+                            <RowDefinition Height="80" />
+                            <RowDefinition Height="80" />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Column="0" Grid.Row="0" FontSize="20" VerticalAlignment="Center">Tidiness:</Label>
@@ -113,8 +109,8 @@
 
                     <Grid Height="200">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"></ColumnDefinition>
-                            <ColumnDefinition Width="420"></ColumnDefinition>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="420" />
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0" FontSize="20"  Margin="40 50 00 0">Comment:</Label>

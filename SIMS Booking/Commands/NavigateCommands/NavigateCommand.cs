@@ -3,6 +3,7 @@ using SIMS_Booking.UI.Utility;
 using SIMS_Booking.UI.ViewModel.Owner;
 using System;
 using System.ComponentModel;
+using SIMS_Booking.UI.ViewModel.Guide;
 
 namespace SIMS_Booking.Commands.NavigateCommands
 {
@@ -42,7 +43,8 @@ namespace SIMS_Booking.Commands.NavigateCommands
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(OwnerMainViewModel.SelectedReservation) || e.PropertyName == nameof(OwnerMainViewModel.SelectedReview) || 
-                e.PropertyName == nameof(OwnerMainViewModel.SelectedAccommodation))
+                e.PropertyName == nameof(OwnerMainViewModel.SelectedAccommodation) || e.PropertyName==nameof(GuideMainViewModel.SelectedTour))
+
                 OnCanExecuteChanged();
         }
     }

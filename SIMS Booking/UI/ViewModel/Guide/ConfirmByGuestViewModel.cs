@@ -1,36 +1,39 @@
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using CommunityToolkit.Mvvm.Input;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service;
+using SIMS_Booking.UI.Utility;
 using SIMS_Booking.Utility.Observer;
 
-namespace SIMS_Booking.UI.View
+namespace SIMS_Booking.UI.ViewModel.Guide
 {
-
-    public partial class ConfirmByGuest : Window, IObserver, INotifyPropertyChanged
+    public partial class ConfirmByGuestViewModel: ViewModelBase,IObserver
     {
-        public ObservableCollection<User> GuestOnTour { get; set; }
-        public ObservableCollection<int> NumberOfGuestsOnTour { get; set; }
-        private UserService _userService;
         private ConfirmTourService _confirmTourService;
         private Tour _tour;
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public ObservableCollection<User> GuestOnTour { get; set; }
+        public ObservableCollection<int> NumberOfGuestsOnTour { get; set; }
+
+        
+        
         public User SelectedUser { get; set; }
 
-
-        public ConfirmByGuest(ConfirmTourService confirmTourService, Tour tour)
+        public ConfirmByGuestViewModel(ConfirmTourService confirmTourService, Tour tour)
         {
-            InitializeComponent();
-            DataContext = this;
             _confirmTourService = confirmTourService;
-            _confirmTourService.Subscribe(this);
             _tour = tour;
+            _confirmTourService.Subscribe(this);
+
             GuestOnTour = new ObservableCollection<User>(_confirmTourService.GetGuestOnTour(tour));
         }
-
 
         private void UpdateConfirmGuests(List<User> users)
         {
@@ -44,7 +47,8 @@ namespace SIMS_Booking.UI.View
             UpdateConfirmGuests(_confirmTourService.GetGuestOnTour(_tour));
         }
 
-        private void ComeOnTour(object sender, RoutedEventArgs e)
+        [RelayCommand]
+        private void ComeOnTour()
         {
             if (SelectedUser != null)
             {
