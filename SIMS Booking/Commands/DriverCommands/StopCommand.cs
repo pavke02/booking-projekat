@@ -39,7 +39,7 @@ namespace SIMS_Booking.Commands.DriverCommands
             selectedFinishedRide.Ride = _viewModel.SelectedRide;
             selectedFinishedRide.Price = _viewModel.Price;
             selectedFinishedRide.Time = _viewModel.Taximeter;
-            selectedFinishedRide.Ride.DriverID = _viewModel.User.getID();
+            selectedFinishedRide.Ride.DriverID = _viewModel.User.GetId();
 
             _viewModel.Price = "";
             _viewModel.Taximeter = "";

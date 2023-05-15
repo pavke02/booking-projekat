@@ -155,7 +155,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
 
             User = user;
 
-            Vehicle = _vehicleService.GetVehicleByUserID(user.getID());
+            Vehicle = _vehicleService.GetVehicleByUserID(user.GetId());
 
             Rides = new ObservableCollection<Rides>(_ridesService.GetAll());
             ActiveRides = new ObservableCollection<Rides>(_ridesService.GetActiveRides(User, Vehicle));

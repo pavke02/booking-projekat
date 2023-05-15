@@ -143,7 +143,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             Languages = new List<Language>();
             Locations = new List<Location>();
 
-            Vehicle = _vehicleService.GetVehicleByUserID(User.getID());
+            Vehicle = _vehicleService.GetVehicleByUserID(User.GetId());
 
             _ridesService = ridesService;
             _finishedRidesService = finishedRidesService;
@@ -199,7 +199,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
 
         public void Update()
         {
-            Vehicle = _vehicleService.GetVehicleByUserID(User.getID());
+            Vehicle = _vehicleService.GetVehicleByUserID(User.GetId());
 
             if (Vehicle != null)
             {

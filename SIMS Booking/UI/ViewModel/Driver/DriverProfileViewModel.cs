@@ -118,7 +118,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             _vehicleService = vehicleService;
             User = user;
 
-            Vehicle = _vehicleService.GetVehicleByUserID(User.getID());
+            Vehicle = _vehicleService.GetVehicleByUserID(User.GetId());
 
             FinishedRides = new ObservableCollection<FinishedRide>(_finishedRidesService.GetAll());
             FastRidesCount = 0;
@@ -127,7 +127,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
 
             foreach (FinishedRide finishedRide in FinishedRides)
             {
-                if (finishedRide.Ride.Type == "Fast" && finishedRide.Ride.DriverID == User.getID())
+                if (finishedRide.Ride.Type == "Fast" && finishedRide.Ride.DriverID == User.GetId())
                 {
                     FastRidesCount++;
                 }
