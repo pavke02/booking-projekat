@@ -29,6 +29,7 @@ namespace SIMS_Booking.Commands.DriverCommands
         public override void Execute(object? parameter)
         {
             _viewModel.Languages += _viewModel.SelectedLanguage + "\n";
+            _viewModel.SelectedLanguage = null;
         }
 
         public override bool CanExecute(object? parameter)

@@ -29,6 +29,8 @@ namespace SIMS_Booking.Commands.DriverCommands
         public override void Execute(object? parameter)
         {
             _viewModel.Locations += _viewModel.Country + "," + _viewModel.City + "\n";
+            _viewModel.Country = null;
+            _viewModel.City = null;
         }
 
         public override bool CanExecute(object? parameter)

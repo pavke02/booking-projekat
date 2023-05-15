@@ -29,6 +29,7 @@ namespace SIMS_Booking.Commands.DriverCommands
         public override void Execute(object? parameter)
         {
             _viewModel.Images += _viewModel.Image + "\n";
+            _viewModel.Image = "";
         }
 
         public override bool CanExecute(object? parameter)

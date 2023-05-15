@@ -17,10 +17,11 @@ using System.Windows.Input;
 using SIMS_Booking.Commands.NavigateCommands;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Commands.DriverCommands;
+using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.UI.ViewModel.Driver
 {
-    public class DriverRidesViewModel : ViewModelBase
+    public class DriverRidesViewModel : ViewModelBase, IObserver
     {
         public DispatcherTimer timer;
         public DispatcherTimer timer2;
@@ -150,12 +151,16 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             _finishedRidesService = finishedRidesService;
             _vehicleService = vehicleService;
 
+            _ridesService.Subscribe(this);
+
             User = user;
 
             Vehicle = _vehicleService.GetVehicleByUserID(user.getID());
 
             Rides = new ObservableCollection<Rides>(_ridesService.GetAll());
             ActiveRides = new ObservableCollection<Rides>(_ridesService.GetActiveRides(User, Vehicle));
+
+
             
             NavigateBackCommand = new NavigateBackCommand(CreateCloseRidesNavigationService(modalNavigationStore));
 
@@ -169,6 +174,15 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         private INavigationService CreateCloseRidesNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new CloseModalNavigationService(modalNavigationStore);
+        }
+
+        public void Update()
+        {
+            ActiveRides.Clear();
+            foreach(Rides activeRide in _ridesService.GetActiveRides(User, Vehicle))
+            {
+                ActiveRides.Add(activeRide);
+            }
         }
     }
 }

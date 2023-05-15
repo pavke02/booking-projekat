@@ -1,4 +1,6 @@
 ﻿using SIMS_Booking.Model;
+using SIMS_Booking.UI.ViewModel.Driver;
+using SIMS_Booking.Utility.Observer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +63,9 @@ namespace SIMS_Booking.Service
             return ActiveRides;
         }
 
-
-
+        public void Subscribe(IObserver observer)
+        {
+            _crudService.Subscribe(observer);
+        }
     }
 }

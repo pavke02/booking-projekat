@@ -41,13 +41,6 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         public ICommand NavigateToProfileCommand { get; }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private Vehicle _vehicle;
         public Vehicle Vehicle
         {
@@ -57,7 +50,6 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 if (value != _vehicle)
                 {
                     _vehicle = value;
-                    Update();
                     OnPropertyChanged();
                 }
             }
@@ -156,7 +148,9 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             _ridesService = ridesService;
             _finishedRidesService = finishedRidesService;
 
-            //Update();
+            _vehicleService.Subscribe(this);
+
+            Update();
 
             NavigateToGalleryViewCommand = new NavigateCommand(CreateGalleryViewNavigationService(modalNavigationStore), this, () => Vehicle != null);
             NavigateToStatsViewCommand = new NavigateCommand(CreateStatsViewNavigationService(modalNavigationStore), this, () => Vehicle != null);
@@ -164,18 +158,21 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             NavigateToAddVehicleCommand = new NavigateCommand(CreateAddVehicleNavigationService(modalNavigationStore), this, () => Vehicle == null);
             NavigateToProfileCommand = new NavigateCommand(CreateProfileNavigationService(modalNavigationStore), this, () => Vehicle != null);
 
-            foreach(Rides ride in _ridesService.GetActiveRides(User, Vehicle))
+            if(Vehicle != null)
             {
-                if(ride.Type == "Fast")
+                foreach (Rides ride in _ridesService.GetActiveRides(User, Vehicle))
                 {
-                    MessageBox.Show("You have new fast rides!");
+                    if (ride.Type == "Fast")
+                    {
+                        MessageBox.Show("You have new fast rides!");
+                    }
                 }
-            }
-            foreach (Rides ride in _ridesService.GetActiveRides(User, Vehicle))
-            {
-                if (ride.Type == "Group")
+                foreach (Rides ride in _ridesService.GetActiveRides(User, Vehicle))
                 {
-                    MessageBox.Show("You have new group rides!");
+                    if (ride.Type == "Group")
+                    {
+                        MessageBox.Show("You have new group rides!");
+                    }
                 }
             }
         }
@@ -221,6 +218,8 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 MaxGuestsString = MaxGuests.ToString();
             }
         }
+
+
 
         private INavigationService CreateGalleryViewNavigationService(ModalNavigationStore modalNavigationStore)
         {
