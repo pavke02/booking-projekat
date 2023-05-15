@@ -66,23 +66,11 @@ namespace SIMS_Booking.Service
             ObservableCollection<Postponement> userReservations = new ObservableCollection<Postponement>();
             foreach (Postponement postponement in GetAll())
             {
-
                 if (postponement.Reservation.User.GetId() == userId)
                     userReservations.Add(postponement);
             }
 
             return userReservations;
-        }
-
-        public void DeletePostponementsByReservationId(int reservationId)
-        {
-            foreach (Postponement postponement in GetAll().ToList())
-            {
-                if (postponement.ReservationId == reservationId)
-                {
-                    _repository.Delete(postponement);
-                }
-            }
         }
 
         public List<Postponement> GetReviewedPostponements()
@@ -100,7 +88,7 @@ namespace SIMS_Booking.Service
             return postponements;
         }
 
-        public void SetNotifiedPostpoments()
+        public void SetNotifiedPostponements()
         {
             foreach (Postponement postponement in GetAll().ToList())
             {
@@ -117,7 +105,7 @@ namespace SIMS_Booking.Service
             return GetAll().Where(e => e.Reservation.Accommodation.GetId() == id).ToList();
         }
 
-        public Dictionary<string, int> GetPostponemetsByYear(int id)
+        public Dictionary<string, int> GetPostponementsByYear(int id)
         {
             Dictionary<string, int> postponements = new Dictionary<string, int>();
 
@@ -133,7 +121,7 @@ namespace SIMS_Booking.Service
             return postponements;
         }
 
-        public Dictionary<int, int> GetPostponemetsByMonth(int id, int year)
+        public Dictionary<int, int> GetPostponementsByMonth(int id, int year)
         {
             Dictionary<int, int> postponements = new Dictionary<int, int>();
 
