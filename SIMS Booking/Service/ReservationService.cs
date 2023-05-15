@@ -56,12 +56,23 @@ namespace SIMS_Booking.Service
             ObservableCollection<Reservation> userReservations = new ObservableCollection<Reservation>();
             foreach (Reservation reservation in _repository.GetAll())
             {
-                
-                if (reservation.User.GetId() == userId)
+                if (reservation.User.GetId() == userId && !reservation.IsCanceled)
                     userReservations.Add(reservation);
             }                
 
             return userReservations;
+        }
+
+        public ObservableCollection<Reservation> GetActiveReservations()
+        {
+            ObservableCollection<Reservation> activeReservations = new ObservableCollection<Reservation>();
+            foreach (Reservation reservation in _repository.GetAll())
+            {
+                if(!reservation.IsCanceled)
+                    activeReservations.Add(reservation);
+            }
+
+            return activeReservations;
         }
 
         public List<Reservation> GetUnreviewedReservations(int id)
