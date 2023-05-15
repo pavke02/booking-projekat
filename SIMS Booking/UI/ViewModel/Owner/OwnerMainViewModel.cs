@@ -444,8 +444,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
         public OwnerMainViewModel(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository,
             ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
-            OwnerReviewService ownerReviewService, PostponementService postponementService, User user,
-            CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService,
+            OwnerReviewService ownerReviewService, PostponementService postponementService, User user, UserService userService,
             RenovationAppointmentService renovationAppointmentService, ModalNavigationStore modalNavigationStore)
         {
             _user = user;
@@ -509,7 +508,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             CalculateRating(_user.GetId());
 
             NotificationTimer timer = 
-                new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);
+                new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService);
             DatePassedTimer passedTimer =
                 new DatePassedTimer(_accommodationService, _renovationAppointmentService, _user);
 
@@ -625,7 +624,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
             Statistics.Add(new ColumnSeries
             {
-                Title = "Renovations",
+                Title = "Cancellation",
                 Values = cancellationsChartValues
             });
         } 

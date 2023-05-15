@@ -58,7 +58,6 @@ namespace SIMS_Booking
             services.AddSingleton<ICRUDRepository<UsersAccommodation>, CsvCrudRepository<UsersAccommodation>>();
             services.AddSingleton<ICRUDRepository<ReservedAccommodation>, CsvCrudRepository<ReservedAccommodation>>();
             services.AddSingleton<CityCountryCsvRepository>();
-            services.AddSingleton<CancellationCsvCrudRepository>();
 
             services.AddSingleton<ICRUDRepository<ConfirmTour>, CsvCrudRepository<ConfirmTour>>();
             services.AddSingleton<ICRUDRepository<DriverLanguages>, CsvCrudRepository<DriverLanguages>>();

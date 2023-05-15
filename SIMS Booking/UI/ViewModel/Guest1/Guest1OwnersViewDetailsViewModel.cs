@@ -1,11 +1,5 @@
 ﻿using SIMS_Booking.Model;
 using SIMS_Booking.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.TeamFoundation.Work.WebApi;
 using SIMS_Booking.UI.Utility;
 using SIMS_Booking.Utility.Stores;
 using System.Windows.Input;
