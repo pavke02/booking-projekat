@@ -18,7 +18,6 @@ namespace SIMS_Booking.Service
         }
 
         #region Crud
-
         public void Subscribe(IObserver observer)
         {
             _repository.Subscribe(observer);
@@ -46,9 +45,9 @@ namespace SIMS_Booking.Service
 
         #endregion
 
-        public List<Reservation> GetByAccommodation(int id) 
+        public List<Reservation> GetActiveByAccommodation(int id) 
         {
-            return _repository.GetAll().Where(e => e.Accommodation.GetId() == id && e.EndDate >= DateTime.Now).ToList();
+            return GetActiveReservations().Where(e => e.Accommodation.GetId() == id && e.EndDate >= DateTime.Now).ToList();
         }
 
         public ObservableCollection<Reservation> GetReservationsByUser(int userId)
@@ -63,21 +62,14 @@ namespace SIMS_Booking.Service
             return userReservations;
         }
 
-        public ObservableCollection<Reservation> GetActiveReservations()
+        public List<Reservation> GetActiveReservations()
         {
-            ObservableCollection<Reservation> activeReservations = new ObservableCollection<Reservation>();
-            foreach (Reservation reservation in _repository.GetAll())
-            {
-                if(!reservation.IsCanceled)
-                    activeReservations.Add(reservation);
-            }
-
-            return activeReservations;
+            return _repository.GetAll().Where(e => !e.IsCanceled).ToList();
         }
 
-        public List<Reservation> GetUnreviewedReservations(int id)
+        public List<Reservation> GetUnreviewedActiveReservations(int id)
         {
-            return _repository.GetAll().Where(e => !e.HasOwnerReviewed && e.Accommodation.User.GetId() == id).ToList();
+            return GetActiveReservations().Where(e => !e.HasOwnerReviewed && e.Accommodation.User.GetId() == id).ToList();
         }
 
         //Metoda proverava da li je istekao rok za ocenjivanje,
@@ -118,18 +110,7 @@ namespace SIMS_Booking.Service
             _repository.Update(reservation);
         }
 
-        public void DeleteCancelledReservation(int id)
-        {
-            foreach (Reservation reservation in _repository.GetAll().ToList())
-            {
-                if (reservation.GetId() == id)
-                {
-                    _repository.Delete(reservation);
-                }
-            }
-        }
-
-        public bool isSuperGuest(User user)
+        public bool IsSuperGuest(User user)
         {
             int reservationCounter = 0;
             foreach (Reservation reservation in _repository.GetAll())
@@ -165,6 +146,38 @@ namespace SIMS_Booking.Service
             Dictionary<int, int> reservations = new Dictionary<int, int>();
 
             foreach (Reservation reservation in GetAll().Where(e => e.Accommodation.GetId() == id && e.StartDate.Year == year))
+            {
+                int key = reservation.StartDate.Month;
+                if (reservations.ContainsKey(key))
+                    reservations[key] += 1;
+                else
+                    reservations[key] = 1;
+            }
+
+            return reservations;
+        }
+
+        public Dictionary<string, int> GetCancellationsByYear(int id)
+        {
+            Dictionary<string, int> reservations = new Dictionary<string, int>();
+
+            foreach (Reservation reservation in GetAll().Where(e => e.Accommodation.GetId() == id && e.IsCanceled))
+            {
+                string key = reservation.StartDate.Year.ToString();
+                if (reservations.ContainsKey(key))
+                    reservations[key] += 1;
+                else
+                    reservations[key] = 1;
+            }
+
+            return reservations;
+        }
+
+        public Dictionary<int, int> GetCancellationsByMonth(int id, int year)
+        {
+            Dictionary<int, int> reservations = new Dictionary<int, int>();
+
+            foreach (Reservation reservation in GetAll().Where(e => e.Accommodation.GetId() == id && e.StartDate.Year == year && e.IsCanceled))
             {
                 int key = reservation.StartDate.Month;
                 if (reservations.ContainsKey(key))

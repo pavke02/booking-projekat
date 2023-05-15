@@ -64,7 +64,7 @@ namespace SIMS_Booking.Utility.Timers
                 if (!_postponementService.GetReviewedPostponements().IsNullOrEmpty())
                 {
                     notifier.ShowInformation("Owner has reviewed your postponement requests");
-                    _postponementService.SetNotifiedPostpoments();
+                    _postponementService.SetNotifiedPostponements();
                 }
 
                 timer.Stop();

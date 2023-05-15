@@ -570,7 +570,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         public void SetSuperGuest()
         {
             UserTb = LoggedUser.Username + ", Guest";
-            if (_reservationService.isSuperGuest(LoggedUser))
+            if (_reservationService.IsSuperGuest(LoggedUser))
             {
                 UserTb = LoggedUser.Username + ", Super Guest";
             }
