@@ -180,7 +180,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
 
             foreach (Reservation reservation in AccommodationReservations)
             {
-                if (reservation.getID() == selectedReservation.getID())
+                if (reservation.GetId() == selectedReservation.GetId())
                 {
                     AccommodationReservations.Remove(reservation);
                     break;

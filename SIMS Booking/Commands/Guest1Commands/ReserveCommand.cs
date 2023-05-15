@@ -41,7 +41,7 @@ namespace SIMS_Booking.Commands.Guest1Commands
             Reservation reservation = new Reservation(_viewModel.SelectedStartDate, _viewModel.SelectedEndDate, _selectedAccommodation, _user, false, false, false, false);
             _reservationService.Save(reservation);
 
-            ReservedAccommodation reservedAccommodation = new ReservedAccommodation(_user.getID(), _selectedAccommodation.getID(), reservation.getID());
+            ReservedAccommodation reservedAccommodation = new ReservedAccommodation(_user.GetId(), _selectedAccommodation.GetId(), reservation.GetId());
             _reservedAccommodationService.Save(reservedAccommodation);
         }
     }

@@ -29,7 +29,7 @@ namespace SIMS_Booking.Commands.Guest1Commands
 
         public override void Execute(object? parameter)
         {
-            Postponement postponement = new Postponement(_reservationService.GetById(_selectedReservation.getID()), _viewModel.SelectedStartDate, _viewModel.SelectedEndDate, PostponementStatus.Pending, false);
+            Postponement postponement = new Postponement(_reservationService.GetById(_selectedReservation.GetId()), _viewModel.SelectedStartDate, _viewModel.SelectedEndDate, PostponementStatus.Pending, false);
             _postponementService.Save(postponement);
             MessageBox.Show("Request sent successfully");
         }

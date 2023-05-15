@@ -35,7 +35,7 @@ namespace SIMS_Booking.Commands.Guest1Commands
             List<Reservation> newReservations = _reservationService.GetAll();
             foreach (Reservation reservation in newReservations)
             {
-                if (reservation.getID() == _viewModel.SelectedReservation.getID())
+                if (reservation.GetId() == _viewModel.SelectedReservation.GetId())
                 {
                     reservation.IsCanceled = true;
                     _reservationService.Update(reservation);

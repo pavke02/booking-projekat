@@ -84,9 +84,9 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
             _loggedUser = loggedUser;
             NavigateBackCommand = new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
 
-            foreach (GuestReview guestReview in _guestReviewService.GetReviewedReservations(selectedReservation.Accommodation.User.getID()))
+            foreach (GuestReview guestReview in _guestReviewService.GetReviewedReservations(selectedReservation.Accommodation.User.GetId()))
             {
-                if (selectedReservation.getID() == guestReview.ReservationId)
+                if (selectedReservation.GetId() == guestReview.ReservationId)
                 {
 
                     Tidiness = guestReview.Tidiness;

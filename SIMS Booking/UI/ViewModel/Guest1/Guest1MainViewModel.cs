@@ -8,7 +8,6 @@ using SIMS_Booking.UI.Utility;
 using SIMS_Booking.UI.View;
 using SIMS_Booking.Utility.Observer;
 using SIMS_Booking.Utility.Timers;
-using SIMS_Booking.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -475,12 +474,12 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
-            UserReservations = new ObservableCollection<Reservation>(_reservationService.GetReservationsByUser(loggedUser.getID()));
+            UserReservations = new ObservableCollection<Reservation>(_reservationService.GetReservationsByUser(loggedUser.GetId()));
 
             _postponementService = postponementService;
             NotificationTimer timer = new NotificationTimer(LoggedUser, _postponementService);
             _postponementService.Subscribe(this);
-            UserPostponements = new ObservableCollection<Postponement>(_postponementService.GetPostponementsByUser(loggedUser.getID()));
+            UserPostponements = new ObservableCollection<Postponement>(_postponementService.GetPostponementsByUser(loggedUser.GetId()));
 
             _ownerReviewService = ownerReviewService;
             _guestReviewService = guestReviewService;
@@ -604,8 +603,8 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         public void Update()
         {
             UpdateAccommodations(_accommodationService.GetAll());
-            UpdateUserReservations(_reservationService.GetReservationsByUser(LoggedUser.getID()).ToList());
-            UpdateUserPostponements(_postponementService.GetPostponementsByUser(LoggedUser.getID()).ToList());
+            UpdateUserReservations(_reservationService.GetReservationsByUser(LoggedUser.GetId()).ToList());
+            UpdateUserPostponements(_postponementService.GetPostponementsByUser(LoggedUser.GetId()).ToList());
         }
 
         public void CancelReservation(object sender, RoutedEventArgs e)
