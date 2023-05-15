@@ -6,10 +6,9 @@ namespace SIMS_Booking.Model.Relations
 {
     public class TourReservation : ISerializable, IDable
     {
-
+        private int _id;
         public int UserId { get; set; }
         public int TourId { get; set; }
-        public int Id { get; set; }
         public int NumberOfGuests { get; set; }
         public bool HasGuideReviewed { get; set; }
         public bool HasGuestReviewed { get; set; }
@@ -21,36 +20,33 @@ namespace SIMS_Booking.Model.Relations
             TourId = tourId;
             UserId = userId;
             NumberOfGuests = numberOfGuests;
-            
         }
 
 
         public void FromCSV(string[] values)
         {
-            Id = int.Parse(values[0]);
+            _id = int.Parse(values[0]);
             UserId = int.Parse(values[1]);
             TourId = int.Parse(values[2]);
             NumberOfGuests = int.Parse(values[3]);
             HasGuideReviewed = bool.Parse(values[4]);
             HasGuestReviewed = bool.Parse(values[5]);
-
         }
 
         public string[] ToCSV()
         {
-            string[] csvValues = { Id.ToString(), UserId.ToString(), TourId.ToString(), NumberOfGuests.ToString(), HasGuideReviewed.ToString(), HasGuestReviewed.ToString() };
+            string[] csvValues = { _id.ToString(), UserId.ToString(), TourId.ToString(), NumberOfGuests.ToString(), HasGuideReviewed.ToString(), HasGuestReviewed.ToString() };
             return csvValues;
-            throw new NotImplementedException();
         }
 
         public int GetId()
         {
-            return Id;
+            return _id;
         }
 
         public void SetId(int id)
         {
-            Id = id;
+            _id = id;
         }
     }
 }

@@ -42,7 +42,6 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly OwnerReviewService _ownerReviewService;
         private readonly GuideReviewService _guideReviewService;
         private readonly PostponementService _postponementService;
-        private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
         private readonly ReservedAccommodationService _reservedAccommodationService;
         private readonly UsersAccommodationService _userAccommodationService;
         private readonly TourPointService _tourPointService;
@@ -124,8 +123,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         public SignInViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore, AccommodationService accommodationService,
                               CityCountryCsvRepository cityCountryCsvRepository,
                               ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
-                              OwnerReviewService ownerReviewService, PostponementService postponementService,
-                              CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService,
+                              OwnerReviewService ownerReviewService, PostponementService postponementService, UserService userService,
                               RenovationAppointmentService renovationAppointmentService, TourService tourService, ConfirmTourService confirmTourService,
                               TourPointService tourPointService, TextBox textBox, TourReviewService tourReviewService,
                               RidesService ridesService, FinishedRidesService finishedRidesService, VehicleService vehicleService, DriverLanguagesService driverLanguagesService,
@@ -142,7 +140,6 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _ownerReviewService = ownerReviewService;
             _accommodationService = accommodationService;
             _postponementService = postponementService;
-            _cancellationCsvCrudRepository = cancellationCsvCrudRepository;
             _renovationAppointmentService = renovationAppointmentService;
             _confirmTourService = confirmTourService;
             _tourPointService = tourPointService;
@@ -161,8 +158,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             #endregion
 
             #region LoadingData
-            _reservedAccommodationService.LoadAccommodationsAndUsersInReservation(_userService, _accommodationService, _reservationService);
             _userAccommodationService.LoadUsersInAccommodation(_userService, _accommodationService);
+            _reservedAccommodationService.LoadAccommodationsAndUsersInReservation(_userService, _accommodationService, _reservationService);
             _guestReviewService.LoadReservationInGuestReview(_reservationService);
             _ownerReviewService.LoadReservationInOwnerReview(_reservationService);
             _postponementService.LoadReservationInPostponement(_reservationService);
@@ -201,14 +198,13 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                 case Roles.Owner:
                     //ToDo:pretvoriti u komandu(klasu)
                     _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
-                      _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, 
+                      _userAccommodationService, _ownerReviewService, _postponementService, user,
                       _userService, _renovationAppointmentService, _modalNavigationStore);
                     break;
                 case Roles.Guest1:
                     _navigationStore.CurrentViewModel = new Guest1MainViewModel(_accommodationService,
                         _cityCountryCsvRepository,
-                        _reservationService, _reservedAccommodationService, user, _postponementService,
-                        _cancellationCsvCrudRepository, _ownerReviewService, _renovationAppointmentService,
+                        _reservationService, _reservedAccommodationService, user, _postponementService, _ownerReviewService, _renovationAppointmentService,
                         _guestReviewService, _modalNavigationStore);
                     break;
                 case Roles.Guest2:

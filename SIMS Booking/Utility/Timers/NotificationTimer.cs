@@ -22,20 +22,17 @@ namespace SIMS_Booking.Utility.Timers
         private readonly ReservationService _reservationService;
         private readonly GuestReviewService _guestReviewService;
         private readonly PostponementService _postponementService;
-        private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
         private readonly User _user;
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
 
 
         public NotificationTimer(User user, PostponementService postponementService = null, ObservableCollection<Reservation> reservedAccommodations = null,
-                                 ReservationService reservationService = null, GuestReviewService guestReviewService = null,
-                                 CancellationCsvCrudRepository cancellationCsvCrudRepository = null)
+                                 ReservationService reservationService = null, GuestReviewService guestReviewService = null)
         {
             ReservedAccommodations = reservedAccommodations;
             _reservationService = reservationService;
             _guestReviewService = guestReviewService;
             _postponementService = postponementService;
-            _cancellationCsvCrudRepository = cancellationCsvCrudRepository;
             _user = user;
 
             if (_user.Role == Enums.Roles.Owner)

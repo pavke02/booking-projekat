@@ -48,7 +48,6 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         private readonly ReservationService _reservationService;
         private readonly ReservedAccommodationService _reservedAccommodationService;
         private readonly PostponementService _postponementService;
-        private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
         private readonly OwnerReviewService _ownerReviewService;
         private readonly RenovationAppointmentService _renovationAppointmentService;
         private readonly GuestReviewService _guestReviewService;
@@ -462,7 +461,9 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
 
         #endregion
 
-        public Guest1MainViewModel(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, CancellationCsvCrudRepository cancellationCsvCrudRepository, OwnerReviewService ownerReviewService, RenovationAppointmentService renovationAppointmentService, GuestReviewService guestReviewService, ModalNavigationStore modalNavigationStore)
+        public Guest1MainViewModel(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, 
+            ReservedAccommodationService reservedAccommodationService, User loggedUser, PostponementService postponementService, 
+            OwnerReviewService ownerReviewService, RenovationAppointmentService renovationAppointmentService, GuestReviewService guestReviewService, ModalNavigationStore modalNavigationStore)
 
         {
 
@@ -484,7 +485,6 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
             _ownerReviewService = ownerReviewService;
             _guestReviewService = guestReviewService;
             _cityCountryCsvRepository = cityCountryCsvRepository;
-            _cancellationCsvCrudRepository = cancellationCsvCrudRepository;
 
             _reservedAccommodationService = reservedAccommodationService;
             _renovationAppointmentService = renovationAppointmentService;
