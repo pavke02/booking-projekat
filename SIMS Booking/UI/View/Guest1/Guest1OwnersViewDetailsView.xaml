@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="SIMS_Booking.UI.View.Guest1.Guest1OwnersViewDetailsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Height="500" Width="450">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="190"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170"></ColumnDefinition>
+            <ColumnDefinition Width="80"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <WrapPanel Background="#444444" Grid.ColumnSpan="3" VerticalAlignment="Top" Height="50">
+            <Button Margin="10 0 85 0" Style="{StaticResource HoverButton}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                    Command="{Binding NavigateBackCommand}">
+                <Image Height="50" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                       Source="../../../Resources/Images/arrow.png"/>
+            </Button>
+            <TextBlock Text="Owner's Review" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"
+                       Margin="0 0 0 0" Foreground="White"></TextBlock>
+        </WrapPanel>
+        <Label Name="ReviewTitle" Content="{Binding AccommodationTitle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+        <Label Grid.Column="0" VerticalAlignment="Center" Grid.Row="2"  Margin="20, 0, 0, 0" FontSize="20">Tidiness</Label>
+        <TextBox Grid.Column="1" Text="{Binding Tidiness}" Grid.Row="2" Height="30" Width="80"  Padding="34, 5, 0, 0"
+                 Name="tidinessTb"></TextBox>
+        <Slider Grid.Column="2" Grid.Row="2" Value="{Binding Tidiness}"  Maximum="5" Minimum="1" Margin="20, 0, 0, 0" Width="130" VerticalAlignment="Center" HorizontalAlignment="Left"
+                Name="tidinessSl"/>
+
+        <Label Grid.Column="0" Grid.Row="3" Height="40"  FontSize="20" Margin="20, 0, 0, 0">Rule Following</Label>
+        <TextBox Text="{Binding RuleFollowing}" Grid.Column="1" Grid.Row="3" Height="30"  Width="80" Padding="34, 5, 0, 0"
+                 Name="ruleFollowingTb"></TextBox>
+        <Slider Value="{Binding RuleFollowing}" Grid.Column="2" Grid.Row="3"  Margin="20, 0, 0, 0" VerticalAlignment="Center" Maximum="5" Minimum="1" Width="130" HorizontalAlignment="Left"
+                Name="ruleFollowingSl" />
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" >
+            <Label Height="40" FontSize="20" Margin="20, 20, 0, 0" HorizontalAlignment="Left">Accommodation Comment</Label>
+            <TextBox Text="{Binding Comment}" FontSize="17" Height="120" Width="375" Margin="20, 0, 0, 0" 
+                     Name="commentTb"
+                     HorizontalAlignment="Left">
+            </TextBox>
+        </StackPanel>
+    </Grid>
+</UserControl>

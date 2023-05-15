@@ -37,6 +37,7 @@ namespace SIMS_Booking.Repository
         {
             using (StreamReader sr = new StreamReader(path))
             {
+                _cityNames.Clear();
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {

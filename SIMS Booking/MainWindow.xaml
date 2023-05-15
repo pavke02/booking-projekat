@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewOwner="clr-namespace:SIMS_Booking.UI.View.Owner"
+        xmlns:viewGuest1="clr-namespace:SIMS_Booking.UI.View.Guest1"
         xmlns:viewModelOwner="clr-namespace:SIMS_Booking.UI.ViewModel.Owner"
+        xmlns:viewModelGuest1="clr-namespace:SIMS_Booking.UI.ViewModel.Guest1"
         xmlns:modalControl="clr-namespace:ModalControl;assembly=ModalControl"
         xmlns:startup="clr-namespace:SIMS_Booking.UI.ViewModel.Startup"
         xmlns:startup1="clr-namespace:SIMS_Booking.UI.View.Startup"
@@ -40,6 +42,24 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelOwner:RenovationAppointingViewModel}">
                 <viewOwner:RenovationAppointingView></viewOwner:RenovationAppointingView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1MainViewModel}">
+                <viewGuest1:Guest1MainView></viewGuest1:Guest1MainView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1GalleryViewModel}">
+                <viewGuest1:Guest1GalleryView></viewGuest1:Guest1GalleryView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1ReservationViewModel}">
+                <viewGuest1:Guest1ReservationView></viewGuest1:Guest1ReservationView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1OwnerReviewViewModel}">
+                <viewGuest1:Guest1OwnerReviewView></viewGuest1:Guest1OwnerReviewView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1OwnersViewDetailsViewModel}">
+                <viewGuest1:Guest1OwnersViewDetailsView></viewGuest1:Guest1OwnersViewDetailsView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1ChangeReservationViewModel}">
+                <viewGuest1:Guest1ChangeReservationView></viewGuest1:Guest1ChangeReservationView>
             </DataTemplate>
         </Grid.Resources>
 

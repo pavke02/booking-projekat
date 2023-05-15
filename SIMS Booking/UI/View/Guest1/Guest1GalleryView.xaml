@@ -1,32 +1,42 @@
-﻿<Window x:Class="SIMS_Booking.UI.View.Guest1GalleryView"
+﻿<UserControl x:Class="SIMS_Booking.UI.View.Guest1.Guest1GalleryView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SIMS_Booking.View"
-        mc:Ignorable="d"
-        Title="Guest1GalleryView" Height="450" Width="800">
+        mc:Ignorable="d" Height="450" Width="800">
     <ScrollViewer>
         <Grid>
-
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="400"></ColumnDefinition>
                 <ColumnDefinition Width="400"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <ItemsControl x:Name="imageList" Grid.Column="0">
+            <WrapPanel Background="#444444" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="50">
+                <Button Margin="10 0 310 0" Style="{StaticResource HoverButton}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                        Command="{Binding NavigateBackCommand}">
+                    <Image Height="50" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                           Source="../../../Resources/Images/arrow.png"/>
+                </Button>
+                <TextBlock Text="Gallery" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"
+                           Margin="0 0 0 0" Foreground="White"></TextBlock>
+            </WrapPanel>
+            <ItemsControl x:Name="imageList" Grid.Column="0" Grid.Row="1">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Image Height="250" Stretch="UniformToFill" Source="{Binding}" />
+                        <Image Height="250" Stretch="UniformToFill" Source="{Binding ImageUrlsLeft}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <ItemsControl x:Name="imageList2" Grid.Column="1">
+            <ItemsControl x:Name="imageList2" Grid.Column="1" Grid.Row="1">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Image Height="250" Stretch="UniformToFill" Source="{Binding}" />
+                        <Image Height="250" Stretch="UniformToFill" Source="{Binding ImageUrlsRight}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
     </ScrollViewer>
-</Window>
+</UserControl>

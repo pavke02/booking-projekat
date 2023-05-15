@@ -77,13 +77,16 @@ namespace SIMS_Booking.Utility.Timers
             var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             timer.Tick += (sender, args) =>
             {
-                if (!_cancellationCsvCrudRepository.GetAll().IsNullOrEmpty())
-                    notifier.ShowInformation("Your reservation has been canceled");
-                foreach (Reservation reservation in _cancellationCsvCrudRepository.GetAll().ToList())
+                foreach (Reservation reservation in _reservationService.GetAll().ToList())
                 {
-                    _cancellationCsvCrudRepository.Delete(reservation);
+                    if (reservation.IsCanceled && !reservation.IsCancellationReviewed)
+                    {
+                        notifier.ShowInformation("Your reservation has been canceled");
+                        reservation.IsCancellationReviewed = true;
+                        _reservationService.Update(reservation);
+                    }
+                    
                 }
-
                 timer.Stop();
             };
             timer.Start();

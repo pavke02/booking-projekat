@@ -13,6 +13,8 @@ using SIMS_Booking.Utility.Stores;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SIMS_Booking.UI.View.Guest1;
+using SIMS_Booking.UI.ViewModel.Guest1;
 
 namespace SIMS_Booking.UI.ViewModel.Startup
 {
@@ -185,10 +187,11 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                         _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _renovationAppointmentService, _navigationStore, _modalNavigationStore);
                     break;
                 case Roles.Guest1:
-                    Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository,
+                    _navigationStore.CurrentViewModel = new Guest1MainViewModel(_accommodationService,
+                        _cityCountryCsvRepository,
                         _reservationService, _reservedAccommodationService, user, _postponementService,
-                        _cancellationCsvCrudRepository, _ownerReviewService, _renovationAppointmentService, _guestReviewService);
-                    guest1View.Show();
+                        _cancellationCsvCrudRepository, _ownerReviewService, _renovationAppointmentService,
+                        _guestReviewService, _modalNavigationStore);
                     break;
                 case Roles.Guest2:
                     Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleService,

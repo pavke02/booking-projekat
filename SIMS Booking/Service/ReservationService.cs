@@ -59,11 +59,23 @@ namespace SIMS_Booking.Service
             foreach (Reservation reservation in _crudService.GetAll())
             {
                 
-                if (reservation.User.getID() == userId)
+                if (reservation.User.getID() == userId && !reservation.IsCanceled)
                     userReservations.Add(reservation);
             }                
 
             return userReservations;
+        }
+
+        public ObservableCollection<Reservation> GetActiveReservations()
+        {
+            ObservableCollection<Reservation> activeReservations = new ObservableCollection<Reservation>();
+            foreach (Reservation reservation in _crudService.GetAll())
+            {
+                if(!reservation.IsCanceled)
+                    activeReservations.Add(reservation);
+            }
+
+            return activeReservations;
         }
 
         public List<Reservation> GetUnreviewedReservations(int id)
