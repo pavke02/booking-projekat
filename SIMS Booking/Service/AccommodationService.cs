@@ -51,16 +51,5 @@ namespace SIMS_Booking.Service
         {
             return accommodations.OrderBy(x => !x.User.IsSuperUser).ToList();
         }
-
-        public List<string> GetAccommodationNames(int id)
-        {
-            List<string> names = new List<string>();
-            foreach (Accommodation accommodation in GetAll())
-            {
-                names.Add(accommodation.Name);
-            }
-
-            return names;
-        }
     }
 }
