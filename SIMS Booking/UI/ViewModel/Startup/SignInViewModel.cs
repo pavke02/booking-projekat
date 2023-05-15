@@ -46,8 +46,6 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly VehicleReservationService _vehicleReservationService;
         private readonly VoucherService _voucherService;
         private readonly RenovationAppointmentService _renovationAppointmentService;
-
-
         #endregion
 
         private TourReview _tourReview;
@@ -57,10 +55,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly NavigationStore _navigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
 
-        public ICommand NavigateToSignUpCommand
-        {
-            get;
-        }
+        public ICommand NavigateToSignUpCommand { get; }
 
         #region Property
         private bool _passwordErrorText;
@@ -200,9 +195,10 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             switch (user.Role)
             {
                 case Roles.Owner:
-                    //Question: da li postoji bolji nacin(ovaj je izuzetno glup, zaobilazi celu strukturu)
+                    //ToDo:pretvoriti u komandu(klasu)
                     _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
-                      _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, _userService, _renovationAppointmentService, _navigationStore, _modalNavigationStore);
+                      _userAccommodationService, _ownerReviewService, _postponementService, user, _cancellationCsvCrudRepository, 
+                      _userService, _renovationAppointmentService, _modalNavigationStore);
                     break;
                 case Roles.Guest1:
                     Guest1MainView guest1View = new Guest1MainView(_accommodationService, _cityCountryCsvRepository,

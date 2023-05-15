@@ -51,7 +51,6 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         #region Property                
         public List<string> TypesCollection { get; set; }
         public List<string> Countries { get; set; }
-        public List<string> AccommodationNames { get; set; }
         public List<int> Years { get; set; }
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
@@ -447,19 +446,22 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
             OwnerReviewService ownerReviewService, PostponementService postponementService, User user,
             CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService,
-            RenovationAppointmentService renovationAppointmentService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
+            RenovationAppointmentService renovationAppointmentService, ModalNavigationStore modalNavigationStore)
         {
             _user = user;
             _cityCountryCsvRepository = cityCountryCsvRepository;
-
+            _usersAccommodationService = usersAccommodationService;
+            _ownerReviewService = ownerReviewService;
+            _postponementService = postponementService;
             _userService = userService;
+
+            #region DataLoading
             Username = _user.Username;
             Role = _user.Role.ToString();
 
             _accommodationService = accommodationService;
             _accommodationService.Subscribe(this);
             Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetByUserId(_user.GetId()));
-            AccommodationNames = new List<string>(_accommodationService.GetAccommodationNames(_user.GetId()));
             AccommodationNumber = Accommodations.Count().ToString();
 
             _reservationService = reservationService;
@@ -481,11 +483,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             Countries = new List<string>(_cityCountryCsvRepository.LoadCountries());
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
             Years = new List<int>((Enumerable.Range(2000, DateTime.Now.Year - 1999).Reverse()).ToList());
-            Cities = new ObservableCollection<string>();
-
-            _usersAccommodationService = usersAccommodationService;
-            _ownerReviewService = ownerReviewService;
-            _postponementService = postponementService;
+            Cities = new ObservableCollection<string>(); 
+            #endregion
 
             #region Commands
             PublishCommand = new PublishAccommodationCommand(this, _accommodationService, _usersAccommodationService, _user);
@@ -576,6 +575,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                     .Union(postponementCount.Keys)
                     .Union(renovationsCount.Keys).ToList();
                 sortedLabels.Sort();
+                //pretvara mesec(iz broja) u ime meseca(npr. 1 = januar)
                 Labels = sortedLabels.Select(e => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(e)).ToArray();
 
                 //mapira dictionary<int, int> na dictionary<string, int>
