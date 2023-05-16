@@ -56,15 +56,8 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
                 if (value != _userReservations)
                 {
                     _userReservations = value;
-                    if (UserReservations.Count >= 3)
-                    {
-                        UserTb = LoggedUser.Username + ", Super Guest";
-                    }
-                    else
-                    {
-                        UserTb = LoggedUser.Username + ", Guest";
-                    }
                     OnPropertyChanged();
+                    SetSuperGuest();
                 }
             }
         }
@@ -531,7 +524,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         {
             return new ModalNavigationService<Guest1ReservationViewModel>(modalNavigationStore,
                 () => new Guest1ReservationViewModel(modalNavigationStore, SelectedAccommodation, LoggedUser, _reservationService,
-                    _reservedAccommodationService));
+                    _reservedAccommodationService, this));
         }
 
         private INavigationService CreateGalleryViewNavigationService(ModalNavigationStore modalNavigationStore)
@@ -651,8 +644,9 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
 
             UpdateKindsState();
             Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetAll());
-            foreach (Accommodation accommodation in Accommodations)
-            { bool fitsFilter = (accommodation.Name.ToLower().Contains(AccommodationName.ToLower()) || AccommodationName.IsNullOrEmpty()) && (Country.Key == accommodation.Location.Country || CountryIndex == -1)
+
+                foreach (Accommodation accommodation in Accommodations)
+            {bool fitsFilter = (accommodation.Name.ToLower().Contains(AccommodationName.ToLower()) || AccommodationName.IsNullOrEmpty()) && (Country.Key == accommodation.Location.Country || CountryIndex == -1)
                     && (accommodation.Location.City == City || CityIndex == -1) && Kinds.Contains(accommodation.Type) && (accommodation.MaxGuests >= Convert.ToInt32(MaxGuests) || MaxGuests.IsNullOrEmpty())
                     && (accommodation.MinReservationDays <= Convert.ToInt32(MinReservationDays) || MinReservationDays.IsNullOrEmpty());
 
@@ -663,7 +657,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
                 }
             }
 
-            Accommodations = accommodationsFiltered;
+                Accommodations = accommodationsFiltered;
         }
 
         private void UpdateKindsState()
