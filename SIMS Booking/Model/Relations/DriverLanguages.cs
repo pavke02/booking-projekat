@@ -7,6 +7,7 @@ namespace SIMS_Booking.Model.Relations
 {
     public class DriverLanguages : ISerializable, IDable
     {
+        private int _id;
         public int DriverId { get; set; }
         public Language Language { get; set; }
 
@@ -20,24 +21,25 @@ namespace SIMS_Booking.Model.Relations
 
         public string[] ToCSV()
         {
-            string[] csvValues = { DriverId.ToString(), Language.ToString()};
+            string[] csvValues = { _id.ToString(), DriverId.ToString(), Language.ToString()};
             return csvValues;
         }
 
         public void FromCSV(string[] values)
         {
-            DriverId = int.Parse(values[0]);
-            Language = (Language)Enum.Parse(typeof(Language), values[1]);
+            _id = _id = int.Parse(values[0]);
+            DriverId = int.Parse(values[1]);
+            Language = (Language)Enum.Parse(typeof(Language), values[2]);
         }
 
         public int GetId()
         {
-            return DriverId;
+            return _id;
         }
 
         public void SetId(int id)
         {
-            DriverId = id;
+            _id = id;
         }
     }
 }
