@@ -4,7 +4,7 @@ using SIMS_Booking.Utility.Serializer;
 namespace SIMS_Booking.Model
 {
 
-    public class ConfirmTour :  ISerializable, IDable
+    public class ConfirmTour  :  ISerializable, IDable
     {
         public int Id { get; set; }
         public int IdTour { get; set; }
