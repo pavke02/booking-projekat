@@ -34,7 +34,7 @@ namespace SIMS_Booking.Commands.DriverCommands
             if (timeDif.TotalSeconds <= 300)
             {
                 int lateTime = Convert.ToInt16(_ridesViewModel.LateInMinutes);
-                remainingTime = (int)(20 * 60 + timeDif.TotalSeconds + lateTime);
+                remainingTime = (int)(20 * 60 + timeDif.TotalSeconds + 60 * lateTime);
 
                 _ridesViewModel.timer = new DispatcherTimer();
                 _ridesViewModel.timer.Interval = TimeSpan.FromSeconds(1);

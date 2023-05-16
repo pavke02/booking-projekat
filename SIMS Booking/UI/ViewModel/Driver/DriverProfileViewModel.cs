@@ -138,7 +138,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 Status = "Super Driver";
                 Points = (FastRidesCount - 15) * 5 - Vehicle.CanceledRidesCount * 2;
                 FastRidesCount = 15;
-                if(FastRidesCount < 50)
+                if(Points < 50)
                 {
                     Salary = "You need " + (50 - Points) + " more points for extra salary!";
                 }
