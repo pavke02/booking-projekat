@@ -4,6 +4,7 @@ using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.Service;
 using SIMS_Booking.UI.ViewModel;
 using SIMS_Booking.UI.ViewModel.Guest2;
+using System.Windows.Controls;
 
 namespace SIMS_Booking.UI.View
 {
@@ -14,7 +15,7 @@ namespace SIMS_Booking.UI.View
         public Guest2FindingTaxiFast(User _loggedUser, VehicleReservationService vehicleReservationService, DriverLocationsService driverLocationsService)
         {
             InitializeComponent();
-            
+
             FindingTaxiFastViewModel = new FindingTaxiFastViewModel(_loggedUser, vehicleReservationService, driverLocationsService);
         }
 
@@ -22,7 +23,7 @@ namespace SIMS_Booking.UI.View
         {
             if (FindingTaxiFastViewModel.Button_Click(TextBoxCity.Text, StartingAddressTextBox.Text, FinalAddressTextBox.Text, TimeofDepartureTextBox.Text))
             {
-                Close();    
+                Close();
             }
         }
     }

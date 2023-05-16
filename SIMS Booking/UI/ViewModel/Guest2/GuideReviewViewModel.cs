@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using SIMS_Booking.Commands.NavigateCommands;
+using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Service;
+using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
+using SIMS_Booking.Utility.Observer;
+using SIMS_Booking.Utility.Stores;
 
 namespace SIMS_Booking.UI.ViewModel.Guest2
 {
-    public class GuideReviewViewModel : ViewModelBase
+    public partial class GuideReviewViewModel : ViewModelBase
     {
 
         private GuideReviewService _guideReviewService;
@@ -46,6 +52,8 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
 
         #endregion
 
+        public ICommand BackCommand { get; }
+
 
         public GuideReviewViewModel(GuideReviewService guideReviewService, ReservedTourService reservedTourService, TourReservation tourReservation)
         {
@@ -54,6 +62,13 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
             _guideReviewService = guideReviewService;
             _reservedTourService = reservedTourService;
 
+            //BackCommand = new NavigateCommand(CreateCloseModalNavigationService(modalNavigationStore));
+
+        }
+
+        private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new CloseModalNavigationService(modalNavigationStore);
         }
 
 
@@ -87,5 +102,6 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
             ImageURLs = "";
         }
 
+        
     }
 }

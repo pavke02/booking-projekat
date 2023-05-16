@@ -1,0 +1,48 @@
+﻿<Window x:Class="SIMS_Booking.UI.View.Guest2TourRequestAllDisplays"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SIMS_Booking.UI.View"
+        mc:Ignorable="d"
+        Title="Guest2TourRequestAllDisplays" Height="450" Width="800">
+    <Grid>
+
+        <DataGrid
+                    Name="DataGridTourRequests"
+                    ItemsSource="{Binding Path=TourRequests, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True" Margin="10,60,161,73" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Grad" Binding="{Binding Location.City}" Width="80"></DataGridTextColumn>
+                <DataGridTextColumn Header="Drzava" Binding="{Binding Location.Country}" Width="90"></DataGridTextColumn>
+                <DataGridTextColumn Header= "Opis" Binding="{Binding Description}" Width="100"></DataGridTextColumn>
+                <DataGridTextColumn Header= "Jezik" Binding="{Binding Language}" Width="80"></DataGridTextColumn>
+                <DataGridTextColumn Header= "Broj gostiju" Binding="{Binding NumberOfGuests}" Width="80"></DataGridTextColumn>
+                <DataGridTextColumn Header= "Datum dolaska" Binding="{Binding TimeOfStart}" Width="100"></DataGridTextColumn>
+                <DataGridTextColumn Header= "Datum odlaska" Binding="{Binding TimeOfEnd}" Width="100"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Label Content="Prihvaceni zahtevi(%):" HorizontalAlignment="Left" Margin="660,72,0,0" VerticalAlignment="Top" Width="135"/>
+
+        <Label Content="Nisu prihvaceni zahtevi(%):" HorizontalAlignment="Left" Margin="644,147,0,0" VerticalAlignment="Top" Width="151"/>
+
+        <Label Content="Na cekanju(%):" HorizontalAlignment="Left" Margin="660,217,0,0" VerticalAlignment="Top" Width="135"/>
+
+        <TextBox Name="Accepted" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="660,103,0,0"/>
+
+        <TextBox Name="Invalid" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="660,178,0,0"/>
+
+        <TextBox Name="OnHold" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="660,248,0,0"/>
+
+
+
+
+        <Label Margin="209,10,275,384" Content="Prikaz zahteva za ture" Height="40" HorizontalContentAlignment="Center" FontSize="27"/>
+
+        <Button Content="Rezerviši zahtev za turu"  FontSize="16" HorizontalAlignment="Left" Height="50" Margin="209,293,0,0" VerticalAlignment="Top" Width="176" Click="AddTourRequest"/>
+
+
+
+    </Grid>
+</Window>

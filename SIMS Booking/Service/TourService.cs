@@ -36,7 +36,7 @@ namespace SIMS_Booking.Service
         public List<Tour> GetFutureTours()
         {
             List<Tour> FutureTours = new List<Tour>();
-            foreach (Tour tour in _crudService.GetAll())
+            foreach (Tour tour in _repository.GetAll())
             {
                 if (DateTime.Today < tour.StartTour)
                 {
@@ -49,7 +49,7 @@ namespace SIMS_Booking.Service
         public List<Tour> GetCompletedTours()
         {
             List<Tour> FutureTours = new List<Tour>();
-            foreach (Tour tour in _crudService.GetAll())
+            foreach (Tour tour in _repository.GetAll())
             {
                 if (DateTime.Today > tour.StartTour)
                 {

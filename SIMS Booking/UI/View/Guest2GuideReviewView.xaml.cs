@@ -13,7 +13,10 @@ namespace SIMS_Booking.UI.View
     /// </summary>
     public partial class Guest2GuideReviewView : Window
     {
+       
 
+
+        
         GuideReviewViewModel GuideReviewViewModel { get; set; }
 
         public Guest2GuideReviewView(GuideReviewService guideReviewService, ReservedTourService reservedTourService, TourReservation tourReservation)
@@ -72,5 +75,6 @@ namespace SIMS_Booking.UI.View
         {
 
         }
+        
     }
 }

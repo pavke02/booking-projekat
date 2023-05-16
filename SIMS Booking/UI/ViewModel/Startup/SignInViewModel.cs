@@ -46,7 +46,9 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly VehicleReservationService _vehicleReservationService;
         private readonly VoucherService _voucherService;
         private readonly RenovationAppointmentService _renovationAppointmentService;
-
+        private readonly TourRequestService _tourRequestService;
+        private readonly GroupRideService _groupRideService;
+        
 
         #endregion
 
@@ -131,7 +133,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                               TourPointService tourPointService, TextBox textBox, TourReviewService tourReviewService,
                               RidesService ridesService, FinishedRidesService finishedRidesService, VehicleService vehicleService, DriverLanguagesService driverLanguagesService,
                               DriverLocationsService driverLocationsService, ReservedAccommodationService reservedAccommodationService, ReservedTourService reservedTourService, 
-                              GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService)
+                              GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService, GroupRideService groupRideService,TourRequestService tourRequestService)
         {
             #region ServiceInitializaton
             _cityCountryCsvRepository = cityCountryCsvRepository;
@@ -159,6 +161,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _textBox = textBox;
             _vehicleReservationService = vehicleReservationService;
             _voucherService = voucherService;
+            _groupRideService = groupRideService;
+            _tourRequestService = tourRequestService;
             #endregion
 
             #region LoadingData
@@ -174,6 +178,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _tourReviewService.loadusers(_userService, _confirmTourService);
             _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService);
             _renovationAppointmentService.LoadAccommodationInRenovationAppointment(_accommodationService);
+            
 
             #endregion
 
@@ -212,7 +217,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     break;
                 case Roles.Guest2:
                     Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleService,
-                        _guideReviewService, _reservedTourService, _driverLocationsService, _vehicleReservationService, _voucherService);
+                        _guideReviewService, _reservedTourService, _driverLocationsService, _vehicleReservationService, _voucherService, _groupRideService, _tourRequestService);
                     guest2View.Show();
                     break;
                 case Roles.Driver:
