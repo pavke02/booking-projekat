@@ -8,17 +8,13 @@ using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
 using SIMS_Booking.UI.View;
-using SIMS_Booking.UI.View.Driver;
 using SIMS_Booking.UI.ViewModel.Driver;
+using SIMS_Booking.UI.ViewModel.Guest1;
+using SIMS_Booking.UI.ViewModel.Guide;
 using SIMS_Booking.UI.ViewModel.Owner;
 using SIMS_Booking.Utility.Stores;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using SIMS_Booking.UI.View.Guide;
-using SIMS_Booking.UI.ViewModel.Guide;
-using SIMS_Booking.UI.View.Guest1;
-using SIMS_Booking.UI.ViewModel.Guest1;
 
 namespace SIMS_Booking.UI.ViewModel.Startup
 {
@@ -55,9 +51,6 @@ namespace SIMS_Booking.UI.ViewModel.Startup
 
 
         #endregion
-
-      
-        
 
         private readonly NavigationStore _navigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
