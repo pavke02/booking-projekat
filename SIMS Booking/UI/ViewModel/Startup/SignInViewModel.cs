@@ -179,8 +179,6 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _tourReviewService.loadusers(_userService, _confirmTourService);
             _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService);
             _renovationAppointmentService.LoadAccommodationInRenovationAppointment(_accommodationService);
-            
-
             #endregion
 
             _navigationStore = navigationStore;
