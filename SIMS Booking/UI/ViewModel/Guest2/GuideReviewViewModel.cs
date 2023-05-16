@@ -15,9 +15,8 @@ using SIMS_Booking.Utility.Stores;
 
 namespace SIMS_Booking.UI.ViewModel.Guest2
 {
-    public partial class GuideReviewViewModel : ViewModelBase
+    public  class GuideReviewViewModel : ViewModelBase
     {
-
         private GuideReviewService _guideReviewService;
         private ReservedTourService _reservedTourService;
         private TourReservation _tourReservation;
@@ -54,23 +53,19 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
 
         public ICommand BackCommand { get; }
 
-
         public GuideReviewViewModel(GuideReviewService guideReviewService, ReservedTourService reservedTourService, TourReservation tourReservation)
         {
-
             _tourReservation = tourReservation;
             _guideReviewService = guideReviewService;
             _reservedTourService = reservedTourService;
 
             //BackCommand = new NavigateCommand(CreateCloseModalNavigationService(modalNavigationStore));
-
         }
 
         private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new CloseModalNavigationService(modalNavigationStore);
         }
-
 
         public void SubmitReview(string imageTb)
         {
@@ -80,12 +75,10 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
                 imageURLs.Add(value);
             _guideReviewService.SubmitReview(TourRating, _tourReservation, imageURLs);
             _reservedTourService.Update(_tourReservation);
-
         }
 
         public bool ImageTbCheck(string urlTb)
         {
-
             if (!string.IsNullOrEmpty(urlTb) && !string.IsNullOrWhiteSpace(urlTb) && Uri.IsWellFormedUriString(urlTb, UriKind.Absolute))
             {
                 return true;
@@ -93,15 +86,10 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
             return false;
         }
 
-
-
-
         public void ClearURLs()
         {
 
             ImageURLs = "";
         }
-
-        
     }
 }

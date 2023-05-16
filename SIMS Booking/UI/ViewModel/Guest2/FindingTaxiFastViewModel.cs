@@ -22,7 +22,6 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
         //ToDo: implementirati NavigateBackCommand
         public ICommand NavigateBackCommand { get; }
 
-
         #region Property
         private bool _errorText;
         public bool ErrorText
@@ -94,14 +93,10 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
 
         public FindingTaxiFastViewModel(User _loggedUser, VehicleReservationService vehicleReservationService, DriverLocationsService driverLocationsService)
         {
-
             loggedUser = _loggedUser;
 
             _vehicleReservationService = vehicleReservationService;
             _driverLocationsService = driverLocationsService;
-
-
-
         }
 
         public bool Button_Click(string city, string startingAddress, string finalAddress, string timeOfDeparture)
@@ -121,8 +116,6 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
                 }
             }
             return false;
-
-
         }
 
         private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
@@ -145,6 +138,5 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
             }
         }
         #endregion
-
     }
 }
