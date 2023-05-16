@@ -36,7 +36,7 @@ namespace SIMS_Booking.UI.View
         private int maxGuests;
         private string name;
 
-     
+
         public Guest2TourReservation(Tour selectedTour, User loggedUser, ReservedTourService reservedTourService, VoucherService voucherService, Voucher voucher)
         {
             InitializeComponent();
