@@ -1,24 +1,17 @@
-﻿using SIMS_Booking.Commands.NavigateCommands;
-using SIMS_Booking.Commands.OwnerCommands;
-using SIMS_Booking.Model;
+﻿using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
-using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
 using SIMS_Booking.Utility.Stores;
-using System.IO.Packaging;
 using System.Windows;
-using System.Windows.Input;
 
 namespace SIMS_Booking.UI.ViewModel.Guest2
 {
     public class GroupRideViewModel : ViewModelBase
     {
-
         public User LoggedUser { get; set; }
         public GroupRideService _groupRideService;
-
 
         #region Property
         private bool _errorText;
@@ -89,7 +82,6 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
 
         #endregion
 
-
         public GroupRideViewModel(User _loggedUser, GroupRideService groupRideService) {
         
             LoggedUser = _loggedUser;
@@ -107,7 +99,6 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
                     
             return true;
         }
-
 
         private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
         {
@@ -129,7 +120,6 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
             }
         }
         #endregion
-
 
     }
 }

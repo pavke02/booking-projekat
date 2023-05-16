@@ -140,13 +140,8 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
             _vehicleReservationService = vehicleReservationService;
             _vehicleReservation = vehicleReservation;
             
-
             DrivingReservationCommand = new DrivingReservationCommand(CreateCloseModalNavigationService(modalNavigationStore),this,_vehicleReservationService,_vehicleReservation);
             NavigateBackCommand = new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
-
-
-
-
         }
 
         private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
@@ -168,7 +163,5 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
             }
         }
 #endregion
-
-
     }
 }

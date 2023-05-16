@@ -1,26 +1,15 @@
 ﻿using SIMS_Booking.Model;
-using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Service;
-using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using SIMS_Booking.Enums;
-using Microsoft.VisualStudio.Services.Profile;
 
 namespace SIMS_Booking.UI.ViewModel.Guest2
 {
-    public partial class NewTourRequestViewModel : ViewModelBase
+    public  class NewTourRequestViewModel : ViewModelBase
     {
-
         public TourRequestService _tourRequestService;
         public User LoggedUser { get; set; }
-
 
         #region Property
         private bool _errorText;
@@ -91,15 +80,11 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
 
         #endregion
 
-
         public NewTourRequestViewModel(User loggedUser, TourRequestService tourRequestService) 
         {
-         LoggedUser = loggedUser;
-        _tourRequestService = tourRequestService;
-        
+            LoggedUser = loggedUser;
+            _tourRequestService = tourRequestService;
         }
-
-
 
         public bool TourRequest_Click(string city, string country, string description, string language, string numberOfGuests, string timeOfStart, string timeOfEnd)
         {
@@ -114,8 +99,6 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
             return true;
         }
 
-
-     
         #region Validation
         public string Error => null;
         public string this[string columnName]
@@ -133,8 +116,5 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
 
        
         #endregion
-
-
-
     }
 }
