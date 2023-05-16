@@ -252,7 +252,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
 
             AddImageOwnerReviewCommand = new AddImageOwnerReviewCommand(this);
             ClearUrlCommand = new ClearUrlCommand(this);
-            SubmitCommand = new SubmitOwnerReviewCommand(this, _ownerReviewService, _reservationService);
+            SubmitCommand = new SubmitOwnerReviewCommand(CreateCloseModalNavigationService(modalNavigationStore) ,this, _ownerReviewService, _reservationService);
             NavigateBackCommand = new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
 
         }
