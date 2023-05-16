@@ -8,17 +8,13 @@ using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
 using SIMS_Booking.UI.View;
-using SIMS_Booking.UI.View.Driver;
 using SIMS_Booking.UI.ViewModel.Driver;
+using SIMS_Booking.UI.ViewModel.Guest1;
+using SIMS_Booking.UI.ViewModel.Guide;
 using SIMS_Booking.UI.ViewModel.Owner;
 using SIMS_Booking.Utility.Stores;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using SIMS_Booking.UI.View.Guide;
-using SIMS_Booking.UI.ViewModel.Guide;
-using SIMS_Booking.UI.View.Guest1;
-using SIMS_Booking.UI.ViewModel.Guest1;
 
 namespace SIMS_Booking.UI.ViewModel.Startup
 {
@@ -50,12 +46,11 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly VoucherService _voucherService;
         private readonly RenovationAppointmentService _renovationAppointmentService;
         private readonly TourRequestService _tourRequestService;
+        private readonly GroupRideService _groupRideService;
+        
 
 
         #endregion
-
-      
-        
 
         private readonly NavigationStore _navigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
@@ -130,7 +125,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                               TourPointService tourPointService, TextBox textBox, TourReviewService tourReviewService,
                               RidesService ridesService, FinishedRidesService finishedRidesService, VehicleService vehicleService, DriverLanguagesService driverLanguagesService,
                               DriverLocationsService driverLocationsService, ReservedAccommodationService reservedAccommodationService, ReservedTourService reservedTourService, 
-                              GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService,TourRequestService tourRequestService)
+                              GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService,TourRequestService tourRequestService,GroupRideService groupRideService)
+
         {
             #region ServiceInitializaton
             _cityCountryCsvRepository = cityCountryCsvRepository;
@@ -157,6 +153,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _textBox = textBox;
             _vehicleReservationService = vehicleReservationService;
             _voucherService = voucherService;
+            _groupRideService = groupRideService;
             _tourRequestService = tourRequestService;
             #endregion
 
@@ -173,8 +170,6 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _tourReviewService.loadusers(_userService, _confirmTourService);
             _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService);
             _renovationAppointmentService.LoadAccommodationInRenovationAppointment(_accommodationService);
-            
-
             #endregion
 
             _navigationStore = navigationStore;
@@ -213,7 +208,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     break;
                 case Roles.Guest2:
                     Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleService,
-                        _guideReviewService, _reservedTourService, _driverLocationsService, _vehicleReservationService, _voucherService);
+                        _guideReviewService, _reservedTourService, _driverLocationsService, _vehicleReservationService, _voucherService, _groupRideService, _tourRequestService);
                     guest2View.Show();
                     break;
                 case Roles.Driver:

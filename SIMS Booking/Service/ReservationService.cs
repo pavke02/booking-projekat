@@ -90,7 +90,7 @@ namespace SIMS_Booking.Service
         {
             List<Reservation> accommodationReservations = new List<Reservation>();
 
-            foreach (Reservation reservation in _repository.GetAll())
+            foreach (Reservation reservation in GetActiveReservations())
             {
 
                 if (reservation.Accommodation.GetId() == selectedAccommodation.GetId())
@@ -113,7 +113,7 @@ namespace SIMS_Booking.Service
         public bool IsSuperGuest(User user)
         {
             int reservationCounter = 0;
-            foreach (Reservation reservation in _repository.GetAll())
+            foreach (Reservation reservation in GetReservationsByUser(user.GetId()))
             {
                 if (reservation.User == user && DateTime.Today - reservation.EndDate < TimeSpan.FromDays(365))
                     reservationCounter++;

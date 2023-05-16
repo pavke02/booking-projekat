@@ -1,26 +1,15 @@
-﻿using SIMS_Booking.Commands.NavigateCommands;
-using SIMS_Booking.Commands.OwnerCommands;
-using SIMS_Booking.Model;
-using SIMS_Booking.Model.Relations;
+﻿using SIMS_Booking.Model;
 using SIMS_Booking.Service;
-using SIMS_Booking.Service.NavigationService;
-using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
-using SIMS_Booking.Utility.Stores;
+using System;
 using System.Windows;
-using System.Windows.Input;
 
 namespace SIMS_Booking.UI.ViewModel.Guest2
 {
-    public class FindingTaxiFastViewModel : ViewModelBase
+    public  class NewTourRequestViewModel : ViewModelBase
     {
-        public VehicleReservationService _vehicleReservationService;
-        public DriverLocationsService _driverLocationsService;
-        public User loggedUser { get; set; }
-
-        public ICommand SubmitReviewCommand { get; }
-        //ToDo: implementirati NavigateBackCommand
-        public ICommand NavigateBackCommand { get; }
+        public TourRequestService _tourRequestService;
+        public User LoggedUser { get; set; }
 
         #region Property
         private bool _errorText;
@@ -91,36 +80,23 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
 
         #endregion
 
-        public FindingTaxiFastViewModel(User _loggedUser, VehicleReservationService vehicleReservationService, DriverLocationsService driverLocationsService)
+        public NewTourRequestViewModel(User loggedUser, TourRequestService tourRequestService) 
         {
-            loggedUser = _loggedUser;
-
-            _vehicleReservationService = vehicleReservationService;
-            _driverLocationsService = driverLocationsService;
+            LoggedUser = loggedUser;
+            _tourRequestService = tourRequestService;
         }
 
-        public bool Button_Click(string city, string startingAddress, string finalAddress, string timeOfDeparture)
+        public bool TourRequest_Click(string city, string country, string description, string language, string numberOfGuests, string timeOfStart, string timeOfEnd)
         {
-            if (city != "" && startingAddress != "" && finalAddress != "" && timeOfDeparture != "")
-            {
-                DriverLocations driverLocations = _driverLocationsService.GetDriverLocationsByLocation(city);
-                if (driverLocations == null)
-                {
-                    MessageBox.Show("Trenutno nema slobodnih vozila. ");
-                }
-                else
-                {
-                    _vehicleReservationService.Save(new ReservationOfVehicle(loggedUser.GetId(), driverLocations.DriverId, timeOfDeparture, new Address(startingAddress, driverLocations.Location), new Address(finalAddress, driverLocations.Location)));
-                    MessageBox.Show("Uspesno ste rezervisali brzu voznju. ");
-                    return true;
-                }
-            }
-            return false;
-        }
+            int NumberOfGuests = int.Parse(numberOfGuests);
+            DateTime TimeOfStart = DateTime.Parse(timeOfStart);
+            DateTime TimeOfEnd = DateTime.Parse(timeOfEnd);
 
-        private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
-        {
-            return new CloseModalNavigationService(modalNavigationStore);
+            Location location = new Location(country,city);
+           // requests = "OnHold";
+            _tourRequestService.Save(new TourRequest(LoggedUser.GetId(),location,description,language,NumberOfGuests,TimeOfStart,TimeOfEnd));
+            MessageBox.Show("Uspesno ste poslali zahtev za turu. ");
+            return true;
         }
 
         #region Validation
@@ -137,6 +113,8 @@ namespace SIMS_Booking.UI.ViewModel.Guest2
                 return null;
             }
         }
+
+       
         #endregion
     }
 }

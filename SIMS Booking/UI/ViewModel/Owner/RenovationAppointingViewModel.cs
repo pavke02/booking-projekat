@@ -124,7 +124,6 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         #region Validation
-
         public string this[string name]
         {
             get

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Serializer;
 
@@ -66,6 +67,11 @@ namespace SIMS_Booking.Model
         {
             string[] csvValues = { Id.ToString(), Name, CheckedCheckBox.ToString() };
             return csvValues;
+        }
+
+        internal int getID()
+        {
+            throw new NotImplementedException();
         }
     }
 }
