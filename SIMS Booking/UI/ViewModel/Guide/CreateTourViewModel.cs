@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,9 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         private Tour _tour { get; set; }
         private TourReviewService _tourReviewService { get; set; }
         public List<string> Cities { get; set; }
+        private TourRequestService _tourRequestService;
+
+
 
         public Tour Tour { get; set; }
         public Tour Tour1 { get; set; }
@@ -57,10 +61,27 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             }
         }
 
+        private bool _isRadioButton1Checked;
+        public bool IsRadioButton1Checked
+        {
+            get { return _isRadioButton1Checked; }
+            set
+            {
+                _isRadioButton1Checked = value;
+            }
+        }
 
+        private bool _isRadioButton2Checked;
+        public bool IsRadioButton2Checked
+        {
+            get { return _isRadioButton2Checked; }
+            set
+            {
+                _isRadioButton2Checked = value;
+            }
+        }
 
         private string tourPointName;
-
         public string TourPointName
         {
             get { return tourPointName; }
@@ -294,7 +315,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
 
         public CreateTourViewModel(TourService tourService, ConfirmTourService confirmTourService,
             TourPointService tourPointService, TextBox textBox, UserService userService, TourReview tourReview,
-            Tour tour, TourReviewService tourReviewService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,MainWindowViewModel mainViewModel)
+            Tour tour, TourReviewService tourReviewService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,MainWindowViewModel mainViewModel,TourRequestService tourRequestService)
         {
             Tour = new Tour();
             Tour1 = new Tour();
@@ -308,7 +329,11 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             _confirmTourService = confirmTourService;
             _mainViewModel = mainViewModel;
             _modalNavigationStore = modalNavigationStore;
+            _tourRequestService = tourRequestService;
 
+            Trace.WriteLine("000000000000000000000000000000000000");
+
+            Trace.WriteLine(_tourRequestService.MostCommonLocation().ElementAt(0));
 
 
 
@@ -403,20 +428,59 @@ namespace SIMS_Booking.UI.ViewModel.Guide
                     isFirst = false;
                     _tourPointService.Save(tourPoint);
                     TourPoints.Add(tourPoint);
-                    TourPointIds.Add(tourPoint.getID());
+                    TourPointIds.Add(tourPoint.GetId());
                 }
 
-                string[] v = City.Split(",");
-                Location location = new Location(v[0], v[1]);
+
+
+               
 
                 DateTime time = new DateTime(StartTour.Year, StartTour.Month, StartTour.Day, TourTime.Hour, TourTime.Minute, TourTime.Second);
-                Tour tour = new Tour(TourName, location, Descriptions, Languages, MaxGuest, time, Times, imageURLs, TourPointIds, TourPoints, TourTime);
-                _tourService.Save(tour);
+
+
+
+
+
+
+                if (IsRadioButton1Checked)
+                {
+                    string[] v = City.Split(",");
+                    Location location = new Location(v[0], v[1]);
+                    Tour tour = new Tour(TourName, location, Descriptions, _tourRequestService.MostCommonLanguage(), MaxGuest, time, Times, imageURLs, TourPointIds, TourPoints, TourTime);
+                    _tourService.Save(tour);
+                }
+                else if (IsRadioButton2Checked)
+                {
+                    Location location = new Location(_tourRequestService.MostCommonLocation().ElementAt(0).Key, _tourRequestService.MostCommonLocation().ElementAt(0).Value);
+
+                    Tour tour = new Tour(TourName, location, Descriptions, _tourRequestService.MostCommonLanguage(), MaxGuest, time, Times, imageURLs, TourPointIds, TourPoints, TourTime);
+                    _tourService.Save(tour);
+
+                }
+                else
+                {
+
+                    string[] v = City.Split(",");
+                    Location location = new Location(v[0], v[1]);
+
+
+                    time = new DateTime(StartTour.Year, StartTour.Month, StartTour.Day, TourTime.Hour, TourTime.Minute, TourTime.Second);
+                    Tour tour = new Tour(TourName, location, Descriptions, Languages, MaxGuest, time, Times, imageURLs, TourPointIds, TourPoints, TourTime);
+                    _tourService.Save(tour);
+                }
+
+               
             }
         }
 
        
-
+        public void AutoGenerateLanguageField()
+        {
+            if(IsRadioButton1Checked)
+            {
+                string Languages = _tourRequestService.MostCommonLanguage();
+            }
+        }
 
     }
 }

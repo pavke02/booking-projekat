@@ -22,20 +22,17 @@ namespace SIMS_Booking.Utility.Timers
         private readonly ReservationService _reservationService;
         private readonly GuestReviewService _guestReviewService;
         private readonly PostponementService _postponementService;
-        private readonly CancellationCsvCrudRepository _cancellationCsvCrudRepository;
         private readonly User _user;
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
 
 
         public NotificationTimer(User user, PostponementService postponementService = null, ObservableCollection<Reservation> reservedAccommodations = null,
-                                 ReservationService reservationService = null, GuestReviewService guestReviewService = null,
-                                 CancellationCsvCrudRepository cancellationCsvCrudRepository = null)
+                                 ReservationService reservationService = null, GuestReviewService guestReviewService = null)
         {
             ReservedAccommodations = reservedAccommodations;
             _reservationService = reservationService;
             _guestReviewService = guestReviewService;
             _postponementService = postponementService;
-            _cancellationCsvCrudRepository = cancellationCsvCrudRepository;
             _user = user;
 
             if (_user.Role == Enums.Roles.Owner)
@@ -64,7 +61,7 @@ namespace SIMS_Booking.Utility.Timers
                 if (!_postponementService.GetReviewedPostponements().IsNullOrEmpty())
                 {
                     notifier.ShowInformation("Owner has reviewed your postponement requests");
-                    _postponementService.SetNotifiedPostpoments();
+                    _postponementService.SetNotifiedPostponements();
                 }
 
                 timer.Stop();
@@ -77,13 +74,16 @@ namespace SIMS_Booking.Utility.Timers
             var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             timer.Tick += (sender, args) =>
             {
-                if (!_cancellationCsvCrudRepository.GetAll().IsNullOrEmpty())
-                    notifier.ShowInformation("Your reservation has been canceled");
-                foreach (Reservation reservation in _cancellationCsvCrudRepository.GetAll().ToList())
+                foreach (Reservation reservation in _reservationService.GetAll().ToList())
                 {
-                    //_cancellationCsvCrudRepository.Delete(reservation);
+                    if (reservation.IsCanceled && !reservation.IsCancellationReviewed)
+                    {
+                        notifier.ShowInformation("Your reservation has been canceled");
+                        reservation.IsCancellationReviewed = true;
+                        _reservationService.Update(reservation);
+                    }
+                    
                 }
-
                 timer.Stop();
             };
             timer.Start();

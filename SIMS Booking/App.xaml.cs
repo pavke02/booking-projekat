@@ -48,7 +48,7 @@ namespace SIMS_Booking
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddSingleton<ICRUDRepository<User>, CsvCrudRepository<User>>();
-            
+        
             services.AddSingleton<ICRUDRepository<Accommodation>, CsvCrudRepository<Accommodation>>();
             services.AddSingleton<ICRUDRepository<Reservation>, CsvCrudRepository<Reservation>>();
             services.AddSingleton<ICRUDRepository<Postponement>, CsvCrudRepository<Postponement>>();
@@ -58,7 +58,6 @@ namespace SIMS_Booking
             services.AddSingleton<ICRUDRepository<UsersAccommodation>, CsvCrudRepository<UsersAccommodation>>();
             services.AddSingleton<ICRUDRepository<ReservedAccommodation>, CsvCrudRepository<ReservedAccommodation>>();
             services.AddSingleton<CityCountryCsvRepository>();
-            services.AddSingleton<CancellationCsvCrudRepository>();
 
             services.AddSingleton<ICRUDRepository<ConfirmTour>, CsvCrudRepository<ConfirmTour>>();
             services.AddSingleton<ICRUDRepository<DriverLanguages>, CsvCrudRepository<DriverLanguages>>();
@@ -74,6 +73,7 @@ namespace SIMS_Booking
             services.AddSingleton<ICRUDRepository<Voucher>, CsvCrudRepository<Voucher>>();
             services.AddSingleton<ICRUDRepository<TourReservation>, CsvCrudRepository<TourReservation>>();
             services.AddSingleton<ICRUDRepository<ReservationOfVehicle>, CsvCrudRepository<ReservationOfVehicle>>();
+            services.AddSingleton<ICRUDRepository<TourRequest>,CsvCrudRepository <TourRequest>>();
             services.AddSingleton<TextBox>();
             services.AddSingleton<ICRUDRepository<GroupRide>, CsvCrudRepository<GroupRide>>();
             services.AddSingleton<ICRUDRepository<TourRequest>, CsvCrudRepository<TourRequest>>();

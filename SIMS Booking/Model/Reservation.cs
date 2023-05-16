@@ -1,6 +1,7 @@
 using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Serializer;
 using System;
+using Microsoft.TeamFoundation.Work.WebApi;
 
 namespace SIMS_Booking.Model
 {
@@ -13,10 +14,12 @@ namespace SIMS_Booking.Model
         public User User { get; set; }
         public bool HasOwnerReviewed { get; set; }
         public bool HasGuestReviewed { get; set; }
+        public bool IsCanceled { get; set; }
+        public bool IsCancellationReviewed { get; set; }
 
         public Reservation() { }
 
-        public Reservation(DateTime startDate, DateTime endDate, Accommodation accommodation, User user, bool hasOwnerReviewed, bool hasGuestReviewed)
+        public Reservation(DateTime startDate, DateTime endDate, Accommodation accommodation, User user, bool hasOwnerReviewed, bool hasGuestReviewed, bool isCanceled, bool isCancellationReviewed)
         {
             StartDate = startDate;
             EndDate = endDate;
@@ -24,6 +27,8 @@ namespace SIMS_Booking.Model
             User = user;
             HasOwnerReviewed = hasOwnerReviewed;
             HasGuestReviewed = hasGuestReviewed;
+            IsCanceled = isCanceled;
+            IsCancellationReviewed = isCancellationReviewed;
         }
 
         public int GetId()
@@ -43,11 +48,13 @@ namespace SIMS_Booking.Model
             EndDate = DateTime.Parse(values[2]);
             HasOwnerReviewed = bool.Parse(values[3]);
             HasGuestReviewed = bool.Parse(values[4]);
+            IsCanceled = bool.Parse(values[5]);
+            IsCancellationReviewed = bool.Parse(values[6]);
         }
 
         public string[] ToCSV()
-        {            
-            string[] csvValues = { _id.ToString(), StartDate.ToShortDateString(), EndDate.ToShortDateString(), HasOwnerReviewed.ToString(), HasGuestReviewed.ToString() };
+        {
+            string[] csvValues = { _id.ToString(), StartDate.ToShortDateString(), EndDate.ToShortDateString(), HasOwnerReviewed.ToString(), HasGuestReviewed.ToString(), IsCanceled.ToString(), IsCancellationReviewed.ToString()};
             return csvValues;
         }        
     }

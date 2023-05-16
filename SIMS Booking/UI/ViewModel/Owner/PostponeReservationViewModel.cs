@@ -130,7 +130,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private void DisableReservedDates(ReservationService reservationService)
         {
             List<CalendarDateRange> blackoutDates = new List<CalendarDateRange>();
-            foreach (var reservation in reservationService.GetByAccommodation(SelectedRequest.Reservation.Accommodation.GetId()))
+            foreach (var reservation in reservationService.GetActiveByAccommodation(SelectedRequest.Reservation.Accommodation.GetId()))
             {
                 if (reservation != _reservationService.GetById(SelectedRequest.Reservation.GetId()))
                 {

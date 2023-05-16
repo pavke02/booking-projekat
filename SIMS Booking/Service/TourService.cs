@@ -119,5 +119,31 @@ namespace SIMS_Booking.Service
             string[] checkpoints = text.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             return checkpoints.Length;
         }
+
+        public bool IsFreeGuideInRangeOfDates(DateTime startTime, DateTime endTime,DateTime exactTime)
+        {
+           foreach (var tours in _repository.GetAll())
+            {
+                if (tours.StartTour < startTime && tours.StartTour > endTime && tours.StartTour < exactTime && tours.StartTour > exactTime)
+                {
+                    return false;
+                    
+                }
+            }
+            return true;
+        }
+
+        public bool IsFreeGuideInOtherTours(DateTime exactTime)
+        {
+            foreach (var tours in _repository.GetAll())
+            {
+                if (tours.StartTour == exactTime)
+                {
+                    return false;
+
+                }
+            }
+            return true;
+        }
     }
 }

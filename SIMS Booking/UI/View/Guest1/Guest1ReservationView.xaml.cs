@@ -5,143 +5,81 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.TeamFoundation.Build.WebApi;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
+using SIMS_Booking.UI.ViewModel.Guest1;
+using SIMS_Booking.UI.ViewModel.Owner;
 
-namespace SIMS_Booking.UI.View;
+namespace SIMS_Booking.UI.View.Guest1;
 
-public partial class Guest1ReservationView : Window
+public partial class Guest1ReservationView : UserControl
 {
-    private readonly Accommodation _selectedAccommodation;
-    public User LoggedUser { get; set; }
-    private ReservationService _reservationService;
-    public List<Reservation> Reservations { get; set; }
-    public List<Reservation> AccommodationReservations { get; set; }
-    private ReservedAccommodationService _reservedAccommodationService;
-
-
-    public Guest1ReservationView(Accommodation selectedAccommodation, User loggedUser, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService)
+    
+    public Guest1ReservationView()
     {
         InitializeComponent();
-
-        _selectedAccommodation = selectedAccommodation;
-        _reservationService = reservationService;
-        _reservedAccommodationService = reservedAccommodationService;
-        LoggedUser = loggedUser;
-
-        int minimumDaysOfReservation = _selectedAccommodation.MinReservationDays;
-        MinDaysLabel.Content = $"Minimum duration of reservation: {minimumDaysOfReservation} days.";
-        int maxGuests = _selectedAccommodation.MaxGuests;
-        MaxGuestsLabel.Content = $"Maximum number of guests: {maxGuests} guests.";
-
+        DataContextChanged += SubscribeToBlackoutDatesChangedEvent;
+        DataContextChanged += SubscribeToEndDateChangedEvent;
         startDateDp.DisplayDateStart = DateTime.Today.AddDays(1);
-
-        Reservations = _reservationService.GetAll();
-        AccommodationReservations = _reservationService.GetAccommodationReservations(selectedAccommodation);
-
-        DisableReservedDates(AccommodationReservations, startDateDp, endDateDp);
-        DisableAllImpossibleDates(startDateDp, minimumDaysOfReservation);
     }
 
 
-    private void Reserve(object sender, RoutedEventArgs e)
+    private void SubscribeToBlackoutDatesChangedEvent(object sender, DependencyPropertyChangedEventArgs e)
     {
-
-        if (_selectedAccommodation.MaxGuests < Convert.ToInt32(guestNumberTextBox.Text))
+        var viewModel = (Guest1ReservationViewModel)DataContext;
+        if (viewModel != null)
         {
-            MessageBox.Show($"Number of guests cannot be more than the maximum number of guests for this accommodation ({_selectedAccommodation.MaxGuests} guests).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
+            viewModel.BlackoutDatesChangedEvent += UpdateBlackoutDates;
+            viewModel.DisableReservedDates();
         }
-
-        Reservation reservation = new Reservation((DateTime)startDateDp.SelectedDate, (DateTime)endDateDp.SelectedDate, _selectedAccommodation, LoggedUser, false, false);
-        _reservationService.Save(reservation);
-
-        ReservedAccommodation reservedAccommodation = new ReservedAccommodation(LoggedUser.GetId(), _selectedAccommodation.GetId(), reservation.GetId());
-        _reservedAccommodationService.Save(reservedAccommodation);
-        
-        Close();
     }
 
-    private void DisableReservedDates(List<Reservation> accommodationReservations, DatePicker startDatePicker, DatePicker endDatePicker)
+    private void SubscribeToEndDateChangedEvent(object sender, DependencyPropertyChangedEventArgs e)
     {
-        foreach (var reservation in accommodationReservations)
+        var viewModel = (Guest1ReservationViewModel)DataContext;
+        if (viewModel != null)
         {
-            var startDate = reservation.StartDate.Date;
-            var endDate = reservation.EndDate.Date;
-
-            var range = new CalendarDateRange(startDate, endDate);
-            if (startDatePicker.SelectedDate >= startDate && startDatePicker.SelectedDate <= endDate)
-            {
-                startDatePicker.SelectedDate = endDate.AddDays(1);
-            }
-            startDatePicker.BlackoutDates.Add(range);
-            if (endDatePicker.SelectedDate >= startDate && endDatePicker.SelectedDate <= endDate)
-            {
-                endDatePicker.SelectedDate = endDate.AddDays(1);
-            }
-            endDatePicker.BlackoutDates.Add(range);
+            viewModel.EndDpDateStartChangedEvent += UpdateEndDates;
         }
-
     }
 
-    public void DisableAllImpossibleDates(DatePicker datePicker, int minimumReservationDays)
-    {
-        DateTime startDate = DateTime.Today.AddDays(1);
-        DateTime endDate = DateTime.Today.AddDays(1 + minimumReservationDays);
-        CalendarBlackoutDatesCollection blackoutRanges = datePicker.BlackoutDates;
-        List<CalendarDateRange> rangesToDelete = new List<CalendarDateRange>();
-        foreach (CalendarDateRange blackoutRange in blackoutRanges)
-        {
-            CalendarDateRange rangeToDelete =
-                new CalendarDateRange(blackoutRange.Start.AddDays(-(minimumReservationDays)),
-                    blackoutRange.Start.AddDays(-1));
-            rangesToDelete.Add(rangeToDelete);
-        }
-
-        datePicker.SelectedDate = null;
-        foreach (CalendarDateRange rangeToDelete in rangesToDelete)
-        {
-            datePicker.BlackoutDates.Add(rangeToDelete);
-        }
-
-    }
-
-    private void StartDateDpSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void UpdateEndDates(int minDays)
     {
         if (startDateDp.SelectedDate.HasValue)
         {
-            if (!endDateDp.IsEnabled)
-            {
-                endDateDp.IsEnabled = true;
-            }
-            DateTime? minimumEndDate = startDateDp.SelectedDate.Value.AddDays(_selectedAccommodation.MinReservationDays);
-            endDateDp.DisplayDateStart = minimumEndDate;
-
-            endDateDp.SelectedDate = minimumEndDate;
-            endDateDp.DisplayDateEnd = GetFirstBlackoutDateAfterDate(endDateDp, startDateDp.SelectedDate.Value);
+            endDateDp.IsEnabled = true;
+            endDateDp.DisplayDateStart = startDateDp.SelectedDate.Value.AddDays(minDays);
+            endDateDp.SelectedDate = startDateDp.SelectedDate.Value.AddDays(minDays);
         }
     }
 
-    public DateTime? GetFirstBlackoutDateAfterDate(DatePicker datePicker, DateTime date)
+    //metoda koja onemogucuje rezervisane datume na kalendaru
+    private void UpdateBlackoutDates(List<CalendarDateRange> blackoutDates)
     {
-        var blackoutDates = datePicker.BlackoutDates;
-
-        var nextBlackoutDate = blackoutDates.FirstOrDefault(d => d.Start > date);
-
-        if (nextBlackoutDate == null)
+        startDateDp.BlackoutDates.Clear();
+        foreach (var blackoutDate in blackoutDates)
         {
-            return null;
+            startDateDp.BlackoutDates.Add(blackoutDate);
         }
-
-        return nextBlackoutDate.Start.AddDays(-1);
     }
+
+    //metoda koja kao opcije za kranji datum daje niz datuma od (selektovanog+1) do prvog (Blackout-ovanog-1)
+    /*private void StartDateSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (startDateDp.SelectedDate.HasValue)
+        {
+            endDateDp.IsEnabled = true;
+            endDateDp.DisplayDateEnd = startDateDp.BlackoutDates.FirstOrDefault(d => d.Start > startDateDp.SelectedDate.Value)?.Start.AddDays(-1);
+        }
+    }*/
 
     private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
-    {
-        e.Handled = !IsTextAllowed(e.Text);
-    }
+        {
+            e.Handled = !IsTextAllowed(e.Text);
+        }
 
     private static bool IsTextAllowed(string text)
     {

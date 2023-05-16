@@ -51,7 +51,6 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         #region Property                
         public List<string> TypesCollection { get; set; }
         public List<string> Countries { get; set; }
-        public List<string> AccommodationNames { get; set; }
         public List<int> Years { get; set; }
         public ObservableCollection<Accommodation> Accommodations { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
@@ -445,26 +444,28 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
         public OwnerMainViewModel(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository,
             ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
-            OwnerReviewService ownerReviewService, PostponementService postponementService, User user,
-            CancellationCsvCrudRepository cancellationCsvCrudRepository, UserService userService,
-            RenovationAppointmentService renovationAppointmentService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
+            OwnerReviewService ownerReviewService, PostponementService postponementService, User user, UserService userService,
+            RenovationAppointmentService renovationAppointmentService, ModalNavigationStore modalNavigationStore)
         {
             _user = user;
             _cityCountryCsvRepository = cityCountryCsvRepository;
-
+            _usersAccommodationService = usersAccommodationService;
+            _ownerReviewService = ownerReviewService;
+            _postponementService = postponementService;
             _userService = userService;
+
+            #region DataLoading
             Username = _user.Username;
             Role = _user.Role.ToString();
 
             _accommodationService = accommodationService;
             _accommodationService.Subscribe(this);
             Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetByUserId(_user.GetId()));
-            AccommodationNames = new List<string>(_accommodationService.GetAccommodationNames(_user.GetId()));
             AccommodationNumber = Accommodations.Count().ToString();
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
-            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationService.GetUnreviewedReservations(_user.GetId()));
+            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationService.GetUnreviewedActiveReservations(_user.GetId()));
             ReservationNumber = ReservedAccommodations.Count().ToString();
 
             _guestReviewService = guestReviewService;
@@ -481,11 +482,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             Countries = new List<string>(_cityCountryCsvRepository.LoadCountries());
             TypesCollection = new List<string> { "Apartment", "House", "Cottage" };
             Years = new List<int>((Enumerable.Range(2000, DateTime.Now.Year - 1999).Reverse()).ToList());
-            Cities = new ObservableCollection<string>();
-
-            _usersAccommodationService = usersAccommodationService;
-            _ownerReviewService = ownerReviewService;
-            _postponementService = postponementService;
+            Cities = new ObservableCollection<string>(); 
+            #endregion
 
             #region Commands
             PublishCommand = new PublishAccommodationCommand(this, _accommodationService, _usersAccommodationService, _user);
@@ -510,7 +508,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             CalculateRating(_user.GetId());
 
             NotificationTimer timer = 
-                new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, cancellationCsvCrudRepository);
+                new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService);
             DatePassedTimer passedTimer =
                 new DatePassedTimer(_accommodationService, _renovationAppointmentService, _user);
 
@@ -550,16 +548,18 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             if (SelectedAccommodationStats != null)
             {
                 Dictionary<string, int> reservationCount = new Dictionary<string, int>(_reservationService.GetReservationsByYear(SelectedAccommodationStats.GetId()));
-                Dictionary<string, int> postponementCount = new Dictionary<string, int>(_postponementService.GetPostponemetsByYear(SelectedAccommodationStats.GetId()));
+                Dictionary<string, int> cancellationsCount = new Dictionary<string, int>(_reservationService.GetCancellationsByYear(SelectedAccommodationStats.GetId()));
+                Dictionary<string, int> postponementCount = new Dictionary<string, int>(_postponementService.GetPostponementsByYear(SelectedAccommodationStats.GetId()));
                 Dictionary<string, int> renovationsCount = new Dictionary<string, int>(_ownerReviewService.GetRenovationsByYear(SelectedAccommodationStats.GetId()));
 
                 List<string> sortedLabels = reservationCount.Keys
                     .Union(postponementCount.Keys)
-                    .Union(renovationsCount.Keys).ToList();
+                    .Union(renovationsCount.Keys).
+                    Union(cancellationsCount.Keys).ToList();
                 sortedLabels.Sort();
                 Labels = sortedLabels.ToArray();
 
-                GenerateStats(reservationCount, postponementCount, renovationsCount);
+                GenerateStats(reservationCount, postponementCount, renovationsCount, cancellationsCount);
                 XLabelName = "Years";
             }
         }
@@ -569,27 +569,31 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             if (SelectedAccommodationStats != null)
             {
                 Dictionary<int, int> reservationCount = new Dictionary<int, int>(_reservationService.GetReservationsByMonth(SelectedAccommodationStats.GetId(), int.Parse(SelectedYear)));
-                Dictionary<int, int> postponementCount = new Dictionary<int, int>(_postponementService.GetPostponemetsByMonth(SelectedAccommodationStats.GetId(), int.Parse(SelectedYear)));
+                Dictionary<int, int> cancellationsCount = new Dictionary<int, int>(_reservationService.GetCancellationsByMonth(SelectedAccommodationStats.GetId(), int.Parse(SelectedYear)));
+                Dictionary<int, int> postponementCount = new Dictionary<int, int>(_postponementService.GetPostponementsByMonth(SelectedAccommodationStats.GetId(), int.Parse(SelectedYear)));
                 Dictionary<int, int> renovationsCount = new Dictionary<int, int>(_ownerReviewService.GetRenovationsByMonth(SelectedAccommodationStats.GetId(), int.Parse(SelectedYear)));
 
                 List<int> sortedLabels = reservationCount.Keys
                     .Union(postponementCount.Keys)
-                    .Union(renovationsCount.Keys).ToList();
+                    .Union(renovationsCount.Keys).
+                    Union(cancellationsCount.Keys).ToList();
                 sortedLabels.Sort();
+                //pretvara mesec(iz broja) u ime meseca(npr. 1 = januar)
                 Labels = sortedLabels.Select(e => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(e)).ToArray();
 
                 //mapira dictionary<int, int> na dictionary<string, int>
                 GenerateStats(reservationCount.ToDictionary(kvp => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(kvp.Key), kvp => kvp.Value),
                     postponementCount.ToDictionary(kvp => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(kvp.Key), kvp => kvp.Value),
-                    renovationsCount.ToDictionary(kvp => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(kvp.Key), kvp => kvp.Value));
+                    renovationsCount.ToDictionary(kvp => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(kvp.Key), kvp => kvp.Value),
+                    cancellationsCount.ToDictionary(kvp => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(kvp.Key), kvp => kvp.Value));
                 XLabelName = "Months";
             }
         }
 
-        //ToDo:zavrsiti
-        private void GenerateStats(Dictionary<string, int> reservationCount, Dictionary<string, int> postponementCount, Dictionary<string, int> renovationsCount)
+        private void GenerateStats(Dictionary<string, int> reservationCount, Dictionary<string, int> postponementCount, Dictionary<string, int> renovationsCount, Dictionary<string, int> cancellationsCount)
         {
             ChartValues<int> reservationsChartValues = new ChartValues<int>();
+            ChartValues<int> cancellationsChartValues = new ChartValues<int>();
             ChartValues<int> postponementsChartValues = new ChartValues<int>();
             ChartValues<int> renovationsChartValues = new ChartValues<int>();
             foreach (string label in Labels)
@@ -597,6 +601,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 reservationsChartValues.Add(reservationCount.ContainsKey(label) ? reservationCount[label] : 0);
                 postponementsChartValues.Add(postponementCount.ContainsKey(label) ? postponementCount[label] : 0);
                 renovationsChartValues.Add(renovationsCount.ContainsKey(label) ? renovationsCount[label] : 0);
+                cancellationsChartValues.Add(cancellationsCount.ContainsKey(label) ? cancellationsCount[label] : 0);
             }
 
             Statistics = new SeriesCollection { new ColumnSeries
@@ -615,6 +620,12 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             {
                 Title = "Renovations",
                 Values = renovationsChartValues
+            });
+
+            Statistics.Add(new ColumnSeries
+            {
+                Title = "Cancellation",
+                Values = cancellationsChartValues
             });
         } 
         #endregion
@@ -703,7 +714,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public void Update()
         {
             UpdateAccommodations(_accommodationService.GetByUserId(_user.GetId()));
-            UpdateReservedAccommodations(_reservationService.GetUnreviewedReservations(_user.GetId()));
+            UpdateReservedAccommodations(_reservationService.GetUnreviewedActiveReservations(_user.GetId()));
             UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.GetId()));
             UpdateActiveRenovations(_renovationAppointmentService.GetActiveRenovations(_user.GetId()));
             UpdatePastRenovations(_renovationAppointmentService.GetPastRenovations(_user.GetId()));
