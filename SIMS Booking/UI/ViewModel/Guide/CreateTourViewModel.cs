@@ -314,13 +314,11 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         public ICommand BackCommand { get; }
 
         public CreateTourViewModel(TourService tourService, ConfirmTourService confirmTourService,
-            TourPointService tourPointService, TextBox textBox, UserService userService, TourReview tourReview,
+            TourPointService tourPointService, TextBox textBox, UserService userService,
             Tour tour, TourReviewService tourReviewService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,MainWindowViewModel mainViewModel,TourRequestService tourRequestService)
         {
-            Tour = new Tour();
-            Tour1 = new Tour();
+                        
             _textBox = textBox;
-            _tourReview = tourReview;
             _tour = tour;
             _tourReviewService = tourReviewService;
             _tourService = tourService;
@@ -331,11 +329,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             _modalNavigationStore = modalNavigationStore;
             _tourRequestService = tourRequestService;
 
-            Trace.WriteLine("000000000000000000000000000000000000");
-
-            Trace.WriteLine(_tourRequestService.MostCommonLocation().ElementAt(0));
-
-
+            
 
             BackCommand = new NavigateCommand(CreateCloseModalNavigationService(modalNavigationStore));
 

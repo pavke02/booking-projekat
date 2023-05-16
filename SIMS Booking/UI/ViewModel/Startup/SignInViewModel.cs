@@ -56,9 +56,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
 
         #endregion
 
-        private TourReview _tourReview;
-        private Tour _tour;
-        private MainWindowViewModel _mainViewModel;
+      
+        
 
         private readonly NavigationStore _navigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
@@ -225,7 +224,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     break;
                 case Roles.Guide:
                     _navigationStore.CurrentViewModel = new MainWindowViewModel(_tourService, _confirmTourService, _tourPointService,
-                        _textBox, _userService, _tourReview, _tourReviewService, _navigationStore, _modalNavigationStore, _mainViewModel,_tourRequestService);
+                        _textBox, _userService,  _tourReviewService, _navigationStore, _modalNavigationStore, _tourRequestService);
                     break;
             }
         }

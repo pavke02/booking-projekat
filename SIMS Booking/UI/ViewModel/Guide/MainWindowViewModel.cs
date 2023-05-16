@@ -46,11 +46,10 @@ namespace SIMS_Booking.UI.ViewModel.Guide
 
 
         public MainWindowViewModel(TourService tourService, ConfirmTourService confirmTourService,
-            TourPointService tourPointService, TextBox textBox, UserService userService, TourReview tourReview
-            , TourReviewService tourReviewService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,MainWindowViewModel mainViewModel,TourRequestService tourRequestService)
+            TourPointService tourPointService, TextBox textBox, UserService userService
+            , TourReviewService tourReviewService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,TourRequestService tourRequestService)
         {
             _textBox = textBox;
-            _tourReview = tourReview;
             _tourReviewService = tourReviewService;
             _tourService = tourService;
             _tourService.Subscribe(this);
@@ -58,7 +57,6 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             _tourPointService.Subscribe(this);
             _userService = userService;
             _confirmTourService = confirmTourService;
-            _mainviewModel = mainViewModel;
             _navigationStore = navigationStore;
             _modalNavigationStore = modalNavigationStore;
             _tourRequestService = tourRequestService;
@@ -78,7 +76,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         private INavigationService CreateCreateTourModalNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<CreateTourViewModel>
-            (modalNavigationStore, () => new CreateTourViewModel(_tourService,_confirmTourService,_tourPointService,_textBox,_userService,_tourReview,_tour,_tourReviewService,_navigationStore,modalNavigationStore, _mainviewModel,_tourRequestService));
+            (modalNavigationStore, () => new CreateTourViewModel(_tourService,_confirmTourService,_tourPointService,_textBox,_userService,_tour,_tourReviewService,_navigationStore,modalNavigationStore, _mainviewModel,_tourRequestService));
         }
 
         private INavigationService CreateTodaysToursnavigationService(NavigationStore navigationStore)
