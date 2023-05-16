@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="SIMS_Booking.UI.View.Guide.ConfirmByGuest"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Height="450" Width="800">
+    <Grid>
+        <Grid>
+
+            <DataGrid VirtualizingPanel.IsVirtualizing="False" EnableRowVirtualization ="False"  EnableColumnVirtualization="False"  SelectedItem="{Binding SelectedUser}" ItemsSource="{Binding GuestOnTour}" AutoGenerateColumns="False" CanUserAddRows="False" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Username  }" />
+
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Content="Dosao je na turu" Width="100" Height="30" Command="{Binding ComeOnTourCommand}"  />
+
+        </Grid>
+
+    </Grid>
+</UserControl>

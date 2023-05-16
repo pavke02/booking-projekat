@@ -1,0 +1,70 @@
+﻿<Window x:Class="SIMS_Booking.UI.View.Guest2GuideReviewView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Guest2GuideReviewView" Height="500" Width="750">
+    <Grid>
+        <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110" />
+                    <ColumnDefinition Width="90" />
+                    <ColumnDefinition Width="160" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Ocena ture</Label>
+                <TextBox Grid.Column="1" Grid.Row="0" Height="30" Width="80" Margin="0, 10, 0, 0" Padding="34, 5, 0, 0"
+                                 Text="{Binding ElementName=tourRatingSl, Path=Value, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}"                                 
+                                 Name="tidinessTb" />
+                <Slider Grid.Column="2" Grid.Row="0" Margin="20, 25, 0, 0" Maximum="5" Minimum="1"
+                        Name="tourRatingSl" Value="{Binding TourRating, UpdateSourceTrigger=PropertyChanged}"/>
+
+                
+
+            </Grid>
+
+            <StackPanel >
+                
+                <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="0, 20, 0, 0">
+                    <Label Height="40" HorizontalAlignment="Center" 
+                                   Margin="20, 20, 35, 0">Slika ture</Label>
+                    <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0, 10 ,0, 0">
+                        <TextBox Width="150" Height="40" HorizontalAlignment="Center" 
+                                    Margin="0, 5 0, 0" TextChanged="ImageTbCheck"
+                                    Name="urlTb" />
+                        <Button Background="Transparent" BorderBrush="Transparent" Margin="10, 5, 20, 0"
+                                Name="addURLButton" Visibility="Hidden" Click="AddImage">
+                            <Image Source="../Resources/Images/add.png" Height="30" Width="30"/>
+                        </Button>
+
+                    </WrapPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" Width="400" VerticalAlignment="Center">
+                        <TextBox Grid.Column="2" Height="150" Width="300" Margin="40, 20, 0, 0"                                                                  
+                             Text="{Binding Path=ImageURLs, UpdateSourceTrigger=PropertyChanged}"
+                             Name="imageTb" IsReadOnly="True">
+                            <TextBox.ToolTip>
+                                <TextBlock Text="{Binding ErrorCollection[ImageURLs]}"/>
+                            </TextBox.ToolTip>
+                        </TextBox>
+                        <Button Background="Transparent" BorderBrush="Transparent" Margin="10, 20, 0, 0"
+                            Name="clerURLs" Height="30" Width="30" Click="ClearURLs">
+                            <Image Source="../Resources/Images/remove.png" Height="30" Width="30"/>
+                        </Button>
+                    </StackPanel>
+
+                </StackPanel>
+                <Button Content="Oceni turu" Width="100" Height="40" Margin="0, 40, 0, 0" HorizontalAlignment="Center"
+                        Click="SubmitReview" 
+                        Name="submitButton" />
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="SIMS_Booking.UI.View.Guide.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SIMS_Booking.UI.View.Guide"
+        mc:Ignorable="d"
+        Height="750" Width="430">
+    <Grid Background="White">
+        <Rectangle Fill="LightGray" Height="50" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+
+        <Button BorderThickness="0" Background="LightGray" Height="50" Width="50" VerticalAlignment="Top" Margin="0,0,280,0" FontSize="30" Content="|||" >
+            
+            <Button.RenderTransform>
+                <RotateTransform Angle="90"/>
+            </Button.RenderTransform>
+        </Button>
+
+        <TextBlock Text="PRIJAVLJENI STE KAO &#x0a;            VODIC" FontSize="40" Margin="0,60,0,500" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="MENU" FontSize="30" Margin="40,5,0,0" HorizontalAlignment="Left" VerticalAlignment="top" />
+
+        <StackPanel Orientation="Horizontal"  Width="430" Margin="15,200,0,0">
+            <StackPanel Width="200" >
+                <Button Content="Napravi Turu" Width="150" Height="100" Margin="15" Command="{Binding NavigateCreateTour}" FontSize="20" />
+                <Button Content="Statistika" Width="150" Height="100" Margin="15" FontSize="20" />
+                <Button Content="Zahtevi" Width="150" Height="100" Margin="15" Command="{Binding NavigateRequestTours}" FontSize="20" />
+                <Button Content="Profil" Width="150" Height="100" Margin="15" FontSize="20" />
+            </StackPanel>
+            <StackPanel Width="200">
+                <Button Content="Buduce ture" Width="150" Height="100" Margin="15" Command ="{Binding NavigateFutureTours }" FontSize="20"/>
+                <Button Content="Danasnje ture" Width="150" Height="100" Margin="15" Command="{Binding NavigateTodaysTours}" FontSize="20"/>
+                <Button Content="Zavrsene ture" Width="150" Height="100" Margin="15" Command="{Binding NavigateCompletedTours}" FontSize="20" />
+                <Button Content="Otkaz" Width="150" Height="100" Margin="15" FontSize="20"  />
+            </StackPanel>
+        </StackPanel>
+
+
+    </Grid>
+</UserControl>

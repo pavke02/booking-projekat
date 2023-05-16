@@ -1,0 +1,29 @@
+﻿<Window x:Class="SIMS_Booking.UI.View.Guest2ReservedTours"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Guest2ReservedTours" Height="450" Width="800">
+    <Grid>
+
+        <Label Margin="251,-10,295,394" Content="Prikaz rezervisanih tura" HorizontalContentAlignment="Center" FontSize="17"/>
+
+
+        <DataGrid
+                    Name="DataGridTours"
+                    ItemsSource="{Binding Path=TourReservations, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedTourReservation, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True" Margin="154,136,154,102" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id ture" Binding="{Binding TourId}" Width="170"></DataGridTextColumn>
+                <DataGridTextColumn Header="Id coveka" Binding="{Binding UserId}" Width="170"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Content="Oceni turu" FontSize="16" HorizontalAlignment="Left" Height="50" Margin="231,354,0,0" VerticalAlignment="Top" Width="109" Click="Review_Tour"/>
+        <Button Content="Vrati se nazad" FontSize="16" HorizontalAlignment="Left" Height="50" Margin="420,354,0,0" VerticalAlignment="Top" Width="109" Click="Back"/>
+
+
+    </Grid>
+</Window>

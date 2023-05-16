@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="SIMS_Booking.UI.View.Startup.SignInView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:components="clr-namespace:SIMS_Booking.Utility.Components"
+        mc:Ignorable="d" Height="380" Width="350" Background="#222222">
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <StackPanel>
+            <Label FontSize="30" FontWeight="Bold"
+                   Margin="130, 10, 0, 0">Login</Label>
+
+            <Label FontSize="20" Margin="20, 20, 0, 0">Username:</Label>
+            <TextBox Text="{Binding Path=Username, UpdateSourceTrigger=PropertyChanged}" 
+                     Height="30" Width="280" BorderThickness="0, 0, 0, 2" 
+                     Margin="25, 0, 0, 0" Padding="0, 5, 0, 0" FontSize="16"
+                     HorizontalAlignment="Left" Background="#222222"/>
+            <Label Name="usernameValidationLb" FontSize="10" Foreground="Red" Margin="20, 0, 0, 0" 
+                           Visibility="{Binding UsernameErrorText, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">Wrong username</Label>
+
+            <Label FontSize="20" Margin="20, 20, 0, 0">Password:</Label>
+            <components:BindablePasswordBox Height="30" Width="280" Margin="25 0 0 0" 
+                    Padding="0 5 0 0" FontSize="16"
+                    HorizontalAlignment="Left"
+                    Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <Label Name="passwordValidationLb" FontSize="10" Foreground="Red" Margin="20, 0, 0, 0" 
+                           Visibility="{Binding PasswordErrorText, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">Wrong password</Label>
+
+            <Button Command="{Binding SignInCommand}" Content="LOGIN" IsDefault="True" FontSize="16" Padding="5" Width="200"
+                    Margin="0, 30, 0, 0" Style="{StaticResource HoverButton2}">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="7"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <WrapPanel>
+                <Label FontSize="16" Margin="160, 10, 0, 0">No account?</Label>
+                <Button FontSize="16" BorderThickness="0" Background="Transparent" Foreground="DodgerBlue" Margin="0, 10, 0 0"
+                        Command="{Binding NavigateToSignUpCommand}">
+                    <Button.Content>
+                        <TextBlock>
+                            <Underline>Sign Up</Underline>
+                        </TextBlock>
+                    </Button.Content>
+                </Button>
+            </WrapPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

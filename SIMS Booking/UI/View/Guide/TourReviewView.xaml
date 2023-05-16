@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="SIMS_Booking.UI.View.Guide.TourReviewView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Height="450" Width="800">
+    <Grid>
+        
+        <DataGrid Margin="0,-2,0,2" ItemsSource="{Binding Reviews}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedReview}" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding ConfirmTour.User.Username }"/>
+                <DataGridTextColumn Header="Opis"  Binding="{Binding Description }" Width="350"  />
+                <DataGridTextColumn Header="Ocena"  Binding="{Binding Grade}"/>
+                <DataGridTextColumn Header="Checkpoint"  Binding="{Binding ConfirmTour.IdCheckpoint}"/>
+                <DataGridTextColumn Header="Da li je validno"  Binding="{Binding IsValid}"/>
+            </DataGrid.Columns>
+            
+        </DataGrid>
+        <Button Height="100" Width="200"  Margin="100,300,400,20" Content="NIJE VALIDNA RECENZIJA" Command="{Binding IsValidReviewCommand}" />
+    </Grid>
+</UserControl>

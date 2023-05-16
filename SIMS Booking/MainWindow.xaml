@@ -1,0 +1,145 @@
+﻿<Window x:Class="SIMS_Booking.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewOwner="clr-namespace:SIMS_Booking.UI.View.Owner"
+        xmlns:viewGuest1="clr-namespace:SIMS_Booking.UI.View.Guest1"
+        xmlns:viewModelOwner="clr-namespace:SIMS_Booking.UI.ViewModel.Owner"
+        xmlns:viewGuide="clr-namespace:SIMS_Booking.UI.View.Guide"
+        xmlns:viewModelGuide ="clr-namespace:SIMS_Booking.UI.ViewModel.Guide"
+        xmlns:viewDriver="clr-namespace:SIMS_Booking.UI.View.Driver"
+        xmlns:viewModelDriver="clr-namespace:SIMS_Booking.UI.ViewModel.Driver"
+        xmlns:viewModelGuest1="clr-namespace:SIMS_Booking.UI.ViewModel.Guest1"
+        xmlns:modalControl="clr-namespace:ModalControl;assembly=ModalControl"
+        xmlns:startup="clr-namespace:SIMS_Booking.UI.ViewModel.Startup"
+        xmlns:startup1="clr-namespace:SIMS_Booking.UI.View.Startup"
+        mc:Ignorable="d"
+        Title="MainWindow" SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner">
+
+    <Grid>
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type startup:SignInViewModel }">
+                <startup1:SignInView></startup1:SignInView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type startup:SignUpViewModel }">
+                <startup1:SignUpView></startup1:SignUpView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:OwnerMainViewModel }">
+                <viewOwner:OwnerMainView></viewOwner:OwnerMainView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:GuestReviewViewModel }">
+                <viewOwner:GuestReviewView></viewOwner:GuestReviewView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:GuestReviewDetailsViewModel }">
+                <viewOwner:GuestReviewDetailsView></viewOwner:GuestReviewDetailsView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:OwnerReviewDetailsViewModel }">
+                <viewOwner:OwnerReviewDetailsView></viewOwner:OwnerReviewDetailsView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:PostponeReservationViewModel }">
+                <viewOwner:PostponeReservationView></viewOwner:PostponeReservationView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:DeclinePostponementRequestViewModel }">
+                <viewOwner:DeclinePostponementRequestView></viewOwner:DeclinePostponementRequestView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:RenovationAppointingViewModel}">
+                <viewOwner:RenovationAppointingView></viewOwner:RenovationAppointingView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverViewModel}">
+                <viewDriver:DriverView></viewDriver:DriverView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverGalleryViewModel}">
+                <viewDriver:DriverGalleryView></viewDriver:DriverGalleryView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverStatsViewModel}">
+                <viewDriver:DriverStatsView></viewDriver:DriverStatsView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverRidesViewModel}">
+                <viewDriver:DriverRides></viewDriver:DriverRides>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverAddVehicleViewModel}">
+                <viewDriver:DriverAddVehicle></viewDriver:DriverAddVehicle>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverProfileViewModel}">
+                <viewDriver:ProfileView></viewDriver:ProfileView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:MainWindowViewModel}">
+                <viewGuide:MainWindowView></viewGuide:MainWindowView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:GuideStatisticsViewModel}">
+                <viewGuide:GuideStatistics></viewGuide:GuideStatistics>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourReviewViewModel}">
+                <viewGuide:TourReviewView></viewGuide:TourReviewView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:StartTourViewModel}">
+                <viewGuide:StartTour></viewGuide:StartTour>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:ConfirmByGuestViewModel}">
+                <viewGuide:ConfirmByGuest></viewGuide:ConfirmByGuest>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:CreateTourViewModel}">
+                <viewGuide:CreateTour></viewGuide:CreateTour>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TodaysToursViewModel}">
+                <viewGuide:TodaysTours></viewGuide:TodaysTours>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:FutureToursViewModel}">
+                <viewGuide:FutureToursView></viewGuide:FutureToursView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:CompletedToursViewModel}">
+                <viewGuide:CompletedToursView></viewGuide:CompletedToursView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:StartingTourViewModel}">
+                <viewGuide:StartingTourView></viewGuide:StartingTourView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourRequestViewModel}">
+                <viewGuide:TourRequestView></viewGuide:TourRequestView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourRequestByDateViewModel}">
+                <viewGuide:TourRequestByDateView></viewGuide:TourRequestByDateView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourRequestByNumberOfGuestsViewModel}">
+                <viewGuide:RequestTourByNumberOfGuestsView></viewGuide:RequestTourByNumberOfGuestsView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourRequestByLanguageViewModel}">
+                <viewGuide:TourRequestByLanguageView></viewGuide:TourRequestByLanguageView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourRequestByLocationViewModel}">
+                <viewGuide:TourRequestsByLocationView></viewGuide:TourRequestsByLocationView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1MainViewModel}">
+                <viewGuest1:Guest1MainView></viewGuest1:Guest1MainView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1GalleryViewModel}">
+                <viewGuest1:Guest1GalleryView></viewGuest1:Guest1GalleryView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1ReservationViewModel}">
+                <viewGuest1:Guest1ReservationView></viewGuest1:Guest1ReservationView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1OwnerReviewViewModel}">
+                <viewGuest1:Guest1OwnerReviewView></viewGuest1:Guest1OwnerReviewView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1OwnersViewDetailsViewModel}">
+                <viewGuest1:Guest1OwnersViewDetailsView></viewGuest1:Guest1OwnersViewDetailsView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1ChangeReservationViewModel}">
+                <viewGuest1:Guest1ChangeReservationView></viewGuest1:Guest1ChangeReservationView>
+            </DataTemplate>
+
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="35*"/>
+            <ColumnDefinition Width="51*"/>
+        </Grid.ColumnDefinitions>
+
+        <modalControl:Modal Panel.ZIndex="100" IsOpen="{Binding IsModalOpen}" Grid.ColumnSpan="2">
+            <ContentControl Content="{Binding CurrentModalViewModel}"/>
+        </modalControl:Modal>
+
+        <ContentControl Content="{Binding CurrentViewModel}" Grid.ColumnSpan="2"/>
+    </Grid>
+</Window>
