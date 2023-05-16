@@ -162,7 +162,6 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _vehicleReservationService = vehicleReservationService;
             _voucherService = voucherService;
             _groupRideService = groupRideService;
-
             _tourRequestService = tourRequestService;
             #endregion
 
