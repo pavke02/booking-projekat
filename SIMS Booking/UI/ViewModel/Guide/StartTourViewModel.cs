@@ -107,7 +107,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             }
             foreach (ConfirmTour confirmTour in _confirmTourService.GetAll().ToList())
             {
-                if (confirmTour.IdTour == _tour.getID())
+                if (confirmTour.IdTour == _tour.GetId())
                 {
                     _confirmTourService.Delete(confirmTour);
                 }

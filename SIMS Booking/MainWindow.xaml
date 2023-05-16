@@ -74,6 +74,24 @@
             <DataTemplate DataType="{x:Type viewModelGuide:StartingTourViewModel}">
                 <viewGuide:StartingTourView></viewGuide:StartingTourView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourRequestViewModel}">
+                <viewGuide:TourRequestView></viewGuide:TourRequestView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourRequestByDateViewModel}">
+                <viewGuide:TourRequestByDateView></viewGuide:TourRequestByDateView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourRequestByNumberOfGuestsViewModel}">
+                <viewGuide:RequestTourByNumberOfGuestsView></viewGuide:RequestTourByNumberOfGuestsView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourRequestByLanguageViewModel}">
+                <viewGuide:TourRequestByLanguageView></viewGuide:TourRequestByLanguageView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourRequestByLocationViewModel}">
+                <viewGuide:TourRequestsByLocationView></viewGuide:TourRequestsByLocationView>
+            </DataTemplate>
+
+
+
 
         </Grid.Resources>
         <Grid.ColumnDefinitions>

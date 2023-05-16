@@ -46,6 +46,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly VehicleReservationService _vehicleReservationService;
         private readonly VoucherService _voucherService;
         private readonly RenovationAppointmentService _renovationAppointmentService;
+        private readonly TourRequestService _tourRequestService;
 
 
         #endregion
@@ -131,7 +132,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                               TourPointService tourPointService, TextBox textBox, TourReviewService tourReviewService,
                               RidesService ridesService, FinishedRidesService finishedRidesService, VehicleService vehicleService, DriverLanguagesService driverLanguagesService,
                               DriverLocationsService driverLocationsService, ReservedAccommodationService reservedAccommodationService, ReservedTourService reservedTourService, 
-                              GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService)
+                              GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService,TourRequestService tourRequestService)
         {
             #region ServiceInitializaton
             _cityCountryCsvRepository = cityCountryCsvRepository;
@@ -159,6 +160,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _textBox = textBox;
             _vehicleReservationService = vehicleReservationService;
             _voucherService = voucherService;
+            _tourRequestService = tourRequestService;
             #endregion
 
             #region LoadingData
@@ -174,6 +176,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _tourReviewService.loadusers(_userService, _confirmTourService);
             _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService);
             _renovationAppointmentService.LoadAccommodationInRenovationAppointment(_accommodationService);
+            
 
             #endregion
 
@@ -223,7 +226,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     break;
                 case Roles.Guide:
                     _navigationStore.CurrentViewModel = new MainWindowViewModel(_tourService, _confirmTourService, _tourPointService,
-                        _textBox, _userService, _tourReview, _tourReviewService, _navigationStore, _modalNavigationStore, _mainViewModel);
+                        _textBox, _userService, _tourReview, _tourReviewService, _navigationStore, _modalNavigationStore, _mainViewModel,_tourRequestService);
                     break;
             }
         }

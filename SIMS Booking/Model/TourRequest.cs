@@ -8,7 +8,7 @@ namespace SIMS_Booking.Model
     public class TourRequest : ISerializable, IDable
     {
 
-        private int ID = 1;
+        public int ID = 1;
         public Requests Requests { get; set; }
         public Location Location { get; set; }
         public string Description { get; set; }
@@ -16,6 +16,7 @@ namespace SIMS_Booking.Model
         public int NumberOfGuests { get; set; }
         public DateTime TimeOfStart { get; set; }
         public DateTime TimeOfEnd { get; set; }
+        public DateTime DefaultDate { get; set; }
 
         public TourRequest() { }
 
@@ -38,17 +39,15 @@ namespace SIMS_Booking.Model
             TimeOfStart = DateTime.Parse(values[5]);
             TimeOfEnd = DateTime.Parse(values[6]);
             Requests = (Requests)Enum.Parse(typeof(Requests), values[7]);
+            DefaultDate = DateTime.Parse(values[8]);
         }
 
         string[] ISerializable.ToCSV()
         {
-            string[] csvValues = { ID.ToString(), Location.Country, Location.City, Language.ToString(), NumberOfGuests.ToString(), TimeOfStart.ToString(), TimeOfEnd.ToString(), Requests.ToString() };
+            string[] csvValues = { ID.ToString(), Location.Country, Location.City, Language.ToString(), NumberOfGuests.ToString(), TimeOfStart.ToString(), TimeOfEnd.ToString(), Requests.ToString(), DefaultDate.ToString() };
 
             return csvValues;
         }
-
-
-
 
 
     }
