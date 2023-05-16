@@ -225,16 +225,23 @@ namespace SIMS_Booking.Service
 
             foreach (var podaci in _repository.GetAll())
             {
-                string grad = podaci.Location.City;
+                if(podaci.DateOfSendRequest.AddYears(-1) <= DateTime.Now)
+                {
 
-                if (gradBrojac.ContainsKey(grad))
-                {
-                    gradBrojac[grad]++;
+                    string grad = podaci.Location.City;
+
+                    if (gradBrojac.ContainsKey(grad))
+                    {
+                        gradBrojac[grad]++;
+                    }
+                    else
+                    {
+                        gradBrojac[grad] = 1;
+                    }
+
+
                 }
-                else
-                {
-                    gradBrojac[grad] = 1;
-                }
+               
             }
 
             string najcesciGrad = gradBrojac.OrderByDescending(x => x.Value).FirstOrDefault().Key;
@@ -251,9 +258,6 @@ namespace SIMS_Booking.Service
                 }
             }
             
-
-            
-
             return lokacija;
 
         }

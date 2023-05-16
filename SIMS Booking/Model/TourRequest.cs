@@ -17,6 +17,7 @@ namespace SIMS_Booking.Model
         public DateTime TimeOfStart { get; set; }
         public DateTime TimeOfEnd { get; set; }
         public DateTime DefaultDate { get; set; }
+        public DateTime DateOfSendRequest { get; set; }
 
         public TourRequest() { }
 
@@ -40,11 +41,12 @@ namespace SIMS_Booking.Model
             TimeOfEnd = DateTime.Parse(values[6]);
             Requests = (Requests)Enum.Parse(typeof(Requests), values[7]);
             DefaultDate = DateTime.Parse(values[8]);
+            DateOfSendRequest = DateTime.Parse(values[9]);
         }
 
         string[] ISerializable.ToCSV()
         {
-            string[] csvValues = { ID.ToString(), Location.Country, Location.City, Language.ToString(), NumberOfGuests.ToString(), TimeOfStart.ToString(), TimeOfEnd.ToString(), Requests.ToString(), DefaultDate.ToString() };
+            string[] csvValues = { ID.ToString(), Location.Country, Location.City, Language.ToString(), NumberOfGuests.ToString(), TimeOfStart.ToString(), TimeOfEnd.ToString(), Requests.ToString(), DefaultDate.ToString(), DateOfSendRequest.ToString() };
 
             return csvValues;
         }
