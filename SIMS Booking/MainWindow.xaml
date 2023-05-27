@@ -65,6 +65,9 @@
             <DataTemplate DataType="{x:Type viewModelDriver:DriverProfileViewModel}">
                 <viewDriver:ProfileView></viewDriver:ProfileView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverRequestVacationViewModel}">
+                <viewDriver:DriverRequestVacation></viewDriver:DriverRequestVacation>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelGuide:MainWindowViewModel}">
                 <viewGuide:MainWindowView></viewGuide:MainWindowView>
             </DataTemplate>

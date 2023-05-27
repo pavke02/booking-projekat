@@ -23,8 +23,6 @@ namespace SIMS_Booking.UI.ViewModel.Driver
 
     public class DriverViewModel : ViewModelBase, IObserver
     { 
-
-        //public Vehicle Vehicle { get; set; }
         public User User { get; set; }
 
         private VehicleService _vehicleService;
@@ -39,6 +37,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         public ICommand NavigateToRidesCommand { get; }
         public ICommand NavigateToAddVehicleCommand { get; }
         public ICommand NavigateToProfileCommand { get; }
+        public ICommand NavigateToRequestVacationCommand { get; }
 
 
         private Vehicle _vehicle;
@@ -157,8 +156,9 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             NavigateToRidesCommand = new NavigateCommand(CreateRidesNavigationService(modalNavigationStore), this, () => Vehicle != null);
             NavigateToAddVehicleCommand = new NavigateCommand(CreateAddVehicleNavigationService(modalNavigationStore), this, () => Vehicle == null);
             NavigateToProfileCommand = new NavigateCommand(CreateProfileNavigationService(modalNavigationStore), this, () => Vehicle != null);
+            NavigateToRequestVacationCommand = new NavigateCommand(CreateRequestVacationNavigationService(modalNavigationStore), this, () => Vehicle != null);
 
-            if(Vehicle != null)
+            if (Vehicle != null)
             {
                 foreach (Rides ride in _ridesService.GetActiveRides(User, Vehicle))
                 {
@@ -249,6 +249,12 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         {
             return new ModalNavigationService<DriverProfileViewModel>
                 (modalNavigationStore, () => new DriverProfileViewModel(modalNavigationStore, _finishedRidesService, _vehicleService, User));
+        }
+
+        private INavigationService CreateRequestVacationNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<DriverRequestVacationViewModel>
+                (modalNavigationStore, () => new DriverRequestVacationViewModel(Vehicle, modalNavigationStore, _vehicleService, _ridesService));
         }
     }
 }
