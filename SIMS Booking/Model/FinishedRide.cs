@@ -30,8 +30,8 @@ namespace SIMS_Booking.Model
         {
             ID = Convert.ToInt32(values[0]);
             Location rideLocation = new Location();
-            rideLocation.Country = values[4];
-            rideLocation.City = values[5];
+            rideLocation.Country = values[3];
+            rideLocation.City = values[4];
             Ride = new Rides(Convert.ToInt32(values[1]), values[2], rideLocation, Convert.ToDateTime(values[5]), values[6]);
             Price = values[7];
             Time = values[8];
