@@ -12,5 +12,10 @@
             Country = country;
             City = city;
         }
+
+        public override string ToString()
+        {
+            return $"{City}, {Country}";
+        }
     }
 }

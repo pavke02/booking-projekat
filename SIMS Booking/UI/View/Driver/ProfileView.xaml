@@ -17,6 +17,8 @@
         <Button Content="x" HorizontalAlignment="Left" Margin="780,0,0,0" VerticalAlignment="Top" Width="20" Height="20" Foreground="White" Background="Black" Command="{Binding NavigateBackCommand}"/>
         <Label HorizontalAlignment="Left" Margin="620,55,0,0" VerticalAlignment="Top" Width="42" Height="35" FontSize="18" Content="/ 15" VerticalContentAlignment="Center"/>
         <Label Content="{Binding Salary, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="55,0,0,0" VerticalAlignment="Center" Width="350" Height="34" FontSize="18"/>
+        <Label Content="{Binding MostPopularLocation, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="55,268,0,0" VerticalAlignment="Top" Width="607" Height="36" FontSize="18"/>
+        <Label Content="{Binding LeastPopularLocation, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="55,304,0,0" VerticalAlignment="Top" Width="607" Height="36" FontSize="18"/>
 
     </Grid>
 </UserControl>
