@@ -1,4 +1,5 @@
-﻿using SIMS_Booking.Model;
+﻿using System.Collections;
+using SIMS_Booking.Model;
 using SIMS_Booking.Utility.Observer;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,11 @@ namespace SIMS_Booking.Service
         public List<RenovationAppointment> GetPastRenovations(int id)
         {
             return GetAll().Where(e => e.Accommodation.User.GetId() == id && !e.IsRenovating).ToList();
+        }
+
+        public List<RenovationAppointment> GetActiveByAccommodation(int id)
+        {
+            return GetAll().Where(e => e.Accommodation.GetId() == id).ToList();
         }
     }
 }
