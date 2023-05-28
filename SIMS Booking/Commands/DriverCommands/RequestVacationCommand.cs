@@ -1,4 +1,5 @@
-﻿using SIMS_Booking.Service;
+﻿using SIMS_Booking.Model;
+using SIMS_Booking.Service;
 using SIMS_Booking.UI.ViewModel.Driver;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SIMS_Booking.Commands.DriverCommands
 {
@@ -24,11 +26,19 @@ namespace SIMS_Booking.Commands.DriverCommands
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
         }
 
-
-
         public override void Execute(object? parameter)
         {
-            throw new NotImplementedException();
+            _viewModel.Vehicle.OnVacation = "pending";
+            foreach(Rides ride in _ridesService.GetAll().Reverse<Rides>())
+            {
+                if(ride.DriverID == _viewModel.Vehicle.UserID)
+                {
+                    _ridesService.Delete(ride);
+                    ride.Pending = true;
+                    _ridesService.Save(ride);
+                }
+            }
+            MessageBox.Show("Pending vacation");
         }
 
         public override bool CanExecute(object? parameter)

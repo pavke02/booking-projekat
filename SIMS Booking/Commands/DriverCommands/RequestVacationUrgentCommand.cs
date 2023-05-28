@@ -80,6 +80,9 @@ namespace SIMS_Booking.Commands.DriverCommands
                 {
                     _ridesService.Save(ride);
                 }
+                _viewModel.Vehicle.StartDate = DateOnly.FromDateTime(_viewModel.StartingDate);
+                _viewModel.Vehicle.EndDate = DateOnly.FromDateTime(_viewModel.EndingDate);
+                _viewModel.Vehicle.OnVacation = "notpending";
                 MessageBox.Show("Odmor odobren!");
             }
             else

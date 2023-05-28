@@ -17,6 +17,9 @@ namespace SIMS_Booking.Model
         public List<Language> Languages { get; set; }
         public List<string> ImagesURL { get; set; }
         public int CanceledRidesCount { get; set; }
+        public string OnVacation { get; set; }
+        public DateOnly StartDate { get; set; }
+        public DateOnly EndDate { get; set; }
 
         public Vehicle()
         {
@@ -25,7 +28,7 @@ namespace SIMS_Booking.Model
             ImagesURL = new List<string>();
         }
 
-        public Vehicle(List<Location> locations, int maxGuests, List<Language> languages, List<string> imagesURL, User user, int canceledRidesCount)
+        public Vehicle(List<Location> locations, int maxGuests, List<Language> languages, List<string> imagesURL, User user, int canceledRidesCount, string onVacation, DateOnly startDate, DateOnly endDate)
         {
             Locations = new List<Location>();
             foreach (Location location in locations)
@@ -47,6 +50,9 @@ namespace SIMS_Booking.Model
             UserID = user.GetId();
 
             CanceledRidesCount = canceledRidesCount;
+            OnVacation = onVacation;
+            StartDate = startDate;
+            EndDate = endDate;
         }
 
         public int GetId()
@@ -66,6 +72,9 @@ namespace SIMS_Booking.Model
             UserID = Convert.ToInt32(values[2]);
             ImagesURL = values[3].Split(',').ToList();
             CanceledRidesCount = Convert.ToInt32(values[4]);
+            OnVacation = values[5];
+            StartDate = DateOnly.Parse(values[6]);
+            EndDate = DateOnly.Parse(values[7]);
         }
 
         public string[] ToCSV()
@@ -76,6 +85,9 @@ namespace SIMS_Booking.Model
                 UserID.ToString(),
                 string.Join(',', ImagesURL),
                 CanceledRidesCount.ToString(),
+                OnVacation.ToString(),
+                StartDate.ToString(),
+                EndDate.ToString()
                 };
             return csvValues;
         }

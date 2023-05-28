@@ -165,6 +165,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                     if (ride.Type == "Fast")
                     {
                         MessageBox.Show("You have new fast rides!");
+                        break;
                     }
                 }
                 foreach (Rides ride in _ridesService.GetActiveRides(User, Vehicle))
@@ -172,6 +173,21 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                     if (ride.Type == "Group")
                     {
                         MessageBox.Show("You have new group rides!");
+                        break;
+                    }
+                }
+            }
+            foreach(Vehicle vehicle in _vehicleService.GetAll())
+            {
+                if (Vehicle != null && vehicle.UserID != Vehicle.UserID)
+                {
+                    foreach (Rides ride in _ridesService.GetAll())
+                    {
+                        if (ride.Pending == true)
+                        {
+                            MessageBox.Show("Your colleague wants to go on a vacation and asks you to take his rides!");
+                            break;
+                        }
                     }
                 }
             }
@@ -248,7 +264,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         private INavigationService CreateProfileNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<DriverProfileViewModel>
-                (modalNavigationStore, () => new DriverProfileViewModel(modalNavigationStore, _finishedRidesService, _vehicleService, User));
+                (modalNavigationStore, () => new DriverProfileViewModel(modalNavigationStore, _finishedRidesService, _vehicleService, _ridesService, User));
         }
 
         private INavigationService CreateRequestVacationNavigationService(ModalNavigationStore modalNavigationStore)
