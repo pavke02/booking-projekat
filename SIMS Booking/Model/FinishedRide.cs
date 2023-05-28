@@ -22,7 +22,7 @@ namespace SIMS_Booking.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { ID.ToString(), Ride.DriverID.ToString(), Ride.Street, Ride.Location.Country, Ride.Location.City, Ride.DateTime.ToString(), Ride.Type, Price, Time };
+            string[] csvValues = { ID.ToString(), Ride.DriverID.ToString(), Ride.Street, Ride.Location.Country, Ride.Location.City, Ride.DateTime.ToString(), Ride.Type, Price, Time, Ride.Pending.ToString() };
             return csvValues;
         }
 
@@ -32,7 +32,7 @@ namespace SIMS_Booking.Model
             Location rideLocation = new Location();
             rideLocation.Country = values[3];
             rideLocation.City = values[4];
-            Ride = new Rides(Convert.ToInt32(values[1]), values[2], rideLocation, Convert.ToDateTime(values[5]), values[6]);
+            Ride = new Rides(Convert.ToInt32(values[1]), values[2], rideLocation, Convert.ToDateTime(values[5]), values[6], Convert.ToBoolean(values[9]));
             Price = values[7];
             Time = values[8];
         }

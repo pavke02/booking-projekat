@@ -24,9 +24,11 @@ namespace SIMS_Booking.UI.ViewModel.Driver
     {
         private FinishedRidesService _finishedRidesService;
         private VehicleService _vehicleService;
+        private RidesService _ridesService;
         public User User { get; set; }
         public static ObservableCollection<FinishedRide> FinishedRides { get; set; }
         public ICommand NavigateBackCommand { get; }
+        public ICommand TakeColleaguesRidesCommand { get; }
 
         private int _fastRidesCount;
         public int FastRidesCount
@@ -126,10 +128,25 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             }
         }
 
-        public DriverProfileViewModel(ModalNavigationStore modalNavigationStore, FinishedRidesService finishedRidesService, VehicleService vehicleService, User user)
+        private bool _canTakeRides;
+        public bool CanTakeRides
+        {
+            get => _canTakeRides;
+            set
+            {
+                if (value != _canTakeRides)
+                {
+                    _canTakeRides = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public DriverProfileViewModel(ModalNavigationStore modalNavigationStore, FinishedRidesService finishedRidesService, VehicleService vehicleService, RidesService ridesService, User user)
         {
             _finishedRidesService = finishedRidesService;
             _vehicleService = vehicleService;
+            _ridesService = ridesService;
             User = user;
 
             Vehicle = _vehicleService.GetVehicleByUserID(User.GetId());
@@ -141,6 +158,15 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             MostPopularLocation = "";
             LeastPopularLocation = "";
 
+            CanTakeRides = false;
+            foreach (Rides ride in _ridesService.GetAll())
+            {
+                if(ride.Pending == true)
+                {
+                    CanTakeRides = true;
+                    break;
+                }
+            }    
 
             Dictionary<string, int> locationCounts = new Dictionary<string, int>();
 
@@ -189,7 +215,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             if(FastRidesCount >= 15)
             {
                 Status = "Super Driver";
-                Points = (FastRidesCount - 15) * 5 - Vehicle.CanceledRidesCount * 2;
+                Points = (FastRidesCount - 15) * 5 - Vehicle.CanceledRidesCount * 5;
                 FastRidesCount = 15;
                 if(Points < 50)
                 {
@@ -208,12 +234,16 @@ namespace SIMS_Booking.UI.ViewModel.Driver
 
 
             NavigateBackCommand = new NavigateBackCommand(CreateCloseProfileNavigationService(modalNavigationStore));
+
+            TakeColleaguesRidesCommand = new TakeColleaguesRidesCommand(this, _ridesService);
         }
 
         private INavigationService CreateCloseProfileNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new CloseModalNavigationService(modalNavigationStore);
         }
+
+
     }
     
 }
