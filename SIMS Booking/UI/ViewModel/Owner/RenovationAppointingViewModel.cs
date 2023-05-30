@@ -114,6 +114,16 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 blackoutDates.Add(range);
             }
 
+            foreach (var renovationAppointment in _renovationAppointmentService.GetActiveByAccommodation(_accommodation.GetId()))
+            {
+                var startDate = renovationAppointment.StartDate.Date;
+                var endDate = renovationAppointment.EndDate.Date;
+
+                var range = new CalendarDateRange(startDate, endDate);
+
+                blackoutDates.Add(range);
+            }
+
             //kada se napuni lista sa datumima koji su onemoguceni, obavesti se PostponeReservationView i ti datumi se oznace na kalendaru
             BlackoutDatesChangedEvent?.Invoke(blackoutDates);
         }

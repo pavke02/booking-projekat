@@ -41,10 +41,16 @@ namespace SIMS_Booking.UI.View.Owner
         {
             if (startDatesCalendar.SelectedDate.HasValue)
             {
-                endDatesCalendar.IsEnabled=true;
+                endDatesCalendar.IsEnabled = true;
                 endDatesCalendar.DisplayDateStart = startDatesCalendar.SelectedDate.Value.AddDays(1);
-                endDatesCalendar.DisplayDateEnd = startDatesCalendar.BlackoutDates.FirstOrDefault(d => d.Start > startDatesCalendar.SelectedDate.Value)?.Start.AddDays(-1);
+                endDatesCalendar.DisplayDateEnd = FindClosestUnavailableDate();
             }
+        }
+
+        private DateTime? FindClosestUnavailableDate()
+        {
+            List<CalendarDateRange> unavailableDateRanges = startDatesCalendar.BlackoutDates.Where(d => d.Start > startDatesCalendar.SelectedDate.Value).ToList();
+            return unavailableDateRanges.OrderBy(a => a.Start).FirstOrDefault().Start.AddDays(-1);
         }
     }
 }
