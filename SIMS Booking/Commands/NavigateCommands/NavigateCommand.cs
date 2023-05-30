@@ -44,7 +44,7 @@ namespace SIMS_Booking.Commands.NavigateCommands
         {
             if (e.PropertyName == nameof(OwnerMainViewModel.SelectedReservation) || e.PropertyName == nameof(OwnerMainViewModel.SelectedReview) || 
                 e.PropertyName == nameof(OwnerMainViewModel.SelectedAccommodation) || e.PropertyName==nameof(GuideMainViewModel.SelectedTour) ||
-                e.PropertyName == nameof(LocationPopularityViewModel.SelectedPopularLocation))
+                e.PropertyName == nameof(LocationPopularityViewModel.SelectedPopularLocation) || e.PropertyName == nameof(LocationPopularityViewModel.SelectedUnpopularLocation))
 
                 OnCanExecuteChanged();
         }

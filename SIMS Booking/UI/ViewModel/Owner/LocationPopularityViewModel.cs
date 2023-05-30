@@ -42,7 +42,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         private Location _selectedUnpopularLocation;
-        public Location SelectedUnpopularLocations
+        public Location SelectedUnpopularLocation
         {
             get => _selectedUnpopularLocation;
             set
@@ -71,6 +71,14 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
             PublishOnLocationCommand =
                 new NavigateCommand(CreatePublishAccommodationOnLocationService(modalNavigationStore), this,  () => SelectedPopularLocation != null);
+            RemoveOnLocationCommand =
+                new NavigateCommand(CreateRemoveAccommodationOnLocationNavigationService(modalNavigationStore), this, () => SelectedUnpopularLocation != null);
+        }
+
+        private INavigationService CreateRemoveAccommodationOnLocationNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<RemoveAccommodationOnLocationViewModel>
+                (modalNavigationStore, () => new RemoveAccommodationOnLocationViewModel(_accommodationService, SelectedUnpopularLocation, modalNavigationStore));
         }
 
         private INavigationService CreatePublishAccommodationOnLocationService(ModalNavigationStore modalNavigationStore)

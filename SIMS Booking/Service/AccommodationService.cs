@@ -51,5 +51,10 @@ namespace SIMS_Booking.Service
         {
             return accommodations.OrderBy(x => !x.User.IsSuperUser).ToList();
         }
+
+        public List<Accommodation> GetAccommodationsByLocation(Location unpopularLocation)
+        {
+            return GetAll().Where(e => e.Location.City == unpopularLocation.City && e.Location.Country == unpopularLocation.Country).ToList();
+        }
     }
 }

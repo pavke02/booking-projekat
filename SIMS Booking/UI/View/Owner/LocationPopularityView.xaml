@@ -61,7 +61,7 @@
                 <StackPanel Width="350">
                     <DataGrid Height="300" Width="350" VerticalAlignment="Top" HorizontalAlignment="Left"
                               ItemsSource="{Binding Path=UnpopularLocations, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding Path=SelectedUnpopularLocations, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding Path=SelectedUnpopularLocation, UpdateSourceTrigger=PropertyChanged}"
                               IsReadOnly="True" AutoGenerateColumns="False" FontSize="18"
                               Background="#434242" Foreground="White"
                               RowHeaderWidth="0">
