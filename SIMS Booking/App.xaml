@@ -32,7 +32,7 @@
                 </Style.Triggers>
             </Style>
 
-            <Style x:Key="HoverButton1" TargetType="Button">
+            <Style x:Key="HoverButtonRed" TargetType="Button">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
@@ -54,7 +54,7 @@
                 </Style.Triggers>
             </Style>
 
-            <Style x:Key="HoverButton2" TargetType="Button">
+            <Style x:Key="HoverButtonBlue" TargetType="Button">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
@@ -76,7 +76,7 @@
                 </Style.Triggers>
             </Style>
 
-            <Style x:Key="HoverButton3" TargetType="Button">
+            <Style x:Key="HoverButtonBlueGrey" TargetType="Button">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
@@ -94,6 +94,31 @@
                     </Trigger>
                     <Trigger Property="IsMouseOver" Value="False">
                         <Setter Property="Background" Value="DodgerBlue" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Background" Value="DimGray"></Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="HoverButtonRedGrey" TargetType="Button">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="0">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FFDF6C5C" />
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="False">
+                        <Setter Property="Background" Value="IndianRed" />
                     </Trigger>
                     <Trigger Property="IsEnabled" Value="False">
                         <Setter Property="Background" Value="DimGray"></Setter>

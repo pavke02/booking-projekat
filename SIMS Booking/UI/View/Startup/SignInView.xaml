@@ -37,7 +37,7 @@
                            Visibility="{Binding PasswordErrorText, Converter={StaticResource BoolToVis}, FallbackValue=Hidden}">Wrong password</Label>
 
             <Button Command="{Binding SignInCommand}" Content="LOGIN" IsDefault="True" FontSize="16" Padding="5" Width="200"
-                    Margin="0, 30, 0, 0" Style="{StaticResource HoverButton2}">
+                    Margin="0, 30, 0, 0" Style="{StaticResource HoverButtonBlue}">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="7"/>

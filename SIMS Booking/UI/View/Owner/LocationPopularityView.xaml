@@ -50,7 +50,7 @@
                     <Label HorizontalAlignment="Center" FontSize="24" Margin="0 20 0 0">Popular Locations</Label>
                     <Button Content="Publish Accommodation" Command="{Binding PublishPopularAccommodationCommand}"
                             Width="170" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                            Margin="0 30 0 0" Style="{StaticResource HoverButton2}">
+                            Margin="0 30 0 0" Style="{StaticResource HoverButtonBlueGrey}">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="10"/>
@@ -81,7 +81,7 @@
                     <Label HorizontalAlignment="Center" FontSize="24" Margin="0 20 0 0">Unpopular Locations</Label>
                     <Button Content="Remove Accommodation" Command="{Binding PublishPopularAccommodationCommand}"
                             Width="170" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                            Margin="0 30 0 0" Style="{StaticResource HoverButton1}">
+                            Margin="0 30 0 0" Style="{StaticResource HoverButtonRedGrey}">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="10"/>

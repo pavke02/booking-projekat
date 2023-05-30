@@ -71,7 +71,7 @@
 
                         <StackPanel>
                             <Button Content="Accept" Command="{Binding AcceptPostponementRequestCommand}" Height="40" Width="100"
-                            Margin="20 80 0 0" Style="{StaticResource HoverButton2}">
+                            Margin="20 80 0 0" Style="{StaticResource HoverButtonBlue}">
                                 <Button.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="3"/>
@@ -79,7 +79,7 @@
                                 </Button.Resources>
                             </Button>
                             <Button Content="Decline" Command="{Binding NavigateToDeclinePostponementRequestCommand}" Height="40" Width="100"
-                            Margin="20 20 0 0" Style="{StaticResource HoverButton1}">
+                            Margin="20 20 0 0" Style="{StaticResource HoverButtonRed}">
                                 <Button.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="3"/>

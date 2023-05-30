@@ -69,7 +69,7 @@
 
                 <Button Content="Appoint Renovating" Command="{Binding AppointRenovatingCommand}"
                         Width="170" Height="40" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                        Margin="15 0 0 0" Style="{StaticResource HoverButton2}">
+                        Margin="15 0 0 0" Style="{StaticResource HoverButtonBlueGrey}">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="10"/>
