@@ -221,14 +221,24 @@
                         </DataGrid.Resources>
                     </DataGrid>
 
-                    <Button Content="Appoint Renovating" Command="{Binding NavigateToAppointRenovatingCommand}"
-                            Width="170" Height="40" Margin="0, 40, 60, 0" HorizontalAlignment="Right" Name="gagiButton">
-                        <Button.Resources>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="CornerRadius" Value="10"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                    <WrapPanel HorizontalAlignment="Right">
+                        <Button Content="Popular/Unpopular Locations" Command="{Binding NavigateToLocationsPopularityCommand}"
+                            Width="250" Height="40" Margin="0, 40, 50, 0" HorizontalAlignment="Right">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="10"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button Content="Appoint Renovating" Command="{Binding NavigateToAppointRenovatingCommand}"
+                            Width="170" Height="40" Margin="0, 40, 50, 0" HorizontalAlignment="Right">
+                            <Button.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="CornerRadius" Value="10"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </WrapPanel>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Publish Accommodation" Height="60" Style="{StaticResource TabItemHover}">

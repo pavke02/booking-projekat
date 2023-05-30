@@ -47,6 +47,9 @@
             <DataTemplate DataType="{x:Type viewModelOwner:RenovationAppointingViewModel}">
                 <viewOwner:RenovationAppointingView></viewOwner:RenovationAppointingView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:LocationPopularityViewModel}">
+                <viewOwner:LocationPopularityView></viewOwner:LocationPopularityView>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelDriver:DriverViewModel}">
                 <viewDriver:DriverView></viewDriver:DriverView>
             </DataTemplate>
