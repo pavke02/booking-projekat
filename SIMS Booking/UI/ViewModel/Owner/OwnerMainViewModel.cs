@@ -21,7 +21,7 @@ using LiveCharts.Wpf;
 
 namespace SIMS_Booking.UI.ViewModel.Owner
 {
-    public class OwnerMainViewModel : ViewModelBase, IObserver, IDataErrorInfo
+    public class OwnerMainViewModel : ViewModelBase, IObserver, IDataErrorInfo, IPublish
     {
         private readonly CityCountryCsvRepository _cityCountryCsvRepository;
         private readonly AccommodationService _accommodationService;
@@ -640,7 +640,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private INavigationService CreateLocationPopularityNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<LocationPopularityViewModel>
-                (modalNavigationStore, () => new LocationPopularityViewModel(_reservationService, modalNavigationStore));
+                (modalNavigationStore, () => new LocationPopularityViewModel(_reservationService, _accommodationService, _usersAccommodationService, _user, modalNavigationStore));
         }
         private INavigationService CreateRenovationAppointingNavigationService(ModalNavigationStore modalNavigationStore)
         {

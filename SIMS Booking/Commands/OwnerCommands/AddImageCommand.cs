@@ -6,9 +6,9 @@ namespace SIMS_Booking.Commands.OwnerCommands
 {
     internal class AddImageCommand : CommandBase
     {
-        private readonly OwnerMainViewModel _viewModel;
+        private readonly IPublish _viewModel;
 
-        public AddImageCommand(OwnerMainViewModel viewModel)
+        public AddImageCommand(IPublish viewModel)
         {
             _viewModel = viewModel;
 

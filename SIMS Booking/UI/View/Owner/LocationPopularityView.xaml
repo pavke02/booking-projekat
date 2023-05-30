@@ -17,7 +17,7 @@
 
     <Grid>
         <StackPanel>
-            <WrapPanel Background="#FF6C3DD8" Width="800">
+            <WrapPanel Background="#FF6C3DD8" Width="700">
                 <Button Margin="10 0 120 0" Style="{StaticResource HoverButton}"
                         Command="{Binding NavigateBackCommand}">
                     <Image Height="30" Width="30" 
@@ -29,8 +29,8 @@
             <WrapPanel>
                 <StackPanel Width="350">
                     <DataGrid Height="300" Width="350" VerticalAlignment="Top" HorizontalAlignment="Left"
-                              ItemsSource="{Binding Path=PopularAccommodationLocations, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding Path=SelectedPopularAccommodationLocation, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding Path=PopularLocations, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding Path=SelectedPopularLocation, UpdateSourceTrigger=PropertyChanged}"
                               IsReadOnly="True" AutoGenerateColumns="False"
                               Background="#434242" Foreground="White" FontSize="18"
                               RowHeaderWidth="0">
@@ -48,7 +48,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <Label HorizontalAlignment="Center" FontSize="24" Margin="0 20 0 0">Popular Locations</Label>
-                    <Button Content="Publish Accommodation" Command="{Binding PublishPopularAccommodationCommand}"
+                    <Button Content="Publish Accommodation" Command="{Binding PublishOnLocationCommand}"
                             Width="170" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                             Margin="0 30 0 0" Style="{StaticResource HoverButtonBlueGrey}">
                         <Button.Resources>
@@ -60,8 +60,8 @@
                 </StackPanel>
                 <StackPanel Width="350">
                     <DataGrid Height="300" Width="350" VerticalAlignment="Top" HorizontalAlignment="Left"
-                              ItemsSource="{Binding Path=UnpopularAccommodationLocations, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding Path=SelectedUnpopularAccommodationLocation, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding Path=UnpopularLocations, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding Path=SelectedUnpopularLocations, UpdateSourceTrigger=PropertyChanged}"
                               IsReadOnly="True" AutoGenerateColumns="False" FontSize="18"
                               Background="#434242" Foreground="White"
                               RowHeaderWidth="0">
@@ -79,7 +79,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <Label HorizontalAlignment="Center" FontSize="24" Margin="0 20 0 0">Unpopular Locations</Label>
-                    <Button Content="Remove Accommodation" Command="{Binding PublishPopularAccommodationCommand}"
+                    <Button Content="Remove Accommodation" Command="{Binding RemoveOnLocationCommand}"
                             Width="170" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                             Margin="0 30 0 0" Style="{StaticResource HoverButtonRedGrey}">
                         <Button.Resources>
