@@ -26,6 +26,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         public ICommand NavigateFutureTours { get; }
         public ICommand NavigateCompletedTours { get; }
         public ICommand NavigateRequestTours { get; }
+        public ICommand NavigateProfile { get; }
 
         private TourService _tourService;
         private ConfirmTourService _confirmTourService;
@@ -41,13 +42,15 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         private CreateTourViewModel _createTourViewModel;
         private MainWindowViewModel _mainviewModel;
         private TourRequestService _tourRequestService;
+        private TourRequestComplexService _tourRequestComplexService;
+        private TourRequestComplex _tourRequestComplex;
 
 
 
 
         public MainWindowViewModel(TourService tourService, ConfirmTourService confirmTourService,
             TourPointService tourPointService, TextBox textBox, UserService userService
-            , TourReviewService tourReviewService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,TourRequestService tourRequestService)
+            , TourReviewService tourReviewService, NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,TourRequestService tourRequestService, TourRequestComplexService tourRequestComplexService,TourRequestComplex tourRequestComplex)
         {
             _textBox = textBox;
             _tourReviewService = tourReviewService;
@@ -60,7 +63,8 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             _navigationStore = navigationStore;
             _modalNavigationStore = modalNavigationStore;
             _tourRequestService = tourRequestService;
-            //_tourRequestService.Subscribe(this);
+            _tourRequestComplexService = tourRequestComplexService;
+            _tourRequestComplex = tourRequestComplex;
 
 
 
@@ -70,6 +74,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             NavigateFutureTours = new NavigateCommand(CreateFutureToursnavigationService(modalNavigationStore));
             NavigateCompletedTours = new NavigateCommand(CreateCompletedToursnavigationService(modalNavigationStore));
             NavigateRequestTours = new NavigateCommand(CreateRequestToursnavigationService(navigationStore));
+            NavigateProfile = new NavigateCommand(CreateProfilesnavigationService(navigationStore));
 
         }
 
@@ -100,9 +105,14 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         private INavigationService CreateRequestToursnavigationService(NavigationStore navigationStore)
         {
             return new NavigationService<TourRequestViewModel>
-            (navigationStore, () => new TourRequestViewModel(_tourRequest,this,_modalNavigationStore,navigationStore,_tourRequestService,_tourService, _createTourViewModel,_tourRequest));
+            (navigationStore, () => new TourRequestViewModel(_tourRequest,this,_modalNavigationStore,navigationStore,_tourRequestService,_tourService, _createTourViewModel,_tourRequest, _tourRequestComplexService, _tourRequestComplex));
         }
 
+        private INavigationService CreateProfilesnavigationService(NavigationStore navigationStore)
+        {
+            return new NavigationService<ProfileViewModel>
+            (navigationStore, () => new ProfileViewModel( _tourReviewService, _tourService));
+        }
 
 
         public void Update()

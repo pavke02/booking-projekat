@@ -141,7 +141,7 @@ namespace SIMS_Booking.Service
             return MaxTura;
         }
 
-        public bool AddVaucer(Tour tour, TimeOnly vreme, ConfirmTour confirmTour)
+        public bool AddVaucer(Tour tour, TimeOnly vreme, TourRequestComplex confirmTour)
         {
             if (tour.StartTour > DateTime.Now.AddHours(48))
             {
@@ -185,7 +185,7 @@ namespace SIMS_Booking.Service
         public int NumberOfGuestsByAgesBetween18and50(UserService userService,Tour tour)
         {
             int between18and50 = 0;
-            
+                
             foreach (ConfirmTour confirmTour in _repository.GetAll())
             {
                 if (confirmTour.IdTour == tour.GetId())

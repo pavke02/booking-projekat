@@ -7,7 +7,7 @@ namespace SIMS_Booking.Model
     {
         private int Id { get; set; }
         public int ConfirmTourId { get; set; }
-        public ConfirmTour ConfirmTour { get; set; }
+        public TourRequestComplex ConfirmTour { get; set; }
         public double Grade { get; set; }
         public string Description { get; set; }
         public bool IsValid { get; set; }

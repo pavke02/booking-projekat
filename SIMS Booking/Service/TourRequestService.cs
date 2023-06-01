@@ -32,6 +32,10 @@ namespace SIMS_Booking.Service
             return RequestTours;
         }
 
+       
+       
+
+
         public List<TourRequest> GetToursByNumberOfGuests(int numberOfGuests)
         {
             List<TourRequest> RequestToursByNumberOfGuests = new List<TourRequest>();

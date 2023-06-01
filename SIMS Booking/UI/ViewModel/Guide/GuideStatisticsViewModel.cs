@@ -16,7 +16,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
     public partial class GuideStatisticsViewModel : ViewModelBase
     {
         private ConfirmTourService _confirmTourService;
-        private ConfirmTour _confirmTour;
+        private TourRequestComplex _confirmTour;
         private TourService _tourService;
         private TextBox _textBox;
         private UserService _userService;
@@ -69,7 +69,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         }
 
         public GuideStatisticsViewModel(ConfirmTourService confirmTourService, TourService tourService, TextBox textBox,
-            UserService userService, ConfirmTour confirmTour)
+            UserService userService, TourRequestComplex confirmTour)
         {
             _confirmTourService = confirmTourService;
             _tourService = tourService;

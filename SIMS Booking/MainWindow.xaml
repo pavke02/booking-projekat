@@ -110,6 +110,12 @@
             <DataTemplate DataType="{x:Type viewModelGuide:TourRequestByLocationViewModel}">
                 <viewGuide:TourRequestsByLocationView></viewGuide:TourRequestsByLocationView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:TourComplexRequestViewModel}">
+                <viewGuide:TourComplexRequestView></viewGuide:TourComplexRequestView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuide:ProfileViewModel}">
+                <viewGuide:ProfileView></viewGuide:ProfileView>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModelGuest1:Guest1MainViewModel}">
                 <viewGuest1:Guest1MainView></viewGuest1:Guest1MainView>
             </DataTemplate>
@@ -128,6 +134,7 @@
             <DataTemplate DataType="{x:Type viewModelGuest1:Guest1ChangeReservationViewModel}">
                 <viewGuest1:Guest1ChangeReservationView></viewGuest1:Guest1ChangeReservationView>
             </DataTemplate>
+            
 
         </Grid.Resources>
 

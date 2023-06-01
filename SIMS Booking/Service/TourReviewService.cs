@@ -31,20 +31,20 @@ namespace SIMS_Booking.Service
                 tour.User = userservice.GetById(tour.UserId);
             }
         }
-        public void loadCheckPoints(ConfirmTourService confirmTourService, TourReviewService tourReviewService)
-        {
-            foreach (var tour in tourReviewService.GetAll())
-            {
-                tour.ConfirmTour = confirmTourService.GetById(tour.ConfirmTourId);
-            }
-        }
+        //public void loadCheckPoints(ConfirmTourService confirmTourService, TourReviewService tourReviewService)
+        //{
+        //    foreach (var tour in tourReviewService.GetAll())
+        //    {
+        //        tour.ConfirmTour = confirmTourService.GetById(tour.ConfirmTourId);
+        //    }
+        //}
 
 
         public List<TourReview> recenzije(ConfirmTourService confirmTourService, Tour tour)
         {
             List<TourReview> reviewsOfTour = new List<TourReview>();
 
-            foreach (ConfirmTour confirmTour in confirmTourService.GetAll())
+            foreach (var confirmTour in confirmTourService.GetAll())
             {
                 foreach (TourReview tourReview in _repository.GetAll())
                 {
@@ -64,6 +64,38 @@ namespace SIMS_Booking.Service
             _repository.Update(tourReview);
         }
 
+
+        public bool IsSuperGuide()
+        {
+            double suma = 0;
+            int counter = 0;
+            
+            foreach(var tourReview in _repository.GetAll())
+            {
+                suma += tourReview.Grade;
+                counter++;
+                                
+            }
+            double averageGrade = suma / counter;
+            if (averageGrade >= 9.0) return true;
+            else return false;
+            
+        }
+
+        public double AverageGrade()
+        {
+            double suma = 0;
+            int counter = 0;
+
+            foreach (var tourReview in _repository.GetAll())
+            {
+                suma += tourReview.Grade;
+                counter++;
+
+            }
+            double averageGrade = suma / counter;
+            return averageGrade;
+        }
     }
 
 }

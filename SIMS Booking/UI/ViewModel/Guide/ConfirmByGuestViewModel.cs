@@ -47,23 +47,23 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             UpdateConfirmGuests(_confirmTourService.GetGuestOnTour(_tour));
         }
 
-        [RelayCommand]
-        private void ComeOnTour()
-        {
-            if (SelectedUser != null)
-            {
-                ConfirmTour temp = new ConfirmTour();
-                foreach (ConfirmTour confirmTour in _confirmTourService.GetAll())
-                {
-                    Trace.WriteLine(SelectedUser.GetId());
-                    if (confirmTour.IdTour == _tour.GetId() && SelectedUser.GetId() == confirmTour.UserId)
-                        temp = confirmTour;
+        //[RelayCommand]
+        //private void ComeOnTour()
+        //{
+        //    if (SelectedUser != null)
+        //    {
+        //        TourRequestComplex temp = new TourRequestComplex();
+        //        foreach (TourRequestComplex confirmTour in _confirmTourService.GetAll())
+        //        {
+        //            Trace.WriteLine(SelectedUser.GetId());
+        //            if (confirmTour.IdTour == _tour.GetId() && SelectedUser.GetId() == confirmTour.UserId)
+        //                temp = confirmTour;
 
-                }
+        //        }
 
-                temp.IdCheckpoint = _tour.CurrentTourPoint;
-                _confirmTourService.Update(temp);
-            }
-        }
+        //        temp.IdCheckpoint = _tour.CurrentTourPoint;
+        //        _confirmTourService.Update(temp);
+        //    }
+        //}
     }
 }

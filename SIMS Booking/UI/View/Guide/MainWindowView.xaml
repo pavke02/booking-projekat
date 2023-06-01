@@ -24,7 +24,7 @@
                 <Button Content="Napravi Turu" Width="150" Height="100" Margin="15" Command="{Binding NavigateCreateTour}" FontSize="20" />
                 <Button Content="Statistika" Width="150" Height="100" Margin="15" FontSize="20" />
                 <Button Content="Zahtevi" Width="150" Height="100" Margin="15" Command="{Binding NavigateRequestTours}" FontSize="20" />
-                <Button Content="Profil" Width="150" Height="100" Margin="15" FontSize="20" />
+                <Button Content="Profil" Width="150" Height="100" Margin="15" FontSize="20" Command="{Binding NavigateProfile}" />
             </StackPanel>
             <StackPanel Width="200">
                 <Button Content="Buduce ture" Width="150" Height="100" Margin="15" Command ="{Binding NavigateFutureTours }" FontSize="20"/>

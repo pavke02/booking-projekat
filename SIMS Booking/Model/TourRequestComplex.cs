@@ -5,9 +5,8 @@ using SIMS_Booking.Enums;
 
 namespace SIMS_Booking.Model
 {
-    public class TourRequest : ISerializable, IDable
+    public class TourRequestComplex : ISerializable, IDable
     {
-
         public int ID = 1;
         public Requests Requests { get; set; }
         public Location Location { get; set; }
@@ -18,10 +17,9 @@ namespace SIMS_Booking.Model
         public DateTime TimeOfEnd { get; set; }
         public DateTime DefaultDate { get; set; }
         public DateTime DateOfSendRequest { get; set; }
-        public bool IsComplex { get; set; }
-        public int PartOfComplex { get; set; }
+        public int GroupId { get; set; }
 
-        public TourRequest() { }
+        public TourRequestComplex() { }
 
         public int GetId()
         {
@@ -44,17 +42,15 @@ namespace SIMS_Booking.Model
             Requests = (Requests)Enum.Parse(typeof(Requests), values[7]);
             DefaultDate = DateTime.Parse(values[8]);
             DateOfSendRequest = DateTime.Parse(values[9]);
-            IsComplex = bool.Parse(values[10]);
-            PartOfComplex = int.Parse(values[11]);
+            GroupId = int.Parse(values[10]);
         }
 
         string[] ISerializable.ToCSV()
         {
-            string[] csvValues = { ID.ToString(), Location.Country, Location.City, Language.ToString(), NumberOfGuests.ToString(), TimeOfStart.ToString(), TimeOfEnd.ToString(), Requests.ToString(), DefaultDate.ToString(), DateOfSendRequest.ToString(),IsComplex.ToString(),PartOfComplex.ToString()};
+            string[] csvValues = { ID.ToString(), Location.Country, Location.City, Language.ToString(), NumberOfGuests.ToString(), TimeOfStart.ToString(), TimeOfEnd.ToString(), Requests.ToString(), DefaultDate.ToString(), DateOfSendRequest.ToString(),GroupId.ToString() };
 
             return csvValues;
         }
-
 
     }
 }

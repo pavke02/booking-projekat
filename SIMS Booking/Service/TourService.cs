@@ -145,5 +145,37 @@ namespace SIMS_Booking.Service
             }
             return true;
         }
+
+        public List<DateTime> BusyDates()
+        {
+            List<DateTime> Dates = new List<DateTime>();
+            foreach (var tours in _repository.GetAll())
+            {
+                Dates.Add(tours.StartTour); 
+            }
+            return Dates;
+        }
+
+        public bool IsMoreThan20ToursSingleLanguage()
+        {
+            int counterE = 0;
+            int counterS = 0;
+            foreach(var tours in _repository.GetAll())
+            {
+                if(tours.StartTour<DateTime.Now)
+                {
+                if(tours.Language=="English")
+                {
+                    counterE++;
+                }
+                else if(tours.Language == "Serbian")
+                { 
+                    counterS++;
+                }
+                }
+            }
+            if (counterE >= 20 || counterS >= 20) { return true; }
+            else return false;
+        }
     }
 }

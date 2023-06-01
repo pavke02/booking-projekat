@@ -15,13 +15,13 @@ using System.Windows.Shapes;
 namespace SIMS_Booking.UI.View.Guide
 {
     /// <summary>
-    /// Interaction logic for TourRequestsByLocationView.xaml
+    /// Interaction logic for TourComplexRequestView.xaml
     /// </summary>
-    public partial class TourRequestsByLocationView : UserControl
+    public partial class TourComplexRequestView : UserControl
     {
-        public TourRequestsByLocationView()
+        public TourComplexRequestView()
         {
-            //InitializeComponent();
+            InitializeComponent();
         }
     }
 }

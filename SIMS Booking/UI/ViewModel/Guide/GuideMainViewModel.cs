@@ -38,7 +38,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
 
         private TourPointService _tourPointService;
         private ConfirmTourService _confirmTourService;
-        private ConfirmTour _confirmTour;
+        private TourRequestComplex _confirmTour;
         private UserService _userService;
         
         private Tour selectedTour;

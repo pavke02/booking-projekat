@@ -60,6 +60,7 @@ namespace SIMS_Booking
             services.AddSingleton<CityCountryCsvRepository>();
 
             services.AddSingleton<ICRUDRepository<ConfirmTour>, CsvCrudRepository<ConfirmTour>>();
+            services.AddSingleton<ICRUDRepository<TourRequestComplex>, CsvCrudRepository<TourRequestComplex>>();
             services.AddSingleton<ICRUDRepository<DriverLanguages>, CsvCrudRepository<DriverLanguages>>();
             services.AddSingleton<ICRUDRepository<DriverLocations>, CsvCrudRepository<DriverLocations>>();
             services.AddSingleton<ICRUDRepository<FinishedRide>, CsvCrudRepository<FinishedRide>>();
@@ -106,6 +107,8 @@ namespace SIMS_Booking
             services.AddSingleton<VehicleService>();
             services.AddSingleton<VoucherService>();
             services.AddSingleton<TourRequestService>();
+            services.AddSingleton<TourRequestComplexService>();
+
 
             return services;
         }

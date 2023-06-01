@@ -25,6 +25,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         public ObservableCollection<TourRequest> TourRequests { get; set; }
         public ObservableCollection<Tour> AllTours { get; set; }
         public ObservableCollection<TourRequest> TourRequestBydate { get; set; }
+        private TourRequestComplexService _tourRequestComplexService;
 
         private string _stats;
         public string Stats
@@ -165,6 +166,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         }
 
         private TourRequest _tourRequest;
+        private TourRequestComplex _tourRequestComplex;
 
         private TourService _tourService;
         public ICommand BackCommand { get; }
@@ -174,6 +176,8 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         public ICommand FilterByLocationCommand { get; }
         public ICommand FilterByLanguageCommand { get; }
         public ICommand FilterByNumberOfGuestsCommand { get; }
+        public ICommand ComplexTour { get; }
+
         private CreateTourViewModel _createTourViewModel;
         private MainWindowViewModel _mainViewModel;
         private ModalNavigationStore _modalNavigationStore;
@@ -194,7 +198,25 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         }
         public bool MozeLiKomso => SelectedTour != null;
 
-        public TourRequestViewModel(TourRequest selectedTour, MainWindowViewModel mainViewModel, ModalNavigationStore modalNavigationStore, NavigationStore navigationStore, TourRequestService tourRequestService, TourService tourService, CreateTourViewModel createTourViewModel, TourRequest tourRequest)
+
+        private TourRequestComplex _selectedComplexTour;
+        public TourRequestComplex SelectedComplexTour
+        {
+            get { return _selectedComplexTour; }
+            set
+            {
+                if (value != _selectedComplexTour)
+                {
+                    _selectedComplexTour = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(MozeLiKomsoComplex));
+                }
+            }
+        }
+        public bool MozeLiKomsoComplex => SelectedComplexTour != null;
+
+
+        public TourRequestViewModel(TourRequest selectedTour, MainWindowViewModel mainViewModel, ModalNavigationStore modalNavigationStore, NavigationStore navigationStore, TourRequestService tourRequestService, TourService tourService, CreateTourViewModel createTourViewModel, TourRequest tourRequest,TourRequestComplexService tourRequestComplexService, TourRequestComplex tourRequestComplex)
         {
             SelectedTour = selectedTour;
             _mainViewModel = mainViewModel;
@@ -203,8 +225,9 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             _tourService = tourService;
             _navigationStore = navigationStore;
             _createTourViewModel = createTourViewModel;
-            _tourRequest = tourRequest; ;
-
+            _tourRequest = tourRequest;
+            _tourRequestComplexService = tourRequestComplexService;
+            _tourRequestComplex = tourRequestComplex;
 
 
             TourRequests = new ObservableCollection<TourRequest>(_tourRequestService.GetRequestTours());
@@ -214,6 +237,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             FilterByNumberOfGuestsCommand = new NavigateCommand(CreateFilterByNumberOfGuestslNavigationService(navigationStore));
             FilterByLanguageCommand = new NavigateCommand(CreateFilterByLanguagelNavigationService(navigationStore));
             FilterByLocationCommand = new NavigateCommand(CreateFilterByLocationlNavigationService(navigationStore));
+            ComplexTour = new NavigateCommand(CreatComplexTourNavigationService(navigationStore));
 
 
 
@@ -250,6 +274,13 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         {
             return new NavigationService<TourRequestByLocationViewModel>
             (navigationStore, () => new TourRequestByLocationViewModel(SelectedTour, _mainViewModel, _modalNavigationStore, navigationStore, _tourRequestService,_country,_city, _tourService));
+
+        }
+
+        private INavigationService CreatComplexTourNavigationService(NavigationStore navigationStore)
+        {
+            return new NavigationService<TourComplexRequestViewModel>
+            (navigationStore, () => new TourComplexRequestViewModel(SelectedComplexTour,_mainViewModel,_modalNavigationStore,navigationStore,_tourRequestComplexService,_tourService,_createTourViewModel,_tourRequestComplex));
 
         }
 

@@ -16,8 +16,8 @@
             </Button.RenderTransform>
         </Button>
 
+       
         <TextBlock Text="ZAHTEVI ZA TURE" HorizontalAlignment="Center" Margin="0,70" FontSize="40"/>
-
 
         <ListBox SelectedItem="{Binding SelectedTour}" ItemsSource="{Binding TourRequests}"  BorderThickness="2" Width="300" Height="500" HorizontalAlignment="Center" VerticalAlignment="Center">
             <ListBox.ItemTemplate>
@@ -39,7 +39,7 @@
         <Button Content="Jezik i godina" Height="20" Width="120" HorizontalAlignment="Left" Margin="0,-100,0,0" Command="{Binding StatisticsCommand}"/>
         <TextBox  Height="20" Width="80" HorizontalAlignment="Left" Margin="100,-100,0,0" Text="{Binding Language}"/>
         <TextBox  Height="20" Width="80" HorizontalAlignment="Left" Margin="200,-100,0,0"  Text="{Binding Year}"/>
-
+        <Button Content="`SLozene ture"  Height="50" Width="150" Margin="0,-500,0,0" Background="Aqua" Command="{Binding ComplexTour}"/>
 
         <Button Content="Datum" Height="20" Width="80" HorizontalAlignment="Left" Margin="0,400,0,0" Command="{Binding FilterByDateCommand}"/>
         <TextBox  Height="20" Width="80" HorizontalAlignment="Left" Margin="100,400,0,0" Text="{Binding DateStart}"/>
