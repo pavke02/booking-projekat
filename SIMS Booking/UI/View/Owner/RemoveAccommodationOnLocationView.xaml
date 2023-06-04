@@ -28,7 +28,9 @@
                 <DataGridTemplateColumn Header="Delete">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Remove" Command="{Binding RemoveAccommodationCommand}" 
+                            <Button Content="Remove" 
+                                    Command="{Binding Path=DataContext.RemoveAccommodationCommand,
+                                            RelativeSource= {RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" 
                                     Style="{StaticResource HoverButtonRed}">
                                 <Button.Resources>
                                     <Style TargetType="{x:Type Border}">
