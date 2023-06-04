@@ -78,7 +78,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private INavigationService CreateRemoveAccommodationOnLocationNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<RemoveAccommodationOnLocationViewModel>
-                (modalNavigationStore, () => new RemoveAccommodationOnLocationViewModel(_accommodationService, SelectedUnpopularLocation, modalNavigationStore));
+                (modalNavigationStore, () => new RemoveAccommodationOnLocationViewModel(_accommodationService, _usersAccommodationService, SelectedUnpopularLocation, modalNavigationStore));
         }
 
         private INavigationService CreatePublishAccommodationOnLocationService(ModalNavigationStore modalNavigationStore)

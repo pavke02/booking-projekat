@@ -44,7 +44,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
             NavigateBackCommand =
                 new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
-            RemoveAccommodationCommand = new RemoveAccommodationCommand(_accommodationService, _usersAccommodationService, _accommodationService.GetById(SelectedAccommodation.GetId()));
+            RemoveAccommodationCommand = new RemoveAccommodationCommand(_accommodationService, _usersAccommodationService, this);
         }
 
         private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)
