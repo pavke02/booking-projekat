@@ -21,7 +21,7 @@ using LiveCharts.Wpf;
 
 namespace SIMS_Booking.UI.ViewModel.Owner
 {
-    public class OwnerMainViewModel : ViewModelBase, IObserver, IDataErrorInfo
+    public class OwnerMainViewModel : ViewModelBase, IObserver, IDataErrorInfo, IPublish
     {
         private readonly CityCountryCsvRepository _cityCountryCsvRepository;
         private readonly AccommodationService _accommodationService;
@@ -46,6 +46,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand NavigateToOwnerReviewDetailsCommand { get; }
         public ICommand NavigateToPostponeRequestsCommand { get; }
         public ICommand NavigateToAppointRenovatingCommand { get; } 
+        public ICommand NavigateToLocationsPopularityCommand { get; }
         #endregion
 
         #region Property                
@@ -465,7 +466,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
 
             _reservationService = reservationService;
             _reservationService.Subscribe(this);
-            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationService.GetUnreviewedActiveReservations(_user.GetId()));
+            ReservedAccommodations = new ObservableCollection<Reservation>(_reservationService.GetUnratedActiveReservations(_user.GetId()));
             ReservationNumber = ReservedAccommodations.Count().ToString();
 
             _guestReviewService = guestReviewService;
@@ -503,6 +504,9 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 new NavigateCommand(CreatePostponeRequestsNavigationService(modalNavigationStore));
             NavigateToAppointRenovatingCommand = 
                 new NavigateCommand(CreateRenovationAppointingNavigationService(modalNavigationStore), this, () => SelectedAccommodation != null);
+            NavigateToLocationsPopularityCommand = 
+                new NavigateCommand(CreateLocationPopularityNavigationService(modalNavigationStore));
+
             #endregion
 
             CalculateRating(_user.GetId());
@@ -627,11 +631,17 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 Title = "Cancellation",
                 Values = cancellationsChartValues
             });
-        } 
+        }
         #endregion
 
         #region CreateNavigationServices
         //Da li smestaj moze da se renovira ukoliko je skoro renoviran?
+
+        private INavigationService CreateLocationPopularityNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<LocationPopularityViewModel>
+                (modalNavigationStore, () => new LocationPopularityViewModel(_reservationService, _accommodationService, _usersAccommodationService, _user, modalNavigationStore));
+        }
         private INavigationService CreateRenovationAppointingNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<RenovationAppointingViewModel>
@@ -714,7 +724,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public void Update()
         {
             UpdateAccommodations(_accommodationService.GetByUserId(_user.GetId()));
-            UpdateReservedAccommodations(_reservationService.GetUnreviewedActiveReservations(_user.GetId()));
+            UpdateReservedAccommodations(_reservationService.GetUnratedActiveReservations(_user.GetId()));
             UpdatePastReservations(_guestReviewService.GetReviewedReservations(_user.GetId()));
             UpdateActiveRenovations(_renovationAppointmentService.GetActiveRenovations(_user.GetId()));
             UpdatePastRenovations(_renovationAppointmentService.GetPastRenovations(_user.GetId()));

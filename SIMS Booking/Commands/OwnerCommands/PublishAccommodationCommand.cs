@@ -1,24 +1,24 @@
 ﻿using SIMS_Booking.Enums;
-using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Model;
+using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
+using SIMS_Booking.UI.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
-using System.Windows;
 using System.ComponentModel;
-using SIMS_Booking.UI.ViewModel.Owner;
+using System.Windows;
 
 namespace SIMS_Booking.Commands.OwnerCommands
 {
     class PublishAccommodationCommand : CommandBase
     {
-        private readonly OwnerMainViewModel _viewModel;
+        private readonly IPublish _viewModel;
         private readonly AccommodationService _accommodationService;
         private readonly UsersAccommodationService _usersAccommodationService;
         private readonly User _user;
 
-        public PublishAccommodationCommand(OwnerMainViewModel ownerMainViewModel, AccommodationService accommodationService, UsersAccommodationService usersAccommodationService, User user)
+        public PublishAccommodationCommand(IPublish ownerMainViewModel, AccommodationService accommodationService, UsersAccommodationService usersAccommodationService, User user)
         {
             _viewModel = ownerMainViewModel;
             _accommodationService = accommodationService;

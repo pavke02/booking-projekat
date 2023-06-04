@@ -47,9 +47,6 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly RenovationAppointmentService _renovationAppointmentService;
         private readonly TourRequestService _tourRequestService;
         private readonly GroupRideService _groupRideService;
-        
-
-
         #endregion
 
         private readonly NavigationStore _navigationStore;
@@ -117,15 +114,15 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         }
         #endregion
 
-        public SignInViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore, AccommodationService accommodationService,
-                              CityCountryCsvRepository cityCountryCsvRepository,
-                              ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
-                              OwnerReviewService ownerReviewService, PostponementService postponementService, UserService userService,
-                              RenovationAppointmentService renovationAppointmentService, TourService tourService, ConfirmTourService confirmTourService,
-                              TourPointService tourPointService, TextBox textBox, TourReviewService tourReviewService,
-                              RidesService ridesService, FinishedRidesService finishedRidesService, VehicleService vehicleService, DriverLanguagesService driverLanguagesService,
-                              DriverLocationsService driverLocationsService, ReservedAccommodationService reservedAccommodationService, ReservedTourService reservedTourService, 
-                              GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService,TourRequestService tourRequestService,GroupRideService groupRideService)
+        public SignInViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore, AccommodationService accommodationService, 
+                               CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, GuestReviewService guestReviewService, 
+                               UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, PostponementService postponementService, 
+                               UserService userService, RenovationAppointmentService renovationAppointmentService, TourService tourService, ConfirmTourService confirmTourService, 
+                               TourPointService tourPointService, TextBox textBox, TourReviewService tourReviewService, RidesService ridesService, 
+                               FinishedRidesService finishedRidesService, VehicleService vehicleService, DriverLanguagesService driverLanguagesService, 
+                               DriverLocationsService driverLocationsService, ReservedAccommodationService reservedAccommodationService, ReservedTourService reservedTourService, 
+                               GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService,
+                               TourRequestService tourRequestService,GroupRideService groupRideService)
 
         {
             #region ServiceInitializaton

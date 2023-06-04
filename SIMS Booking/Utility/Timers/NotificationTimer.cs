@@ -98,7 +98,7 @@ namespace SIMS_Booking.Utility.Timers
                 if (ReservedAccommodations.FirstOrDefault(s => s.EndDate <= DateTime.Now && (DateTime.Now - s.EndDate.Date).TotalDays <= 5) != null)
                     notifier.ShowInformation("You have guests to review!");
 
-                _reservationService.RemoveUnreviewedReservations(_guestReviewService);
+                _reservationService.RemoveUnratedReservations(_guestReviewService);
                 timer.Stop();
             };
             timer.Start();
@@ -120,7 +120,7 @@ namespace SIMS_Booking.Utility.Timers
                 if (ReservedAccommodations.FirstOrDefault(s => s.EndDate <= DateTime.Now && (DateTime.Now - s.EndDate.Date).TotalDays <= 5) != null)
                     notifier.ShowInformation("You have guests to review!");
 
-                _reservationService.RemoveUnreviewedReservations(_guestReviewService);
+                _reservationService.RemoveUnratedReservations(_guestReviewService);
             }
         }
 

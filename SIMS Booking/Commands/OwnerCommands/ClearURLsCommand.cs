@@ -4,9 +4,9 @@ namespace SIMS_Booking.Commands.OwnerCommands
 {
     internal class ClearURLsCommand : CommandBase
     {
-        private readonly OwnerMainViewModel _viewModel;
+        private readonly IPublish _viewModel;
 
-        public ClearURLsCommand(OwnerMainViewModel viewModel)
+        public ClearURLsCommand(IPublish viewModel)
         {
             _viewModel = viewModel;
         }
