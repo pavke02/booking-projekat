@@ -47,6 +47,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly RenovationAppointmentService _renovationAppointmentService;
         private readonly TourRequestService _tourRequestService;
         private readonly GroupRideService _groupRideService;
+        private readonly CommentService _commentService;
+        private readonly ForumService _forumService;
         #endregion
 
         private readonly NavigationStore _navigationStore;
@@ -122,7 +124,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                                FinishedRidesService finishedRidesService, VehicleService vehicleService, DriverLanguagesService driverLanguagesService, 
                                DriverLocationsService driverLocationsService, ReservedAccommodationService reservedAccommodationService, ReservedTourService reservedTourService, 
                                GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService,
-                               TourRequestService tourRequestService,GroupRideService groupRideService)
+                               TourRequestService tourRequestService,GroupRideService groupRideService, CommentService commentService, ForumService forumService)
 
         {
             #region ServiceInitializaton
@@ -152,6 +154,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _voucherService = voucherService;
             _groupRideService = groupRideService;
             _tourRequestService = tourRequestService;
+            _commentService = commentService;
+            _forumService = forumService;
             #endregion
 
             #region LoadingData
@@ -167,6 +171,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _tourReviewService.loadusers(_userService, _confirmTourService);
             _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService);
             _renovationAppointmentService.LoadAccommodationInRenovationAppointment(_accommodationService);
+            _commentService.LoadCommenterInComment(_userService);
+            _forumService.LoadForumCreatorAndCommentsInForum(_userService, _commentService);
             #endregion
 
             _navigationStore = navigationStore;
@@ -195,7 +201,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     //ToDo:pretvoriti u komandu(klasu)
                     _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
                       _userAccommodationService, _ownerReviewService, _postponementService, user,
-                      _userService, _renovationAppointmentService, _modalNavigationStore);
+                      _userService, _renovationAppointmentService, _forumService, _commentService, _modalNavigationStore);
                     break;
                 case Roles.Guest1:
                     _navigationStore.CurrentViewModel = new Guest1MainViewModel(_accommodationService,

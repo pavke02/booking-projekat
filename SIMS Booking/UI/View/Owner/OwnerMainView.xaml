@@ -594,6 +594,43 @@
                     </Button>
                 </StackPanel>
             </TabItem>
+            <TabItem Header="Forums" Height="60" Style="{StaticResource TabItemHover}">
+                <DataGrid Height="580" Width="1080" VerticalAlignment="Top" HorizontalAlignment="Left"
+                  ItemsSource="{Binding Path=Forums , UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding Path=SelectedForum, UpdateSourceTrigger=PropertyChanged}"
+                  IsReadOnly="True" AutoGenerateColumns="False" FontSize="20" Background="#434242" Foreground="White"
+                  RowHeaderWidth="0">
+                    <DataGrid.Columns >
+                        <DataGridTextColumn Header="Topic" Binding="{Binding Topic}" Width="250"/>
+                        <DataGridTextColumn Header="Owners comments" Binding="{Binding OwnersComments}" Width="250"/>
+                        <DataGridTextColumn Header="Guests Comments" Binding="{Binding GuestsComments}" Width="250"/>
+                        <DataGridTextColumn Header="Author" Binding="{Binding CreatedBy.Username}" Width="230"/>
+                        <DataGridTemplateColumn Header="View">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="View" Width="90"
+                                    Command="{Binding Path=DataContext.ViewForum,
+                                            RelativeSource= {RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" >
+                                        <Button.Resources>
+                                            <Style TargetType="{x:Type Border}">
+                                                <Setter Property="CornerRadius" Value="3"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                    <DataGrid.RowBackground>
+                        <SolidColorBrush Color="#434242"></SolidColorBrush>
+                    </DataGrid.RowBackground>
+                    <DataGrid.Resources>
+                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Background" Value="#434242" />
+                        </Style>
+                    </DataGrid.Resources>
+                </DataGrid>
+            </TabItem>
         </TabControl>
         <Separator HorizontalAlignment="Left" Margin="1346,682,0,0" VerticalAlignment="Top"/>
     </Grid>
