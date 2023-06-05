@@ -57,50 +57,59 @@
                         <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="120" FontSize="18"></DataGridTextColumn>
                         <DataGridTextColumn Header= "Min reservation" Binding="{Binding MinReservationDays}" Width="150" FontSize="18"></DataGridTextColumn>
                         <DataGridTextColumn Header= "Cancellation period" Binding="{Binding CancellationPeriod}" Width="180" FontSize="18"></DataGridTextColumn>
-                         <DataGridTextColumn Header= "Renovated" Binding="{Binding IsRenovated}" Width="90" FontSize="18"></DataGridTextColumn> 
+                        <!--<DataGridTextColumn Header= "Renovated" Binding="{Binding IsRenovated}" Width="90" FontSize="18"></DataGridTextColumn>-->
                     </DataGrid.Columns>
                 </DataGrid>
 
             </TabItem>
             <TabItem Name="ReservationsTab" Header="Your Reservations" FontSize="20" Padding="5 " HorizontalAlignment="Center" Width="170">
                 <DataGrid
-                    FontSize="14"
+                    FontSize="16"
                     Name="DataGridReservations"
                     ItemsSource="{Binding Path=UserReservations, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding Path=SelectedReservation, UpdateSourceTrigger=PropertyChanged}"
                     AutoGenerateColumns="False" IsReadOnly="True"
                     Width="1000" Height="360">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Accommodation ID" Binding="{Binding Accommodation.Name}" Width="170"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=d}" Width="150"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "End Date" Binding="{Binding EndDate, StringFormat=d}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Accommodation.Name}" Width="220" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=d}" Width="150" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "End Date" Binding="{Binding EndDate, StringFormat=d}" Width="150" FontSize="18"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
             <TabItem Name="PostponementsTab" Margin="0" Header="Your Postponements" VerticalAlignment="Bottom" Height="50" FontSize="20" Padding="5 ">
                 <DataGrid
-                    FontSize="14"
+                    FontSize="16"
                     Name="DataGridPostponements"
                     ItemsSource="{Binding Path=UserPostponements, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding Path=SelectedPostponement, UpdateSourceTrigger=PropertyChanged}"
                     AutoGenerateColumns="False" IsReadOnly="True"
                     Width="1000" Height="360">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="170"></DataGridTextColumn>
-                        <DataGridTextColumn Header="New Start Date" Binding="{Binding NewStartDate, StringFormat=d}" Width="150"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "New End Date" Binding="{Binding NewEndDate, StringFormat=d}" Width="150"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Status" Binding="{Binding Status}" Width="150"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Comment" Binding="{Binding Comment}" Width="150"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Reservation.Accommodation.Name}" Width="220" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header="New Start Date" Binding="{Binding NewStartDate, StringFormat=d}" Width="170" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "New End Date" Binding="{Binding NewEndDate, StringFormat=d}" Width="170" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Status" Binding="{Binding Status}" Width="150" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Comment" Binding="{Binding Comment}" Width="200" FontSize="18"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
         </TabControl>
         <StackPanel Grid.Row="3" Grid.Column="0" Width="1000" Orientation="Horizontal">
             <StackPanel  Name="ReservationsPanel" Visibility="{Binding ReservationsPanelVisibility}" Orientation="Horizontal" Height="40" VerticalAlignment="Top">
-                <Button x:Name="CancelReservationButton" Width="220" FontSize="20" IsEnabled="{Binding CancelEnabled}" Command="{Binding CancelReservationCommand}" Content="Cancel Reservation" Padding="5, 0, 5, 0"  Margin="0,0,10,0"></Button>
-                <Button x:Name="ChangeReservationButton" Width="220" FontSize="20" IsEnabled="{Binding ChangeEnabled}" Content="Change Reservation" Padding="5, 0, 5, 0" Command="{Binding NavigateToChangeReservationCommand}" Margin="0,0,10,0"/>
-                <Button x:Name="ReviewButton"  Width="220" FontSize="20" IsEnabled="{Binding ReviewEnabled}" Content="Rate Accommodation" Padding="5, 0, 5, 0" Command="{Binding NavigateToReservationReviewCommand}"  Margin="0,0,10,0"/>
-                <Button x:Name="OwnersReviewButton"  Width="220" FontSize="20" IsEnabled="{Binding OwnersReviewEnabled}" Content="View Owner's Review" Padding="5, 0, 5, 0" Command="{Binding NavigateToOwnersReviewCommand}" Margin="0,0,10,0"/>
+                <Button x:Name="CancelReservationButton" Width="180" FontSize="18" IsEnabled="{Binding CancelEnabled}" Command="{Binding CancelReservationCommand}" Content="Cancel Reservation" Padding="5, 0, 5, 0"  Margin="0,0,10,0"></Button>
+                <Button x:Name="ChangeReservationButton" Width="180" FontSize="18" IsEnabled="{Binding ChangeEnabled}" Content="Change Reservation" Padding="5, 0, 5, 0" Command="{Binding NavigateToChangeReservationCommand}" Margin="0,0,10,0"/>
+                <Button x:Name="ReviewButton"  Width="190" FontSize="18" IsEnabled="{Binding ReviewEnabled}" Content="Rate Accommodation" Padding="5, 0, 5, 0" Command="{Binding NavigateToReservationReviewCommand}"  Margin="0,0,10,0">
+                    <Button.ToolTip>
+                        <ToolTip Content="You can only rate accommodation 5 days after you have visited it."/>
+                    </Button.ToolTip>
+                </Button>
+                <Button x:Name="OwnersReviewButton"  Width="190" FontSize="18" IsEnabled="{Binding OwnersReviewEnabled}" Content="View Owner's Review" Padding="5, 0, 5, 0" Command="{Binding NavigateToOwnersReviewCommand}" Margin="0,0,10,0">
+                            <Button.ToolTip>
+                                <ToolTip Content="You can view owner's review only after you review him."/>
+                            </Button.ToolTip>
+                </Button>
+                <Button x:Name="PDFButton" Width="180" FontSize="18" IsEnabled="{Binding GeneratePDFEnabled}" Content="Generate PDF" Padding="5, 0, 5, 0" Command="{Binding GeneratePDFCommand}" Margin="0,0,10,0"/>
             </StackPanel>
             <Grid  Visibility="{Binding FiltersPanelVisibility}" Width="400" Height="240" HorizontalAlignment="Left">
                 <Grid.RowDefinitions>
@@ -192,8 +201,8 @@
                 </Button>
                 <Button Name="OpenForumButton" Grid.Row="0" Grid.Column="2" FontSize="20" IsEnabled="False"  Padding="5, 0, 5, 0" Margin="10,0, 0,10">Open Forum</Button>
                 <Button Name="GeneratePDFButton" Grid.Row="1" Grid.Column="0" FontSize="20" IsEnabled="False" Padding="5, 0, 5, 0" Margin="0,0,10, 10">Generate PDF</Button>
-                <Button Name="WhereverWheneverButton" Grid.Row="1" Grid.Column="1" FontSize="20" Grid.ColumnSpan="2" IsEnabled="False"  Padding="5, 0, 5, 0" Margin="5,0,0, 10">Wherever / Whenever</Button>
-                <Button Name="DemoButton" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2" FontSize="20" IsEnabled="False" Height="40" Width="190" VerticalAlignment="Bottom" Padding="5, 0, 5, 0" >Start Demo</Button>
+                <Button Name="WhereverWheneverButton" Grid.Row="1" Grid.Column="1" FontSize="20" Command="{Binding NavigateToWheneverCommand}" Grid.ColumnSpan="2" IsEnabled="True"  Padding="5, 0, 5, 0" Margin="5,0,0, 10">Wherever / Whenever</Button>
+                <Button Name="DemoButton" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2" FontSize="20" IsEnabled="True" Click="MainDemoClick" Height="40" Width="190" VerticalAlignment="Bottom" Padding="5, 0, 5, 0" >Start Demo</Button>
             </Grid>
 
         </StackPanel>

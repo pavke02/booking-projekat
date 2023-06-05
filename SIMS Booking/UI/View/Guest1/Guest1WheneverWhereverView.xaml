@@ -1,0 +1,121 @@
+﻿<UserControl x:Class="SIMS_Booking.UI.View.Guest1.Guest1WheneverWhereverView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:SIMS_Booking.UI.Utility.Converters"
+        mc:Ignorable="d" Height="768" Width="1024">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
+            <RowDefinition ></RowDefinition>
+            <RowDefinition Height="250"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <WrapPanel Background="#444444" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Height="50" Margin="0,0,-32,0">
+            <Button Margin="10 0 345 0" Style="{StaticResource HoverButton}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                    Command="{Binding NavigateBackCommand}">
+                <Image Height="50" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                       Source="../../../Resources/Images/arrow.png"/>
+            </Button>
+            <TextBlock Text="Review Accommodation " HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"
+                       Margin="0 0 0 0" Foreground="White"></TextBlock>
+        </WrapPanel>
+
+        <Grid Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBox Name="UserTb" Text="{Binding UserTb}" Grid.Column="0" Grid.Row="1" FontSize="25" FontWeight="Bold" Padding="0" BorderThickness="0" VerticalContentAlignment="Center" Margin="0, 5, 0, 0"></TextBox>
+            <Button  Grid.Row="0" Grid.Column="0" Height="30" FontSize="18">Log Out</Button>
+            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width = "85" Margin="10,0,5,0" Source = "/Resources/Images/guest1_128.png" Height="85" Stretch="UniformToFill" VerticalAlignment="Bottom"/>
+        </Grid>
+
+        <TabControl x:Name="TabC" Width="1000" Height="400" Grid.Row="2" SelectedIndex="0">
+            <TabItem Name="AccommodationsTab" IsSelected="True" Header="Accommodations" Height="50" FontSize="20" Padding="5 " VerticalAlignment="Bottom">
+                <DataGrid
+                    FontSize="16"
+                    Name="DataGridAccommodations"
+                    ItemsSource="{Binding Path=Accommodations, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding Path=SelectedAccommodation, UpdateSourceTrigger=PropertyChanged}"
+                    AutoGenerateColumns="False" IsReadOnly="True"
+                    Width="1000" Height="360">
+                    <DataGrid.Resources>
+                        <converters:SuperOwnerColorConverter x:Key="ColorConverter"></converters:SuperOwnerColorConverter>
+                    </DataGrid.Resources>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding User.IsSuperUser, Converter={StaticResource ColorConverter}}" Value="True">
+                                    <Setter Property="Background" Value="DeepSkyBlue"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="100" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="110" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Type" Binding="{Binding Type}" Width="100" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="120" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Min reservation" Binding="{Binding MinReservationDays}" Width="150" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Cancellation period" Binding="{Binding CancellationPeriod}" Width="180" FontSize="18"></DataGridTextColumn>
+                        <!--<DataGridTextColumn Header= "Renovated" Binding="{Binding IsRenovated}" Width="90" FontSize="18"></DataGridTextColumn>-->
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </TabItem>
+            
+        </TabControl>
+        <StackPanel Grid.Row="3" Grid.Column="0" Width="1000" Orientation="Horizontal">
+            <Grid  Visibility="{Binding FiltersPanelVisibility}" Width="400" Height="240" HorizontalAlignment="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="120"></RowDefinition>
+                    <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Grid.Row="2" x:Name="ApplyFiltersButton" Command="{Binding ApplyWheneverCommand}" Grid.ColumnSpan="2" Padding="5" Width="385" FontSize="22" Content="Apply Filters" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5, 0, 10, 0"
+                />
+                
+                <StackPanel>
+                    <Label Height="23" Margin="5, 0, 0, 0" Padding="0" FontSize="16">Start Date</Label>
+                    <DatePicker Name="StartDateDp" SelectedDate="{Binding StartSelectedDate, Mode=OneWayToSource}" SelectedDateChanged="StartDateChanged" Height="23"></DatePicker>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" >
+                    <Label Height="23" Margin="5, 0, 0, 0" Padding="0" FontSize="16">End Date</Label>
+                    <DatePicker Name="EndDateDp" SelectedDate="{Binding EndSelectedDate, Mode=OneWayToSource}" Height="23"></DatePicker>
+                </StackPanel>
+
+
+
+<StackPanel Grid.Row="1" Grid.Column="0">
+                    <Label Height="23" Margin="5, 0, 0, 0" Padding="0" FontSize="16">Max Guests</Label>
+                    <TextBox PreviewTextInput="NumberValidationTextBox" Name="maxGuestsTb" Text="{Binding Path=MaxGuests, UpdateSourceTrigger=PropertyChanged}"  Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="5, 0, 10, 10" Padding="5, 0, 5, 0"></TextBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <Label Height="23" Margin="5, 0, 0, 0" Padding="0" FontSize="16">Min reservation days</Label>
+                    <TextBox PreviewTextInput="NumberValidationTextBox" Name="minReservationDaysTb" Text="{Binding Path=MinReservationDays, UpdateSourceTrigger=PropertyChanged}" Height="30" FontSize="14" VerticalContentAlignment="Center" Margin="5, 0, 10, 10" Padding="5, 0, 5, 0"></TextBox>
+                </StackPanel>
+                
+            </Grid>
+
+            <Button Command="{Binding NavigateToReserveCommand}" Padding="5" Width="385" FontSize="22" Content="Reserve" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="215, 10, 10, 0"/>
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>
