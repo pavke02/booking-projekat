@@ -36,6 +36,7 @@ namespace SIMS_Booking.Commands.Guest1Commands
             _postponementService.Save(postponement);
             MessageBox.Show("Request sent successfully");
             _closeModalNavigationService.Navigate();
+            MessageBox.Show("Accommodation successfully postponed!");
         }
     }
 }

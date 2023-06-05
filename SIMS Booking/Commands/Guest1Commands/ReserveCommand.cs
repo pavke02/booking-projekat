@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Printing;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
-using SIMS_Booking.Model;
-using System.Windows;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.ViewModel.Guest1;
+using System;
+using System.Windows;
 
 namespace SIMS_Booking.Commands.Guest1Commands
 {
@@ -47,8 +42,17 @@ namespace SIMS_Booking.Commands.Guest1Commands
 
             ReservedAccommodation reservedAccommodation = new ReservedAccommodation(_user.GetId(), _selectedAccommodation.GetId(), reservation.GetId());
             _reservedAccommodationService.Save(reservedAccommodation);
-            _viewModel.ViewModel.SetSuperGuest();
+            if (_viewModel.ViewModel != null)
+            {
+                _viewModel.ViewModel.SetSuperGuest();
+            }
+            if(_viewModel.ViewModel2 != null)
+            {
+                _viewModel.ViewModel2.SetSuperGuest();
+            }
+
             _closeModalNavigationService.Navigate();
+            MessageBox.Show("Accommodation successfully reserved!");
         }
     }
 }

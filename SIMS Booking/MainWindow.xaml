@@ -131,6 +131,9 @@
             <DataTemplate DataType="{x:Type viewModelGuest1:Guest1ChangeReservationViewModel}">
                 <viewGuest1:Guest1ChangeReservationView></viewGuest1:Guest1ChangeReservationView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelGuest1:Guest1WheneverWhereverViewModel}">
+                <viewGuest1:Guest1WheneverWhereverView></viewGuest1:Guest1WheneverWhereverView>
+            </DataTemplate>
 
         </Grid.Resources>
 

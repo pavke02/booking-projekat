@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using SIMS_Booking.UI.View.Guest1;
 
 namespace SIMS_Booking.UI.ViewModel.Guest1
 {
@@ -431,6 +432,23 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
             }
         }
 
+        private bool _generatePDFEnabled;
+
+        public bool GeneratePDFEnabled
+        {
+            get => _generatePDFEnabled;
+            set
+            {
+                if (value != _generatePDFEnabled)
+                {
+                    _generatePDFEnabled = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public Guest1WheneverWhereverViewModel Guest1WheneverWhereverViewModel;
+
         #endregion
 
         #region Commands
@@ -440,8 +458,11 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         public ICommand NavigateToChangeReservationCommand { get; }
         public ICommand NavigateToReservationReviewCommand { get; }
         public ICommand NavigateToOwnersReviewCommand { get; }
+        public ICommand NavigateToWheneverCommand { get; }
         public ICommand ResetCommand { get; }
         public ICommand CancelReservationCommand { get; }
+        public ICommand GeneratePDFCommand { get; }
+        public ICommand MainDemoCommand { get; }
 
         #endregion
 
@@ -506,8 +527,12 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
                 new NavigateCommand(CreateOwnerReviewNavigationService(modalNavigationStore));
             NavigateToOwnersReviewCommand = 
                 new NavigateCommand(CreateOwnersReviewNavigationService(modalNavigationStore));
+            NavigateToWheneverCommand = 
+                new NavigateCommand(CreateWheneverNavigationService(modalNavigationStore));
             ResetCommand = new ResetFiltersCommand(this);
             CancelReservationCommand = new CancelReservationCommand(_reservationService, this);
+            GeneratePDFCommand = new GeneratePDFCommand(this);
+            MainDemoCommand = new MainDemoCommand(this);
 
              DatePassedTimer datePassedTimer =
                  new DatePassedTimer(_accommodationService, _renovationAppointmentService, loggedUser);
@@ -524,7 +549,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         {
             return new ModalNavigationService<Guest1ReservationViewModel>(modalNavigationStore,
                 () => new Guest1ReservationViewModel(modalNavigationStore, SelectedAccommodation, LoggedUser, _reservationService,
-                    _reservedAccommodationService, this));
+                    _reservedAccommodationService, this, Guest1WheneverWhereverViewModel));
         }
 
         private INavigationService CreateGalleryViewNavigationService(ModalNavigationStore modalNavigationStore)
@@ -549,6 +574,12 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         {
             return new ModalNavigationService<Guest1OwnersViewDetailsViewModel>(modalNavigationStore,
                 () => new Guest1OwnersViewDetailsViewModel(modalNavigationStore ,_guestReviewService,  SelectedReservation, LoggedUser));
+        }
+
+        private INavigationService CreateWheneverNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<Guest1WheneverWhereverViewModel>(modalNavigationStore,
+                () => new Guest1WheneverWhereverViewModel(modalNavigationStore, _accommodationService, _reservationService, _reservedAccommodationService, LoggedUser));
         }
 
         public void SetSuperGuest()
@@ -611,11 +642,13 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
                 ReviewEnabled = false;
                 CancelEnabled= false;
                 ChangeEnabled = false;
+                GeneratePDFEnabled = false;
                 return;
             }
 
             CancelEnabled = true;
             ChangeEnabled = true;
+            GeneratePDFEnabled = true;
 
             if (DateTime.Today - SelectedReservation.EndDate > TimeSpan.FromDays(5) || DateTime.Today - SelectedReservation.EndDate < TimeSpan.FromDays(0) || SelectedReservation.HasGuestReviewed)
                 ReviewEnabled = false;
@@ -639,16 +672,28 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         {
             ObservableCollection<Accommodation> accommodationsFiltered = new ObservableCollection<Accommodation>(_accommodationService.GetAll());
             int numberOfDeleted = 0;
+            int maxGuests = 0;
+            int minReservationDays = 0;
             if (AccommodationName == null)
                 AccommodationName = "";
+
+            if (MinReservationDays == "")
+                minReservationDays = 10;
+            else
+                minReservationDays = Convert.ToInt32(MinReservationDays);
+
+            if (MaxGuests == "")
+                maxGuests = 1;
+            else
+                maxGuests = Convert.ToInt32(MaxGuests);
 
             UpdateKindsState();
             Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetAll());
 
                 foreach (Accommodation accommodation in Accommodations)
             {bool fitsFilter = (accommodation.Name.ToLower().Contains(AccommodationName.ToLower()) || AccommodationName.IsNullOrEmpty()) && (Country.Key == accommodation.Location.Country || CountryIndex == -1)
-                    && (accommodation.Location.City == City || CityIndex == -1) && Kinds.Contains(accommodation.Type) && (accommodation.MaxGuests >= Convert.ToInt32(MaxGuests) || MaxGuests.IsNullOrEmpty())
-                    && (accommodation.MinReservationDays <= Convert.ToInt32(MinReservationDays) || MinReservationDays.IsNullOrEmpty());
+                    && (accommodation.Location.City == City || CityIndex == -1) && Kinds.Contains(accommodation.Type) && (accommodation.MaxGuests >= maxGuests || MaxGuests.IsNullOrEmpty())
+                    && (accommodation.MinReservationDays <= minReservationDays || MinReservationDays.IsNullOrEmpty());
 
                 if (!fitsFilter)
                 {
@@ -657,7 +702,10 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
                 }
             }
 
-                Accommodations = accommodationsFiltered;
+            MinReservationDays = "";
+            MaxGuests = "";
+
+            Accommodations = accommodationsFiltered;
         }
 
         private void UpdateKindsState()
