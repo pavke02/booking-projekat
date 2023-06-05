@@ -17,6 +17,10 @@ namespace SIMS_Booking.Service
         }
 
         #region Crud
+        public List<OwnerReview> GetAll()
+        {
+            return _repository.GetAll();
+        }
 
         public void Save(OwnerReview ownerReview)
         {
@@ -27,7 +31,6 @@ namespace SIMS_Booking.Service
         {
             _repository.Subscribe(observer);
         }
-
         #endregion
 
         public List<OwnerReview> GetByUserId(int id)

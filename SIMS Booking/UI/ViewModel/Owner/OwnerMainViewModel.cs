@@ -50,6 +50,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public ICommand NavigateToAppointRenovatingCommand { get; }
         public ICommand NavigateToLocationsPopularityCommand { get; }
         public ICommand NavigateToForumView { get; }
+        public ICommand GeneratePdfCommand { get; }
 
         #endregion
 
@@ -516,6 +517,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             AddImageCommand = new AddImageCommand(this);
             ClearURLsCommand = new ClearURLsCommand(this);
             CancelRenovationCommand = new CancelRenovationCommand(this, _renovationAppointmentService);
+            GeneratePdfCommand = new GeneratePdfCommand(_ownerReviewService);
 
             NavigateToGuestReviewCommand = 
                 new NavigateCommand(CreateGuestReviewNavigationService(modalNavigationStore), this, () => SelectedReservation != null && 
