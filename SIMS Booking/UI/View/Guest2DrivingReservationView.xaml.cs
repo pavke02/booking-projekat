@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace SIMS_Booking.UI.View;
 
@@ -15,6 +16,8 @@ namespace SIMS_Booking.UI.View;
 /// </summary>
 public partial class Guest2DrivingReservationView : Window
 {
+
+
     public readonly Vehicle _selectedVehicle;
  
     private readonly VehicleReservationService _vehicleReservationService;

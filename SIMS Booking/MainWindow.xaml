@@ -47,6 +47,19 @@
             <DataTemplate DataType="{x:Type viewModelOwner:RenovationAppointingViewModel}">
                 <viewOwner:RenovationAppointingView></viewOwner:RenovationAppointingView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:LocationPopularityViewModel}">
+                <viewOwner:LocationPopularityView></viewOwner:LocationPopularityView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:PublishAccommodationOnLocationViewModel}">
+                <viewOwner:PublishAccommodationOnLocationView></viewOwner:PublishAccommodationOnLocationView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:RemoveAccommodationOnLocationViewModel}">
+                <viewOwner:RemoveAccommodationOnLocationView></viewOwner:RemoveAccommodationOnLocationView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:ForumViewModel}">
+                <viewOwner:ForumView></viewOwner:ForumView>
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewModelDriver:DriverViewModel}">
                 <viewDriver:DriverView></viewDriver:DriverView>
             </DataTemplate>
@@ -65,6 +78,10 @@
             <DataTemplate DataType="{x:Type viewModelDriver:DriverProfileViewModel}">
                 <viewDriver:ProfileView></viewDriver:ProfileView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelDriver:DriverRequestVacationViewModel}">
+                <viewDriver:DriverRequestVacation></viewDriver:DriverRequestVacation>
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewModelGuide:MainWindowViewModel}">
                 <viewGuide:MainWindowView></viewGuide:MainWindowView>
             </DataTemplate>
@@ -110,6 +127,7 @@
             <DataTemplate DataType="{x:Type viewModelGuide:TourRequestByLocationViewModel}">
                 <viewGuide:TourRequestsByLocationView></viewGuide:TourRequestsByLocationView>
             </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewModelGuest1:Guest1MainViewModel}">
                 <viewGuest1:Guest1MainView></viewGuest1:Guest1MainView>
             </DataTemplate>

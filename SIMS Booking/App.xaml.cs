@@ -1,16 +1,14 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using SIMS_Booking.UI.ViewModel.Startup;
-using SIMS_Booking.Utility.Stores;
-using Microsoft.Extensions.DependencyInjection;
-using ModalControl;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SIMS_Booking.Model;
 using SIMS_Booking.Model.Relations;
 using SIMS_Booking.Repository;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
-using SIMS_Booking.UI.ViewModel.Owner;
+using SIMS_Booking.UI.ViewModel.Startup;
+using SIMS_Booking.Utility.Stores;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace SIMS_Booking
 {
@@ -75,6 +73,10 @@ namespace SIMS_Booking
             services.AddSingleton<ICRUDRepository<ReservationOfVehicle>, CsvCrudRepository<ReservationOfVehicle>>();
             services.AddSingleton<ICRUDRepository<TourRequest>,CsvCrudRepository <TourRequest>>();
             services.AddSingleton<TextBox>();
+            services.AddSingleton<ICRUDRepository<GroupRide>, CsvCrudRepository<GroupRide>>();
+            services.AddSingleton<ICRUDRepository<TourRequest>, CsvCrudRepository<TourRequest>>();
+            services.AddSingleton<ICRUDRepository<Comment>, CsvCrudRepository<Comment>>();
+            services.AddSingleton<ICRUDRepository<Forum>, CsvCrudRepository<Forum>>();
 
             return services;
         }
@@ -91,6 +93,8 @@ namespace SIMS_Booking
             services.AddSingleton<GuestReviewService>();
             services.AddSingleton<ReservedAccommodationService>();
             services.AddSingleton<UsersAccommodationService>();
+            services.AddSingleton<ForumService>();
+            services.AddSingleton<CommentService>();
 
             services.AddSingleton<DriverLanguagesService>();
             services.AddSingleton<DriverLocationsService>();
@@ -105,6 +109,7 @@ namespace SIMS_Booking
             services.AddSingleton<VehicleReservationService>();
             services.AddSingleton<VehicleService>();
             services.AddSingleton<VoucherService>();
+            services.AddSingleton<GroupRideService>();
             services.AddSingleton<TourRequestService>();
 
             return services;

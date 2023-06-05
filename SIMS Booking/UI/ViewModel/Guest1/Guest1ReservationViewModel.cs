@@ -181,13 +181,16 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         public ICommand NavigateBackCommand { get; }
         public ICommand ReserveCommand { get; }
 
-        public Guest1ReservationViewModel(ModalNavigationStore modalNavigationStore, Accommodation selectedAccommodation, User loggedUser, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService)
+        public Guest1MainViewModel ViewModel;
+
+        public Guest1ReservationViewModel(ModalNavigationStore modalNavigationStore, Accommodation selectedAccommodation, User loggedUser, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, Guest1MainViewModel guest1MainViewModel)
         {
 
             _selectedAccommodation = selectedAccommodation;
             _reservationService = reservationService;
             _reservedAccommodationService = reservedAccommodationService;
             LoggedUser = loggedUser;
+            ViewModel = guest1MainViewModel;
 
             int minimumDaysOfReservation = _selectedAccommodation.MinReservationDays;
             MinDaysContent = $"Minimum duration of reservation: {minimumDaysOfReservation} days.";
@@ -199,7 +202,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
             StartDpStartDate = DateTime.Today.AddDays(1);
             SelectedStartDate = DateTime.Today.AddDays(1);
 
-            ReserveCommand = new ReserveCommand(_selectedAccommodation, _reservationService,
+            ReserveCommand = new ReserveCommand(CreateCloseModalNavigationService(modalNavigationStore), _selectedAccommodation, _reservationService,
                 _reservedAccommodationService, LoggedUser, this);
 
             Reservations = _reservationService.GetAll();
@@ -233,7 +236,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         public void DisableReservedDates()
         {
             List<CalendarDateRange> blackoutDates = new List<CalendarDateRange>();
-            foreach (var reservation in _reservationService.GetActiveReservations())
+            foreach (var reservation in _reservationService.GetAccommodationReservations(_selectedAccommodation))
             {
                 var startDate = reservation.StartDate.Date;
                 var endDate = reservation.EndDate.Date;
@@ -243,7 +246,6 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
                 blackoutDates.Add(range);
             }
 
-            //kada se napuni lista sa datumima koji su onemoguceni, obavesti se PostponeReservationView i ti datumi se oznace na kalendaru
             BlackoutDatesChangedEvent?.Invoke(blackoutDates);
         }
 

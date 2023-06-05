@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="SIMS_Booking.UI.View.Owner.RemoveAccommodationOnLocationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SIMS_Booking.UI.View.Owner"
+             mc:Ignorable="d" Height="450" Width="700">
+    <StackPanel>
+        <WrapPanel Background="#FF6C3DD8" Width="700">
+            <Button Margin="10 0 120 0" Style="{StaticResource HoverButton}"
+                    Command="{Binding NavigateBackCommand}">
+                <Image Height="30" Width="30" 
+                       Source="../../../Resources/Images/arrow.png"/>
+            </Button>
+            <Label HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
+                   Margin="0 10 0 0" Foreground="White">Remove Accommodation</Label>
+        </WrapPanel>
+        <DataGrid Height="390" Width="700" VerticalAlignment="Top" HorizontalAlignment="Left"
+                  ItemsSource="{Binding Path=UnpopularAccommodations , UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding Path=SelectedAccommodation, UpdateSourceTrigger=PropertyChanged}"
+                  IsReadOnly="True" AutoGenerateColumns="False" FontSize="20" Background="#434242" Foreground="White"
+                  RowHeaderWidth="0">
+            <DataGrid.Columns >
+                <DataGridTextColumn Header="Accommodation Name" Binding="{Binding Name}" Width="250"/>
+                <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="125"/>
+                <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="115"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="115"/>
+                <DataGridTemplateColumn Header="Delete">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Remove" 
+                                    Command="{Binding Path=DataContext.RemoveAccommodationCommand,
+                                            RelativeSource= {RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" 
+                                    Style="{StaticResource HoverButtonRed}">
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="3"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowBackground>
+                <SolidColorBrush Color="#434242"></SolidColorBrush>
+            </DataGrid.RowBackground>
+            <DataGrid.Resources>
+                <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="#434242" />
+                </Style>
+            </DataGrid.Resources>
+        </DataGrid>
+    </StackPanel>
+</UserControl>

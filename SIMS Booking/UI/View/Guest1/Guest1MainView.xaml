@@ -50,13 +50,14 @@
                         </Style>
                     </DataGrid.CellStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200" FontSize="18"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="150" FontSize="18"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Type" Binding="{Binding Type}" Width="130" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Country" Binding="{Binding Location.Country}" Width="100" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header="City" Binding="{Binding Location.City}" Width="110" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Type" Binding="{Binding Type}" Width="100" FontSize="18"></DataGridTextColumn>
                         <DataGridTextColumn Header= "Max guests" Binding="{Binding MaxGuests}" Width="120" FontSize="18"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Min reservation (days)" Binding="{Binding MinReservationDays}" Width="200" FontSize="18"></DataGridTextColumn>
-                        <DataGridTextColumn Header= "Cancellation period (days)" Binding="{Binding CancellationPeriod}" Width="200" FontSize="18"></DataGridTextColumn>
-                        <!-- <DataGridTextColumn Header= "Renovated" Binding="{Binding IsRenovated}" Width="200" FontSize="18"></DataGridTextColumn> -->
+                        <DataGridTextColumn Header= "Min reservation" Binding="{Binding MinReservationDays}" Width="150" FontSize="18"></DataGridTextColumn>
+                        <DataGridTextColumn Header= "Cancellation period" Binding="{Binding CancellationPeriod}" Width="180" FontSize="18"></DataGridTextColumn>
+                         <DataGridTextColumn Header= "Renovated" Binding="{Binding IsRenovated}" Width="90" FontSize="18"></DataGridTextColumn> 
                     </DataGrid.Columns>
                 </DataGrid>
 

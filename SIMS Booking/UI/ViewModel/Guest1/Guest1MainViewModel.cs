@@ -1,32 +1,23 @@
-﻿using Microsoft.VisualStudio.Services.Profile;
+﻿using Microsoft.TeamFoundation.Common;
+using SIMS_Booking.Commands.Guest1Commands;
+using SIMS_Booking.Commands.NavigateCommands;
 using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
-using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.Service;
+using SIMS_Booking.Service.NavigationService;
+using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
-using SIMS_Booking.UI.View;
 using SIMS_Booking.Utility.Observer;
+using SIMS_Booking.Utility.Stores;
 using SIMS_Booking.Utility.Timers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows;
-using Microsoft.TeamFoundation.Common;
-using SIMS_Booking.Commands.Guest1Commands;
-using SIMS_Booking.Commands.NavigateCommands;
-using SIMS_Booking.Service.NavigationService;
-using SIMS_Booking.UI.View.Guest1;
-using SIMS_Booking.Utility.Stores;
+using System.Windows.Input;
 
 namespace SIMS_Booking.UI.ViewModel.Guest1
 {
@@ -65,15 +56,8 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
                 if (value != _userReservations)
                 {
                     _userReservations = value;
-                    if (UserReservations.Count >= 3)
-                    {
-                        UserTb = LoggedUser.Username + ", Super Guest";
-                    }
-                    else
-                    {
-                        UserTb = LoggedUser.Username + ", Guest";
-                    }
                     OnPropertyChanged();
+                    SetSuperGuest();
                 }
             }
         }
@@ -540,7 +524,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         {
             return new ModalNavigationService<Guest1ReservationViewModel>(modalNavigationStore,
                 () => new Guest1ReservationViewModel(modalNavigationStore, SelectedAccommodation, LoggedUser, _reservationService,
-                    _reservedAccommodationService));
+                    _reservedAccommodationService, this));
         }
 
         private INavigationService CreateGalleryViewNavigationService(ModalNavigationStore modalNavigationStore)
@@ -660,8 +644,9 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
 
             UpdateKindsState();
             Accommodations = new ObservableCollection<Accommodation>(_accommodationService.GetAll());
-            foreach (Accommodation accommodation in Accommodations)
-            { bool fitsFilter = (accommodation.Name.ToLower().Contains(AccommodationName.ToLower()) || AccommodationName.IsNullOrEmpty()) && (Country.Key == accommodation.Location.Country || CountryIndex == -1)
+
+                foreach (Accommodation accommodation in Accommodations)
+            {bool fitsFilter = (accommodation.Name.ToLower().Contains(AccommodationName.ToLower()) || AccommodationName.IsNullOrEmpty()) && (Country.Key == accommodation.Location.Country || CountryIndex == -1)
                     && (accommodation.Location.City == City || CityIndex == -1) && Kinds.Contains(accommodation.Type) && (accommodation.MaxGuests >= Convert.ToInt32(MaxGuests) || MaxGuests.IsNullOrEmpty())
                     && (accommodation.MinReservationDays <= Convert.ToInt32(MinReservationDays) || MinReservationDays.IsNullOrEmpty());
 
@@ -672,7 +657,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
                 }
             }
 
-            Accommodations = accommodationsFiltered;
+                Accommodations = accommodationsFiltered;
         }
 
         private void UpdateKindsState()

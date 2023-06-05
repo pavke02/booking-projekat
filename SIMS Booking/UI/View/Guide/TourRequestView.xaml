@@ -35,10 +35,10 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <TextBlock Text="{Binding Stats}" Width="100" Height="100" Margin="0,150,0,0"/>
-        <Button Content="Unesi godinu i mesec" Height="20" Width="120" HorizontalAlignment="Left" Margin="0,0,0,0" Command="{Binding StatisticsCommand}"/>
-        <TextBox  Height="20" Width="80" HorizontalAlignment="Left" Margin="100,0,0,0" Text="{Binding Language}"/>
-        <TextBox  Height="20" Width="80" HorizontalAlignment="Left" Margin="200,0,0,0"  Text="{Binding Year}"/>
+        <TextBlock Text="{Binding Stats}" Width="100" Height="220" Margin="-280,150,0,0" Background="LightGray"/>
+        <Button Content="Jezik i godina" Height="20" Width="120" HorizontalAlignment="Left" Margin="0,-100,0,0" Command="{Binding StatisticsCommand}"/>
+        <TextBox  Height="20" Width="80" HorizontalAlignment="Left" Margin="100,-100,0,0" Text="{Binding Language}"/>
+        <TextBox  Height="20" Width="80" HorizontalAlignment="Left" Margin="200,-100,0,0"  Text="{Binding Year}"/>
 
 
         <Button Content="Datum" Height="20" Width="80" HorizontalAlignment="Left" Margin="0,400,0,0" Command="{Binding FilterByDateCommand}"/>

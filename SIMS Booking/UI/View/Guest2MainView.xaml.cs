@@ -39,9 +39,12 @@ namespace SIMS_Booking.UI.View
         private readonly TourReservation tourReservation;
         private readonly VehicleReservationService _vehicleReservationService;
         private readonly DriverLocationsService _driverLocationsService;
+        private readonly TourRequestService _tourRequestService;
+        private readonly GroupRideService _groupRideService;
+       
 
         /*VehicleCsvCrudRepository vehicleCsvCrudRepository*/
-        public Guest2MainView(TourService tourService, User loggedUser,VehicleService vehicleService, GuideReviewService guideReviewService, ReservedTourService reservedTourService, DriverLocationsService driverLocationsService, VehicleReservationService vehicleReservationService, VoucherService voucherService)
+        public Guest2MainView(TourService tourService, User loggedUser,VehicleService vehicleService, GuideReviewService guideReviewService, ReservedTourService reservedTourService, DriverLocationsService driverLocationsService, VehicleReservationService vehicleReservationService, VoucherService voucherService, GroupRideService groupRideService, TourRequestService tourRequestService)
         {
             InitializeComponent();
             DataContext = this;
@@ -49,11 +52,13 @@ namespace SIMS_Booking.UI.View
 
             _tourService = tourService;
             _tourService.Subscribe(this);
-            
 
+            _groupRideService = groupRideService;
             _vehicleService = vehicleService;
             _vehicleService.Subscribe(this);
 
+         
+            _tourRequestService = tourRequestService;
             _guideReviewService = guideReviewService;
             _driverLocationsService = driverLocationsService;
             _vehicleReservationService = vehicleReservationService;
@@ -127,6 +132,25 @@ namespace SIMS_Booking.UI.View
 
         }
 
+        private void Group_Ride(object sender, RoutedEventArgs e)
+        {
+            Guest2GroupRide ride =
+                new Guest2GroupRide(LoggedUser, _groupRideService);
+
+            ride.Show();
+
+        }
+
+
+        private void Tour_Requests(object sender, RoutedEventArgs e)
+        {
+            Guest2TourRequestAllDisplays requests =
+                new Guest2TourRequestAllDisplays(LoggedUser, _tourRequestService);
+
+            requests.Show();
+
+        }
+
         private void Reserve_Tour(object sender, RoutedEventArgs e)
         {
 
@@ -145,10 +169,10 @@ namespace SIMS_Booking.UI.View
 
         private void QuickTaxi_Click(object sender, RoutedEventArgs e)
         {
-
+            /*
             Guest2FindingTaxiFast guest2FindingTaxiFast = new Guest2FindingTaxiFast(LoggedUser, _vehicleReservationService, _driverLocationsService);
             guest2FindingTaxiFast.Show();
-
+            */
 
         }
     }

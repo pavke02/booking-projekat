@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="SIMS_Booking.UI.View.Owner.LocationPopularityView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" Height="520" Width="700" Background="#222222">
+
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <StackPanel>
+            <WrapPanel Background="#FF6C3DD8" Width="700">
+                <Button Margin="10 0 120 0" Style="{StaticResource HoverButton}"
+                        Command="{Binding NavigateBackCommand}">
+                    <Image Height="30" Width="30" 
+                           Source="../../../Resources/Images/arrow.png"/>
+                </Button>
+                <Label HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
+                       Margin="0 10 0 0" Foreground="White">Most/Least Popular Locations</Label>
+            </WrapPanel>
+            <WrapPanel>
+                <StackPanel Width="350">
+                    <DataGrid Height="300" Width="350" VerticalAlignment="Top" HorizontalAlignment="Left"
+                              ItemsSource="{Binding Path=PopularLocations, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding Path=SelectedPopularLocation, UpdateSourceTrigger=PropertyChanged}"
+                              IsReadOnly="True" AutoGenerateColumns="False"
+                              Background="#434242" Foreground="White" FontSize="18"
+                              RowHeaderWidth="0">
+                        <DataGrid.RowBackground>
+                            <SolidColorBrush Color="#434242"></SolidColorBrush>
+                        </DataGrid.RowBackground>
+                        <DataGrid.Resources>
+                            <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="#434242" />
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Country" Binding="{Binding Country}" Width="175"/>
+                            <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Label HorizontalAlignment="Center" FontSize="24" Margin="0 20 0 0">Popular Locations</Label>
+                    <Button Content="Publish Accommodation" Command="{Binding PublishOnLocationCommand}"
+                            Width="170" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                            Margin="0 30 0 0" Style="{StaticResource HoverButtonBlueGrey}">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+                <StackPanel Width="350">
+                    <DataGrid Height="300" Width="350" VerticalAlignment="Top" HorizontalAlignment="Left"
+                              ItemsSource="{Binding Path=UnpopularLocations, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding Path=SelectedUnpopularLocation, UpdateSourceTrigger=PropertyChanged}"
+                              IsReadOnly="True" AutoGenerateColumns="False" FontSize="18"
+                              Background="#434242" Foreground="White"
+                              RowHeaderWidth="0">
+                        <DataGrid.RowBackground>
+                            <SolidColorBrush Color="#434242"></SolidColorBrush>
+                        </DataGrid.RowBackground>
+                        <DataGrid.Resources>
+                            <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="#434242" />
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Country" Binding="{Binding Country}" Width="175"/>
+                            <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Label HorizontalAlignment="Center" FontSize="24" Margin="0 20 0 0">Unpopular Locations</Label>
+                    <Button Content="Remove Accommodation" Command="{Binding RemoveOnLocationCommand}"
+                            Width="170" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                            Margin="0 30 0 0" Style="{StaticResource HoverButtonRedGrey}">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+            </WrapPanel>
+        </StackPanel>            
+    </Grid>
+</UserControl>

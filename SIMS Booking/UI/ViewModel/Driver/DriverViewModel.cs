@@ -23,8 +23,6 @@ namespace SIMS_Booking.UI.ViewModel.Driver
 
     public class DriverViewModel : ViewModelBase, IObserver
     { 
-
-        //public Vehicle Vehicle { get; set; }
         public User User { get; set; }
 
         private VehicleService _vehicleService;
@@ -39,6 +37,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         public ICommand NavigateToRidesCommand { get; }
         public ICommand NavigateToAddVehicleCommand { get; }
         public ICommand NavigateToProfileCommand { get; }
+        public ICommand NavigateToRequestVacationCommand { get; }
 
 
         private Vehicle _vehicle;
@@ -157,14 +156,16 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             NavigateToRidesCommand = new NavigateCommand(CreateRidesNavigationService(modalNavigationStore), this, () => Vehicle != null);
             NavigateToAddVehicleCommand = new NavigateCommand(CreateAddVehicleNavigationService(modalNavigationStore), this, () => Vehicle == null);
             NavigateToProfileCommand = new NavigateCommand(CreateProfileNavigationService(modalNavigationStore), this, () => Vehicle != null);
+            NavigateToRequestVacationCommand = new NavigateCommand(CreateRequestVacationNavigationService(modalNavigationStore), this, () => Vehicle != null);
 
-            if(Vehicle != null)
+            if (Vehicle != null)
             {
                 foreach (Rides ride in _ridesService.GetActiveRides(User, Vehicle))
                 {
                     if (ride.Type == "Fast")
                     {
                         MessageBox.Show("You have new fast rides!");
+                        break;
                     }
                 }
                 foreach (Rides ride in _ridesService.GetActiveRides(User, Vehicle))
@@ -172,6 +173,21 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                     if (ride.Type == "Group")
                     {
                         MessageBox.Show("You have new group rides!");
+                        break;
+                    }
+                }
+            }
+            foreach(Vehicle vehicle in _vehicleService.GetAll())
+            {
+                if (Vehicle != null && vehicle.UserID != Vehicle.UserID)
+                {
+                    foreach (Rides ride in _ridesService.GetAll())
+                    {
+                        if (ride.Pending == true)
+                        {
+                            MessageBox.Show("Your colleague wants to go on a vacation and asks you to take his rides!");
+                            break;
+                        }
                     }
                 }
             }
@@ -248,7 +264,13 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         private INavigationService CreateProfileNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new ModalNavigationService<DriverProfileViewModel>
-                (modalNavigationStore, () => new DriverProfileViewModel(modalNavigationStore, _finishedRidesService, _vehicleService, User));
+                (modalNavigationStore, () => new DriverProfileViewModel(modalNavigationStore, _finishedRidesService, _vehicleService, _ridesService, User));
+        }
+
+        private INavigationService CreateRequestVacationNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<DriverRequestVacationViewModel>
+                (modalNavigationStore, () => new DriverRequestVacationViewModel(Vehicle, modalNavigationStore, _vehicleService, _ridesService));
         }
     }
 }

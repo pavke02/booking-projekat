@@ -32,6 +32,11 @@ namespace SIMS_Booking.Service
             _repository.Subscribe(observer);
         }
 
+        public void Delete(Vehicle vehicle)
+        {
+            _repository.Delete(vehicle);
+        }
+
         #endregion
 
         public Vehicle GetVehicleByUserID(int id)

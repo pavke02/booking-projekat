@@ -5,8 +5,7 @@ namespace SIMS_Booking.Model
 {
     public class TourReview: ISerializable, IDable
     {
-        public int Id { get; set; }
-
+        private int Id { get; set; }
         public int ConfirmTourId { get; set; }
         public ConfirmTour ConfirmTour { get; set; }
         public double Grade { get; set; }

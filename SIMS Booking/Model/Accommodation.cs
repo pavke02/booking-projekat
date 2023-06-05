@@ -25,7 +25,8 @@ namespace SIMS_Booking.Model
             ImageURLs = new List<string>();
         }
 
-        public Accommodation(string name, Location location, AccommodationType type, User user, int maxGuests, int minReservationDays, int cancellationPeriod, List<string> imagesURL, bool isRenovated)
+        public Accommodation(string name, Location location, AccommodationType type, User user, int maxGuests, int minReservationDays,
+            int cancellationPeriod, List<string> imagesURL, bool isRenovated)
         {            
             Name = name;
             Location = location;
@@ -69,7 +70,7 @@ namespace SIMS_Booking.Model
         public string[] ToCSV()
         {
 
-            string[] csvValues = { _id.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancellationPeriod.ToString(), string.Join(',', ImageURLs), IsRenovated.ToString()};
+            string[] csvValues = { _id.ToString(), Name, Location.Country, Location.City, Type.ToString(), MaxGuests.ToString(), MinReservationDays.ToString(), CancellationPeriod.ToString(), string.Join(',', ImageURLs), IsRenovated.ToString() };
             return csvValues;
         }              
     }

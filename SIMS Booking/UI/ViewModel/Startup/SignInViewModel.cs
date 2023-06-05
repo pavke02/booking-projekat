@@ -8,17 +8,13 @@ using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.Service.RelationsService;
 using SIMS_Booking.UI.Utility;
 using SIMS_Booking.UI.View;
-using SIMS_Booking.UI.View.Driver;
 using SIMS_Booking.UI.ViewModel.Driver;
+using SIMS_Booking.UI.ViewModel.Guest1;
+using SIMS_Booking.UI.ViewModel.Guide;
 using SIMS_Booking.UI.ViewModel.Owner;
 using SIMS_Booking.Utility.Stores;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using SIMS_Booking.UI.View.Guide;
-using SIMS_Booking.UI.ViewModel.Guide;
-using SIMS_Booking.UI.View.Guest1;
-using SIMS_Booking.UI.ViewModel.Guest1;
 
 namespace SIMS_Booking.UI.ViewModel.Startup
 {
@@ -50,12 +46,10 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         private readonly VoucherService _voucherService;
         private readonly RenovationAppointmentService _renovationAppointmentService;
         private readonly TourRequestService _tourRequestService;
-
-
+        private readonly GroupRideService _groupRideService;
+        private readonly CommentService _commentService;
+        private readonly ForumService _forumService;
         #endregion
-
-      
-        
 
         private readonly NavigationStore _navigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
@@ -122,15 +116,16 @@ namespace SIMS_Booking.UI.ViewModel.Startup
         }
         #endregion
 
-        public SignInViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore, AccommodationService accommodationService,
-                              CityCountryCsvRepository cityCountryCsvRepository,
-                              ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
-                              OwnerReviewService ownerReviewService, PostponementService postponementService, UserService userService,
-                              RenovationAppointmentService renovationAppointmentService, TourService tourService, ConfirmTourService confirmTourService,
-                              TourPointService tourPointService, TextBox textBox, TourReviewService tourReviewService,
-                              RidesService ridesService, FinishedRidesService finishedRidesService, VehicleService vehicleService, DriverLanguagesService driverLanguagesService,
-                              DriverLocationsService driverLocationsService, ReservedAccommodationService reservedAccommodationService, ReservedTourService reservedTourService, 
-                              GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService,TourRequestService tourRequestService)
+        public SignInViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore, AccommodationService accommodationService, 
+                               CityCountryCsvRepository cityCountryCsvRepository, ReservationService reservationService, GuestReviewService guestReviewService, 
+                               UsersAccommodationService usersAccommodationService, OwnerReviewService ownerReviewService, PostponementService postponementService, 
+                               UserService userService, RenovationAppointmentService renovationAppointmentService, TourService tourService, ConfirmTourService confirmTourService, 
+                               TourPointService tourPointService, TextBox textBox, TourReviewService tourReviewService, RidesService ridesService, 
+                               FinishedRidesService finishedRidesService, VehicleService vehicleService, DriverLanguagesService driverLanguagesService, 
+                               DriverLocationsService driverLocationsService, ReservedAccommodationService reservedAccommodationService, ReservedTourService reservedTourService, 
+                               GuideReviewService guideReviewService, VehicleReservationService vehicleReservationService, VoucherService voucherService,
+                               TourRequestService tourRequestService,GroupRideService groupRideService, CommentService commentService, ForumService forumService)
+
         {
             #region ServiceInitializaton
             _cityCountryCsvRepository = cityCountryCsvRepository;
@@ -157,7 +152,10 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _textBox = textBox;
             _vehicleReservationService = vehicleReservationService;
             _voucherService = voucherService;
+            _groupRideService = groupRideService;
             _tourRequestService = tourRequestService;
+            _commentService = commentService;
+            _forumService = forumService;
             #endregion
 
             #region LoadingData
@@ -173,8 +171,8 @@ namespace SIMS_Booking.UI.ViewModel.Startup
             _tourReviewService.loadusers(_userService, _confirmTourService);
             _tourReviewService.loadCheckPoints(_confirmTourService, _tourReviewService);
             _renovationAppointmentService.LoadAccommodationInRenovationAppointment(_accommodationService);
-            
-
+            _commentService.LoadCommenterInComment(_userService);
+            _forumService.LoadForumCreatorAndCommentsInForum(_userService, _commentService);
             #endregion
 
             _navigationStore = navigationStore;
@@ -203,7 +201,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     //ToDo:pretvoriti u komandu(klasu)
                     _navigationStore.CurrentViewModel = new OwnerMainViewModel(_accommodationService, _cityCountryCsvRepository, _reservationService, _guestReviewService,
                       _userAccommodationService, _ownerReviewService, _postponementService, user,
-                      _userService, _renovationAppointmentService, _modalNavigationStore);
+                      _userService, _renovationAppointmentService, _forumService, _commentService, _modalNavigationStore);
                     break;
                 case Roles.Guest1:
                     _navigationStore.CurrentViewModel = new Guest1MainViewModel(_accommodationService,
@@ -213,7 +211,7 @@ namespace SIMS_Booking.UI.ViewModel.Startup
                     break;
                 case Roles.Guest2:
                     Guest2MainView guest2View = new Guest2MainView(_tourService, user, _vehicleService,
-                        _guideReviewService, _reservedTourService, _driverLocationsService, _vehicleReservationService, _voucherService);
+                        _guideReviewService, _reservedTourService, _driverLocationsService, _vehicleReservationService, _voucherService, _groupRideService, _tourRequestService);
                     guest2View.Show();
                     break;
                 case Roles.Driver:

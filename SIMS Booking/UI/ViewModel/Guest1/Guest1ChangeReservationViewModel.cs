@@ -173,7 +173,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
             StartDpStartDate = DateTime.Today.AddDays(1);
             NavigateBackCommand = new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
             PostponeReservationCommand =
-                new PostponeCommand(_postponementService, _reservationService, _selectedReservation, this);
+                new PostponeCommand(CreateCloseModalNavigationService(modalNavigationStore), _postponementService, _reservationService, _selectedReservation, this);
 
             Reservations = _reservationService.GetAll();
             AccommodationReservations = _reservationService.GetAccommodationReservations(_selectedReservation.Accommodation);
@@ -215,7 +215,7 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         public void DisableReservedDates()
         {
             List<CalendarDateRange> blackoutDates = new List<CalendarDateRange>();
-            foreach (var reservation in _reservationService.GetActiveReservations())
+            foreach (var reservation in _reservationService.GetAccommodationReservations(_selectedReservation.Accommodation))
             {
                 var startDate = reservation.StartDate.Date;
                 var endDate = reservation.EndDate.Date;

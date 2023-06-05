@@ -67,14 +67,14 @@ namespace SIMS_Booking.Service
             return _repository.GetAll().Where(e => !e.IsCanceled).ToList();
         }
 
-        public List<Reservation> GetUnreviewedActiveReservations(int id)
+        public List<Reservation> GetUnratedActiveReservations(int id)
         {
             return GetActiveReservations().Where(e => !e.HasOwnerReviewed && e.Accommodation.User.GetId() == id).ToList();
         }
 
-        //Metoda proverava da li je istekao rok za ocenjivanje,
-        //i ako jeste izbacuje rezervaciju iz liste rezervisanih smestaja i stavlja je u istoriju rezervacija(neocenjenu)
-        public void RemoveUnreviewedReservations(GuestReviewService guestReviewService)
+        //Checks if time limit for reviewing has passed,
+        //If so, deletes reservation form list of reservations, and puts it in list of passed reservations(Unrated)
+        public void RemoveUnratedReservations(GuestReviewService guestReviewService)
         {
             foreach (Reservation reservation in _repository.GetAll().ToList())
                 if ((DateTime.Now - reservation.EndDate).TotalDays > 5 && !reservation.HasOwnerReviewed)
@@ -90,7 +90,7 @@ namespace SIMS_Booking.Service
         {
             List<Reservation> accommodationReservations = new List<Reservation>();
 
-            foreach (Reservation reservation in _repository.GetAll())
+            foreach (Reservation reservation in GetActiveReservations())
             {
 
                 if (reservation.Accommodation.GetId() == selectedAccommodation.GetId())
@@ -113,7 +113,7 @@ namespace SIMS_Booking.Service
         public bool IsSuperGuest(User user)
         {
             int reservationCounter = 0;
-            foreach (Reservation reservation in _repository.GetAll())
+            foreach (Reservation reservation in GetReservationsByUser(user.GetId()))
             {
                 if (reservation.User == user && DateTime.Today - reservation.EndDate < TimeSpan.FromDays(365))
                     reservationCounter++;
@@ -184,6 +184,44 @@ namespace SIMS_Booking.Service
                     reservations[key] += 1;
                 else
                     reservations[key] = 1;
+            }
+
+            return reservations;
+        }
+
+        public List<Location> GetMostPopularLocations()
+        {
+            var reservations = GetNumberOfReservationsOnLocation();
+
+            //Finds location with most reservation days
+            double maxReservationDays = reservations.Max(kvp => kvp.Value);
+            //Checks if there are more locations with the same number of reservation days
+            return reservations.Where(x => x.Value == maxReservationDays).
+                Select(x => x.Key).ToList();
+        }
+
+        public List<Location> GetLeastPopularLocations()
+        {
+            var reservations = GetNumberOfReservationsOnLocation();
+
+            //Finds location with least reservation days
+            double maxReservationDays = reservations.Min(kvp => kvp.Value);
+            //Checks if there are more locations with the same number of reservation days(max)
+            return reservations.Where(x => x.Value == maxReservationDays).
+                Select(x => x.Key).ToList();
+        }
+
+        private Dictionary<Location, double> GetNumberOfReservationsOnLocation()
+        {
+            Dictionary<Location, double> reservations = new Dictionary<Location, double>();
+
+            foreach (Reservation reservation in GetActiveReservations())
+            {
+                Location key = reservation.Accommodation.Location;
+                if (reservations.ContainsKey(key))
+                    reservations[key] += (reservation.EndDate - reservation.StartDate).TotalDays;
+                else
+                    reservations[key] = (reservation.EndDate - reservation.StartDate).TotalDays;
             }
 
             return reservations;

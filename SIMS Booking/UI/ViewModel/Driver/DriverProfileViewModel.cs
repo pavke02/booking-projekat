@@ -24,23 +24,11 @@ namespace SIMS_Booking.UI.ViewModel.Driver
     {
         private FinishedRidesService _finishedRidesService;
         private VehicleService _vehicleService;
+        private RidesService _ridesService;
         public User User { get; set; }
         public static ObservableCollection<FinishedRide> FinishedRides { get; set; }
         public ICommand NavigateBackCommand { get; }
-
-        //private List<FinishedRide> _finishedRides;
-        //public List<FinishedRide> FinishedRides
-        //{
-        //    get => _finishedRides;
-        //    set
-        //    {
-        //        if (value != _finishedRides)
-        //        {
-        //            _finishedRides = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
+        public ICommand TakeColleaguesRidesCommand { get; }
 
         private int _fastRidesCount;
         public int FastRidesCount
@@ -98,6 +86,34 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             }
         }
 
+        private string _mostPopularLocation;
+        public string MostPopularLocation
+        {
+            get => _mostPopularLocation;
+            set
+            {
+                if (value != _mostPopularLocation)
+                {
+                    _mostPopularLocation = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _leastPopularLocation;
+        public string LeastPopularLocation
+        {
+            get => _leastPopularLocation;
+            set
+            {
+                if (value != _leastPopularLocation)
+                {
+                    _leastPopularLocation = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private Vehicle _vehicle;
         public Vehicle Vehicle
         {
@@ -112,10 +128,25 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             }
         }
 
-        public DriverProfileViewModel(ModalNavigationStore modalNavigationStore, FinishedRidesService finishedRidesService, VehicleService vehicleService, User user)
+        private bool _canTakeRides;
+        public bool CanTakeRides
+        {
+            get => _canTakeRides;
+            set
+            {
+                if (value != _canTakeRides)
+                {
+                    _canTakeRides = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public DriverProfileViewModel(ModalNavigationStore modalNavigationStore, FinishedRidesService finishedRidesService, VehicleService vehicleService, RidesService ridesService, User user)
         {
             _finishedRidesService = finishedRidesService;
             _vehicleService = vehicleService;
+            _ridesService = ridesService;
             User = user;
 
             Vehicle = _vehicleService.GetVehicleByUserID(User.GetId());
@@ -124,6 +155,54 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             FastRidesCount = 0;
             Points = 0;
             Salary = "";
+            MostPopularLocation = "";
+            LeastPopularLocation = "";
+
+            CanTakeRides = false;
+            foreach (Rides ride in _ridesService.GetAll())
+            {
+                if(ride.Pending == true)
+                {
+                    CanTakeRides = true;
+                    break;
+                }
+            }    
+
+            Dictionary<string, int> locationCounts = new Dictionary<string, int>();
+
+            foreach (FinishedRide finishedRide in FinishedRides)
+            {
+                string locationKey = finishedRide.Ride.Location.ToString();
+                if (locationCounts.ContainsKey(locationKey))
+                {
+                    locationCounts[locationKey]++;
+                }
+                else
+                {
+                    locationCounts[locationKey] = 1;
+                }
+            }
+
+            KeyValuePair<string, int> mostPopularLocation = locationCounts.OrderByDescending(x => x.Value).First();
+            KeyValuePair<string, int> leastPopularLocation = locationCounts.OrderBy(x => x.Value).First();
+
+            foreach(Location location in Vehicle.Locations)
+            {
+                string mostSplit = mostPopularLocation.Key.Split(',')[0];
+                if (mostSplit == location.City)
+                {
+                    MostPopularLocation = "You vehicle is on most popular location! (" + location.Country + ", " + location.City + ")";
+                }
+            }
+
+            foreach (Location location in Vehicle.Locations)
+            {
+                string leastSplit = leastPopularLocation.Key.Split(',')[0];
+                if (leastSplit == location.City)
+                {
+                    LeastPopularLocation = "You vehicle is on least popular location! (" + location.Country + ", " + location.City + ")";
+                }
+            }
 
             foreach (FinishedRide finishedRide in FinishedRides)
             {
@@ -136,9 +215,9 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             if(FastRidesCount >= 15)
             {
                 Status = "Super Driver";
-                Points = (FastRidesCount - 15) * 5 - Vehicle.CanceledRidesCount * 2;
+                Points = (FastRidesCount - 15) * 5 - Vehicle.CanceledRidesCount * 5;
                 FastRidesCount = 15;
-                if(FastRidesCount < 50)
+                if(Points < 50)
                 {
                     Salary = "You need " + (50 - Points) + " more points for extra salary!";
                 }
@@ -152,13 +231,19 @@ namespace SIMS_Booking.UI.ViewModel.Driver
                 Status = "Regular Driver";
             }
 
+
+
             NavigateBackCommand = new NavigateBackCommand(CreateCloseProfileNavigationService(modalNavigationStore));
+
+            TakeColleaguesRidesCommand = new TakeColleaguesRidesCommand(this, _ridesService);
         }
 
         private INavigationService CreateCloseProfileNavigationService(ModalNavigationStore modalNavigationStore)
         {
             return new CloseModalNavigationService(modalNavigationStore);
         }
+
+
     }
     
 }

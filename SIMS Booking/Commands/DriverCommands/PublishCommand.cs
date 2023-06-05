@@ -49,7 +49,7 @@ namespace SIMS_Booking.Commands.DriverCommands
             ReadImageURLs(imageurls);
             int maximumGuests = int.Parse(_viewModel.MaxGuests);
 
-            Vehicle vehicle = new Vehicle(locations, maximumGuests, languages, imageurls, user, 0);
+            Vehicle vehicle = new Vehicle(locations, maximumGuests, languages, imageurls, user, 0, "no", DateOnly.MaxValue, DateOnly.MaxValue);
             _vehicleService.Save(vehicle);
 
             foreach (Language language in languages)

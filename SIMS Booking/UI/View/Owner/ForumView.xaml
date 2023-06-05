@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="SIMS_Booking.UI.View.Owner.ForumView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:SIMS_Booking.UI.Utility.Converters"
+             mc:Ignorable="d" Height="450" Width="850" Background="#222222">
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <WrapPanel Margin="0 0 0 20" Background="#FF6C3DD8">
+            <Button Margin="10 10 360 0" Style="{StaticResource HoverButton}"
+                    Command="{Binding NavigateBackCommand}">
+                <Image Height="30" Width="30" 
+                       Source="../../../Resources/Images/arrow.png"/>
+            </Button>
+            <TextBlock Text="Forum" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
+                       Margin="0 10 0 0" Foreground="White" />
+        </WrapPanel>
+        <WrapPanel>
+            <StackPanel Width="500">
+                <Label FontSize="20" HorizontalAlignment="Center"
+                       Margin="0 0 0 10">Comment</Label>
+                <DataGrid Height="335" Width="500" VerticalAlignment="Top" HorizontalAlignment="Left"
+                  ItemsSource="{Binding Path=Comments , UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding Path=SelectedComment, UpdateSourceTrigger=PropertyChanged}"
+                  IsReadOnly="True" AutoGenerateColumns="False" FontSize="20" Background="#434242" Foreground="White"
+                  RowHeaderWidth="0">
+                    <DataGrid.Columns >
+                        <DataGridTextColumn Header="Created by" Binding="{Binding Commenter.Username}" Width="150"/>
+                        <DataGridTextColumn Header="Date of publishing" Binding="{Binding DateOfPublishing, StringFormat=d}" Width="250"/>
+                        <DataGridTextColumn Header="Reports" Binding="{Binding NumberOfReports}" Width="95"/>
+                    </DataGrid.Columns>
+                    <DataGrid.RowBackground>
+                        <SolidColorBrush Color="#434242"></SolidColorBrush>
+                    </DataGrid.RowBackground>
+                    <DataGrid.Resources>
+                        <converters:ForumCommentColorConverter x:Key="ColorConverter"></converters:ForumCommentColorConverter>
+                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Background" Value="#434242" />
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding OwnerStatus, Converter={StaticResource ColorConverter}}" Value="True">
+                                    <Setter Property="Background" Value="#BFACE2"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+                </DataGrid>
+            </StackPanel>
+            <StackPanel Width="350">
+                <Button Width="80" Height="70" HorizontalAlignment="Center" Margin="0, 10, 0, 0"
+                        Command="{Binding ReportCommentCommand}"
+                        Style="{StaticResource HoverButton}">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                    <Image Source="../../../Resources/Images/report.png" Height="60" Width="60"/>
+                </Button>
+                <TextBox Height="100" Width="300" HorizontalAlignment="Center"                                                                 
+                         Text="{Binding Path=SelectedCommentText, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                                         
+                         IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True"
+                         Background="White" Padding="10" FontSize="16">
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="3"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                <Button Width="80" Height="70" HorizontalAlignment="Center" Margin="0, 20, 0, 0"
+                        Command="{Binding LeaveCommentCommand}"
+                        Style="{StaticResource HoverButton}">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                    <Image Source="../../../Resources/Images/comment.png" Height="60" Width="60"/>
+                </Button>
+                <TextBox Height="100" Width="300" HorizontalAlignment="Center"                                                                 
+                         Text="{Binding Path=CommentText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                                         
+                         TextWrapping="Wrap" Background="White" 
+                         GotFocus="ShowKeyboard" LostFocus="HideKeyboard">
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="3"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+            </StackPanel>
+        </WrapPanel>
+    </StackPanel>
+</UserControl>

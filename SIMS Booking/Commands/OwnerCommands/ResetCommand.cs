@@ -4,9 +4,9 @@ namespace SIMS_Booking.Commands.OwnerCommands
 {
     class ResetCommand : CommandBase
     {
-        private readonly OwnerMainViewModel _viewModel;
+        private readonly IPublish _viewModel;
 
-        public ResetCommand(OwnerMainViewModel viewModel)
+        public ResetCommand(IPublish viewModel)
         {
             _viewModel = viewModel;
         }

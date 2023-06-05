@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.TeamFoundation.WorkItemTracking.Process.WebApi.Models;
-using SIMS_Booking.Commands.NavigateCommands;
+﻿using SIMS_Booking.Commands.NavigateCommands;
 using SIMS_Booking.Commands.OwnerCommands;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.UI.Utility;
 using SIMS_Booking.Utility.Stores;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Controls;
@@ -114,6 +113,16 @@ namespace SIMS_Booking.UI.ViewModel.Owner
                 blackoutDates.Add(range);
             }
 
+            foreach (var renovationAppointment in _renovationAppointmentService.GetActiveByAccommodation(_accommodation.GetId()))
+            {
+                var startDate = renovationAppointment.StartDate.Date;
+                var endDate = renovationAppointment.EndDate.Date;
+
+                var range = new CalendarDateRange(startDate, endDate);
+
+                blackoutDates.Add(range);
+            }
+
             //kada se napuni lista sa datumima koji su onemoguceni, obavesti se PostponeReservationView i ti datumi se oznace na kalendaru
             BlackoutDatesChangedEvent?.Invoke(blackoutDates);
         }
@@ -124,7 +133,6 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         }
 
         #region Validation
-
         public string this[string name]
         {
             get

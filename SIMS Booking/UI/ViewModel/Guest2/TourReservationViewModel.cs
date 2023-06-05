@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SIMS_Booking.UI.Utility;
+using System.Windows.Input;
 
 namespace SIMS_Booking.UI.ViewModel.Guest2
 {
-    class TourReservationViewModel
+    public class TourReservationViewModel : ViewModelBase
     {
+        public ICommand SubmitReviewCommand { get; }
+        public ICommand NavigateBackCommand { get; }
+
+        public TourReservationViewModel()
+        {
+
+        }
     }
 }

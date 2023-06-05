@@ -5,7 +5,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using SIMS_Booking.Repository;
-
+using SIMS_Booking.Service.RelationsService;
+using SIMS_Booking.Model;
 
 namespace SIMS_Booking.Service
 {
@@ -30,5 +31,20 @@ namespace SIMS_Booking.Service
             return _repository.GetAll();
         }
         #endregion
+
+        public void SubmitDriveReservation(int userId, int vehicleId, string time, Address address, Address destination)
+        {
+           
+           ReservationOfVehicle reservationOfVehicle = new ReservationOfVehicle(userId,vehicleId,time,address,destination);
+            Save(reservationOfVehicle);
+        }
+        public void Update(ReservationOfVehicle reservation)
+        {
+            _repository.Update(reservation);
+        }
+
+
+
+
     }
 }
