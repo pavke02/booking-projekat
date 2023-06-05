@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using SIMS_Booking.Model;
 using SIMS_Booking.Repository;
+using SIMS_Booking.UI.ViewModel.Owner;
+using SIMS_Booking.Utility.Observer;
 
 namespace SIMS_Booking.Service
 {
@@ -24,9 +26,19 @@ namespace SIMS_Booking.Service
             _repository.Save(comment);
         }
 
+        public void Subscribe(IObserver observer)
+        {
+            _repository.Subscribe(observer);
+        }
+
         public Comment GetById(int id)
         {
             return _repository.GetById(id);
+        }
+
+        public void Update(Comment comment)
+        {
+            _repository.Update(comment);
         }
         #endregion
 

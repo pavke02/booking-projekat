@@ -25,6 +25,11 @@ namespace SIMS_Booking.Service
         {
             _repository.Update(forum);
         }
+
+        public Forum GetById(int id)
+        {
+            return _repository.GetById(id);
+        }
         #endregion
 
         public void LoadForumCreatorAndCommentsInForum(UserService userService, CommentService commentService)
@@ -40,7 +45,8 @@ namespace SIMS_Booking.Service
 
         public List<Forum> ShouldNotifyOwner(int ownerId)
         {
-            return GetAll().Where(x => x.HasOwnerSeen.ContainsKey(ownerId) && !x.HasOwnerSeen[ownerId]).ToList();
+            return GetAll().Where(x => x.OwnersToNotify.ContainsKey(ownerId) && !x.OwnersToNotify[ownerId]).ToList();
         }
+
     }
 }

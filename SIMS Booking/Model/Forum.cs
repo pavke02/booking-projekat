@@ -15,7 +15,7 @@ namespace SIMS_Booking.Model
         public List<Comment> Comments { get; set; }
         //int -> id owner-a koji ima accommodation na lokaciji
         //bool -> da li je video
-        public Dictionary<int, bool> HasOwnerSeen { get; set; }
+        public Dictionary<int, bool> OwnersToNotify { get; set; }
         public int OwnersComments { get; set; }
         public int GuestsComments { get; set; }
 
@@ -24,13 +24,13 @@ namespace SIMS_Booking.Model
             Comments = new List<Comment>();
         }
 
-        public Forum(User createdBy, Location location, List<Comment> comments, Dictionary<int, bool> hasOwnerSeen)
+        public Forum(User createdBy, Location location, List<Comment> comments, Dictionary<int, bool> ownersToNotify)
         {
             CreatedBy = createdBy;
             CreatedById = CreatedBy.GetId();
             Location = location;
             Comments = comments;
-            HasOwnerSeen = hasOwnerSeen;
+            OwnersToNotify = ownersToNotify;
             Topic = Location.Country + "," + Location.City;
         }
 
@@ -46,7 +46,7 @@ namespace SIMS_Booking.Model
 
         public string[] ToCSV()
         {
-            string[] csvValues = { _id.ToString(), CreatedById.ToString(), Location.Country, Location.City, string.Join(',', HasOwnerSeen.Select(kvp => string.Join(",", kvp.Key, kvp.Value))) };
+            string[] csvValues = { _id.ToString(), CreatedById.ToString(), Location.Country, Location.City, string.Join(',', OwnersToNotify.Select(kvp => string.Join(",", kvp.Key, kvp.Value))) };
             return csvValues;
         }
 
@@ -58,10 +58,10 @@ namespace SIMS_Booking.Model
             Topic = Location.Country + "," + Location.City;
             Comments = new List<Comment>();
             string[] dictionaryItems = values[4].Split(',');
-            HasOwnerSeen = new Dictionary<int, bool>();
+            OwnersToNotify = new Dictionary<int, bool>();
             for (int i = 0; i < dictionaryItems.Length; i += 2)
             {
-                HasOwnerSeen[int.Parse(dictionaryItems[i])] = bool.Parse(dictionaryItems[i + 1]);
+                OwnersToNotify[int.Parse(dictionaryItems[i])] = bool.Parse(dictionaryItems[i + 1]);
             }
         }
     }
