@@ -75,6 +75,8 @@ namespace SIMS_Booking
             services.AddSingleton<TextBox>();
             services.AddSingleton<ICRUDRepository<GroupRide>, CsvCrudRepository<GroupRide>>();
             services.AddSingleton<ICRUDRepository<TourRequest>, CsvCrudRepository<TourRequest>>();
+            services.AddSingleton<ICRUDRepository<Comment>, CsvCrudRepository<Comment>>();
+            services.AddSingleton<ICRUDRepository<Forum>, CsvCrudRepository<Forum>>();
 
             return services;
         }
@@ -91,6 +93,8 @@ namespace SIMS_Booking
             services.AddSingleton<GuestReviewService>();
             services.AddSingleton<ReservedAccommodationService>();
             services.AddSingleton<UsersAccommodationService>();
+            services.AddSingleton<ForumService>();
+            services.AddSingleton<CommentService>();
 
             services.AddSingleton<DriverLanguagesService>();
             services.AddSingleton<DriverLocationsService>();

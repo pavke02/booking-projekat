@@ -32,6 +32,8 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         private readonly PostponementService _postponementService;
         private readonly UserService _userService;
         private readonly RenovationAppointmentService _renovationAppointmentService;
+        private readonly ForumService _forumService;
+        private readonly CommentService _commentService;
 
         private readonly User _user;
 
@@ -54,6 +56,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public List<string> Countries { get; set; }
         public List<int> Years { get; set; }
         public ObservableCollection<Accommodation> Accommodations { get; set; }
+        public ObservableCollection<Forum> Forums { get; set; }
         public ObservableCollection<Reservation> ReservedAccommodations { get; set; }
         public ObservableCollection<GuestReview> PastReservations { get; set; }
         public ObservableCollection<RenovationAppointment> ActiveRenovations { get; set; }
@@ -446,7 +449,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
         public OwnerMainViewModel(AccommodationService accommodationService, CityCountryCsvRepository cityCountryCsvRepository,
             ReservationService reservationService, GuestReviewService guestReviewService, UsersAccommodationService usersAccommodationService,
             OwnerReviewService ownerReviewService, PostponementService postponementService, User user, UserService userService,
-            RenovationAppointmentService renovationAppointmentService, ModalNavigationStore modalNavigationStore)
+            RenovationAppointmentService renovationAppointmentService, ForumService forumService, CommentService commentService, ModalNavigationStore modalNavigationStore)
         {
             _user = user;
             _cityCountryCsvRepository = cityCountryCsvRepository;
@@ -472,6 +475,9 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             _guestReviewService = guestReviewService;
             _guestReviewService.Subscribe(this);
             PastReservations = new ObservableCollection<GuestReview>(_guestReviewService.GetReviewedReservations(_user.GetId()));
+
+            _forumService = forumService;
+            Forums = new ObservableCollection<Forum>(_forumService.GetAll());
 
             _renovationAppointmentService = renovationAppointmentService;
             _renovationAppointmentService.Subscribe(this);
@@ -512,7 +518,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             CalculateRating(_user.GetId());
 
             NotificationTimer timer = 
-                new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService);
+                new NotificationTimer(_user, null, ReservedAccommodations, _reservationService, _guestReviewService, _forumService);
             DatePassedTimer passedTimer =
                 new DatePassedTimer(_accommodationService, _renovationAppointmentService, _user);
 
