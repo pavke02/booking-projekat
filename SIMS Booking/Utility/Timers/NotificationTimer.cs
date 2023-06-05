@@ -60,7 +60,7 @@ namespace SIMS_Booking.Utility.Timers
                     notifier.ShowInformation("New forum");
                     foreach (Forum forum in forums)
                     {
-                        forum.HasOwnerSeen[_user.GetId()] = true;
+                        forum.OwnersToNotify[_user.GetId()] = true;
                         _forumService.Update(forum);
                     }
                 }

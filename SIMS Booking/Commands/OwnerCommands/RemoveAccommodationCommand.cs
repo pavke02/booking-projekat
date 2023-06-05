@@ -28,6 +28,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
         {
             //ToDo: implement
             Trace.WriteLine("Uradi");
+            Trace.Write(_viewModel.SelectedAccommodation.Name);
         }
     }
 }

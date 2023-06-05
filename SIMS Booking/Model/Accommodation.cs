@@ -25,7 +25,8 @@ namespace SIMS_Booking.Model
             ImageURLs = new List<string>();
         }
 
-        public Accommodation(string name, Location location, AccommodationType type, User user, int maxGuests, int minReservationDays, int cancellationPeriod, List<string> imagesURL, bool isRenovated)
+        public Accommodation(string name, Location location, AccommodationType type, User user, int maxGuests, int minReservationDays,
+            int cancellationPeriod, List<string> imagesURL, bool isRenovated)
         {            
             Name = name;
             Location = location;

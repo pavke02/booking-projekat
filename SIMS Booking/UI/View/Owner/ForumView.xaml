@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d" Height="450" Width="850">
+             xmlns:converters="clr-namespace:SIMS_Booking.UI.Utility.Converters"
+             mc:Ignorable="d" Height="450" Width="850" Background="#222222">
     <UserControl.Resources>
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="White"/>
@@ -30,23 +31,33 @@
                   IsReadOnly="True" AutoGenerateColumns="False" FontSize="20" Background="#434242" Foreground="White"
                   RowHeaderWidth="0">
                     <DataGrid.Columns >
-                        <DataGridTextColumn Header="Created by" Binding="{Binding CreatedBy}" Width="150"/>
-                        <DataGridTextColumn Header="Date of publishing" Binding="{Binding DateOfPublishing}" Width="250"/>
-                        <DataGridTextColumn Header="Reports" Binding="{Binding GuestsComments}" Width="80"/>
+                        <DataGridTextColumn Header="Created by" Binding="{Binding Commenter.Username}" Width="150"/>
+                        <DataGridTextColumn Header="Date of publishing" Binding="{Binding DateOfPublishing, StringFormat=d}" Width="250"/>
+                        <DataGridTextColumn Header="Reports" Binding="{Binding NumberOfReports}" Width="95"/>
                     </DataGrid.Columns>
                     <DataGrid.RowBackground>
                         <SolidColorBrush Color="#434242"></SolidColorBrush>
                     </DataGrid.RowBackground>
                     <DataGrid.Resources>
+                        <converters:ForumCommentColorConverter x:Key="ColorConverter"></converters:ForumCommentColorConverter>
                         <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
                             <Setter Property="Background" Value="#434242" />
                         </Style>
                     </DataGrid.Resources>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding OwnerStatus, Converter={StaticResource ColorConverter}}" Value="True">
+                                    <Setter Property="Background" Value="#BFACE2"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
                 </DataGrid>
             </StackPanel>
             <StackPanel Width="350">
                 <Button Width="80" Height="70" HorizontalAlignment="Center" Margin="0, 10, 0, 0"
-                        Command="{Binding ReportComment}"
+                        Command="{Binding ReportCommentCommand}"
                         Style="{StaticResource HoverButton}">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
@@ -56,13 +67,9 @@
                     <Image Source="../../../Resources/Images/report.png" Height="60" Width="60"/>
                 </Button>
                 <TextBox Height="100" Width="300" HorizontalAlignment="Center"                                                                 
-                         Text="{Binding Path=ImageURLs, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                                         
+                         Text="{Binding Path=SelectedCommentText, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                                         
                          IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True"
-                         Background="White">
-                    <TextBox.ToolTip>
-                        <TextBlock Text="{Binding ErrorCollection[ImageURLs]}"
-                                   Foreground="Black"/>
-                    </TextBox.ToolTip>
+                         Background="White" Padding="10" FontSize="16">
                     <TextBox.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="3"/>
@@ -70,7 +77,7 @@
                     </TextBox.Resources>
                 </TextBox>
                 <Button Width="80" Height="70" HorizontalAlignment="Center" Margin="0, 20, 0, 0"
-                        Command="{Binding ReportComment}"
+                        Command="{Binding LeaveCommentCommand}"
                         Style="{StaticResource HoverButton}">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
@@ -80,13 +87,8 @@
                     <Image Source="../../../Resources/Images/comment.png" Height="60" Width="60"/>
                 </Button>
                 <TextBox Height="100" Width="300" HorizontalAlignment="Center"                                                                 
-                         Text="{Binding Path=ImageURLs, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                                         
-                         IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True"
-                         Background="White">
-                    <TextBox.ToolTip>
-                        <TextBlock Text="{Binding ErrorCollection[ImageURLs]}"
-                                   Foreground="Black"/>
-                    </TextBox.ToolTip>
+                         Text="{Binding Path=CommentText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                                         
+                         TextWrapping="Wrap" Background="White">
                     <TextBox.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="3"/>

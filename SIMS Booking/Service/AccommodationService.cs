@@ -56,5 +56,12 @@ namespace SIMS_Booking.Service
         {
             return GetAll().Where(e => e.Location.City == unpopularLocation.City && e.Location.Country == unpopularLocation.Country).ToList();
         }
+
+        public bool OwnerHasAccommodationOnLocation(Location selectedForumLocation, int userId)
+        {
+            return GetAll().FirstOrDefault(x => x.User.GetId() == userId && 
+                                                x.Location.City == selectedForumLocation.City && 
+                                                x.Location.Country == selectedForumLocation.Country) != null;
+        }
     }
 }

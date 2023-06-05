@@ -56,6 +56,9 @@
             <DataTemplate DataType="{x:Type viewModelOwner:RemoveAccommodationOnLocationViewModel}">
                 <viewOwner:RemoveAccommodationOnLocationView></viewOwner:RemoveAccommodationOnLocationView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModelOwner:ForumViewModel}">
+                <viewOwner:ForumView></viewOwner:ForumView>
+            </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewModelDriver:DriverViewModel}">
                 <viewDriver:DriverView></viewDriver:DriverView>
