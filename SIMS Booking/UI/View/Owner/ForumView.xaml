@@ -88,7 +88,8 @@
                 </Button>
                 <TextBox Height="100" Width="300" HorizontalAlignment="Center"                                                                 
                          Text="{Binding Path=CommentText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                                         
-                         TextWrapping="Wrap" Background="White">
+                         TextWrapping="Wrap" Background="White" 
+                         GotFocus="ShowKeyboard" LostFocus="HideKeyboard">
                     <TextBox.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="3"/>

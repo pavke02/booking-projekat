@@ -55,7 +55,8 @@
                 <StackPanel>
                     <Label HorizontalAlignment="Center">Renovating Description:</Label>
                     <TextBox Width="250" Height="150" HorizontalAlignment="Left"
-                             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                             GotFocus="ShowKeyboard" LostFocus="HideKeyboard">
                         <TextBox.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="3"/>

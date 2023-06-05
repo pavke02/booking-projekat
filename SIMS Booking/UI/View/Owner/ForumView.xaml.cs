@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Diagnostics;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SIMS_Booking.UI.View.Owner
 {
-    /// <summary>
-    /// Interaction logic for ForumView.xaml
-    /// </summary>
     public partial class ForumView : UserControl
     {
+        Process process;
+
         public ForumView()
         {
             InitializeComponent();
+        }
+
+        private void ShowKeyboard(object sender, System.Windows.RoutedEventArgs e)
+        {
+            process = System.Diagnostics.Process.Start(new ProcessStartInfo { FileName = "osk.exe", UseShellExecute = true });
+        }
+
+        private void HideKeyboard(object sender, System.Windows.RoutedEventArgs e)
+        {
+            process.Kill();
         }
     }
 }

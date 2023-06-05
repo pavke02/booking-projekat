@@ -16,7 +16,7 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel>
+    <StackPanel Loaded="ShowKeyboard" Unloaded="HideKeyboard">
         <WrapPanel Background="#FF6C3DD8" Width="700">
             <Button Margin="10 0 110 0" Style="{StaticResource HoverButton}"
                     Command="{Binding NavigateBackCommand}">

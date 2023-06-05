@@ -241,7 +241,8 @@
                     </WrapPanel>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Publish Accommodation" Height="60" Style="{StaticResource TabItemHover}">
+            <TabItem Header="Publish Accommodation" Height="60" Style="{StaticResource TabItemHover}"
+                     GotFocus="ShowKeyboard" LostFocus="HideKeyboard">
                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid Margin="0, 20, 0, 0">
                         <Grid.RowDefinitions>
@@ -257,7 +258,7 @@
 
                         <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="40, 20, 0, 0">Name</Label>
                         <TextBox Grid.Column="1" Grid.Row="0" Height="30" Width="180" Margin="0, 20, 0, 0" 
-                                 VerticalContentAlignment="Center"
+                                 VerticalContentAlignment="Center" 
                                  Text="{Binding Path=AccommodationName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.ToolTip>
                                 <TextBlock Text="{Binding ErrorCollection[AccommodationName]}"
@@ -317,7 +318,7 @@
 
                         <Label Grid.Column="0" Grid.Row="0" Height="40" Margin="20, 20, 0, 0">Maximum number of guests</Label>
                         <TextBox Grid.Column="1" Grid.Row="0" Height="30" Margin="0, 20, 0, 0"
-                                 VerticalContentAlignment="Center"
+                                 VerticalContentAlignment="Center" 
                                  Text="{Binding Path=MaxGuests, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.ToolTip>
                                 <TextBlock Text="{Binding ErrorCollection[MaxGuests]}"

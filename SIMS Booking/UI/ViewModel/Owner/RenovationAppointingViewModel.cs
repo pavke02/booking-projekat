@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.TeamFoundation.WorkItemTracking.Process.WebApi.Models;
-using SIMS_Booking.Commands.NavigateCommands;
+﻿using SIMS_Booking.Commands.NavigateCommands;
 using SIMS_Booking.Commands.OwnerCommands;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service;
 using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.UI.Utility;
 using SIMS_Booking.Utility.Stores;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Controls;

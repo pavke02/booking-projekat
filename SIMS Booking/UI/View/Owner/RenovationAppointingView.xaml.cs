@@ -1,6 +1,7 @@
 ﻿using SIMS_Booking.UI.ViewModel.Owner;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +10,8 @@ namespace SIMS_Booking.UI.View.Owner
 {
     public partial class RenovationAppointingView : UserControl
     {
+        private Process process;
+
         public RenovationAppointingView()
         {
             InitializeComponent();
@@ -50,7 +53,17 @@ namespace SIMS_Booking.UI.View.Owner
         private DateTime? FindClosestUnavailableDate()
         {
             List<CalendarDateRange> unavailableDateRanges = startDatesCalendar.BlackoutDates.Where(d => d.Start > startDatesCalendar.SelectedDate.Value).ToList();
-            return unavailableDateRanges.OrderBy(a => a.Start).FirstOrDefault().Start.AddDays(-1);
+            return unavailableDateRanges.OrderBy(a => a.Start).FirstOrDefault()?.Start.AddDays(-1);
+        }
+
+        private void ShowKeyboard(object sender, System.Windows.RoutedEventArgs e)
+        {
+            process = System.Diagnostics.Process.Start(new ProcessStartInfo { FileName = "osk.exe", UseShellExecute = true });
+        }
+
+        private void HideKeyboard(object sender, System.Windows.RoutedEventArgs e)
+        {
+            process.Kill();
         }
     }
 }
