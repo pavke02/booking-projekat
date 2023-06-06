@@ -30,7 +30,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         {
             NavigateBackCommand = new NavigateBackCommand(CreateCloseAddVehicleNavigationService(modalNavigationStore));
 
-            VideoSource = new Uri("../../../Resources/Videos/test123.mp4", UriKind.RelativeOrAbsolute);
+            VideoSource = new Uri("../../../Resources/Videos/driverTutorial.mp4", UriKind.RelativeOrAbsolute);
         }
 
         private INavigationService CreateCloseAddVehicleNavigationService(ModalNavigationStore modalNavigationStore)

@@ -74,21 +74,21 @@ namespace SIMS_Booking.UI.ViewModel.Driver
 
             DriverRides = new List<Rides>();
 
-            foreach(Rides ride in _ridesService.GetAll())
-            {
-                if(ride.DriverID == Vehicle.UserID)
-                {
-                    DriverRides.Add(ride);
-                }
-            }
+            //foreach(Rides ride in _ridesService.GetAll())
+            //{
+            //    if(ride.DriverID == Vehicle.UserID && ride.DateTime.Day >= StartingDate.Day && ride.DateTime.Day <= EndingDate.Day)
+            //    {
+            //        DriverRides.Add(ride);
+            //    }
+            //}
 
             StartingDate = DateTime.Today.AddDays(1);
             EndingDate = DateTime.Today.AddDays(2);
 
             NavigateBackCommand = new NavigateBackCommand(CreateCloseDriverRequestVacationService(modalNavigationStore));
 
-            RequestVacationCommand = new RequestVacationCommand(this, _vehicleService, _ridesService);
-            RequestVacationUrgentCommand = new RequestVacationUrgentCommand(this, _vehicleService, _ridesService);
+            RequestVacationCommand = new RequestVacationCommand(this, _vehicleService, _ridesService, Vehicle);
+            RequestVacationUrgentCommand = new RequestVacationUrgentCommand(this, _vehicleService, _ridesService, Vehicle);
         }
 
         private INavigationService CreateCloseDriverRequestVacationService(ModalNavigationStore modalNavigationStore)
