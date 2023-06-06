@@ -16,14 +16,17 @@ namespace SIMS_Booking.Commands.DriverCommands
         private readonly DriverRequestVacationViewModel _viewModel;
         private readonly RidesService _ridesService;
         private readonly VehicleService _vehicleService;
+        private readonly Vehicle Vehicle;
 
-        public RequestVacationCommand(DriverRequestVacationViewModel viewModel, VehicleService vehicleService, RidesService ridesService)
+        public RequestVacationCommand(DriverRequestVacationViewModel viewModel, VehicleService vehicleService, RidesService ridesService, Vehicle vehicle)
         {
             _viewModel = viewModel;
             _vehicleService = vehicleService;
             _ridesService = ridesService;
 
+
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
+            Vehicle = vehicle;
         }
 
         public override void Execute(object? parameter)
