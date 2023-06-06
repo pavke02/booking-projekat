@@ -5,21 +5,59 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SIMS_Booking.UI.View.Driver"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" Background="#222222">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="CustomButtonTemplate" TargetType="{x:Type Button}">
+            <Border x:Name="Border" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="Black" CornerRadius="15">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="Border" Property="Background" Value="#CDD1CE"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="CloseButtonTemplate" TargetType="{x:Type Button}">
+            <Border x:Name="Border">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+    
     <Grid>
-        <Label Content="Status:" HorizontalAlignment="Left" Margin="55,55,0,0" VerticalAlignment="Top" Height="35" Width="65" FontSize="18"/>
-        <Label HorizontalAlignment="Left" Margin="120,55,0,0" VerticalAlignment="Top" Width="150" Height="35" FontSize="18" FontFamily="Times New Roman" Content="{Binding Status, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Label Content="Points:&#xD;&#xA;" HorizontalAlignment="Left" Margin="55,109,0,0" VerticalAlignment="Top" Width="65" Height="35" FontSize="18"/>
-        <Label Content="{Binding Points, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="120,109,0,0" VerticalAlignment="Top" Width="110" Height="35" FontSize="18"/>
-        <Label Content="Drive safe!" HorizontalAlignment="Center" Margin="0,400,0,0" VerticalAlignment="Top" Width="128" Height="40" FontSize="22" Foreground="#FF101010" FontFamily="Segoe Print"/>
-        <Label Content="Fast rides for Super Driver:" HorizontalAlignment="Left" Margin="368,55,0,0" VerticalAlignment="Top" Width="220" Height="35" FontSize="18"/>
-        <Label HorizontalAlignment="Left" Margin="588,55,0,0" VerticalAlignment="Top" Width="32" Height="35" FontSize="18" Content="{Binding FastRidesCount, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-        <Button Content="x" HorizontalAlignment="Left" Margin="780,0,0,0" VerticalAlignment="Top" Width="20" Height="20" Foreground="White" Background="Black" Command="{Binding NavigateBackCommand}"/>
-        <Label HorizontalAlignment="Left" Margin="620,55,0,0" VerticalAlignment="Top" Width="42" Height="35" FontSize="18" Content="/ 15" VerticalContentAlignment="Center"/>
-        <Label Content="{Binding Salary, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="55,177,0,0" VerticalAlignment="Top" Width="350" Height="34" FontSize="18"/>
-        <Label Content="{Binding MostPopularLocation, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="55,225,0,0" VerticalAlignment="Top" Width="607" Height="36" FontSize="18"/>
-        <Label Content="{Binding LeastPopularLocation, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="55,266,0,0" VerticalAlignment="Top" Width="607" Height="36" FontSize="18"/>
-        <Button Content="Take colleagues&#xD;&#xA;         rides" HorizontalAlignment="Left" Command="{Binding TakeColleaguesRidesCommand}" Margin="620,339,0,0" VerticalAlignment="Top" Width="104" Height="50" FontSize="14"/>
+        <Label Content="Status:" HorizontalAlignment="Left" Margin="55,55,0,0" VerticalAlignment="Top" Height="35" Width="65" FontSize="18" Foreground="White"/>
+        <Label HorizontalAlignment="Left" Margin="120,55,0,0" VerticalAlignment="Top" Width="150" Height="35" FontSize="18" FontFamily="Times New Roman" Content="{Binding Status, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White"/>
+        <Label Content="Points:&#xD;&#xA;" HorizontalAlignment="Left" Margin="55,109,0,0" VerticalAlignment="Top" Width="65" Height="35" FontSize="18" Foreground="White"/>
+        <Label Content="{Binding Points, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="120,109,0,0" VerticalAlignment="Top" Width="110" Height="35" FontSize="18" Foreground="White"/>
+        <Label Content="Drive safe!" HorizontalAlignment="Center" Margin="0,400,0,0" VerticalAlignment="Top" Width="128" Height="40" FontSize="22" Foreground="White" FontFamily="Segoe Print"/>
+        <Label Content="Fast rides for Super Driver:" HorizontalAlignment="Left" Margin="368,55,0,0" VerticalAlignment="Top" Width="220" Height="35" FontSize="18" Foreground="White"/>
+        <Label HorizontalAlignment="Left" Margin="588,55,0,0" VerticalAlignment="Top" Width="32" Height="35" FontSize="18" Content="{Binding FastRidesCount, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Foreground="White"/>
+        <Button Template="{StaticResource CloseButtonTemplate}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30" Background="Transparent" Command="{Binding NavigateBackCommand}" FontSize="16">
+            <Image 
+                           Source="../../../Resources/Images/arrow.png"/>
+        </Button>
+        <Label HorizontalAlignment="Left" Margin="620,55,0,0" VerticalAlignment="Top" Width="42" Height="35" FontSize="18" Content="/ 15" VerticalContentAlignment="Center" Foreground="White"/>
+        <Label Content="{Binding Salary, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="55,177,0,0" VerticalAlignment="Top" Width="350" Height="34" FontSize="18" Foreground="White"/>
+        <Label Content="{Binding MostPopularLocation, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="55,225,0,0" VerticalAlignment="Top" Width="607" Height="36" FontSize="18" Foreground="White"/>
+        <Label Content="{Binding LeastPopularLocation, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="55,266,0,0" VerticalAlignment="Top" Width="607" Height="36" FontSize="18" Foreground="White"/>
+        <Button Template="{StaticResource CustomButtonTemplate}" Content="Take colleagues&#xD;&#xA;         rides" HorizontalAlignment="Left" 
+                Command="{Binding TakeColleaguesRidesCommand}" Margin="620,339,0,0" VerticalAlignment="Top" Width="104" Height="50" 
+                FontSize="14" Foreground="White" Background="#FF555555">
+        </Button>
 
     </Grid>
 </UserControl>

@@ -7,9 +7,28 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Height="450" Width="800">
+             Height="450" Width="800" Background="#222222">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="CloseButtonTemplate" TargetType="{x:Type Button}">
+            <Border x:Name="Border">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
     <Grid>
-        <Button Content="x" HorizontalAlignment="Left" Margin="780,0,0,0" VerticalAlignment="Top" Width="20" Height="20" Foreground="White" Background="Black" Command="{Binding NavigateBackCommand}"/>
+        <Button Template="{StaticResource CloseButtonTemplate}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="20" Height="20" Foreground="Transparent" 
+                Background="Transparent" Command="{Binding NavigateBackCommand}">
+            <Image 
+                           Source="../../../Resources/Images/arrow.png"/>
+        </Button>
         <DatePicker SelectedDate="{Binding StartingDate, Mode=TwoWay}" HorizontalAlignment="Left" Margin="202,44,0,0" VerticalAlignment="Top">
             <DatePicker.BlackoutDates>
                 <CalendarDateRange Start="{x:Static sys:DateTime.MinValue}" End="{x:Static sys:DateTime.Today}" />
@@ -20,10 +39,23 @@
                 <CalendarDateRange Start="{x:Static sys:DateTime.MinValue}" End="{x:Static sys:DateTime.Today}" />
             </DatePicker.BlackoutDates>
         </DatePicker>
-        <Label Content="Starting date:" HorizontalAlignment="Left" Margin="55,36,0,0" VerticalAlignment="Top" Width="120" Height="40" FontSize="18"/>
-        <Label Content="Ending date:" HorizontalAlignment="Left" Margin="55,217,0,0" VerticalAlignment="Top" Width="120" Height="40" FontSize="18"/>
-        <Button Content="Request Vacation" Command="{Binding RequestVacationCommand}" HorizontalAlignment="Left" Margin="567,384,0,0" VerticalAlignment="Top" Width="100" Height="50" Background="#FF8B98FF"/>
-        <Button Content="Request Vacation&#xD;&#xA;       (URGENT)" Command="{Binding RequestVacationUrgentCommand}" HorizontalAlignment="Left" Margin="690,384,0,0" VerticalAlignment="Top" Width="100" Height="50" Background="#FFFF7272">
+        <Label Content="Starting date:" HorizontalAlignment="Left" Margin="55,36,0,0" VerticalAlignment="Top" Width="120" Height="40" FontSize="18" Foreground="White"/>
+        <Label Content="Ending date:" HorizontalAlignment="Left" Margin="55,217,0,0" VerticalAlignment="Top" Width="120" Height="40" FontSize="18" Foreground="White"/>
+        <Button Content="Request Vacation" Command="{Binding RequestVacationCommand}" HorizontalAlignment="Left" 
+                Margin="567,384,0,0" VerticalAlignment="Top" Width="100" Height="50" Background="#FF6576FF" Foreground="White">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="10"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Content="Request Vacation&#xD;&#xA;       (URGENT)" Command="{Binding RequestVacationUrgentCommand}" 
+                HorizontalAlignment="Left" Margin="690,384,0,0" VerticalAlignment="Top" Width="100" Height="50" Background="#FFFF4A4A" Foreground="White">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="10"/>
+                </Style>
+            </Button.Resources>
         </Button>
 
     </Grid>

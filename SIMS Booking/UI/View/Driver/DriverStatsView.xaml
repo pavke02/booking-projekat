@@ -4,50 +4,144 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Height="450" Width="800">
+        Height="322" Width="814" Background="#222222">
+    
+    <UserControl.Resources>
+        <ControlTemplate x:Key="CloseButtonTemplate" TargetType="{x:Type Button}">
+            <Border x:Name="Border">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style x:Key="CustomDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="#222222" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="RowBackground" Value="#FF222222" />
+            <Setter Property="AlternatingRowBackground" Value="#FF555555" />
+            <Setter Property="GridLinesVisibility" Value="All" />
+        </Style>
+        <Style x:Key="CustomDataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#FF555555" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="5" />
+        </Style>
+        <Style x:Key="CustomTabControlStyle" TargetType="TabControl">
+            <Setter Property="Background" Value="Black" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="White" />
+        </Style>
+        <Style x:Key="CustomTabItemStyle" TargetType="TabItem">
+            <Setter Property="Background" Value="#FF555555" />
+            <Setter Property="Foreground" Value="DarkGray" />
+            <Setter Property="BorderBrush" Value="#FF555555" />
+            <Setter Property="Padding" Value="10" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
-        <TabControl>
-            <TabItem Header="2023">
-                <DataGrid Grid.Row="0" x:Name="stats2023Grid"
+        <TabControl Style="{StaticResource CustomTabControlStyle}">
+            <TabItem Header="2023" Style="{StaticResource CustomTabItemStyle}">
+                <DataGrid Grid.Row="0" x:Name="stats2023Grid" Style="{StaticResource CustomDataGridStyle}"
                           ItemsSource="{Binding Path=MonthlyDriverStats2023, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedMonthlyDriverStats2023, UpdateSourceTrigger=PropertyChanged}"
                           IsReadOnly="True" AutoGenerateColumns="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Month" Binding="{Binding Month}" Width="180"/>
-                        <DataGridTextColumn Header="Number of rides" Binding="{Binding TotalRides}" Width="180"/>
-                        <DataGridTextColumn Header="Average ride time (in seconds)" Binding="{Binding AverageTime}" Width="200"/>
-                        <DataGridTextColumn Header="Average ride price (in RSD)" Binding="{Binding AveragePrice}" Width="200"/>
+                        <DataGridTextColumn Header="Month" Binding="{Binding Month}" Width="*">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Number of rides" Binding="{Binding TotalRides}" Width="*">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Average ride time (in seconds)" Binding="{Binding AverageTime}" Width="*">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Average ride price (in RSD)" Binding="{Binding AveragePrice}" Width="*">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            <TabItem Header="2022">
-                <DataGrid Grid.Row="0" x:Name="stats2022Grid"
+            <TabItem Header="2022" Style="{StaticResource CustomTabItemStyle}">
+                <DataGrid Grid.Row="0" x:Name="stats2022Grid" Style="{StaticResource CustomDataGridStyle}"
                           ItemsSource="{Binding Path=MonthlyDriverStats2022, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedMonthlyDriverStats2022, UpdateSourceTrigger=PropertyChanged}"
                           IsReadOnly="True" AutoGenerateColumns="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Month" Binding="{Binding Month}" Width="180"/>
-                        <DataGridTextColumn Header="Number of rides" Binding="{Binding TotalRides}" Width="180"/>
-                        <DataGridTextColumn Header="Average ride time" Binding="{Binding AverageTime}" Width="180"/>
-                        <DataGridTextColumn Header="Average ride price" Binding="{Binding AveragePrice}" Width="200"/>
+                        <DataGridTextColumn Header="Month" Binding="{Binding Month}" Width="200">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Number of rides" Binding="{Binding TotalRides}" Width="200">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Average ride time" Binding="{Binding AverageTime}" Width="200">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Average ride price" Binding="{Binding AveragePrice}" Width="200">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            <TabItem Header="2021">
-                <DataGrid Grid.Row="0" x:Name="stats2021Grid"
+            <TabItem Header="2021" Style="{StaticResource CustomTabItemStyle}">
+                <DataGrid Grid.Row="0" x:Name="stats2021Grid" Style="{StaticResource CustomDataGridStyle}"
                           ItemsSource="{Binding Path=MonthlyDriverStats2021, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding Path=SelectedMonthlyDriverStats2021, UpdateSourceTrigger=PropertyChanged}"
                           IsReadOnly="True" AutoGenerateColumns="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Month" Binding="{Binding Month}" Width="180"/>
-                        <DataGridTextColumn Header="Number of rides" Binding="{Binding TotalRides}" Width="180"/>
-                        <DataGridTextColumn Header="Average ride time" Binding="{Binding AverageTime}" Width="180"/>
-                        <DataGridTextColumn Header="Average ride price" Binding="{Binding AveragePrice}" Width="200"/>
+                        <DataGridTextColumn Header="Month" Binding="{Binding Month}" Width="200">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Number of rides" Binding="{Binding TotalRides}" Width="200">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Average ride time" Binding="{Binding AverageTime}" Width="200">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Average ride price" Binding="{Binding AveragePrice}" Width="200">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource CustomDataGridColumnHeaderStyle}" />
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
         </TabControl>
-        <Button x:Name="CloseButton" Content="x&#xD;&#xA;" HorizontalAlignment="Right" Margin="738,0,0,0" Height="20" Width="20" VerticalAlignment="Top" Command="{Binding NavigateBackCommand}" Background="Black" Foreground="White"/>
+        <Button Template="{StaticResource CloseButtonTemplate}" x:Name="CloseButton" HorizontalAlignment="Right" Margin="738,0,0,0" Height="20" Width="20" VerticalAlignment="Top" 
+                Command="{Binding NavigateBackCommand}" Background="Transparent">
+            <Image 
+                           Source="../../../Resources/Images/arrow.png"/>
+        </Button>
 
     </Grid>
 </UserControl>

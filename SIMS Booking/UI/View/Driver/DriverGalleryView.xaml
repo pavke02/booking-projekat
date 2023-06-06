@@ -4,7 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Height="450" Width="800">
+        Height="450" Width="800" Background="#222222">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="CloseButtonTemplate" TargetType="{x:Type Button}">
+            <Border x:Name="Border">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
     <ScrollViewer>
         <Grid>
 
@@ -12,21 +27,25 @@
                 <ColumnDefinition Width="400" />
                 <ColumnDefinition Width="400" />
             </Grid.ColumnDefinitions>
-            <ItemsControl x:Name="imageList" Grid.Column="0" ItemsSource="{Binding imageUrls}">
+            <ItemsControl x:Name="imageList" Grid.Column="0" ItemsSource="{Binding ImageUrlsLeft}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Image Height="250" Stretch="UniformToFill" Source="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <ItemsControl x:Name="imageList2" Grid.Column="1" ItemsSource="{Binding imageUrls2}">
+            <ItemsControl x:Name="imageList2" Grid.Column="1" ItemsSource="{Binding ImageUrlsRight}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Image Height="250" Stretch="UniformToFill" Source="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button x:Name="CloseButton" Content="x" HorizontalAlignment="Left" Margin="380,0,0,0" VerticalAlignment="Top" Grid.Column="1" Width="20" Height="20" Background="Black" Foreground="White"  Command="{Binding NavigateBackCommand}"/>
+            <Button Template="{StaticResource CloseButtonTemplate}" x:Name="CloseButton" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="20" Height="20" Background="Transparent"
+                    Command="{Binding NavigateBackCommand}">
+                <Image 
+                           Source="../../../Resources/Images/arrow.png"/>
+            </Button>
         </Grid>
     </ScrollViewer>
 </UserControl>
