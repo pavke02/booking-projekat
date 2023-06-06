@@ -517,7 +517,7 @@ namespace SIMS_Booking.UI.ViewModel.Owner
             AddImageCommand = new AddImageCommand(this);
             ClearURLsCommand = new ClearURLsCommand(this);
             CancelRenovationCommand = new CancelRenovationCommand(this, _renovationAppointmentService);
-            GeneratePdfCommand = new GeneratePdfCommand(_ownerReviewService);
+            GeneratePdfCommand = new GeneratePdfCommand(_ownerReviewService, _user);
 
             NavigateToGuestReviewCommand = 
                 new NavigateCommand(CreateGuestReviewNavigationService(modalNavigationStore), this, () => SelectedReservation != null && 

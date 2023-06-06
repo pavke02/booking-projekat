@@ -1,21 +1,20 @@
-﻿using System.Collections.Generic;
-using SIMS_Booking.Service;
-using SIMS_Booking.UI.ViewModel.Owner;
-using System.ComponentModel;
-using PdfSharp.Drawing;
+﻿using PdfSharp.Drawing;
 using PdfSharp.Pdf;
-using SIMS_Booking.Enums;
 using SIMS_Booking.Model;
+using SIMS_Booking.Service;
+using System.Collections.Generic;
 
 namespace SIMS_Booking.Commands.OwnerCommands
 {
     public class GeneratePdfCommand : CommandBase
     {
         private readonly OwnerReviewService _ownerReviewService;
+        private readonly User _user;
 
-        public GeneratePdfCommand(OwnerReviewService ownerReviewService)
+        public GeneratePdfCommand(OwnerReviewService ownerReviewService, User user)
         {
             _ownerReviewService = ownerReviewService;
+            _user = user;
         }
 
         public override void Execute(object? parameter)
@@ -49,7 +48,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
         private Dictionary<Accommodation, AccommodationRatings> GenerateRatingForAccommodations()
         {
             Dictionary<Accommodation, AccommodationRatings> accommodationsRatings = new Dictionary<Accommodation, AccommodationRatings>();
-            foreach (OwnerReview ownerReview in _ownerReviewService.GetAll())
+            foreach (OwnerReview ownerReview in _ownerReviewService.GetByOwnerId(_user.GetId()))
             {
                 if(ownerReview.Tidiness == 0) continue;
 

@@ -38,6 +38,11 @@ namespace SIMS_Booking.Service
             return _repository.GetAll().Where(e => e.Reservation.User.GetId() == id).ToList();
         }
 
+        public List<OwnerReview> GetByOwnerId(int id)
+        {
+            return _repository.GetAll().Where(e => e.Reservation.Accommodation.User.GetId() == id).ToList();
+        }
+
         public void LoadReservationInOwnerReview(ReservationService _reservationService)
         {
             foreach (OwnerReview ownerReview in _repository.GetAll())
