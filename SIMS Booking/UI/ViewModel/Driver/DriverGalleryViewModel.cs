@@ -15,27 +15,30 @@ namespace SIMS_Booking.UI.ViewModel.Driver
     public class DriverGalleryViewModel : ViewModelBase
     {
         public Vehicle Vehicle { get; set; }
+        public List<string> ImageUrlsLeft { get; set; }
+        public List<string> ImageUrlsRight { get; set; }
         public ICommand NavigateBackCommand { get; }
 
         public DriverGalleryViewModel(Vehicle vehicle, ModalNavigationStore modalNavigationStore)
         {
             Vehicle = vehicle;
-            List<string> imageUrls = new List<string>();
-            List<string> imageUrls2 = new List<string>();
+            LoadImages();
+            NavigateBackCommand = new NavigateBackCommand(CreateCloseGalleryNavigationService(modalNavigationStore));
+        }
+
+        private void LoadImages()
+        {
+            ImageUrlsLeft = new List<string>();
+            ImageUrlsRight = new List<string>();
 
             for (int i = 0; i < Vehicle.ImagesURL.Count / 2; i++)
             {
-                imageUrls.Add(Vehicle.ImagesURL.ElementAt(i));
+                ImageUrlsLeft.Add(Vehicle.ImagesURL.ElementAt(i));
             }
-            for (int i = Vehicle.ImagesURL.Count / 2; i < vehicle.ImagesURL.Count; i++)
+            for (int i = Vehicle.ImagesURL.Count / 2; i < Vehicle.ImagesURL.Count; i++)
             {
-                imageUrls2.Add(Vehicle.ImagesURL.ElementAt(i));
+                ImageUrlsRight.Add(Vehicle.ImagesURL.ElementAt(i));
             }
-
-            //imageList.ItemsSource = imageUrls;
-            //imageList2.ItemsSource = imageUrls2;
-
-            NavigateBackCommand = new NavigateBackCommand(CreateCloseGalleryNavigationService(modalNavigationStore));
         }
 
         private INavigationService CreateCloseGalleryNavigationService(ModalNavigationStore modalNavigationStore)
