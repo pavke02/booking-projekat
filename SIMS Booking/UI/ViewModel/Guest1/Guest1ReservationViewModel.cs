@@ -182,8 +182,9 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
         public ICommand ReserveCommand { get; }
 
         public Guest1MainViewModel ViewModel;
+        public Guest1WheneverWhereverViewModel ViewModel2;
 
-        public Guest1ReservationViewModel(ModalNavigationStore modalNavigationStore, Accommodation selectedAccommodation, User loggedUser, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, Guest1MainViewModel guest1MainViewModel)
+        public Guest1ReservationViewModel(ModalNavigationStore modalNavigationStore, Accommodation selectedAccommodation, User loggedUser, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, Guest1MainViewModel guest1MainViewModel, Guest1WheneverWhereverViewModel viewModel2)
         {
 
             _selectedAccommodation = selectedAccommodation;
@@ -207,9 +208,32 @@ namespace SIMS_Booking.UI.ViewModel.Guest1
 
             Reservations = _reservationService.GetAll();
             AccommodationReservations = _reservationService.GetAccommodationReservations(selectedAccommodation);
+            ViewModel2 = viewModel2;
+        }
 
-            /*DisableReservedDates(AccommodationReservations);
-            DisableAllImpossibleDates(startDateDp, minimumDaysOfReservation);*/
+        public Guest1ReservationViewModel(ModalNavigationStore modalNavigationStore, Accommodation selectedAccommodation, User loggedUser, ReservationService reservationService, ReservedAccommodationService reservedAccommodationService, Guest1WheneverWhereverViewModel guest1WhereverViewModelViewModel)
+        {
+
+            _selectedAccommodation = selectedAccommodation;
+            _reservationService = reservationService;
+            _reservedAccommodationService = reservedAccommodationService;
+            LoggedUser = loggedUser;
+
+            int minimumDaysOfReservation = _selectedAccommodation.MinReservationDays;
+            MinDaysContent = $"Minimum duration of reservation: {minimumDaysOfReservation} days.";
+            int maxGuests = _selectedAccommodation.MaxGuests;
+            MaxGuestsContent = $"Maximum number of guests: {maxGuests} guests.";
+
+            NavigateBackCommand = new NavigateBackCommand(CreateCloseModalNavigationService(modalNavigationStore));
+
+            StartDpStartDate = DateTime.Today.AddDays(1);
+            SelectedStartDate = DateTime.Today.AddDays(1);
+
+            ReserveCommand = new ReserveCommand(CreateCloseModalNavigationService(modalNavigationStore), _selectedAccommodation, _reservationService,
+                _reservedAccommodationService, LoggedUser, this);
+
+            Reservations = _reservationService.GetAll();
+            AccommodationReservations = _reservationService.GetAccommodationReservations(selectedAccommodation);
         }
 
         private INavigationService CreateCloseModalNavigationService(ModalNavigationStore modalNavigationStore)

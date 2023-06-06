@@ -26,21 +26,26 @@ namespace SIMS_Booking.Commands.Guest1Commands
 
         public override void Execute(object? parameter)
         {
-            if (_viewModel.SelectedReservation.StartDate - DateTime.Today <
-                TimeSpan.FromDays(_viewModel.SelectedReservation.Accommodation.CancellationPeriod))
+            MessageBoxResult result = MessageBox.Show("Are you sure that you want to cancel this reservation", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
             {
-                MessageBox.Show("It is not possible to cancel reservation after cancellation period.");
-                return;
-            }
-            List<Reservation> newReservations = _reservationService.GetAll();
-            foreach (Reservation reservation in newReservations)
-            {
-                if (reservation.GetId() == _viewModel.SelectedReservation.GetId())
+                if (_viewModel.SelectedReservation.StartDate - DateTime.Today <
+                    TimeSpan.FromDays(_viewModel.SelectedReservation.Accommodation.CancellationPeriod))
                 {
-                    reservation.IsCanceled = true;
-                    _reservationService.Update(reservation);
-                    _viewModel.SetSuperGuest();
+                    MessageBox.Show("It is not possible to cancel reservation after cancellation period.");
                     return;
+                }
+                List<Reservation> newReservations = _reservationService.GetAll();
+                foreach (Reservation reservation in newReservations)
+                {
+                    if (reservation.GetId() == _viewModel.SelectedReservation.GetId())
+                    {
+                        reservation.IsCanceled = true;
+                        _reservationService.Update(reservation);
+                        _viewModel.SetSuperGuest();
+                        return;
+                    }
                 }
             }
         }
