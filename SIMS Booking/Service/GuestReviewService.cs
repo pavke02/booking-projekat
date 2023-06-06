@@ -1,4 +1,5 @@
-﻿using SIMS_Booking.Model;
+﻿using System.Collections;
+using SIMS_Booking.Model;
 using SIMS_Booking.Utility.Observer;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,10 @@ namespace SIMS_Booking.Service
         }
 
         #region Crud
+        public List<GuestReview> GetAll()
+        {
+            return _repository.GetAll();
+        }
 
         public void Save(GuestReview guestReview)
         {
@@ -26,7 +31,6 @@ namespace SIMS_Booking.Service
         {
             _repository.Subscribe(observer);
         }
-
         #endregion
 
         public void LoadReservationInGuestReview(ReservationService _reservationService)
@@ -48,6 +52,5 @@ namespace SIMS_Booking.Service
         {
             return _repository.GetAll().Where(e => e.Reservation.HasOwnerReviewed && e.Reservation.Accommodation.User.GetId() == id).ToList();
         }
-
     }
 }
