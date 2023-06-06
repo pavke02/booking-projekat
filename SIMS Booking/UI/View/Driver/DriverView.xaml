@@ -76,7 +76,11 @@
                     Command="{Binding NavigateToRequestVacationCommand}" Margin="10,0,0,0" Background="#FF555555" FontSize="14" Foreground="White">
             </Button>
 
-            <Button Template="{StaticResource CustomButtonTemplate}" Name="ViewProfile" Content="View Profile" Padding="5, 0, 5, 0" Margin="350,0,10,0" Width="100"
+            <Button Template="{StaticResource CustomButtonTemplate}" x:Name="TutorialButton" Content="View Tutorial" Width="105" 
+                    Command="{Binding NavigateToTutorialCommand}" Margin="120,0,0,0" Background="#FF555555" FontSize="14" Foreground="White">
+            </Button>
+
+            <Button Template="{StaticResource CustomButtonTemplate}" Name="ViewProfile" Content="View Profile" Padding="5, 0, 5, 0" Margin="125,0,10,0" Width="100"
                     Command="{Binding NavigateToProfileCommand}" Background="#FF555555" Foreground="White" FontSize="14">
             </Button>
 

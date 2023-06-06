@@ -38,6 +38,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         public ICommand NavigateToAddVehicleCommand { get; }
         public ICommand NavigateToProfileCommand { get; }
         public ICommand NavigateToRequestVacationCommand { get; }
+        public ICommand NavigateToTutorialCommand { get; }
 
 
         private Vehicle _vehicle;
@@ -157,6 +158,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             NavigateToAddVehicleCommand = new NavigateCommand(CreateAddVehicleNavigationService(modalNavigationStore), this, () => Vehicle == null);
             NavigateToProfileCommand = new NavigateCommand(CreateProfileNavigationService(modalNavigationStore), this, () => Vehicle != null);
             NavigateToRequestVacationCommand = new NavigateCommand(CreateRequestVacationNavigationService(modalNavigationStore), this, () => Vehicle != null);
+            NavigateToTutorialCommand = new NavigateCommand(CreateTutorialNavigationService(modalNavigationStore), this, () => Vehicle != null);
 
             if (Vehicle != null)
             {
@@ -271,6 +273,11 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         {
             return new ModalNavigationService<DriverRequestVacationViewModel>
                 (modalNavigationStore, () => new DriverRequestVacationViewModel(Vehicle, modalNavigationStore, _vehicleService, _ridesService));
+        }
+        private INavigationService CreateTutorialNavigationService(ModalNavigationStore modalNavigationStore)
+        {
+            return new ModalNavigationService<DriverTutorialViewModel>
+                (modalNavigationStore, () => new DriverTutorialViewModel(modalNavigationStore));
         }
     }
 }

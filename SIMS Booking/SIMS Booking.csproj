@@ -79,4 +79,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\Videos\" />
+  </ItemGroup>
+
 </Project>
