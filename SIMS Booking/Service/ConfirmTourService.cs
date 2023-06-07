@@ -277,5 +277,16 @@ namespace SIMS_Booking.Service
             else
                 return nijeGotova;
         }
+
+
+        public void addVoucherFromGuide()
+        {
+            foreach(var people in _repository.GetAll())
+            {
+                people.Vaucer += 1;
+                people.IdTour = -1;
+            }
+
+        }
     }
 }

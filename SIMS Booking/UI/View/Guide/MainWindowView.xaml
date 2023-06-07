@@ -30,7 +30,7 @@
                 <Button Content="Buduce ture" Width="150" Height="100" Margin="15" Command ="{Binding NavigateFutureTours }" FontSize="20"/>
                 <Button Content="Danasnje ture" Width="150" Height="100" Margin="15" Command="{Binding NavigateTodaysTours}" FontSize="20"/>
                 <Button Content="Zavrsene ture" Width="150" Height="100" Margin="15" Command="{Binding NavigateCompletedTours}" FontSize="20" />
-                <Button Content="Otkaz" Width="150" Height="100" Margin="15" FontSize="20"  />
+                <Button Content="Otkaz" Width="150" Height="100" Margin="15" FontSize="20" Command="{Binding BlackoutCommand}" />
             </StackPanel>
         </StackPanel>
 

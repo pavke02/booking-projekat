@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using CommunityToolkit.Mvvm.Input;
 using SIMS_Booking.Commands.NavigateCommands;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service;
@@ -12,12 +15,14 @@ using SIMS_Booking.Service.NavigationService;
 using SIMS_Booking.UI.Utility;
 using SIMS_Booking.UI.View.Guide;
 using SIMS_Booking.UI.ViewModel.Owner;
+using SIMS_Booking.UI.ViewModel.Startup;
 using SIMS_Booking.Utility.Observer;
 using SIMS_Booking.Utility.Stores;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SIMS_Booking.UI.ViewModel.Guide
 {
-    public class MainWindowViewModel : ViewModelBase, IObserver
+    public partial class MainWindowViewModel : ViewModelBase
     {
         
         public ICommand NavigateToStatistics { get; }
@@ -27,6 +32,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
         public ICommand NavigateCompletedTours { get; }
         public ICommand NavigateRequestTours { get; }
         public ICommand NavigateProfile { get; }
+        public ICommand BlackoutCommand { get; }
 
         private TourService _tourService;
         private ConfirmTourService _confirmTourService;
@@ -55,9 +61,9 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             _textBox = textBox;
             _tourReviewService = tourReviewService;
             _tourService = tourService;
-            _tourService.Subscribe(this);
+            //_tourService.Subscribe(this);
             _tourPointService = tourPointService;
-            _tourPointService.Subscribe(this);
+            //_tourPointService.Subscribe(this);
             _userService = userService;
             _confirmTourService = confirmTourService;
             _navigationStore = navigationStore;
@@ -75,7 +81,20 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             NavigateCompletedTours = new NavigateCommand(CreateCompletedToursnavigationService(modalNavigationStore));
             NavigateRequestTours = new NavigateCommand(CreateRequestToursnavigationService(navigationStore));
             NavigateProfile = new NavigateCommand(CreateProfilesnavigationService(navigationStore));
+            BlackoutCommand = new RelayCommand(ExecuteBlackoutCommand);
 
+
+
+
+        }
+        private void ExecuteBlackoutCommand()
+        {
+            _confirmTourService.addVoucherFromGuide();
+            Window parentWindow = Window.GetWindow(System.Windows.Application.Current.MainWindow);
+            if (parentWindow != null)
+            {
+                parentWindow.Background = Brushes.Black;
+            }
         }
 
         private INavigationService CreateCreateTourModalNavigationService(ModalNavigationStore modalNavigationStore)
@@ -114,10 +133,12 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             (navigationStore, () => new ProfileViewModel( _tourReviewService, _tourService));
         }
 
+        
 
-        public void Update()
+        [RelayCommand]
+        public void GuideCancel()
         {
-            
+           
         }
     }
 }
