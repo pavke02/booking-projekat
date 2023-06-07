@@ -32,7 +32,7 @@ namespace SIMS_Booking.Commands.DriverCommands
         {
 
             timeDif = _viewModel.SelectedRide.DateTime - DateTime.Now;
-            if (timeDif.TotalSeconds <= 300)
+            if (timeDif.TotalSeconds <= 900)
             {
                 remainingTime = (int)(20 * 60 + timeDif.TotalSeconds);
 

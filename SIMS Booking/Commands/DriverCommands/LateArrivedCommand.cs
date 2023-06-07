@@ -31,7 +31,7 @@ namespace SIMS_Booking.Commands.DriverCommands
         public override void Execute(object? parameter)
         {
             timeDif = _ridesViewModel.SelectedRide.DateTime - DateTime.Now;
-            if (timeDif.TotalSeconds <= 300)
+            if (timeDif.TotalSeconds <= 900)
             {
                 int lateTime = Convert.ToInt16(_ridesViewModel.LateInMinutes);
                 remainingTime = (int)(20 * 60 + timeDif.TotalSeconds + 60 * lateTime);

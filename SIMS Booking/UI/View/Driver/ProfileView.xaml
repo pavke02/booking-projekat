@@ -58,6 +58,9 @@
                 Command="{Binding TakeColleaguesRidesCommand}" Margin="620,339,0,0" VerticalAlignment="Top" Width="104" Height="50" 
                 FontSize="14" Foreground="White" Background="#FF555555">
         </Button>
+        <Button Template="{StaticResource CustomButtonTemplate}" Content="Generate PDF" HorizontalAlignment="Left" 
+            Command="{Binding GeneratePDFCommand}" Margin="484,339,0,0" VerticalAlignment="Top" Width="104" Height="50" 
+            FontSize="14" Foreground="White" Background="#FF555555"/>
 
     </Grid>
 </UserControl>

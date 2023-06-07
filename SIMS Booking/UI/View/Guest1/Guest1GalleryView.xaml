@@ -23,17 +23,17 @@
                 <TextBlock Text="Gallery" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"
                            Margin="0 0 0 0" Foreground="White"></TextBlock>
             </WrapPanel>
-            <ItemsControl x:Name="imageList" Grid.Column="0" Grid.Row="1">
+            <ItemsControl x:Name="imageList" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ImageUrlsLeft}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Image Height="250" Stretch="UniformToFill" Source="{Binding ImageUrlsLeft}" />
+                        <Image Height="250" Stretch="UniformToFill" Source="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <ItemsControl x:Name="imageList2" Grid.Column="1" Grid.Row="1">
+            <ItemsControl x:Name="imageList2" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ImageUrlsRight}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Image Height="250" Stretch="UniformToFill" Source="{Binding ImageUrlsRight}" />
+                        <Image Height="250" Stretch="UniformToFill" Source="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

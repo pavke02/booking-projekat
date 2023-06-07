@@ -3,6 +3,8 @@ using PdfSharp.Pdf;
 using SIMS_Booking.Model;
 using SIMS_Booking.Service;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 namespace SIMS_Booking.Commands.OwnerCommands
 {
@@ -28,6 +30,7 @@ namespace SIMS_Booking.Commands.OwnerCommands
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
             XFont font = new XFont("Arial", 20);
+            string filePath = "C:\\Users\\gagim\\Documents\\GitHub\\sims-projekat\\SIMS Booking\\Resources\\PDFs\\" + "owner.pdf";
 
             int y = 0;
             foreach (KeyValuePair<Accommodation, AccommodationRatings> accommodationsRating in accommodationsRatings)
@@ -42,7 +45,14 @@ namespace SIMS_Booking.Commands.OwnerCommands
                 y += 40;
             }
 
-            document.Save("../../../Resources/PDFs/owner.pdf");
+            document.Save(filePath);
+
+            if (File.Exists(filePath))
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo(filePath);
+                startInfo.UseShellExecute = true;
+                Process.Start(startInfo);
+            }
         }
 
         private Dictionary<Accommodation, AccommodationRatings> GenerateRatingForAccommodations()

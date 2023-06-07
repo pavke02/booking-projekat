@@ -29,6 +29,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
         public static ObservableCollection<FinishedRide> FinishedRides { get; set; }
         public ICommand NavigateBackCommand { get; }
         public ICommand TakeColleaguesRidesCommand { get; }
+        public ICommand GeneratePDFCommand { get; }
 
         private int _fastRidesCount;
         public int FastRidesCount
@@ -236,6 +237,7 @@ namespace SIMS_Booking.UI.ViewModel.Driver
             NavigateBackCommand = new NavigateBackCommand(CreateCloseProfileNavigationService(modalNavigationStore));
 
             TakeColleaguesRidesCommand = new TakeColleaguesRidesCommand(this, _ridesService);
+            GeneratePDFCommand = new DriverGeneratePDF(_finishedRidesService);
         }
 
         private INavigationService CreateCloseProfileNavigationService(ModalNavigationStore modalNavigationStore)
