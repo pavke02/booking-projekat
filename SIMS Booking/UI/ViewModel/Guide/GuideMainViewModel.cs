@@ -87,6 +87,21 @@ namespace SIMS_Booking.UI.ViewModel.Guide
             }
         }
 
+        private bool _isSuper;
+
+        public bool IsSuper
+        {
+            get { return _isSuper; }
+            set
+            {
+                if (_isSuper != value)
+                {
+                    _isSuper = value;
+                    OnPropertyChanged(nameof(IsSuper));
+                }
+            }
+        }
+
         private TimeOnly _tourTime;
 
         public TimeOnly TourTime
@@ -427,7 +442,7 @@ namespace SIMS_Booking.UI.ViewModel.Guide
                 Location location = new Location(v[0], v[1]);
 
                 DateTime time = new DateTime(StartTour.Year, StartTour.Month, StartTour.Day, TourTime.Hour, TourTime.Minute, TourTime.Second);
-                Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), time, int.Parse(Times), imageURLs, TourPointIds, TourPoints, TourTime);
+                Tour tour = new Tour(TourName, location, Descriptions, Languages, int.Parse(MaxGuest), time, int.Parse(Times), imageURLs, TourPointIds, TourPoints, TourTime,IsSuper);
                 _tourService.Save(tour);
             }
         }

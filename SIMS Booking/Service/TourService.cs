@@ -25,11 +25,19 @@ namespace SIMS_Booking.Service
             List<Tour> todaysTours = new List<Tour>();
             foreach (Tour tour in _repository.GetAll())
             {
-                if (DateTime.Today == tour.StartTour)
+                if (DateTime.Today == tour.StartTour && tour.IsSuper==true)
                 {
                     todaysTours.Add(tour);
                 }
             }
+            foreach (Tour tour in _repository.GetAll())
+            {
+                if (DateTime.Today == tour.StartTour && tour.IsSuper != true)
+                {
+                    todaysTours.Add(tour);
+                }
+            }
+
             return todaysTours;
         }
 
@@ -177,5 +185,33 @@ namespace SIMS_Booking.Service
             if (counterE >= 20 || counterS >= 20) { return true; }
             else return false;
         }
+
+
+
+        public bool Have20ToursO()
+        {
+            int counterS = 0;
+            int counterE = 0;
+
+            foreach (var tour in _repository.GetAll())
+            {
+                if(tour.StartTour < DateTime.Now && tour.StartTour > DateTime.Today.AddYears(-1))
+                {
+                if (tour.Language == "English" )
+                    counterE++;
+                else counterS++;
+
+                }
+            }
+    
+                if(counterS >= 1 || counterE >= 1) return true;
+                else return false;
+        }
+
+
+        }
+
+
+
+
     }
-}

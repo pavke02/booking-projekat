@@ -17,10 +17,13 @@
         </Button>
 
 
-        <Image Source="guest1_128.png" Width="140" Height="220" Margin="-220,-200,0,0"/>
+        <Image Source="../../../Resources/Images/owner.png" Height="250" Width="250"
+                                       Margin="-240, -180, 0, 0"></Image>
         <TextBlock Text="PROFIL VODICA" HorizontalAlignment="Center" Margin="0,80,0,0" FontSize="60" />
         <TextBlock Text="Prosecna ocena:" Margin="0,400,0,0" FontSize="20" />
-        <TextBlock Text="{Binding AverageGrade}" Margin="160,400,0,0" FontSize="20" />
+        <Label Content="{Binding AverageGrade}" Margin="170,410,0,0" />
+        <TextBlock Text="Dostignuce:" Margin="0,450,0,0" FontSize="20" />
+        <Label Content="{Binding IsSuperGuideString}" Margin="170,460,0,0" />
         <Rectangle Fill="LightGray" Height="50" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
         <Button Content="BACK" Height="50" Width="90" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="15" BorderThickness="0" Background="LightGray" Command="{Binding BackCommand}" />
 

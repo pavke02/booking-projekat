@@ -6,6 +6,17 @@
         xmlns:local="clr-namespace:SIMS_Booking.UI.View.Guide"
         mc:Ignorable="d"
        Height="730" Width="450">
+    <UserControl.Resources>
+        <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSuper}" Value="True">
+                    <Setter Property="BorderBrush" Value="Yellow"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
 
         <Rectangle Fill="LightGray" Height="50" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
@@ -20,7 +31,9 @@
         <TextBlock Text="DANASNJE TURE" HorizontalAlignment="Center" Margin="0,70" FontSize="40"/>
 
 
-        <ListBox SelectedItem="{Binding SelectedTour}" ItemsSource="{Binding NowTours}"  BorderThickness="2" Width="300" Height="500" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ListBox SelectedItem="{Binding SelectedTour}" ItemsSource="{Binding NowTours}" BorderThickness="2"
+                 Width="300" Height="500" HorizontalAlignment="Center" VerticalAlignment="Center"
+                 ItemContainerStyle="{StaticResource ListBoxItemStyle}">
             <ListBox.ItemTemplate>
                 <DataTemplate >
                     <StackPanel Orientation="Horizontal" >

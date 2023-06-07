@@ -65,22 +65,7 @@ namespace SIMS_Booking.Service
         }
 
 
-        public bool IsSuperGuide()
-        {
-            double suma = 0;
-            int counter = 0;
-            
-            foreach(var tourReview in _repository.GetAll())
-            {
-                suma += tourReview.Grade;
-                counter++;
-                                
-            }
-            double averageGrade = suma / counter;
-            if (averageGrade >= 9.0) return true;
-            else return false;
-            
-        }
+        
 
         public double AverageGrade()
         {

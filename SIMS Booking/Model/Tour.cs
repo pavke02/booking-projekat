@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using SIMS_Booking.Utility;
 using SIMS_Booking.Utility.Serializer;
 
@@ -23,9 +24,10 @@ namespace SIMS_Booking.Model
         public int CurrentTourPoint { get; set; }
         public TimeOnly TourTime { get; set; }
         public DateTime EndTimeTour { get; set; }
+        public bool IsSuper { get; set; } 
 
         public Tour () { TourPoints = new List<TourPoint>(); }
-        public Tour ( string name, Location location, string description, string language, int maxGuests, DateTime startTour, int time, List<string> imagesURL, List<int> tourPointIds, List<TourPoint> tourPoints,TimeOnly tourTime)
+        public Tour ( string name, Location location, string description, string language, int maxGuests, DateTime startTour, int time, List<string> imagesURL, List<int> tourPointIds, List<TourPoint> tourPoints,TimeOnly tourTime, bool isSuper)
         {
             TourPoints = tourPoints;            
             Name = name;
@@ -45,6 +47,7 @@ namespace SIMS_Booking.Model
             TourPointIds = tourPointIds;
             CurrentTourPoint = 0;
             TourTime = tourTime;
+            IsSuper = isSuper;
 
         }
         public int GetId()
@@ -71,12 +74,13 @@ namespace SIMS_Booking.Model
             TourPointIds = values[9].Split(',').Select(int.Parse).ToList();
             CurrentTourPoint = int.Parse(values[10]);
             TourTime = TimeOnly.Parse(values[11]);
+            IsSuper = bool.Parse(values[12]);
         }
 
         string[] ISerializable.ToCSV()
         {
            // string[] csvValues = { Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(), string.Join(',',tourPoints), Time.ToString() };
-            string[] csvValues = { ID.ToString() ,Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(),  StartTour.ToString(), Time.ToString(), string.Join(',', ImageURLs), string.Join(',',TourPointIds),CurrentTourPoint.ToString(), TourTime.ToString() };
+            string[] csvValues = { ID.ToString() ,Name, Location.Country, Location.City, Language.ToString(), MaxGuests.ToString(),  StartTour.ToString(), Time.ToString(), string.Join(',', ImageURLs), string.Join(',',TourPointIds),CurrentTourPoint.ToString(), TourTime.ToString(), IsSuper.ToString() };
 
             return csvValues;
         }             
